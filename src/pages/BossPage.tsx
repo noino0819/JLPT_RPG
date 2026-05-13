@@ -5,6 +5,7 @@ import PixelCharacter from "../components/PixelCharacter";
 import PixelMonster, {
   type MonsterState,
 } from "../components/PixelMonster";
+import PixelPet from "../components/PixelPet";
 import WordCard from "../components/WordCard";
 import { BOSSES, BOSS_MIN_WORDS, computeBossHp } from "../data/bosses";
 import { DUNGEONS } from "../data/dungeons";
@@ -393,7 +394,16 @@ function BossBattle({ level, masteredWords }: BossBattleProps) {
 
         {/* 플레이어 캐릭터 (오른쪽 아래) */}
         {settings.show_character && (
-          <div className="pointer-events-none absolute bottom-1 right-1 z-20 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
+          <div className="pointer-events-none absolute bottom-1 right-1 z-20 flex items-end gap-1 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
+            {/* 장착한 펫 — 캐릭터 옆에 함께 등장. 공격 시 펫도 같이 모션 재생 */}
+            {equipped.pet && (
+              <PixelPet
+                petId={equipped.pet}
+                size={28}
+                delayMs={350}
+                attacking={attacking}
+              />
+            )}
             <PixelCharacter
               id={selected_character}
               costumeId={equipped.costume[selected_character]}
