@@ -1,112 +1,86 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { usePlayerStore } from "../store/playerStore";
-
-const navItems = [
-  { to: "/", label: "홈", icon: "🏯" },
-  { to: "/study", label: "단어 수련", icon: "📖" },
-  { to: "/battle", label: "전투", icon: "⚔️" },
-  { to: "/status", label: "상태", icon: "🧭" },
-];
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { useProfileStore } from "../store/profileStore";
+import { totalKills } from "../lib/stats";
+import { useProgressStore } from "../store/progressStore";
+import RankBadge from "./RankBadge";
 
 export default function Layout() {
-  const { name, level, exp, expToNext, hp, maxHp } = usePlayerStore();
+  // 진행 상태가 변할 때마다 헤더가 업데이트되도록 구독
+  useProgressStore((s) => s.byWord);
+  const { nickname } = useProfileStore();
+  const kills = totalKills();
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <header className="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🗾</span>
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-30 border-b-2 border-black bg-dungeon-200/95 backdrop-blur">
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-2xl">🗡️</span>
             <div>
-              <h1 className="text-lg font-black tracking-wide">
-                JLPT <span className="text-sakura-400">RPG</span>
-              </h1>
-              <p className="text-xs text-slate-400">日本語 모험을 떠나자</p>
+              <div className="pixel-text font-pixel text-base text-parchment-100">
+                JLPT <span className="text-rune-400">RPG</span>
+              </div>
+              <div className="font-pixel text-[10px] text-parchment-300">
+                漢字ダンジョン
+              </div>
             </div>
-          </div>
-          <div className="hidden items-center gap-4 sm:flex">
-            <PlayerBadge
-              name={name}
-              level={level}
-              exp={exp}
-              expToNext={expToNext}
-              hp={hp}
-              maxHp={maxHp}
-            />
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <RankBadge killCount={kills} compact />
+            <span className="hidden font-pixel text-xs text-parchment-200 sm:inline">
+              · {nickname}
+            </span>
+            <Link
+              to="/settings"
+              className="border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-xs text-parchment-100 hover:bg-dungeon-100"
+              aria-label="설정"
+            >
+              ⚙
+            </Link>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-5">
         <Outlet />
       </main>
 
-      <nav className="sticky bottom-0 border-t border-slate-800/80 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-around px-2 py-2">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                `flex flex-1 flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold transition ${
-                  isActive
-                    ? "bg-sakura-500/15 text-sakura-300"
-                    : "text-slate-400 hover:text-slate-100"
-                }`
-              }
-            >
-              <span className="text-lg">{item.icon}</span>
-              {item.label}
-            </NavLink>
-          ))}
+      <nav className="sticky bottom-0 z-30 border-t-2 border-black bg-dungeon-200/95 backdrop-blur">
+        <div className="mx-auto flex max-w-3xl items-center justify-around gap-1 px-2 py-1">
+          <NavTab to="/" label="던전" icon="🏯" />
+          <NavTab to="/review" label="다시보기" icon="🔖" />
+          <NavTab to="/mydeck" label="단어장" icon="📜" />
+          <NavTab to="/character" label="캐릭터" icon="🧝" />
         </div>
       </nav>
     </div>
   );
 }
 
-function PlayerBadge({
-  name,
-  level,
-  exp,
-  expToNext,
-  hp,
-  maxHp,
+function NavTab({
+  to,
+  label,
+  icon,
 }: {
-  name: string;
-  level: number;
-  exp: number;
-  expToNext: number;
-  hp: number;
-  maxHp: number;
+  to: string;
+  label: string;
+  icon: string;
 }) {
-  const expPct = Math.min(100, Math.round((exp / expToNext) * 100));
-  const hpPct = Math.min(100, Math.round((hp / maxHp) * 100));
-
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2">
-      <div className="grid h-10 w-10 place-items-center rounded-full bg-sakura-500/20 text-lg">
-        🦊
-      </div>
-      <div className="min-w-[180px]">
-        <div className="flex items-center justify-between text-xs text-slate-300">
-          <span className="font-bold text-slate-100">{name}</span>
-          <span className="text-sakura-300">Lv.{level}</span>
-        </div>
-        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
-          <div
-            className="h-full bg-emerald-400"
-            style={{ width: `${hpPct}%` }}
-          />
-        </div>
-        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
-          <div
-            className="h-full bg-sakura-400"
-            style={{ width: `${expPct}%` }}
-          />
-        </div>
-      </div>
-    </div>
+    <NavLink
+      to={to}
+      end={to === "/"}
+      className={({ isActive }) =>
+        `flex flex-1 flex-col items-center gap-0.5 border-2 px-2 py-2 font-pixel text-[10px] uppercase transition ${
+          isActive
+            ? "border-rune-500 bg-rune-500/10 text-rune-400"
+            : "border-transparent text-parchment-200 hover:text-parchment-100"
+        }`
+      }
+    >
+      <span className="text-lg">{icon}</span>
+      {label}
+    </NavLink>
   );
 }

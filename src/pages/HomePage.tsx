@@ -1,110 +1,76 @@
 import { Link } from "react-router-dom";
-import { usePlayerStore } from "../store/playerStore";
-
-const JLPT_LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const;
+import DungeonCard from "../components/DungeonCard";
+import RankBadge from "../components/RankBadge";
+import { JLPT_LEVELS } from "../data/dungeons";
+import { dungeonStats, totalKills } from "../lib/stats";
+import { useProgressStore } from "../store/progressStore";
+import { useProfileStore } from "../store/profileStore";
+import PixelCharacter from "../components/PixelCharacter";
 
 export default function HomePage() {
-  const { name, currentJlptLevel, setJlptLevel, learnedWordIds, gold } =
-    usePlayerStore();
+  // 진행 상태가 변할 때 리렌더되도록 구독
+  useProgressStore((s) => s.byWord);
+  const { nickname, selected_character } = useProfileStore();
+  const stats = dungeonStats();
+  const kills = totalKills();
 
   return (
-    <div className="space-y-8">
-      <section className="card animate-pop">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div className="space-y-5">
+      <section className="panel relative overflow-hidden">
+        <div className="absolute inset-0 scanline opacity-20" />
+        <div className="relative flex items-center gap-4">
+          <PixelCharacter id={selected_character} size={80} />
           <div>
-            <span className="badge mb-3">{currentJlptLevel} 모험가</span>
-            <h2 className="text-3xl font-black sm:text-4xl">
-              어서 와요, <span className="text-sakura-300">{name}</span>!
+            <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-300">
+              어서 오게, 모험가여
+            </div>
+            <h2 className="pixel-text font-pixel text-2xl text-parchment-100">
+              {nickname}
             </h2>
-            <p className="mt-2 text-slate-400">
-              일본어 단어를 외우며 몬스터를 쓰러뜨리고 레벨을 올려보세요.
+            <p className="text-sm text-parchment-300">
+              오늘은 어느 던전을 정복할까?
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3 text-center sm:flex">
-            <Stat label="외운 단어" value={`${learnedWordIds.length}개`} />
-            <Stat label="소지 골드" value={`🪙 ${gold}`} />
+        </div>
+      </section>
+
+      <RankBadge killCount={kills} />
+
+      <section>
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="pixel-text font-pixel text-sm uppercase tracking-widest text-parchment-100">
+            🗺️ 던전
+          </h3>
+          <Link
+            to="/review"
+            className="badge-pixel hover:bg-dungeon-100"
+          >
+            🔖 다시 보기
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {JLPT_LEVELS.map((lv) => (
+            <DungeonCard key={lv} level={lv} stat={stats[lv]} />
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="pixel-text font-pixel text-sm uppercase tracking-widest text-parchment-100">
+              📜 나만의 단어장
+            </h3>
+            <p className="mt-1 text-xs text-parchment-300">
+              직접 만든 단어 + 처치 카운트는 등급에 합산됩니다.
+            </p>
           </div>
-        </div>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link to="/study" className="btn-primary">
-            📖 단어 수련 시작
-          </Link>
-          <Link to="/battle" className="btn-ghost">
-            ⚔️ 전투 입장
+          <Link to="/mydeck" className="btn-gold">
+            열기
           </Link>
         </div>
       </section>
-
-      <section className="card">
-        <h3 className="text-lg font-bold">JLPT 레벨 선택</h3>
-        <p className="mt-1 text-sm text-slate-400">
-          현재 도전 중인 시험 레벨을 선택하면 등장하는 단어와 적이 달라집니다.
-        </p>
-        <div className="mt-4 grid grid-cols-5 gap-2">
-          {JLPT_LEVELS.map((lvl) => {
-            const active = lvl === currentJlptLevel;
-            return (
-              <button
-                key={lvl}
-                onClick={() => setJlptLevel(lvl)}
-                className={`rounded-xl border px-3 py-4 text-lg font-black transition ${
-                  active
-                    ? "border-sakura-400 bg-sakura-500/15 text-sakura-200 shadow-lg shadow-sakura-500/20"
-                    : "border-slate-800 bg-slate-900/40 text-slate-300 hover:border-slate-600"
-                }`}
-              >
-                {lvl}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="grid gap-4 sm:grid-cols-3">
-        <Tip
-          icon="📖"
-          title="단어 수련"
-          desc="플래시카드로 단어를 학습하고 EXP를 얻어요."
-        />
-        <Tip
-          icon="⚔️"
-          title="전투"
-          desc="뜻을 맞히면 데미지! 틀리면 적의 공격을 받아요."
-        />
-        <Tip
-          icon="🧭"
-          title="상태"
-          desc="내 레벨과 학습한 단어를 한눈에 확인해요."
-        />
-      </section>
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2">
-      <div className="text-xs text-slate-400">{label}</div>
-      <div className="text-lg font-bold text-slate-100">{value}</div>
-    </div>
-  );
-}
-
-function Tip({
-  icon,
-  title,
-  desc,
-}: {
-  icon: string;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <div className="card">
-      <div className="text-2xl">{icon}</div>
-      <h4 className="mt-2 font-bold">{title}</h4>
-      <p className="mt-1 text-sm text-slate-400">{desc}</p>
     </div>
   );
 }

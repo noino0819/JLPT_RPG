@@ -1,4 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DotGothic16&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/DungGeunMo.woff")
+  format("woff");
+
+@font-face {
+  font-family: "DungGeunMo";
+  src:
+    url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/DungGeunMo.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -11,35 +23,142 @@
     height: 100%;
   }
 
+  html {
+    image-rendering: pixelated;
+  }
+
   body {
-    @apply bg-slate-950 text-slate-100 antialiased;
+    @apply bg-dungeon-300 text-parchment-100 antialiased;
     font-family:
-      "Noto Sans JP",
-      "Hiragino Sans",
-      "Yu Gothic",
+      "DungGeunMo",
+      "Noto Sans KR",
       system-ui,
       sans-serif;
+    background-image:
+      radial-gradient(
+        circle at 20% 10%,
+        rgba(124, 110, 255, 0.08) 0,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 90%,
+        rgba(255, 138, 76, 0.08) 0,
+        transparent 50%
+      );
+  }
+
+  button {
+    font-family: inherit;
   }
 }
 
 @layer components {
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold transition active:scale-[0.98];
+  .pixel-border {
+    image-rendering: pixelated;
+    box-shadow:
+      0 -4px 0 0 rgba(0, 0, 0, 0.6) inset,
+      0 0 0 4px var(--tw-shadow-color, rgba(0, 0, 0, 0.4));
+  }
+
+  .btn-pixel {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-none border-2 border-black px-4 py-3 font-pixel text-sm font-bold uppercase tracking-wide transition active:translate-y-[2px] active:shadow-pressed;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+    box-shadow:
+      inset -2px -3px 0 0 rgba(0, 0, 0, 0.35),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.18),
+      0 4px 0 0 rgba(0, 0, 0, 0.65);
   }
 
   .btn-primary {
-    @apply btn bg-sakura-500 text-white shadow-lg shadow-sakura-500/30 hover:bg-sakura-400;
+    @apply btn-pixel bg-rune-500 text-white hover:bg-rune-400;
+  }
+
+  .btn-gold {
+    @apply btn-pixel bg-parchment-400 text-parchment-900 hover:bg-parchment-300;
   }
 
   .btn-ghost {
-    @apply btn border border-slate-700 bg-slate-900/60 text-slate-100 hover:bg-slate-800;
+    @apply btn-pixel bg-dungeon-50 text-parchment-100 hover:bg-dungeon-100;
   }
 
-  .card {
-    @apply rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur;
+  .btn-danger {
+    @apply btn-pixel bg-volcano-500 text-white hover:bg-volcano-400;
   }
 
-  .badge {
-    @apply inline-flex items-center rounded-full bg-slate-800 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-300;
+  .panel {
+    @apply rounded-none border-2 border-black bg-dungeon-100 p-4;
+    box-shadow:
+      inset -2px -3px 0 0 rgba(0, 0, 0, 0.4),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.06);
   }
+
+  .panel-parchment {
+    @apply rounded-none border-2 border-black bg-parchment-100 text-parchment-900;
+    background-image:
+      radial-gradient(
+        circle at 20% 30%,
+        rgba(154, 102, 42, 0.18) 0,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        rgba(122, 76, 36, 0.12) 0,
+        transparent 55%
+      );
+    box-shadow:
+      inset -3px -4px 0 0 rgba(122, 76, 36, 0.3),
+      inset 3px 3px 0 0 rgba(255, 255, 255, 0.6),
+      0 6px 0 0 rgba(0, 0, 0, 0.65);
+  }
+
+  .pixel-text {
+    font-family: "DungGeunMo", monospace;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+  }
+
+  .pixel-text-jp {
+    font-family: "DotGothic16", monospace;
+  }
+
+  .badge-pixel {
+    @apply inline-flex items-center gap-1 rounded-none border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-[10px] uppercase tracking-wider text-parchment-100;
+    box-shadow:
+      inset -1px -2px 0 0 rgba(0, 0, 0, 0.4),
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .scanline {
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.05) 0px,
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+}
+
+/* card flip 3d */
+.flip-perspective {
+  perspective: 1200px;
+}
+
+.flip-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.25, 1.4, 0.5, 1);
+}
+
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
 }

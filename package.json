@@ -11,6 +11,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
+    "@types/papaparse": "^5.5.2",
+    "framer-motion": "^12.38.0",
+    "papaparse": "^5.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.1.0",
