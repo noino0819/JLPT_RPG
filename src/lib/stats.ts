@@ -101,10 +101,18 @@ export function buildStudyQueue(
   const base: Word[] = [...noneArr];
   if (!excludeMastered) base.push(...masteredArr);
 
+  // none/mastered 가 모두 소진되어 base가 비었지만 "외운 것 같아요(probably)"
+  // 단어가 남아 있다면, probably 자체를 학습 풀로 사용한다.
+  // probably 는 "가물가물"한 상태이지 정복(mastered)이 아니므로,
+  // 이 단어들이 남아 있는 한 던전을 정복한 것으로 처리되면 안 된다.
+  const usingProbablyAsBase = base.length === 0 && probablyArr.length > 0;
+  if (usingProbablyAsBase) base.push(...probablyArr);
+
   if (order === "random") shuffle(base);
 
   // probablyEvery 마다 1장씩 probably 단어 끼워넣기
-  if (probablyArr.length > 0) {
+  // (probably 자체가 base인 경우엔 중복 weaving 을 생략한다)
+  if (!usingProbablyAsBase && probablyArr.length > 0) {
     const step = Math.max(1, probablyEvery);
     const probShuffled = order === "random" ? shuffle([...probablyArr]) : [...probablyArr];
     let pi = 0;

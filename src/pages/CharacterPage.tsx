@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { CHARACTER_LIST, CHARACTERS } from "../data/characters";
 import PixelCharacter from "../components/PixelCharacter";
 import { useProfileStore } from "../store/profileStore";
 import type { CharacterId } from "../types";
 
 export default function CharacterPage() {
-  const navigate = useNavigate();
   const { selected_character, setCharacter } = useProfileStore();
 
   const handlePick = (id: CharacterId) => {
@@ -66,10 +64,6 @@ export default function CharacterPage() {
           );
         })}
       </section>
-
-      <button onClick={() => navigate("/")} className="btn-primary w-full">
-        ▶ 던전으로 출발
-      </button>
     </div>
   );
 }
