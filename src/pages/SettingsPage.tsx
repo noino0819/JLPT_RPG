@@ -140,8 +140,8 @@ export default function SettingsPage() {
             className="mt-1 w-full border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
           />
         </label>
-        <Link to="/character" className="btn-primary mt-3 w-full">
-          🧝 캐릭터 변경
+        <Link to="/wardrobe" className="btn-primary mt-3 w-full">
+          🧝 캐릭터 / 옷장
         </Link>
       </Section>
 

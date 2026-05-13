@@ -19,8 +19,37 @@ create table public.profiles (
     "review_mix_weight": 3,
     "effects": {"attack": true, "card_shake": true, "sound": false}
   }'::jsonb,
+  -- 꾸밈 시스템: 캐릭터별 코스튬 + 펫/칭호/뱃지/프레임 장착 정보
+  -- 해금 목록은 word_progress 에서 derive 하므로 별도 저장하지 않음.
+  equipped jsonb not null default '{
+    "costume": {
+      "warrior": "warrior_default",
+      "mage": "mage_default",
+      "archer": "archer_default",
+      "summoner": "summoner_default"
+    },
+    "pet": null,
+    "title": null,
+    "badges": [],
+    "frame": "frame_default"
+  }'::jsonb,
   created_at timestamptz not null default now()
 );
+
+-- 기존 배포 환경을 위한 멱등 마이그레이션 (없으면 컬럼 추가)
+alter table public.profiles
+  add column if not exists equipped jsonb not null default '{
+    "costume": {
+      "warrior": "warrior_default",
+      "mage": "mage_default",
+      "archer": "archer_default",
+      "summoner": "summoner_default"
+    },
+    "pet": null,
+    "title": null,
+    "badges": [],
+    "frame": "frame_default"
+  }'::jsonb;
 
 -- auth.users 생성 시 profiles 자동 삽입 (이메일·OAuth 모두 적용)
 create or replace function public.handle_new_user()

@@ -58,7 +58,7 @@ export default function LoginPage() {
             return;
           }
           // session 이 있으면 onAuthStateChange 가 처리 → 라우트 자동 전환
-          navigate("/character");
+          navigate("/wardrobe");
         } else {
           const { error } = await supabase.auth.signInWithPassword({
             email,
@@ -71,7 +71,7 @@ export default function LoginPage() {
         // 로컬 데모 모드
         setLocalSession(email);
         if (mode === "signup") setNickname(email.split("@")[0]);
-        navigate("/character");
+        navigate("/wardrobe");
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "오류가 발생했습니다";

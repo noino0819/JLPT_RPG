@@ -34,7 +34,48 @@ export interface Profile {
   nickname: string;
   selected_character: CharacterId;
   settings: Settings;
+  equipped: EquippedCosmetics;
 }
+
+// ───────── 꾸밈 시스템 (Cosmetics) ─────────
+
+export type CosmeticKind = "costume" | "pet" | "title" | "badge" | "frame";
+
+// 해금 조건: 누적 처치 수 또는 특정 던전 처치 수
+export type UnlockCondition =
+  | { kind: "rank"; min: number }
+  | { kind: "dungeon"; level: JlptLevel; min: number };
+
+export interface CosmeticBase {
+  id: string;
+  kind: CosmeticKind;
+  name: string;
+  nameJp?: string;
+  description?: string;
+  condition: UnlockCondition;
+}
+
+export interface EquippedCosmetics {
+  // 캐릭터별로 코스튬을 따로 저장 (전사일 때 / 마법사일 때 다른 코스튬)
+  costume: Record<CharacterId, string>;
+  pet: string | null;
+  title: string | null;
+  badges: string[];
+  frame: string | null;
+}
+
+export const DEFAULT_EQUIPPED: EquippedCosmetics = {
+  costume: {
+    warrior: "warrior_default",
+    mage: "mage_default",
+    archer: "archer_default",
+    summoner: "summoner_default",
+  },
+  pet: null,
+  title: null,
+  badges: [],
+  frame: "frame_default",
+};
 
 export interface Deck {
   id: string;

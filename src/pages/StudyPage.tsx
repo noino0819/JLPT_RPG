@@ -8,6 +8,7 @@ import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
 import type { CharacterId, JlptLevel, Mastery } from "../types";
 import PixelCharacter from "../components/PixelCharacter";
+import PixelPet from "../components/PixelPet";
 import PixelDungeon from "../components/PixelDungeon";
 import AttackEffect from "../components/AttackEffect";
 import DefeatEffect from "../components/DefeatEffect";
@@ -26,7 +27,7 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   }>();
   const navigate = useNavigate();
 
-  const { selected_character, setCharacter, settings, updateSettings } =
+  const { selected_character, setCharacter, settings, updateSettings, equipped } =
     useProfileStore();
   const { setMastery, toggleFlag, byWord, touch } = useProgressStore();
   // 스토어가 hydrate 될 때 리렌더되도록 직접 구독
@@ -291,19 +292,27 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           trigger={defeatTrigger}
         />
         {settings.show_character && (
-          <button
-            type="button"
-            onClick={() => setPickerOpen((o) => !o)}
-            aria-label="캐릭터 변경"
-            title="캐릭터 변경"
-            className="pointer-events-auto absolute bottom-1 right-1 z-10 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]"
-          >
-            <PixelCharacter
-              id={selected_character}
-              attacking={attacking}
-              size={44}
-            />
-          </button>
+          <div className="pointer-events-none absolute bottom-1 right-1 z-10 flex items-end gap-1 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
+            {equipped.pet && (
+              <div className="pointer-events-none">
+                <PixelPet petId={equipped.pet} size={28} delayMs={350} />
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => setPickerOpen((o) => !o)}
+              aria-label="캐릭터 변경"
+              title="캐릭터 변경"
+              className="pointer-events-auto"
+            >
+              <PixelCharacter
+                id={selected_character}
+                costumeId={equipped.costume[selected_character]}
+                attacking={attacking}
+                size={44}
+              />
+            </button>
+          </div>
         )}
         {floatText && (
           <div className="pointer-events-none absolute left-1/2 top-12 z-30 -translate-x-1/2 animate-floatUp font-pixel text-base text-rune-400 drop-shadow">
@@ -413,7 +422,11 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
                       : "border-black bg-dungeon-50 hover:bg-dungeon-100"
                   }`}
                 >
-                  <PixelCharacter id={c.id} size={40} />
+                  <PixelCharacter
+                    id={c.id}
+                    costumeId={equipped.costume[c.id]}
+                    size={40}
+                  />
                   <span className="font-pixel text-[10px] text-parchment-100">
                     {c.nameJp}
                   </span>

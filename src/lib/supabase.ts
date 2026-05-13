@@ -2,6 +2,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type {
   CharacterId,
   DeckLevel,
+  EquippedCosmetics,
   Mastery,
   Settings,
 } from "../types";
@@ -13,6 +14,7 @@ export interface DbProfile {
   nickname: string | null;
   selected_character: CharacterId;
   settings: Settings;
+  equipped: EquippedCosmetics | null;
   created_at: string;
 }
 

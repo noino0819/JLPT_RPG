@@ -7,12 +7,13 @@ import { useProfileSync } from "./hooks/useProfileSync";
 import { useDecksSync } from "./hooks/useDecksSync";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-import CharacterPage from "./pages/CharacterPage";
+import WardrobePage from "./pages/WardrobePage";
 import StudyPage from "./pages/StudyPage";
 import ReviewPage from "./pages/ReviewPage";
 import MyDeckPage from "./pages/MyDeckPage";
 import SettingsPage from "./pages/SettingsPage";
 import PixelSword from "./components/PixelSword";
+import UnlockToast from "./components/UnlockToast";
 
 export default function App() {
   useSupabaseSession();
@@ -46,9 +47,14 @@ export default function App() {
       />
 
       {signedIn ? (
-        <Route element={<Layout />}>
+        <Route element={<LayoutWithToast />}>
           <Route index element={<HomePage />} />
-          <Route path="/character" element={<CharacterPage />} />
+          {/* /character 는 호환을 위해 /wardrobe 로 합쳤음 */}
+          <Route
+            path="/character"
+            element={<Navigate to="/wardrobe" replace />}
+          />
+          <Route path="/wardrobe" element={<WardrobePage />} />
           <Route path="/study/:level" element={<StudyPage />} />
           <Route path="/study/deck/:deckId" element={<StudyPage />} />
           <Route path="/review" element={<ReviewPage />} />
@@ -60,5 +66,15 @@ export default function App() {
         <Route path="*" element={<Navigate to="/login" replace />} />
       )}
     </Routes>
+  );
+}
+
+// Layout 위에 UnlockToast 를 얹어서 어떤 페이지에 있든 새 해금 알림이 뜨도록.
+function LayoutWithToast() {
+  return (
+    <>
+      <Layout />
+      <UnlockToast />
+    </>
   );
 }

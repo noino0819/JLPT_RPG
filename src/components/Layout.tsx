@@ -5,12 +5,18 @@ import { useProgressStore } from "../store/progressStore";
 import { isSupabaseEnabled } from "../lib/supabase";
 import RankBadge from "./RankBadge";
 import PixelSword from "./PixelSword";
+import { TITLES_BY_ID } from "../data/titles";
+import { BADGES_BY_ID } from "../data/badges";
 
 export default function Layout() {
   // 진행 상태가 변할 때마다 헤더가 업데이트되도록 구독
   useProgressStore((s) => s.byWord);
-  const { nickname } = useProfileStore();
+  const { nickname, equipped } = useProfileStore();
   const kills = totalKills();
+  const title = equipped.title ? TITLES_BY_ID[equipped.title] : null;
+  const firstBadge = equipped.badges[0]
+    ? BADGES_BY_ID[equipped.badges[0]]
+    : null;
 
   return (
     // 뷰포트 전체 높이를 정확히 차지하는 flex 컨테이너.
@@ -34,7 +40,20 @@ export default function Layout() {
           <div className="flex items-center gap-2">
             <SyncDot />
             <RankBadge killCount={kills} compact />
-            <span className="hidden font-pixel text-xs text-parchment-200 sm:inline">
+            {firstBadge && (
+              <span
+                className={`badge-pixel ${firstBadge.tone} !px-1 !py-0`}
+                title={`${firstBadge.nameJp} · ${firstBadge.name}`}
+              >
+                {firstBadge.icon}
+              </span>
+            )}
+            <span className="hidden min-w-0 font-pixel text-xs text-parchment-200 sm:inline">
+              {title && (
+                <span className={`mr-1 ${title.color}`}>
+                  {title.textJp}
+                </span>
+              )}
               · {nickname}
             </span>
             <Link
@@ -57,7 +76,7 @@ export default function Layout() {
           <NavTab to="/" label="던전" icon="🏯" />
           <NavTab to="/review" label="다시보기" icon="🔖" />
           <NavTab to="/mydeck" label="단어장" icon="📜" />
-          <NavTab to="/character" label="캐릭터" icon="🧝" />
+          <NavTab to="/wardrobe" label="옷장" icon="🧝" />
         </div>
       </nav>
     </div>

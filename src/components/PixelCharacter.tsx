@@ -1,4 +1,5 @@
 import { CHARACTERS } from "../data/characters";
+import { COSTUMES_BY_ID } from "../data/cosmetics";
 import type { CharacterId } from "../types";
 
 interface Props {
@@ -6,6 +7,8 @@ interface Props {
   attacking?: boolean;
   size?: number;
   showName?: boolean;
+  // 옷장에서 장착한 코스튬 id. 없으면 기본 팔레트.
+  costumeId?: string;
 }
 
 /**
@@ -18,6 +21,7 @@ export default function PixelCharacter({
   attacking = false,
   size = 72,
   showName = false,
+  costumeId,
 }: Props) {
   const c = CHARACTERS[id];
 
@@ -27,7 +31,7 @@ export default function PixelCharacter({
         className={`relative ${attacking ? "animate-attackSwing" : "animate-bob"}`}
         style={{ width: size, height: size }}
       >
-        <CharacterSprite id={id} size={size} />
+        <CharacterSprite id={id} size={size} costumeId={costumeId} />
       </div>
       {showName && (
         <div className="font-pixel text-[10px] text-parchment-200">
@@ -38,7 +42,15 @@ export default function PixelCharacter({
   );
 }
 
-function CharacterSprite({ id, size }: { id: CharacterId; size: number }) {
+function CharacterSprite({
+  id,
+  size,
+  costumeId,
+}: {
+  id: CharacterId;
+  size: number;
+  costumeId?: string;
+}) {
   const px = size / 16;
   const sty = (col: number, row: number, color: string) => ({
     left: col * px,
@@ -49,7 +61,14 @@ function CharacterSprite({ id, size }: { id: CharacterId; size: number }) {
     position: "absolute" as const,
   });
 
-  const palette = PALETTES[id];
+  // 코스튬 = 베이스 팔레트 + override 키만 덮어쓰기.
+  // 같은 캐릭터가 아닌 코스튬 id 가 들어오면 무시 (안전장치).
+  const base = PALETTES[id];
+  const costume = costumeId ? COSTUMES_BY_ID[costumeId] : undefined;
+  const palette =
+    costume && costume.characterId === id
+      ? { ...base, ...costume.paletteOverride }
+      : base;
   const sprite = SPRITES[id];
 
   return (
