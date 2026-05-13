@@ -1,0 +1,27 @@
+{
+  "name": "JLPT RPG - 일본어 학습 모험",
+  "short_name": "JLPT RPG",
+  "description": "한자 던전을 탐험하며 단어를 외우고 몬스터를 처치하는 JLPT 학습 RPG.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0f0b17",
+  "background_color": "#0f0b17",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
