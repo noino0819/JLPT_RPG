@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Press+Start+2P&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+    font-family:
+      "Noto Sans JP",
+      "Hiragino Sans",
+      "Yu Gothic",
+      system-ui,
+      sans-serif;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold transition active:scale-[0.98];
+  }
+
+  .btn-primary {
+    @apply btn bg-sakura-500 text-white shadow-lg shadow-sakura-500/30 hover:bg-sakura-400;
+  }
+
+  .btn-ghost {
+    @apply btn border border-slate-700 bg-slate-900/60 text-slate-100 hover:bg-slate-800;
+  }
+
+  .card {
+    @apply rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full bg-slate-800 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-300;
+  }
+}
