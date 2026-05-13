@@ -31,3 +31,9 @@ supabase/
 .env
 .env.local
 .env.*.local
+
+# Supabase CLI 로컬 캐시
+supabase/
+
+# Vercel CLI 로컬 캐시
+.vercel
