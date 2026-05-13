@@ -150,6 +150,7 @@ interface DeckEditorProps {
 
 function DeckEditor(props: DeckEditorProps) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [importing, setImporting] = useState(false);
   const [form, setForm] = useState({
     headword: "",
     reading: "",
@@ -171,14 +172,47 @@ function DeckEditor(props: DeckEditorProps) {
     setForm({ headword: "", reading: "", meaning: "", etymology: "", part_of_speech: "" });
   };
 
-  const handleCsv = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const text = await file.text();
-    const rows = parseCsv(text);
-    const added = props.onBulkAdd(rows);
-    alert(`${added}개의 단어를 가져왔습니다.`);
-    if (fileRef.current) fileRef.current.value = "";
+    setImporting(true);
+    try {
+      const name = file.name.toLowerCase();
+      let rows;
+      if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
+        // 엑셀 파서는 무거우므로 필요할 때만 동적 import
+        const { parseExcel } = await import("../lib/excel");
+        rows = await parseExcel(file);
+      } else {
+        rows = parseCsv(await file.text());
+      }
+      if (rows.length === 0) {
+        alert(
+          "가져올 수 있는 단어가 없습니다. 컬럼 순서(한자/읽기/뜻/어원/품사)를 확인해 주세요.",
+        );
+        return;
+      }
+      const added = props.onBulkAdd(rows);
+      alert(`${added}개의 단어를 가져왔습니다.`);
+    } catch (err) {
+      console.error("[bulk import]", err);
+      alert(
+        "파일을 읽지 못했습니다. .xlsx 또는 .csv 형식인지 확인해 주세요.",
+      );
+    } finally {
+      setImporting(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  const handleDownloadTemplate = async () => {
+    try {
+      const { downloadExcelTemplate } = await import("../lib/excel");
+      await downloadExcelTemplate("단어장_예시.xlsx");
+    } catch (err) {
+      console.error("[template download]", err);
+      alert("예시 파일 생성에 실패했습니다.");
+    }
   };
 
   return (
@@ -208,19 +242,39 @@ function DeckEditor(props: DeckEditorProps) {
       </section>
 
       <section className="panel space-y-3">
-        <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-300">
-          CSV 업로드
+        <div className="flex items-center justify-between gap-2">
+          <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-300">
+            파일로 일괄 추가
+          </div>
+          <button
+            type="button"
+            onClick={handleDownloadTemplate}
+            className="border-2 border-black bg-parchment-400 px-3 py-1 font-pixel text-[10px] text-parchment-900 hover:bg-parchment-300"
+          >
+            📥 엑셀 예시 다운로드
+          </button>
         </div>
         <p className="text-xs text-parchment-300">
-          포맷: <code className="bg-dungeon-50 px-1">한자, 읽기, 뜻, 어원, 품사</code> · 첫 줄에 "한자" 헤더 포함 가능
+          엑셀(.xlsx) 또는 CSV(.csv) 지원 · 컬럼 순서:{" "}
+          <code className="bg-dungeon-50 px-1">한자, 읽기, 뜻, 어원, 품사</code>
+        </p>
+        <p className="text-[11px] text-parchment-300/80">
+          첫 줄에 헤더(예: "한자")가 있으면 자동으로 건너뜁니다. 한자 칸이 비어
+          있으면 히라가나-only 단어로 저장돼요.
         </p>
         <input
           ref={fileRef}
           type="file"
-          accept=".csv,text/csv"
-          onChange={handleCsv}
-          className="block w-full border-2 border-black bg-dungeon-50 p-2 text-xs text-parchment-100 file:mr-3 file:border-0 file:bg-rune-500 file:px-3 file:py-1 file:font-pixel file:text-xs file:text-white"
+          accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          onChange={handleFile}
+          disabled={importing}
+          className="block w-full border-2 border-black bg-dungeon-50 p-2 text-xs text-parchment-100 file:mr-3 file:border-0 file:bg-rune-500 file:px-3 file:py-1 file:font-pixel file:text-xs file:text-white disabled:opacity-60"
         />
+        {importing && (
+          <div className="font-pixel text-[10px] text-rune-400">
+            파일 분석 중...
+          </div>
+        )}
       </section>
 
       <form onSubmit={handleSubmit} className="panel space-y-2">
