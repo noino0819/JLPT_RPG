@@ -80,25 +80,29 @@ export default function BossPage() {
     return (
       <div className="space-y-3">
         <header className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
+          {/* min-w-0 로 좁은 화면에서도 우측 ✕ 가 잘려나가지 않도록 보장 */}
+          <div className="flex min-w-0 flex-1 items-center gap-2">
             <PixelMonster level={level} size={48} />
-            <div>
-              <div className="font-pixel text-[10px] text-parchment-300">
+            <div className="min-w-0">
+              <div className="truncate font-pixel text-[10px] text-parchment-300">
                 {boss.title}
               </div>
-              <h2 className="pixel-text font-pixel text-lg text-parchment-100">
+              <h2 className="pixel-text truncate font-pixel text-lg text-parchment-100">
                 {boss.nameJp} ({boss.name})
               </h2>
             </div>
           </div>
-          <Link to="/" className="btn-ghost !px-3 !py-1.5 !text-[10px]">
+          <Link
+            to="/"
+            className="btn-ghost shrink-0 !px-3 !py-1.5 !text-[10px]"
+          >
             ✕ 나가기
           </Link>
         </header>
-        <div className="panel-parchment text-center !text-parchment-900">
+        <div className="panel-parchment break-keep text-center !text-parchment-900">
           <div className="text-3xl">🛡️</div>
           <p className="mt-2 font-bold">아직은 보스에게 도전할 수 없어요.</p>
-          <p className="mt-1 text-sm text-parchment-700">
+          <p className="mt-1 text-sm leading-snug text-parchment-700">
             {dungeon.nameJp} 에서 마스터한 단어가 {BOSS_MIN_WORDS}개 이상이어야
             보스가 나타납니다.
             <br />
