@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import DungeonCard from "../components/DungeonCard";
-import RankBadge from "../components/RankBadge";
 import { JLPT_LEVELS } from "../data/dungeons";
 import { dungeonStats, totalKills } from "../lib/stats";
 import { useProgressStore } from "../store/progressStore";
 import { useProfileStore } from "../store/profileStore";
 import { useDecksStore } from "../store/decksStore";
 import PixelCharacter from "../components/PixelCharacter";
+import { getRankProgress } from "../data/ranks";
 
 export default function HomePage() {
   // 진행 상태/덱이 변할 때 리렌더
@@ -15,62 +15,70 @@ export default function HomePage() {
   const { nickname, selected_character } = useProfileStore();
   const stats = dungeonStats();
   const kills = totalKills();
+  const { current, next, pct, remaining } = getRankProgress(kills);
 
   return (
-    <div className="space-y-5">
+    // 한 화면에 최대한 다 들어가도록 컴팩트한 레이아웃을 유지한다.
+    <div className="flex h-full flex-col gap-3">
+      {/* 환영 + 등급 배지를 하나의 컴팩트 히어로로 통합 */}
       <section className="panel relative overflow-hidden">
         <div className="absolute inset-0 scanline opacity-20" />
-        <div className="relative flex items-center gap-4">
-          <PixelCharacter id={selected_character} size={80} />
-          <div>
-            <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-300">
-              어서 오게, 모험가여
+        <div className="relative flex items-center gap-3">
+          <PixelCharacter id={selected_character} size={56} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="pixel-text font-pixel text-lg text-parchment-100 truncate">
+                {nickname}
+              </h2>
+              <div className="shrink-0 text-right">
+                <span className={`pixel-text font-pixel text-sm ${current.color}`}>
+                  {current.nameJp}
+                </span>
+                <span className="ml-1 font-pixel text-[10px] text-parchment-300">
+                  ⚔ {kills}
+                </span>
+              </div>
             </div>
-            <h2 className="pixel-text font-pixel text-2xl text-parchment-100">
-              {nickname}
-            </h2>
-            <p className="text-sm text-parchment-300">
-              오늘은 어느 던전을 정복할까?
-            </p>
+            <div className="mt-1 h-2 w-full border-2 border-black bg-dungeon-300">
+              <div
+                className="h-full bg-rune-500 transition-all"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <div className="mt-0.5 flex items-center justify-between text-[10px] text-parchment-300">
+              <span>오늘은 어느 던전을 정복할까?</span>
+              {next ? (
+                <span className={next.color}>
+                  다음: {next.nameJp} ({remaining}↓)
+                </span>
+              ) : (
+                <span className="text-parchment-300">🏆 최고 등급</span>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      <RankBadge killCount={kills} />
-
-      <section>
+      {/* 던전 섹션 - 영역 전체를 채우고 카드 자체는 컴팩트하게 */}
+      <section className="flex min-h-0 flex-1 flex-col">
         <div className="mb-2 flex items-center justify-between">
           <h3 className="pixel-text font-pixel text-sm uppercase tracking-widest text-parchment-100">
             🗺️ 던전
           </h3>
-          <Link
-            to="/review"
-            className="badge-pixel hover:bg-dungeon-100"
-          >
-            🔖 다시 보기
-          </Link>
+          <div className="flex items-center gap-1.5">
+            <Link to="/review" className="badge-pixel hover:bg-dungeon-100">
+              🔖 다시보기
+            </Link>
+            <Link to="/mydeck" className="badge-pixel hover:bg-dungeon-100">
+              📜 단어장
+            </Link>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2">
           {JLPT_LEVELS.map((lv) => (
             <DungeonCard key={lv} level={lv} stat={stats[lv]} />
           ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="pixel-text font-pixel text-sm uppercase tracking-widest text-parchment-100">
-              📜 나만의 단어장
-            </h3>
-            <p className="mt-1 text-xs text-parchment-300">
-              직접 만든 단어 + 처치 카운트는 등급에 합산됩니다.
-            </p>
-          </div>
-          <Link to="/mydeck" className="btn-gold">
-            열기
-          </Link>
         </div>
       </section>
     </div>
