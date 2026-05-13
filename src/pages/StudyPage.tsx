@@ -251,19 +251,20 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
       // Layout 의 <main> 이 이미 (헤더/네비를 제외한) 정확한 높이를 잡아주므로
       // 여기서는 그 안을 h-full 로 가득 채우기만 하면 된다.
       // overflow-hidden 으로 자식이 살짝 넘쳐도 스크롤이 절대 생기지 않도록 보장.
-      className={`flex h-full flex-col gap-2 overflow-hidden ${
+      // gap-1.5 로 카드 영역에 더 많은 공간을 확보한다.
+      className={`flex h-full flex-col gap-1.5 overflow-hidden ${
         dungeon
-          ? `-mx-4 -my-5 px-4 py-3 bg-gradient-to-b ${dungeon.theme.bg}`
+          ? `-mx-4 -my-5 px-4 py-2 bg-gradient-to-b ${dungeon.theme.bg}`
           : ""
       }`}
     >
       <header className="flex shrink-0 items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
           {dungeon && level && (
-            <PixelDungeon level={level} size={40} animate />
+            <PixelDungeon level={level} size={36} animate />
           )}
           <div className="min-w-0">
-            <h2 className="pixel-text truncate font-pixel text-xl text-parchment-100">
+            <h2 className="pixel-text truncate font-pixel text-lg text-parchment-100">
               {headerTitle}
             </h2>
             <div className="font-pixel text-[10px] text-parchment-300">
@@ -271,13 +272,14 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
             </div>
           </div>
         </div>
-        <Link to="/" className="btn-ghost shrink-0 !px-3 !py-2 !text-[10px]">
+        <Link to="/" className="btn-ghost shrink-0 !px-3 !py-1.5 !text-[10px]">
           ✕ 나가기
         </Link>
       </header>
 
-      {/* 카드 영역: 남은 공간을 차지. 카드 본문(어원/예문 등)을 가리지 않도록
-          캐릭터는 카드 위에 겹치지 않고 카드 바로 아래 별도 라인에 배치한다. */}
+      {/* 카드 영역: 남은 공간을 모두 차지.
+          캐릭터는 카드 우측 하단에 떠다니는 동료처럼 absolute 로 띄워서
+          별도 행을 차지하지 않게 한다 (단어장 영역 최대 확보). */}
       <div className="relative min-h-0 flex-1">
         <WordCard word={word} shaking={shaking} fillHeight />
         <AttackEffect
@@ -288,21 +290,13 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           characterId={selected_character}
           trigger={defeatTrigger}
         />
-        {floatText && (
-          <div className="pointer-events-none absolute left-1/2 top-12 z-30 -translate-x-1/2 animate-floatUp font-pixel text-base text-rune-400 drop-shadow">
-            {floatText}
-          </div>
-        )}
-      </div>
-
-      {settings.show_character && (
-        <div className="-mt-1 flex shrink-0 items-center">
+        {settings.show_character && (
           <button
             type="button"
             onClick={() => setPickerOpen((o) => !o)}
             aria-label="캐릭터 변경"
             title="캐릭터 변경"
-            className="-ml-1"
+            className="pointer-events-auto absolute bottom-1 right-1 z-10 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]"
           >
             <PixelCharacter
               id={selected_character}
@@ -310,11 +304,19 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
               size={44}
             />
           </button>
-        </div>
-      )}
+        )}
+        {floatText && (
+          <div className="pointer-events-none absolute left-1/2 top-12 z-30 -translate-x-1/2 animate-floatUp font-pixel text-base text-rune-400 drop-shadow">
+            {floatText}
+          </div>
+        )}
+      </div>
 
       <div className="shrink-0">
-        <div className="mb-1 flex items-center justify-between">
+        {/* 단어가 바뀔 때 뱃지가 나타나거나 사라지면서 행 높이가 변해
+            아래 버튼 그리드까지 위아래로 흔들리는("울렁거림") 현상을 방지하기 위해
+            min-h 로 항상 같은 높이를 유지한다. */}
+        <div className="mb-1 flex min-h-[24px] items-center justify-between">
           <div className="flex items-center gap-2 font-pixel text-xs text-parchment-200">
             기억 상태
             <button
@@ -344,22 +346,22 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           <button
             onClick={() => handleAction("mastered")}
-            className="btn-gold !py-3"
+            className="btn-gold !py-2.5"
           >
             👑 완벽히 외움
           </button>
           <button
             onClick={() => handleAction("probably")}
-            className="btn-primary !py-3"
+            className="btn-primary !py-2.5"
           >
             ✓ 외운 것 같아요
           </button>
           <button
             onClick={() => handleAction("flag")}
-            className={`btn-pixel !py-3 ${
+            className={`btn-pixel !py-2.5 ${
               progress?.flagged
                 ? "bg-volcano-500 text-white"
                 : "bg-dungeon-50 text-parchment-100"
@@ -369,7 +371,7 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           </button>
           <button
             onClick={() => handleAction("skip")}
-            className="btn-ghost !py-3"
+            className="btn-ghost !py-2.5"
           >
             → 다음
           </button>

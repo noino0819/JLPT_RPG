@@ -61,7 +61,7 @@ export default function WordCard({
         }}
       >
         {/* FRONT */}
-        <div className="flip-face panel-parchment scanline flex cursor-pointer flex-col items-center justify-center gap-3 p-6">
+        <div className="flip-face panel-parchment scanline flex cursor-pointer flex-col items-center justify-center gap-2 p-4 sm:p-6">
           {word.part_of_speech && (
             <span className="badge-pixel !bg-parchment-300 !text-parchment-900">
               {word.part_of_speech}
@@ -88,22 +88,23 @@ export default function WordCard({
           </div>
         </div>
 
-        {/* BACK */}
-        <div className="flip-face flip-back panel-parchment scanline flex cursor-pointer flex-col gap-3 overflow-y-auto p-5">
+        {/* BACK — 어원/예문이 가능하면 스크롤 없이 한 화면에 보이도록
+            패딩과 섹션 간격을 최소화한다. */}
+        <div className="flip-face flip-back panel-parchment scanline flex cursor-pointer flex-col gap-2 overflow-y-auto p-3 sm:p-4">
           <div className="flex items-baseline justify-between">
-            <div className="pixel-text-jp text-2xl font-bold text-parchment-900">
+            <div className="pixel-text-jp text-xl font-bold text-parchment-900 sm:text-2xl">
               {word.headword ?? word.reading}
             </div>
-            <div className="pixel-text-jp text-base text-parchment-700">
+            <div className="pixel-text-jp text-sm text-parchment-700 sm:text-base">
               {word.reading}
             </div>
           </div>
 
-          <div className="border-y-2 border-parchment-700/30 py-2">
+          <div className="border-y-2 border-parchment-700/30 py-1.5">
             <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
               뜻
             </div>
-            <div className="text-2xl font-bold text-parchment-900">
+            <div className="text-xl font-bold leading-tight text-parchment-900 sm:text-2xl">
               {word.meaning}
             </div>
           </div>
@@ -113,7 +114,7 @@ export default function WordCard({
               <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
                 한자 어원
               </div>
-              <div className="whitespace-pre-line pt-1 text-sm leading-relaxed text-parchment-800">
+              <div className="whitespace-pre-line pt-0.5 text-[13px] leading-snug text-parchment-800">
                 {word.etymology}
               </div>
             </div>
@@ -124,16 +125,16 @@ export default function WordCard({
               <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
                 예문
               </div>
-              <ul className="mt-1 space-y-2">
+              <ul className="mt-1 space-y-1.5">
                 {word.examples.map((ex) => (
                   <li
                     key={ex.id}
-                    className="rounded-none border-2 border-parchment-700/30 bg-parchment-50 p-2"
+                    className="rounded-none border-2 border-parchment-700/30 bg-parchment-50 px-2 py-1.5"
                   >
-                    <div className="pixel-text-jp text-base text-parchment-900">
+                    <div className="pixel-text-jp text-sm leading-tight text-parchment-900 sm:text-base">
                       {ex.jp_sentence}
                     </div>
-                    <div className="text-xs text-parchment-700">
+                    <div className="text-[11px] leading-tight text-parchment-700 sm:text-xs">
                       {ex.kr_translation}
                     </div>
                   </li>
@@ -142,7 +143,7 @@ export default function WordCard({
             </div>
           )}
 
-          <div className="mt-auto pt-2 text-right font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
+          <div className="mt-auto pt-1 text-right font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
             ▼ 탭해서 앞으로
           </div>
         </div>
