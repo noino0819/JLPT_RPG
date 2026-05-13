@@ -12,6 +12,7 @@ import PixelDungeon from "../components/PixelDungeon";
 import AttackEffect from "../components/AttackEffect";
 import DefeatEffect from "../components/DefeatEffect";
 import WordCard from "../components/WordCard";
+import Toggle from "../components/Toggle";
 import { playClick, playDefeat } from "../lib/sfx";
 
 interface Props {
@@ -182,13 +183,14 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   }
 
   if (!word) {
-    const canQuickToggle = !onlyFlagged && settings.exclude_memorized;
-    const handleQuickToggle = () => {
-      updateSettings({ exclude_memorized: false });
-      // 큐 즉시 재구성
+    // 정복 완료 화면에서 "외운 단어 제외" 설정을 직접 토글할 수 있게 한다.
+    // 토글을 끄면 마스터한 단어까지 포함하여 학습 큐를 즉시 재구성한다.
+    const showExcludeToggle = !onlyFlagged;
+    const handleToggleExcludeMemorized = (next: boolean) => {
+      updateSettings({ exclude_memorized: next });
       const newQueue = buildStudyQueue(sourceWords, {
         order: settings.order,
-        excludeMastered: false,
+        excludeMastered: next,
         probablyEvery: settings.probably_repeat_every,
         reviewWeight: settings.review_mix_weight,
         progress: useProgressStore.getState().byWord,
@@ -208,18 +210,31 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           <p className="mt-2 text-parchment-100">
             {onlyFlagged
               ? "다시 볼 단어가 없습니다. 카드에서 🔖 를 눌러 추가해보세요!"
-              : "이 던전은 이미 정복했어요! '외운 단어 제외'를 끄면 처음부터 복습할 수 있어요."}
+              : "이 던전은 이미 정복했어요!"}
           </p>
-          {canQuickToggle && (
-            <button
-              className="btn-gold mt-4 w-full"
-              onClick={handleQuickToggle}
-            >
-              🔁 외운 단어 제외 끄고 다시 시작
-            </button>
+
+          {showExcludeToggle && (
+            <div className="mt-4 flex items-center justify-between gap-3 border-2 border-black bg-dungeon-50/60 p-3">
+              <div className="text-left">
+                <div className="font-pixel text-xs text-parchment-100">
+                  외운 단어 제외
+                </div>
+                <div className="mt-1 font-pixel text-[10px] text-parchment-300">
+                  {settings.exclude_memorized
+                    ? "끄면 처음부터 다시 복습할 수 있어요"
+                    : "외운 단어도 함께 등장합니다"}
+                </div>
+              </div>
+              <Toggle
+                on={settings.exclude_memorized}
+                onChange={handleToggleExcludeMemorized}
+                ariaLabel="외운 단어 제외 토글"
+              />
+            </div>
           )}
+
           <button
-            className={`${canQuickToggle ? "btn-ghost mt-2" : "btn-primary mt-4"} w-full`}
+            className={`${showExcludeToggle ? "btn-ghost mt-3" : "btn-primary mt-4"} w-full`}
             onClick={() => navigate("/")}
           >
             ▶ 다른 던전으로
