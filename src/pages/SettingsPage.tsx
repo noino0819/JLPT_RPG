@@ -5,6 +5,7 @@ import { useProgressStore } from "../store/progressStore";
 import { isSupabaseEnabled, supabase } from "../lib/supabase";
 import { playPreview } from "../lib/sfx";
 import Toggle from "../components/Toggle";
+import { showAlert, showConfirm } from "../store/modalStore";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -25,7 +26,12 @@ export default function SettingsPage() {
     if (isSupabaseEnabled && supabase) {
       const { error } = await supabase.auth.signOut();
       if (error) {
-        alert(`로그아웃 실패: ${error.message}`);
+        await showAlert({
+          title: "로그아웃 실패",
+          eyebrow: "ログアウト失敗",
+          message: error.message,
+          tone: "danger",
+        });
         return;
       }
       // onAuthStateChange 가 setSession(null) 호출 → ready=true, signedIn=false
@@ -167,13 +173,24 @@ export default function SettingsPage() {
 
       <Section title="위험 영역">
         <button
-          onClick={() => {
-            if (
-              confirm(
-                "모든 학습 진행 상태를 초기화할까요? (외운 단어, 다시 보기 모두 삭제)",
-              )
-            ) {
+          onClick={async () => {
+            const ok = await showConfirm({
+              title: "학습 진행 초기화",
+              eyebrow: "リセット警告",
+              message:
+                "모든 학습 진행 상태를 초기화할까요?\n외운 단어, 다시 보기 기록이 모두 삭제됩니다.",
+              confirmLabel: "초기화",
+              cancelLabel: "취소",
+              tone: "danger",
+            });
+            if (ok) {
               resetProgress();
+              await showAlert({
+                title: "초기화 완료",
+                eyebrow: "リセット完了",
+                message: "학습 진행 상태가 모두 초기화되었습니다.",
+                tone: "success",
+              });
             }
           }}
           className="btn-danger w-full"
@@ -181,13 +198,24 @@ export default function SettingsPage() {
           🗑 학습 진행 초기화
         </button>
         <button
-          onClick={() => {
-            if (
-              confirm(
+          onClick={async () => {
+            const ok = await showConfirm({
+              title: "프로필 초기화",
+              eyebrow: "プロフィール初期化",
+              message:
                 "프로필(닉네임/캐릭터/설정)을 초기값으로 되돌릴까요?",
-              )
-            ) {
+              confirmLabel: "초기화",
+              cancelLabel: "취소",
+              tone: "danger",
+            });
+            if (ok) {
               resetProfile();
+              await showAlert({
+                title: "초기화 완료",
+                eyebrow: "リセット完了",
+                message: "프로필이 초기값으로 되돌아갔습니다.",
+                tone: "success",
+              });
             }
           }}
           className="btn-danger mt-2 w-full"

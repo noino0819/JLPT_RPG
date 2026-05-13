@@ -16,6 +16,7 @@ import SettingsPage from "./pages/SettingsPage";
 import BossPage from "./pages/BossPage";
 import PixelSword from "./components/PixelSword";
 import UnlockToast from "./components/UnlockToast";
+import ConfirmModal from "./components/ConfirmModal";
 
 export default function App() {
   useSupabaseSession();
@@ -42,34 +43,38 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route
-        path="/login"
-        element={signedIn ? <Navigate to="/" replace /> : <LoginPage />}
-      />
+    <>
+      <Routes>
+        <Route
+          path="/login"
+          element={signedIn ? <Navigate to="/" replace /> : <LoginPage />}
+        />
 
-      {signedIn ? (
-        <Route element={<LayoutWithToast />}>
-          <Route index element={<HomePage />} />
-          {/* /character 는 호환을 위해 /wardrobe 로 합쳤음 */}
-          <Route
-            path="/character"
-            element={<Navigate to="/wardrobe" replace />}
-          />
-          <Route path="/wardrobe" element={<WardrobePage />} />
-          <Route path="/study/:level" element={<StudyPage />} />
-          <Route path="/study/deck/:deckId" element={<StudyPage />} />
-          <Route path="/boss/:level" element={<BossPage />} />
-          <Route path="/review" element={<ReviewPage />} />
-          <Route path="/mydeck" element={<MyDeckPage />} />
-          <Route path="/kana" element={<KanaPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      ) : (
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      )}
-    </Routes>
+        {signedIn ? (
+          <Route element={<LayoutWithToast />}>
+            <Route index element={<HomePage />} />
+            {/* /character 는 호환을 위해 /wardrobe 로 합쳤음 */}
+            <Route
+              path="/character"
+              element={<Navigate to="/wardrobe" replace />}
+            />
+            <Route path="/wardrobe" element={<WardrobePage />} />
+            <Route path="/study/:level" element={<StudyPage />} />
+            <Route path="/study/deck/:deckId" element={<StudyPage />} />
+            <Route path="/boss/:level" element={<BossPage />} />
+            <Route path="/review" element={<ReviewPage />} />
+            <Route path="/mydeck" element={<MyDeckPage />} />
+            <Route path="/kana" element={<KanaPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        ) : (
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        )}
+      </Routes>
+      {/* 전역 확인/알림 모달은 라우트와 무관하게 항상 마운트 (로그인 페이지에서도 동작) */}
+      <ConfirmModal />
+    </>
   );
 }
 

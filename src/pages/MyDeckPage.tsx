@@ -5,6 +5,7 @@ import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { parseCsv } from "../lib/csv";
 import { playEnter } from "../lib/sfx";
+import { showAlert, showConfirm } from "../store/modalStore";
 
 export default function MyDeckPage() {
   const userId = useAuthStore((s) => s.userId);
@@ -101,12 +102,16 @@ export default function MyDeckPage() {
               wordCount={activeWords.length}
               onAddWord={(w) => addWord(activeDeck.id, w)}
               onBulkAdd={(rows) => bulkAddWords(activeDeck.id, rows)}
-              onDeleteDeck={() => {
-                if (
-                  confirm(
-                    `"${activeDeck.name}" 단어장을 삭제할까요? 이 단어장의 모든 단어가 사라집니다.`,
-                  )
-                ) {
+              onDeleteDeck={async () => {
+                const ok = await showConfirm({
+                  title: "단어장 삭제",
+                  eyebrow: "デッキ削除",
+                  message: `"${activeDeck.name}" 단어장을 삭제할까요?\n이 단어장의 모든 단어가 사라집니다.`,
+                  confirmLabel: "삭제",
+                  cancelLabel: "취소",
+                  tone: "danger",
+                });
+                if (ok) {
                   deleteDeck(activeDeck.id);
                   setActiveDeckId(null);
                 }
@@ -190,18 +195,31 @@ function DeckEditor(props: DeckEditorProps) {
         rows = parseCsv(await file.text());
       }
       if (rows.length === 0) {
-        alert(
-          "가져올 수 있는 단어가 없습니다. 컬럼 순서(한자/읽기/뜻/어원/품사)를 확인해 주세요.",
-        );
+        await showAlert({
+          title: "가져올 단어가 없어요",
+          eyebrow: "インポート失敗",
+          message:
+            "가져올 수 있는 단어가 없습니다.\n컬럼 순서(한자 / 읽기 / 뜻 / 어원 / 품사)를 확인해 주세요.",
+          tone: "warning",
+        });
         return;
       }
       const added = props.onBulkAdd(rows);
-      alert(`${added}개의 단어를 가져왔습니다.`);
+      await showAlert({
+        title: "불러오기 완료",
+        eyebrow: "インポート完了",
+        message: `${added}개의 단어를 가져왔습니다.`,
+        tone: "success",
+      });
     } catch (err) {
       console.error("[bulk import]", err);
-      alert(
-        "파일을 읽지 못했습니다. .xlsx 또는 .csv 형식인지 확인해 주세요.",
-      );
+      await showAlert({
+        title: "파일을 읽지 못했어요",
+        eyebrow: "ファイル読込失敗",
+        message:
+          "파일을 읽지 못했습니다.\n.xlsx 또는 .csv 형식인지 확인해 주세요.",
+        tone: "danger",
+      });
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -214,7 +232,12 @@ function DeckEditor(props: DeckEditorProps) {
       await downloadExcelTemplate("단어장_예시.xlsx");
     } catch (err) {
       console.error("[template download]", err);
-      alert("예시 파일 생성에 실패했습니다.");
+      await showAlert({
+        title: "예시 파일 생성 실패",
+        eyebrow: "テンプレ生成失敗",
+        message: "예시 엑셀 파일을 만들지 못했습니다.\n잠시 후 다시 시도해 주세요.",
+        tone: "danger",
+      });
     }
   };
 
