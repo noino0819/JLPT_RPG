@@ -4,6 +4,7 @@ import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
 import { isSupabaseEnabled, supabase } from "../lib/supabase";
 import { playPreview } from "../lib/sfx";
+import Toggle from "../components/Toggle";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -224,30 +225,6 @@ function Row({
       <span className="text-sm text-parchment-200">{label}</span>
       {children}
     </div>
-  );
-}
-
-function Toggle({
-  on,
-  onChange,
-}: {
-  on: boolean;
-  onChange: (v: boolean) => void;
-}) {
-  return (
-    <button
-      onClick={() => onChange(!on)}
-      className={`relative h-7 w-12 border-2 border-black ${
-        on ? "bg-rune-500" : "bg-dungeon-50"
-      }`}
-      aria-pressed={on}
-    >
-      <span
-        className={`absolute top-[2px] block h-4 w-4 border-2 border-black bg-parchment-100 transition-all ${
-          on ? "left-[26px]" : "left-[2px]"
-        }`}
-      />
-    </button>
   );
 }
 

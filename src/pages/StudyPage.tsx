@@ -235,9 +235,9 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
       // 모바일에서 스크롤이 생기지 않도록 헤더/네비게이션 높이를 제외한
       // 뷰포트 영역을 가득 채우는 flex 컨테이너.
       // (Layout: 상단 헤더 ~64px, 하단 네비 ~52px, main py-5 ~40px ≈ 156px)
-      className={`flex flex-col gap-3 h-[calc(100dvh-156px)] ${
+      className={`flex flex-col gap-2 h-[calc(100dvh-156px)] ${
         dungeon
-          ? `-mx-4 -my-5 px-4 py-4 bg-gradient-to-b ${dungeon.theme.bg}`
+          ? `-mx-4 -my-5 px-4 py-3 bg-gradient-to-b ${dungeon.theme.bg}`
           : ""
       }`}
     >
@@ -255,7 +255,8 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
         </Link>
       </header>
 
-      {/* 카드 영역: 남은 공간을 차지. 캐릭터는 좌측 하단에 절대 배치. */}
+      {/* 카드 영역: 남은 공간을 차지. 카드 본문(어원/예문 등)을 가리지 않도록
+          캐릭터는 카드 위에 겹치지 않고 카드 바로 아래 별도 라인에 배치한다. */}
       <div className="relative min-h-0 flex-1">
         <WordCard word={word} shaking={shaking} fillHeight />
         <AttackEffect
@@ -271,23 +272,25 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
             {floatText}
           </div>
         )}
+      </div>
 
-        {settings.show_character && (
+      {settings.show_character && (
+        <div className="-mt-1 flex shrink-0 items-center">
           <button
             type="button"
             onClick={() => setPickerOpen((o) => !o)}
             aria-label="캐릭터 변경"
             title="캐릭터 변경"
-            className="absolute -bottom-2 -left-2 z-20 flex items-end"
+            className="-ml-1"
           >
             <PixelCharacter
               id={selected_character}
               attacking={attacking}
-              size={56}
+              size={44}
             />
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="shrink-0">
         <div className="mb-1 flex items-center justify-between">

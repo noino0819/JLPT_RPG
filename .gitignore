@@ -13,6 +13,9 @@ dist-ssr
 *.local
 *.tsbuildinfo
 
+# Supabase CLI 로컬 캐시 (project ref 등)
+supabase/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
