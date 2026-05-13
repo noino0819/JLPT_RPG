@@ -438,49 +438,82 @@ function InfoModal({ onClose }: { onClose: () => void }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="panel-parchment max-w-sm space-y-3"
+        className="panel-parchment w-full max-w-sm space-y-4 p-5"
       >
-        <h3 className="pixel-text font-pixel text-lg text-parchment-900">
-          기억 상태 안내
-        </h3>
-        <ul className="space-y-2 text-sm">
-          <li>
-            <strong>👑 완벽히 외움</strong> — 처치 +1, 등급에 반영됩니다.
-            <div className="mt-1 flex flex-col gap-1 rounded border border-parchment-700/40 bg-parchment-50/60 p-2">
-              <span className="text-xs text-parchment-700">
+        <div className="flex items-center justify-between">
+          <h3 className="pixel-text font-pixel text-lg text-parchment-900">
+            기억 상태 안내
+          </h3>
+          <button
+            onClick={onClose}
+            className="font-pixel text-xs text-parchment-700 hover:text-parchment-900"
+            aria-label="닫기"
+          >
+            ✕
+          </button>
+        </div>
+
+        <ul className="space-y-3 text-sm leading-relaxed text-parchment-800">
+          <li className="space-y-2">
+            <div className="flex items-start gap-2">
+              <span className="shrink-0 font-pixel text-base">👑</span>
+              <div>
+                <strong className="text-parchment-900">완벽히 외움</strong>{" "}
+                — 처치 +1, 등급에 반영됩니다.
+              </div>
+            </div>
+            <div className="ml-7 rounded border border-parchment-700/40 bg-parchment-50/70 p-2 text-xs">
+              <p className="text-parchment-700">
                 "외운 단어 제외"가{" "}
-                <strong>{excludeOn ? "켜져 있어 다시 등장하지 않아요" : "꺼져 있어 외운 단어도 다시 나와요"}</strong>
+                <strong className="text-parchment-900">
+                  {excludeOn
+                    ? "켜져 있어 다시 등장하지 않아요"
+                    : "꺼져 있어 외운 단어도 다시 나와요"}
+                </strong>
                 .
-              </span>
+              </p>
               <button
                 onClick={() =>
                   updateSettings({ exclude_memorized: !excludeOn })
                 }
-                className={`btn-pixel !py-2 !text-[10px] ${
+                className={`mt-2 inline-flex w-full items-center justify-center gap-1 rounded-none border border-black px-2 py-1.5 font-pixel text-[10px] tracking-normal transition active:translate-y-[1px] ${
                   excludeOn
-                    ? "bg-volcano-500 text-white hover:bg-volcano-400"
-                    : "bg-rune-500 text-white hover:bg-rune-400"
+                    ? "bg-volcano-500/90 text-white hover:bg-volcano-400"
+                    : "bg-rune-500/90 text-white hover:bg-rune-400"
                 }`}
               >
-                {excludeOn
-                  ? "🔁 외운 단어 제외 끄기 (복습 모드)"
-                  : "✓ 외운 단어 제외 다시 켜기"}
+                {excludeOn ? "🔁 복습 모드로 전환" : "✓ 외운 단어 제외 켜기"}
               </button>
             </div>
           </li>
-          <li>
-            <strong>✓ 외운 것 같아요</strong> — 처치는 안 되지만, 일정 주기로
-            슬쩍 다시 등장해요.
+
+          <li className="flex items-start gap-2">
+            <span className="shrink-0 font-pixel text-base">✓</span>
+            <div>
+              <strong className="text-parchment-900">외운 것 같아요</strong>{" "}
+              — 처치는 안 되지만, 일정 주기로 슬쩍 다시 등장해요.
+            </div>
           </li>
-          <li>
-            <strong>🔖 다시 보기</strong> — 보관함에 토글. 일반 학습에서는 가중치만큼 더
-            자주 등장하고, 다시 보기 모드에서 한 번에 모아 볼 수도 있습니다.
+
+          <li className="flex items-start gap-2">
+            <span className="shrink-0 font-pixel text-base">🔖</span>
+            <div>
+              <strong className="text-parchment-900">다시 보기</strong> —
+              보관함에 토글. 일반 학습에서는 가중치만큼 더 자주 등장하고, 다시
+              보기 모드에서 한 번에 모아 볼 수도 있습니다.
+            </div>
           </li>
-          <li>
-            <strong>→ 다음</strong> — 상태 변경 없이 그냥 넘기기.
+
+          <li className="flex items-start gap-2">
+            <span className="shrink-0 font-pixel text-base">→</span>
+            <div>
+              <strong className="text-parchment-900">다음</strong> — 상태 변경
+              없이 그냥 넘기기.
+            </div>
           </li>
         </ul>
-        <button onClick={onClose} className="btn-primary w-full">
+
+        <button onClick={onClose} className="btn-primary w-full !py-2">
           닫기
         </button>
       </div>
