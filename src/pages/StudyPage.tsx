@@ -305,12 +305,10 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
 
       {/* 캐릭터/펫 전용 줄: 카드와 액션 버튼 사이에 자기 자리를 차지하여
           단어장과 절대 겹치지 않게 한다. 카드 영역을 최대한 보존하기 위해
-          높이를 최소(약 44px)로 유지한다. */}
+          높이를 최소(약 44px)로 유지하고, 좌측 정렬로 캐릭터(앞) → 펫(뒤)
+          순서로 배치해 동료가 따라오는 듯한 느낌을 준다. */}
       {settings.show_character && (
-        <div className="flex h-11 shrink-0 items-end justify-end gap-1.5 px-1 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
-          {equipped.pet && (
-            <PixelPet petId={equipped.pet} size={28} delayMs={350} />
-          )}
+        <div className="flex h-11 shrink-0 items-end justify-start gap-1.5 px-1 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
           <button
             type="button"
             onClick={() => setPickerOpen((o) => !o)}
@@ -324,6 +322,9 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
               size={40}
             />
           </button>
+          {equipped.pet && (
+            <PixelPet petId={equipped.pet} size={28} delayMs={350} />
+          )}
         </div>
       )}
 
