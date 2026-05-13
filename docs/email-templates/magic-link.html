@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JLPT RPG · 마법 통로</title>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background-color: #08060d;
+      background-image: radial-gradient(circle at 20% 10%, rgba(124,110,255,0.12) 0, transparent 55%),
+        radial-gradient(circle at 80% 90%, rgba(255,138,76,0.1) 0, transparent 50%);
+      font-family: 'DotGothic16', 'Noto Sans KR', system-ui, sans-serif;
+      color: #f7eccd;
+    "
+  >
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+      style="max-width: 480px; margin: 0 auto">
+      <tr>
+        <td align="center" style="padding: 24px 0">
+          <div style="display:inline-block;padding:16px 24px;border:3px solid #000;background:#161021;box-shadow:0 4px 0 0 rgba(0,0,0,0.7);">
+            <div style="font-size:36px;line-height:1">🔮</div>
+            <div style="margin-top:8px;font-size:22px;letter-spacing:1px;text-shadow:2px 2px 0 rgba(0,0,0,0.5);">
+              JLPT <span style="color:#33c4ff">RPG</span>
+            </div>
+            <div style="margin-top:4px;font-size:12px;color:#d6a44d">魔法のリンク</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div style="border:3px solid #000;background:#f7eccd;color:#3a2410;padding:28px 24px;box-shadow:0 6px 0 0 rgba(0,0,0,0.7);">
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#794c24">마법사가 보낸 통로</div>
+            <h1 style="margin:6px 0 12px;font-size:22px;font-weight:normal;color:#3a2410">
+              마법의 입구가 열렸습니다
+            </h1>
+            <p style="margin:0 0 16px;font-size:14px;line-height:1.7">
+              비밀번호 없이 던전으로 바로 입장할 수 있는<br />
+              <strong>일회용 마법 통로</strong>가 만들어졌습니다.
+            </p>
+
+            <div style="text-align:center;margin:24px 0">
+              <a href="{{ .ConfirmationURL }}"
+                 style="display:inline-block;padding:14px 28px;background:#7a4cf0;color:#fff;text-decoration:none;border:3px solid #000;font-size:14px;letter-spacing:1px;text-shadow:1px 1px 0 rgba(0,0,0,0.45);box-shadow:inset -2px -3px 0 0 rgba(0,0,0,0.35),inset 2px 2px 0 0 rgba(255,255,255,0.18),0 4px 0 0 rgba(0,0,0,0.65);">
+                🔮 마법 통로로 입장
+              </a>
+            </div>
+
+            <p style="margin:16px 0 0;font-size:12px;color:#5b3919">버튼이 안 보이면 아래 링크를 복사하세요:</p>
+            <p style="margin:6px 0 0;font-size:11px;word-break:break-all;color:#794c24">{{ .ConfirmationURL }}</p>
+
+            <hr style="border:0;border-top:2px dashed rgba(122,76,36,0.4);margin:24px 0 16px"/>
+            <div style="font-size:11px;line-height:1.6;color:#5b3919">
+              <strong>⚠ 주의</strong><br/>
+              · 이 링크는 한 번만 사용 가능하며 <strong>1시간 후 사라집니다</strong>.<br/>
+              · 본인이 요청한 적 없다면 무시하셔도 됩니다.
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td align="center" style="padding:16px 0">
+          <div style="font-size:11px;color:#794c24">
+            JLPT RPG · 漢字ダンジョン
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -3,13 +3,20 @@ import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
 import { isSupabaseEnabled, supabase } from "../lib/supabase";
+import { playPreview } from "../lib/sfx";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
   const email = useAuthStore((s) => s.email);
   const signOutLocal = useAuthStore((s) => s.signOutLocal);
-  const { nickname, setNickname, settings, updateSettings, toggleEffect } =
-    useProfileStore();
+  const {
+    nickname,
+    setNickname,
+    settings,
+    updateSettings,
+    toggleEffect,
+    selected_character,
+  } = useProfileStore();
   const resetProgress = useProgressStore((s) => s.reset);
   const resetProfile = useProfileStore((s) => s.reset);
 
@@ -93,11 +100,25 @@ export default function SettingsPage() {
             onChange={() => toggleEffect("card_shake")}
           />
         </Row>
-        <Row label="사운드 (예정)">
-          <Toggle
-            on={settings.effects.sound}
-            onChange={() => toggleEffect("sound")}
-          />
+        <Row label="처치 사운드">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => playPreview(selected_character)}
+              className="border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-[10px] text-parchment-100 hover:bg-dungeon-100"
+              aria-label="사운드 미리듣기"
+              title="현재 캐릭터의 처치 사운드 미리듣기"
+            >
+              ▶ 듣기
+            </button>
+            <Toggle
+              on={settings.effects.sound}
+              onChange={() => {
+                toggleEffect("sound");
+                if (!settings.effects.sound) playPreview(selected_character);
+              }}
+            />
+          </div>
         </Row>
       </Section>
 

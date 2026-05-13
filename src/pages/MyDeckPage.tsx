@@ -1,18 +1,31 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDecksStore } from "../store/decksStore";
+import { useAuthStore } from "../store/authStore";
 import { parseCsv } from "../lib/csv";
 
 export default function MyDeckPage() {
-  const {
-    customDecks,
-    customWords,
-    createDeck,
-    deleteDeck,
-    addWord,
-    bulkAddWords,
-    deleteWord,
-  } = useDecksStore();
+  const userId = useAuthStore((s) => s.userId);
+  const decks = useDecksStore((s) => s.decks);
+  const words = useDecksStore((s) => s.words);
+  const createDeck = useDecksStore((s) => s.createDeck);
+  const deleteDeck = useDecksStore((s) => s.deleteDeck);
+  const addWord = useDecksStore((s) => s.addWord);
+  const bulkAddWords = useDecksStore((s) => s.bulkAddWords);
+  const deleteWord = useDecksStore((s) => s.deleteWord);
+
+  const customDecks = useMemo(
+    () => decks.filter((d) => !d.is_official),
+    [decks],
+  );
+  const customDeckIds = useMemo(
+    () => new Set(customDecks.map((d) => d.id)),
+    [customDecks],
+  );
+  const customWords = useMemo(
+    () => words.filter((w) => customDeckIds.has(w.deck_id)),
+    [words, customDeckIds],
+  );
 
   const [activeDeckId, setActiveDeckId] = useState<string | null>(
     customDecks[0]?.id ?? null,
@@ -21,7 +34,7 @@ export default function MyDeckPage() {
 
   const handleCreate = () => {
     if (!newDeckName.trim()) return;
-    const deck = createDeck(newDeckName.trim());
+    const deck = createDeck(newDeckName.trim(), undefined, userId ?? undefined);
     setActiveDeckId(deck.id);
     setNewDeckName("");
   };
@@ -114,7 +127,7 @@ interface DeckEditorProps {
   deckId: string;
   deckName: string;
   wordCount: number;
-  words: ReturnType<typeof useDecksStore.getState>["customWords"];
+  words: ReturnType<typeof useDecksStore.getState>["words"];
   onAddWord: (w: {
     headword: string | null;
     reading: string;

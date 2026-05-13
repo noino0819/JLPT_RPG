@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JLPT RPG · 모험가 등록</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+      crossorigin
+    />
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background-color: #08060d;
+      background-image: radial-gradient(
+          circle at 20% 10%,
+          rgba(124, 110, 255, 0.12) 0,
+          transparent 55%
+        ),
+        radial-gradient(circle at 80% 90%, rgba(255, 138, 76, 0.1) 0, transparent 50%);
+      font-family: 'DotGothic16', 'Noto Sans KR', system-ui, sans-serif;
+      color: #f7eccd;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="max-width: 480px; margin: 0 auto"
+    >
+      <tr>
+        <td align="center" style="padding: 24px 0">
+          <div
+            style="
+              display: inline-block;
+              padding: 16px 24px;
+              border: 3px solid #000;
+              background: #161021;
+              box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.7);
+            "
+          >
+            <div style="font-size: 36px; line-height: 1">🗡️</div>
+            <div
+              style="
+                margin-top: 8px;
+                font-size: 22px;
+                letter-spacing: 1px;
+                text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+              "
+            >
+              JLPT <span style="color: #33c4ff">RPG</span>
+            </div>
+            <div style="margin-top: 4px; font-size: 12px; color: #d6a44d">
+              漢字ダンジョン
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div
+            style="
+              border: 3px solid #000;
+              background: #f7eccd;
+              color: #3a2410;
+              padding: 28px 24px;
+              box-shadow: 0 6px 0 0 rgba(0, 0, 0, 0.7);
+              background-image: radial-gradient(
+                  circle at 20% 30%,
+                  rgba(154, 102, 42, 0.18) 0,
+                  transparent 60%
+                ),
+                radial-gradient(
+                  circle at 80% 70%,
+                  rgba(122, 76, 36, 0.12) 0,
+                  transparent 55%
+                );
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #794c24;
+              "
+            >
+              새 모험가에게 보내는 두루마리
+            </div>
+            <h1
+              style="
+                margin: 6px 0 12px;
+                font-size: 22px;
+                font-weight: normal;
+                color: #3a2410;
+              "
+            >
+              어서 오게, 모험가여!
+            </h1>
+            <p style="margin: 0 0 16px; font-size: 14px; line-height: 1.7">
+              <strong>JLPT RPG</strong> 에 가입해 주셔서 감사합니다.<br />
+              아래 룬 스톤을 두드리면 던전의 문이 열립니다.
+            </p>
+
+            <div style="text-align: center; margin: 24px 0">
+              <a
+                href="{{ .ConfirmationURL }}"
+                style="
+                  display: inline-block;
+                  padding: 14px 28px;
+                  background: #33c4ff;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border: 3px solid #000;
+                  font-size: 14px;
+                  letter-spacing: 1px;
+                  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.45);
+                  box-shadow:
+                    inset -2px -3px 0 0 rgba(0, 0, 0, 0.35),
+                    inset 2px 2px 0 0 rgba(255, 255, 255, 0.18),
+                    0 4px 0 0 rgba(0, 0, 0, 0.65);
+                "
+              >
+                ▶ 던전 입장 (이메일 인증)
+              </a>
+            </div>
+
+            <p style="margin: 16px 0 0; font-size: 12px; color: #5b3919">
+              버튼이 안 보이면 아래 링크를 직접 복사해 브라우저에 붙여넣어
+              주세요.
+            </p>
+            <p
+              style="
+                margin: 6px 0 0;
+                font-size: 11px;
+                word-break: break-all;
+                color: #794c24;
+              "
+            >
+              {{ .ConfirmationURL }}
+            </p>
+
+            <hr
+              style="
+                border: 0;
+                border-top: 2px dashed rgba(122, 76, 36, 0.4);
+                margin: 24px 0 16px;
+              "
+            />
+
+            <div
+              style="
+                font-size: 11px;
+                line-height: 1.6;
+                color: #5b3919;
+              "
+            >
+              <strong>📜 길드 안내</strong><br />
+              · 가입한 적이 없다면 이 메일은 무시하셔도 됩니다.<br />
+              · 링크는 24시간 동안만 유효합니다.<br />
+              · 일본어 단어를 외울 때마다 몬스터를 처치하고 등급이 오릅니다.
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td align="center" style="padding: 16px 0">
+          <div style="font-size: 11px; color: #794c24">
+            JLPT RPG · 漢字ダンジョン<br />
+            본 메일은 회원가입 인증을 위해 발송되었습니다
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

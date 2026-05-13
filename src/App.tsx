@@ -4,6 +4,7 @@ import { useAuthStore } from "./store/authStore";
 import { useSupabaseSession } from "./hooks/useSupabaseSession";
 import { useProgressSync } from "./hooks/useProgressSync";
 import { useProfileSync } from "./hooks/useProfileSync";
+import { useDecksSync } from "./hooks/useDecksSync";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import CharacterPage from "./pages/CharacterPage";
@@ -17,6 +18,7 @@ export default function App() {
   useSupabaseSession();
   useProfileSync();
   useProgressSync();
+  useDecksSync();
 
   const signedIn = useAuthStore((s) => s.signedIn);
   const ready = useAuthStore((s) => s.ready);

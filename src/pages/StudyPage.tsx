@@ -11,6 +11,7 @@ import PixelCharacter from "../components/PixelCharacter";
 import AttackEffect from "../components/AttackEffect";
 import DefeatEffect from "../components/DefeatEffect";
 import WordCard from "../components/WordCard";
+import { playClick, playDefeat } from "../lib/sfx";
 
 interface Props {
   onlyFlagged?: boolean;
@@ -23,13 +24,17 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   }>();
   const navigate = useNavigate();
 
-  const { selected_character, setCharacter, settings } = useProfileStore();
+  const { selected_character, setCharacter, settings, updateSettings } =
+    useProfileStore();
   const { setMastery, toggleFlag, byWord, touch } = useProgressStore();
-  const { allDecks, allWords } = useDecksStore();
+  // 스토어가 hydrate 될 때 리렌더되도록 직접 구독
+  const decks = useDecksStore((s) => s.decks);
+  const words = useDecksStore((s) => s.words);
+  const loaded = useDecksStore((s) => s.loaded);
 
   const dungeon = level ? DUNGEONS[level] : null;
   const customDeck = deckId
-    ? allDecks().find((d) => d.id === deckId) ?? null
+    ? decks.find((d) => d.id === deckId) ?? null
     : null;
 
   const headerTitle = onlyFlagged
@@ -42,18 +47,18 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
 
   // 대상 단어 풀 결정
   const sourceWords = useMemo(() => {
-    if (onlyFlagged) return allWords();
+    if (onlyFlagged) return words;
     if (deckId) {
-      return allWords().filter((w) => w.deck_id === deckId);
+      return words.filter((w) => w.deck_id === deckId);
     }
     if (level) {
-      const deckIds = allDecks()
+      const deckIds = decks
         .filter((d) => d.jlpt_level === level)
         .map((d) => d.id);
-      return allWords().filter((w) => deckIds.includes(w.deck_id));
+      return words.filter((w) => deckIds.includes(w.deck_id));
     }
-    return allWords();
-  }, [level, deckId, onlyFlagged, allDecks, allWords]);
+    return words;
+  }, [level, deckId, onlyFlagged, decks, words]);
 
   // 학습 큐 (마운트 시 1회 + 단어 진행 변할 때 재생성하지 않음 — 세션 기반)
   const [queue, setQueue] = useState(() =>
@@ -105,6 +110,14 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
       setShaking(true);
       setTimeout(() => setShaking(false), 400);
     }
+    // 사운드: 처치는 직업별 처치 사운드, 그 외는 가벼운 클릭
+    if (settings.effects.sound) {
+      if (opts?.defeat) {
+        playDefeat(selected_character);
+      } else {
+        playClick();
+      }
+    }
     setFloatText(label);
     setTimeout(() => setFloatText(null), 800);
   };
@@ -155,7 +168,36 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   const charPickerRef = useRef<HTMLDivElement>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  if (!loaded) {
+    return (
+      <div className="grid h-[60vh] place-items-center">
+        <div className="text-center">
+          <div className="animate-bob text-4xl">⏳</div>
+          <div className="mt-2 font-pixel text-xs text-parchment-300">
+            단어 데이터 로딩 중...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!word) {
+    const canQuickToggle = !onlyFlagged && settings.exclude_memorized;
+    const handleQuickToggle = () => {
+      updateSettings({ exclude_memorized: false });
+      // 큐 즉시 재구성
+      const newQueue = buildStudyQueue(sourceWords, {
+        order: settings.order,
+        excludeMastered: false,
+        probablyEvery: settings.probably_repeat_every,
+        reviewWeight: settings.review_mix_weight,
+        progress: useProgressStore.getState().byWord,
+        onlyFlagged,
+      });
+      setQueue(newQueue);
+      setIndex(0);
+    };
+
     return (
       <div className="space-y-4">
         <h2 className="pixel-text font-pixel text-2xl text-parchment-100">
@@ -166,10 +208,18 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           <p className="mt-2 text-parchment-100">
             {onlyFlagged
               ? "다시 볼 단어가 없습니다. 카드에서 🔖 를 눌러 추가해보세요!"
-              : "이 던전은 이미 정복했어요! 설정에서 '외운 단어 제외'를 끄면 복습할 수 있어요."}
+              : "이 던전은 이미 정복했어요! '외운 단어 제외'를 끄면 처음부터 복습할 수 있어요."}
           </p>
+          {canQuickToggle && (
+            <button
+              className="btn-gold mt-4 w-full"
+              onClick={handleQuickToggle}
+            >
+              🔁 외운 단어 제외 끄고 다시 시작
+            </button>
+          )}
           <button
-            className="btn-primary mt-4"
+            className={`${canQuickToggle ? "btn-ghost mt-2" : "btn-primary mt-4"} w-full`}
             onClick={() => navigate("/")}
           >
             ▶ 다른 던전으로
@@ -320,6 +370,9 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
 }
 
 function InfoModal({ onClose }: { onClose: () => void }) {
+  const { settings, updateSettings } = useProfileStore();
+  const excludeOn = settings.exclude_memorized;
+
   return (
     <div
       className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"
@@ -335,10 +388,27 @@ function InfoModal({ onClose }: { onClose: () => void }) {
         <ul className="space-y-2 text-sm">
           <li>
             <strong>👑 완벽히 외움</strong> — 처치 +1, 등급에 반영됩니다.
-            <br />
-            <span className="text-xs text-parchment-700">
-              설정의 "외운 단어 제외" 가 켜져 있으면 다시 등장하지 않아요.
-            </span>
+            <div className="mt-1 flex flex-col gap-1 rounded border border-parchment-700/40 bg-parchment-50/60 p-2">
+              <span className="text-xs text-parchment-700">
+                "외운 단어 제외"가{" "}
+                <strong>{excludeOn ? "켜져 있어 다시 등장하지 않아요" : "꺼져 있어 외운 단어도 다시 나와요"}</strong>
+                .
+              </span>
+              <button
+                onClick={() =>
+                  updateSettings({ exclude_memorized: !excludeOn })
+                }
+                className={`btn-pixel !py-2 !text-[10px] ${
+                  excludeOn
+                    ? "bg-volcano-500 text-white hover:bg-volcano-400"
+                    : "bg-rune-500 text-white hover:bg-rune-400"
+                }`}
+              >
+                {excludeOn
+                  ? "🔁 외운 단어 제외 끄기 (복습 모드)"
+                  : "✓ 외운 단어 제외 다시 켜기"}
+              </button>
+            </div>
           </li>
           <li>
             <strong>✓ 외운 것 같아요</strong> — 처치는 안 되지만, 일정 주기로

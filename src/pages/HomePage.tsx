@@ -5,11 +5,13 @@ import { JLPT_LEVELS } from "../data/dungeons";
 import { dungeonStats, totalKills } from "../lib/stats";
 import { useProgressStore } from "../store/progressStore";
 import { useProfileStore } from "../store/profileStore";
+import { useDecksStore } from "../store/decksStore";
 import PixelCharacter from "../components/PixelCharacter";
 
 export default function HomePage() {
-  // 진행 상태가 변할 때 리렌더되도록 구독
+  // 진행 상태/덱이 변할 때 리렌더
   useProgressStore((s) => s.byWord);
+  useDecksStore((s) => s.words);
   const { nickname, selected_character } = useProfileStore();
   const stats = dungeonStats();
   const kills = totalKills();
