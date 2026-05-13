@@ -255,13 +255,16 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
 
   return (
     <div
-      // Layout 의 <main> 이 이미 (헤더/네비를 제외한) 정확한 높이를 잡아주므로
-      // 여기서는 그 안을 h-full 로 가득 채우기만 하면 된다.
+      // Layout 의 <main> 이 px-4 py-5 를 갖고 있어서 그대로 두면 액션 버튼
+      // 아래·헤더 위로 각 20px 의 빈 공간이 남는다. 학습 화면은 한 화면에
+      // 모든 것을 보여주는 게 핵심이라, -my-5 로 main 의 상하 패딩을 상쇄하고
+      // h-[calc(100%+2.5rem)] 로 그만큼 높이를 늘려 main 을 정확히 꽉 채운다.
+      // 안쪽은 pt-2 pb-1 로 숨통만 살짝 두어 버튼을 화면 맨 아래에 고정하고,
+      // 남는 공간은 모두 단어 카드(flex-1) 가 가져가도록 한다.
       // overflow-hidden 으로 자식이 살짝 넘쳐도 스크롤이 절대 생기지 않도록 보장.
-      // gap-1.5 로 카드 영역에 더 많은 공간을 확보한다.
-      className={`flex h-full flex-col gap-1.5 overflow-hidden ${
+      className={`-my-5 flex h-[calc(100%+2.5rem)] flex-col gap-1.5 overflow-hidden pt-2 pb-1 ${
         dungeon
-          ? `-mx-4 -my-5 px-4 py-2 bg-gradient-to-b ${dungeon.theme.bg}`
+          ? `-mx-4 px-4 bg-gradient-to-b ${dungeon.theme.bg}`
           : ""
       }`}
     >
