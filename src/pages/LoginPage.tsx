@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { isSupabaseEnabled, supabase } from "../lib/supabase";
+import PixelSword from "../components/PixelSword";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -79,7 +80,11 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-b from-sky-900 via-dungeon-200 to-dungeon-300">
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center gap-6 px-4 py-10">
         <div className="text-center">
-          <div className="text-6xl">🗡️</div>
+          <div className="flex justify-center">
+            <div className="animate-bob">
+              <PixelSword size={96} glow />
+            </div>
+          </div>
           <h1 className="pixel-text mt-3 font-pixel text-3xl text-parchment-100">
             JLPT <span className="text-rune-400">RPG</span>
           </h1>
@@ -185,11 +190,6 @@ export default function LoginPage() {
             <p className="font-pixel text-[10px] text-parchment-300">
               ⚠ 데모 모드 (로컬 저장). <code>.env.local</code> 에 Supabase
               환경변수 추가 시 실제 인증 연동.
-            </p>
-          )}
-          {isSupabaseEnabled && (
-            <p className="font-pixel text-[10px] text-rune-400">
-              🟢 Supabase 연결됨 — 진행 상태가 서버에 저장됩니다
             </p>
           )}
         </form>

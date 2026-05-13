@@ -118,16 +118,82 @@ export default {
           "0%": { transform: "translateY(0)", opacity: "1" },
           "100%": { transform: "translateY(-30px)", opacity: "0" },
         },
+        // 처치 이펙트용 — "처치!" 텍스트가 통통 튀며 등장
+        defeatPop: {
+          "0%": { transform: "scale(0) rotate(-12deg)", opacity: "0" },
+          "25%": { transform: "scale(1.4) rotate(8deg)", opacity: "1" },
+          "45%": { transform: "scale(0.85) rotate(-4deg)", opacity: "1" },
+          "65%": { transform: "scale(1.1) rotate(2deg)", opacity: "1" },
+          "80%": { transform: "scale(1) rotate(0deg)", opacity: "1" },
+          "100%": { transform: "scale(0.9) translateY(-12px)", opacity: "0" },
+        },
+        // 카드 파편이 사방으로 회전하며 흩어짐 (CSS 변수 --dx, --dy 사용)
+        shatter: {
+          "0%": {
+            transform: "translate(0,0) rotate(0deg) scale(1)",
+            opacity: "1",
+          },
+          "100%": {
+            transform:
+              "translate(var(--dx,40px), var(--dy,-40px)) rotate(540deg) scale(0.4)",
+            opacity: "0",
+          },
+        },
+        // 별 반짝이 — 작게 등장 → 커지며 사라짐
+        sparkle: {
+          "0%": { transform: "scale(0.2) rotate(0deg)", opacity: "0" },
+          "30%": { transform: "scale(1.2) rotate(120deg)", opacity: "1" },
+          "100%": { transform: "scale(0.4) rotate(360deg)", opacity: "0" },
+        },
+        // 영혼이 위로 둥둥 떠오름 (소환사용)
+        spiritDrift: {
+          "0%": {
+            transform: "translate(0,0) scale(0.6)",
+            opacity: "0",
+          },
+          "30%": {
+            transform: "translate(var(--dx,0px), -10px) scale(1)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "translate(var(--dx,0px), -70px) scale(0.7)",
+            opacity: "0",
+          },
+        },
+        // 짧은 화면 플래시
+        flashOverlay: {
+          "0%": { opacity: "0" },
+          "20%": { opacity: "0.55" },
+          "100%": { opacity: "0" },
+        },
+        // 두 번째 슬래시 (방향 반대)
+        slashAlt: {
+          "0%": {
+            transform: "translate(30px,-30px) scale(0.6)",
+            opacity: "0",
+          },
+          "30%": { opacity: "1" },
+          "100%": {
+            transform: "translate(-30px,30px) scale(1.2)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         bob: "bob 1.6s ease-in-out infinite",
         attackSwing: "attackSwing 0.5s ease-out",
         slash: "slash 0.5s ease-out forwards",
+        slashAlt: "slashAlt 0.5s ease-out forwards",
         ring: "ring 0.6s ease-out forwards",
         arrow: "arrow 0.5s ease-out forwards",
         cardShake: "cardShake 0.4s ease-in-out",
         rankPop: "rankPop 0.5s ease-out",
         floatUp: "floatUp 0.9s ease-out forwards",
+        defeatPop: "defeatPop 1.1s cubic-bezier(0.3,1.6,0.4,1) forwards",
+        shatter: "shatter 0.9s ease-out forwards",
+        sparkle: "sparkle 0.8s ease-out forwards",
+        spiritDrift: "spiritDrift 1.1s ease-out forwards",
+        flashOverlay: "flashOverlay 0.5s ease-out forwards",
       },
     },
   },

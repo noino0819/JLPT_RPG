@@ -4,6 +4,7 @@ import { totalKills } from "../lib/stats";
 import { useProgressStore } from "../store/progressStore";
 import { isSupabaseEnabled } from "../lib/supabase";
 import RankBadge from "./RankBadge";
+import PixelSword from "./PixelSword";
 
 export default function Layout() {
   // 진행 상태가 변할 때마다 헤더가 업데이트되도록 구독
@@ -16,7 +17,7 @@ export default function Layout() {
       <header className="sticky top-0 z-30 border-b-2 border-black bg-dungeon-200/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl">🗡️</span>
+            <PixelSword size={28} />
             <div>
               <div className="pixel-text font-pixel text-base text-parchment-100">
                 JLPT <span className="text-rune-400">RPG</span>

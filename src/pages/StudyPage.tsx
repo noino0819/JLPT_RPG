@@ -9,6 +9,7 @@ import { useProgressStore } from "../store/progressStore";
 import type { CharacterId, JlptLevel, Mastery } from "../types";
 import PixelCharacter from "../components/PixelCharacter";
 import AttackEffect from "../components/AttackEffect";
+import DefeatEffect from "../components/DefeatEffect";
 import WordCard from "../components/WordCard";
 
 interface Props {
@@ -85,16 +86,20 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   const word = queue[index];
 
   const [attackTrigger, setAttackTrigger] = useState(0);
+  const [defeatTrigger, setDefeatTrigger] = useState(0);
   const [attacking, setAttacking] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [floatText, setFloatText] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
 
-  const triggerAttack = (label: string) => {
+  const triggerAttack = (label: string, opts?: { defeat?: boolean }) => {
     if (settings.effects.attack) {
       setAttacking(true);
       setAttackTrigger((t) => t + 1);
       setTimeout(() => setAttacking(false), 500);
+      if (opts?.defeat) {
+        setDefeatTrigger((t) => t + 1);
+      }
     }
     if (settings.effects.card_shake) {
       setShaking(true);
@@ -110,7 +115,7 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
     switch (kind) {
       case "mastered":
         setMastery(word.id, "mastered" as Mastery);
-        triggerAttack("⚔ +1 처치");
+        triggerAttack("⚔ +1 처치", { defeat: true });
         break;
       case "probably":
         setMastery(word.id, "probably" as Mastery);
@@ -125,6 +130,8 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
         break;
     }
 
+    // 처치 이펙트가 충분히 보이도록 다음 카드 전환을 약간 늦춤
+    const delay = kind === "mastered" ? 700 : 350;
     setTimeout(() => {
       if (index + 1 >= queue.length) {
         // 한 바퀴 끝 — 큐 재생성
@@ -141,7 +148,7 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
       } else {
         setIndex((i) => i + 1);
       }
-    }, 350);
+    }, delay);
   };
 
   // 캐릭터 빠른 변경
@@ -202,8 +209,12 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           characterId={selected_character}
           trigger={attackTrigger}
         />
+        <DefeatEffect
+          characterId={selected_character}
+          trigger={defeatTrigger}
+        />
         {floatText && (
-          <div className="pointer-events-none absolute left-1/2 top-12 -translate-x-1/2 animate-floatUp font-pixel text-base text-rune-400 drop-shadow">
+          <div className="pointer-events-none absolute left-1/2 top-12 z-30 -translate-x-1/2 animate-floatUp font-pixel text-base text-rune-400 drop-shadow">
             {floatText}
           </div>
         )}
