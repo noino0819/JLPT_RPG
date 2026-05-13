@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useProfileStore } from "../store/profileStore";
 import { totalKills } from "../lib/stats";
 import { useProgressStore } from "../store/progressStore";
@@ -7,6 +7,7 @@ import RankBadge from "./RankBadge";
 import PixelSword from "./PixelSword";
 import { TITLES_BY_ID } from "../data/titles";
 import { BADGES_BY_ID } from "../data/badges";
+import { playNav } from "../lib/sfx";
 
 export default function Layout() {
   // 진행 상태가 변할 때마다 헤더가 업데이트되도록 구독
@@ -108,10 +109,20 @@ function NavTab({
   /** true 이면 일본어 픽셀 폰트로 아이콘을 렌더 (카나 탭 등) */
   jpIcon?: boolean;
 }) {
+  const location = useLocation();
+  const soundOn = useProfileStore((s) => s.settings.effects.sound);
+
+  const handleClick = () => {
+    // 같은 탭 재클릭은 사운드 생략 (불필요한 재생 방지)
+    const isSame = to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
+    if (soundOn && !isSame) playNav();
+  };
+
   return (
     <NavLink
       to={to}
       end={to === "/"}
+      onClick={handleClick}
       className={({ isActive }) =>
         `flex flex-1 flex-col items-center gap-0.5 border-2 px-2 py-2 font-pixel text-[10px] uppercase transition ${
           isActive

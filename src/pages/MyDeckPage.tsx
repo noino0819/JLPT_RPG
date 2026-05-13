@@ -2,7 +2,9 @@ import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDecksStore } from "../store/decksStore";
 import { useAuthStore } from "../store/authStore";
+import { useProfileStore } from "../store/profileStore";
 import { parseCsv } from "../lib/csv";
+import { playEnter } from "../lib/sfx";
 
 export default function MyDeckPage() {
   const userId = useAuthStore((s) => s.userId);
@@ -151,6 +153,7 @@ interface DeckEditorProps {
 function DeckEditor(props: DeckEditorProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);
+  const soundOn = useProfileStore((s) => s.settings.effects.sound);
   const [form, setForm] = useState({
     headword: "",
     reading: "",
@@ -230,6 +233,9 @@ function DeckEditor(props: DeckEditorProps) {
           <div className="flex gap-2">
             <Link
               to={`/study/deck/${props.deckId}`}
+              onClick={() => {
+                if (soundOn) playEnter();
+              }}
               className="btn-primary"
             >
               ▶ 학습 시작

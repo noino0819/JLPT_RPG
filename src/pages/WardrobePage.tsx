@@ -13,6 +13,7 @@ import { FRAMES } from "../data/frames";
 import { computeUnlocked, describeCondition } from "../lib/cosmetics";
 import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
+import { playAttack, playEquip, playNav } from "../lib/sfx";
 import type {
   CharacterId,
   CosmeticBase,
@@ -42,7 +43,9 @@ export default function WardrobePage() {
     setTitle,
     toggleBadge,
     setFrame,
+    settings,
   } = useProfileStore();
+  const soundOn = settings.effects.sound;
 
   // 매 렌더 시 재계산 — 카탈로그 크기가 작아 무시할 만한 비용.
   const { unlocked } = computeUnlocked();
@@ -50,6 +53,24 @@ export default function WardrobePage() {
   const [tab, setTab] = useState<Tab>("character");
 
   const currentCostume = equipped.costume[selected_character];
+
+  // 탭 전환 — 같은 탭 재클릭은 사운드 생략
+  const switchTab = (next: Tab) => {
+    if (next !== tab && soundOn) playNav();
+    setTab(next);
+  };
+
+  // 캐릭터 픽 — 직업별 공격 사운드를 짧게 미리듣기
+  const pickCharacter = (id: CharacterId) => {
+    if (soundOn && id !== selected_character) playAttack(id);
+    setCharacter(id);
+  };
+
+  // 코스튬·펫·칭호·뱃지·프레임 등 장착/해제
+  const equipWith = (fn: () => void) => {
+    if (soundOn) playEquip();
+    fn();
+  };
 
   return (
     <div className="space-y-4">
@@ -86,7 +107,7 @@ export default function WardrobePage() {
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setTab(t.id)}
+            onClick={() => switchTab(t.id)}
             className={`flex items-center gap-1 border-2 px-2 py-1 font-pixel text-xs ${
               tab === t.id
                 ? "border-rune-500 bg-rune-500/15 text-rune-400"
@@ -103,7 +124,7 @@ export default function WardrobePage() {
       {tab === "character" && (
         <CharacterTab
           selected={selected_character}
-          onPick={setCharacter}
+          onPick={pickCharacter}
           getCostume={(id) => equipped.costume[id]}
         />
       )}
@@ -113,7 +134,7 @@ export default function WardrobePage() {
           characterId={selected_character}
           equippedId={currentCostume}
           unlocked={unlocked}
-          onPick={(id) => setCostume(selected_character, id)}
+          onPick={(id) => equipWith(() => setCostume(selected_character, id))}
         />
       )}
 
@@ -122,7 +143,9 @@ export default function WardrobePage() {
           items={PETS}
           unlocked={unlocked}
           equippedId={equipped.pet}
-          onPick={(id) => setPet(equipped.pet === id ? null : id)}
+          onPick={(id) =>
+            equipWith(() => setPet(equipped.pet === id ? null : id))
+          }
           renderPreview={(item) => <PixelPet petId={item.id} size={40} />}
         />
       )}
@@ -132,7 +155,9 @@ export default function WardrobePage() {
           items={TITLES}
           unlocked={unlocked}
           equippedId={equipped.title}
-          onPick={(id) => setTitle(equipped.title === id ? null : id)}
+          onPick={(id) =>
+            equipWith(() => setTitle(equipped.title === id ? null : id))
+          }
           renderPreview={(item) => {
             const t = TITLES.find((x) => x.id === item.id)!;
             return (
@@ -155,7 +180,7 @@ export default function WardrobePage() {
             items={BADGES}
             unlocked={unlocked}
             equippedIds={equipped.badges}
-            onPick={(id) => toggleBadge(id)}
+            onPick={(id) => equipWith(() => toggleBadge(id))}
             renderPreview={(item) => {
               const b = BADGES.find((x) => x.id === item.id)!;
               return (
@@ -173,7 +198,9 @@ export default function WardrobePage() {
           items={FRAMES}
           unlocked={unlocked}
           equippedId={equipped.frame}
-          onPick={(id) => setFrame(equipped.frame === id ? null : id)}
+          onPick={(id) =>
+            equipWith(() => setFrame(equipped.frame === id ? null : id))
+          }
           renderPreview={(item) => {
             const f = FRAMES.find((x) => x.id === item.id)!;
             return (

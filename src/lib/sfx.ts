@@ -349,6 +349,215 @@ export function playSkip(): void {
 }
 
 /**
+ * 하단 탭/상단 탭 등 네비게이션 이동 — 매우 짧은 두 톤 "틱-탁".
+ * 너무 자주 발생하므로 게인을 낮게.
+ */
+export function playNav(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  tone(ac, 740, t, 0.04, { type: "square", gain: 0.06 });
+  tone(ac, 980, t + 0.03, 0.04, { type: "square", gain: 0.05 });
+}
+
+/**
+ * 토글 스위치 on/off 사운드.
+ * - on : 짧은 상승 두 톤 (확정감)
+ * - off: 짧은 하강 두 톤 (해제감)
+ */
+export function playToggle(on: boolean): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  if (on) {
+    tone(ac, 520, t, 0.05, { type: "square", gain: 0.09 });
+    tone(ac, 880, t + 0.04, 0.07, { type: "triangle", gain: 0.1 });
+  } else {
+    tone(ac, 660, t, 0.05, { type: "square", gain: 0.08 });
+    tone(ac, 392, t + 0.04, 0.08, { type: "triangle", gain: 0.09 });
+  }
+}
+
+/**
+ * 옷장에서 코스튬·펫·칭호·뱃지·프레임 등을 선택/장착할 때.
+ * 짧고 마법스러운 "선택+장착" 사운드.
+ */
+export function playEquip(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // 두 음 빠른 상승 (G5 → C6)
+  tone(ac, 783.99, t, 0.08, { type: "triangle", gain: 0.1 });
+  tone(ac, 1046.5, t + 0.05, 0.1, { type: "triangle", gain: 0.11 });
+  // 가벼운 sparkle
+  tone(ac, 2093, t + 0.08, 0.18, { type: "sine", gain: 0.06 });
+}
+
+/**
+ * 일반 선택/확인 사운드.
+ * - 카드 선택, 아이템 픽 등 가벼운 확정.
+ */
+export function playSelect(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  tone(ac, 660, t, 0.05, { type: "triangle", gain: 0.09 });
+  tone(ac, 880, t + 0.04, 0.07, { type: "triangle", gain: 0.08 });
+}
+
+/**
+ * 던전 입장 — 무게감 있는 저음 sweep + 짧은 메탈릭 chime.
+ * "안으로 빨려 들어가는" 느낌.
+ */
+export function playEnter(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // 깊은 저음 sweep up (드럼의 부 — boom)
+  tone(ac, 110, t, 0.35, {
+    type: "sawtooth",
+    gain: 0.18,
+    sweepTo: 220,
+    attack: 0.02,
+  });
+  // 중음 화성 보강
+  tone(ac, 220, t + 0.02, 0.35, {
+    type: "triangle",
+    gain: 0.12,
+    sweepTo: 440,
+    attack: 0.02,
+  });
+  // 입구 노이즈 (바람/먼지)
+  noise(ac, t, 0.28, {
+    gain: 0.08,
+    filterFrom: 1200,
+    filterTo: 200,
+    filterQ: 0.7,
+  });
+  // 끝에 살짝 chime
+  tone(ac, 1320, t + 0.18, 0.3, { type: "triangle", gain: 0.09 });
+  tone(ac, 1760, t + 0.22, 0.3, { type: "sine", gain: 0.06 });
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// 보스 던전 사운드
+// ─────────────────────────────────────────────────────────────────────
+
+/** 보스에게 한 방 — 묵직한 임팩트 + 짧은 잔향. */
+export function playBossHit(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // 묵직한 임팩트 (저주파 sweep)
+  tone(ac, 220, t, 0.18, {
+    type: "sawtooth",
+    gain: 0.2,
+    sweepTo: 80,
+  });
+  // 위쪽 트랜지언트 (날카로운 메탈)
+  noise(ac, t, 0.08, {
+    gain: 0.15,
+    filterFrom: 6000,
+    filterTo: 2000,
+    filterQ: 0.8,
+  });
+  // 잔향 (살짝)
+  tone(ac, 110, t + 0.05, 0.3, {
+    type: "triangle",
+    gain: 0.1,
+  });
+}
+
+/** 보스 포효 — 등장 시 사용. 굵직한 저음 + 노이즈. */
+export function playBossRoar(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // 굵은 sawtooth 저음
+  tone(ac, 120, t, 0.6, {
+    type: "sawtooth",
+    gain: 0.18,
+    sweepTo: 60,
+  });
+  tone(ac, 180, t + 0.05, 0.6, {
+    type: "sawtooth",
+    gain: 0.13,
+    sweepTo: 90,
+  });
+  // 거친 숨소리 노이즈
+  noise(ac, t + 0.05, 0.5, {
+    gain: 0.12,
+    filterFrom: 1200,
+    filterTo: 400,
+    filterQ: 1.5,
+  });
+}
+
+/** 플레이어 피격 — 약한 둔탁음 + 잔진동. */
+export function playPlayerHurt(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  tone(ac, 180, t, 0.12, {
+    type: "square",
+    gain: 0.12,
+    sweepTo: 70,
+  });
+  noise(ac, t, 0.08, {
+    gain: 0.08,
+    filterFrom: 1500,
+    filterTo: 300,
+  });
+}
+
+/**
+ * 보스 사망 — 길고 풍성한 사운드.
+ * 장엄한 저음 → 화이트 노이즈 폭발 → 영혼 승천 화음.
+ */
+export function playBossDeath(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+
+  // 1) 무너지는 저음 sweep
+  tone(ac, 220, t, 0.4, {
+    type: "sawtooth",
+    gain: 0.2,
+    sweepTo: 50,
+  });
+  // 2) 폭발 노이즈
+  noise(ac, t + 0.1, 0.35, {
+    gain: 0.22,
+    filterFrom: 6000,
+    filterTo: 200,
+    filterQ: 0.7,
+  });
+  // 3) 메탈 충격
+  tone(ac, 880, t + 0.1, 0.25, {
+    type: "square",
+    gain: 0.15,
+    sweepTo: 220,
+  });
+  // 4) 영혼 승천 화음 (메이저 코드 트라이어드 + 옥타브)
+  const chord = [
+    { f: 523.25, o: 0.45 }, // C5
+    { f: 659.25, o: 0.5 }, // E5
+    { f: 783.99, o: 0.55 }, // G5
+    { f: 1046.5, o: 0.6 }, // C6
+  ];
+  for (const n of chord) {
+    tone(ac, n.f, t + n.o, 0.9, {
+      type: "triangle",
+      gain: 0.13,
+      attack: 0.04,
+    });
+  }
+  // 마지막 sparkle
+  tone(ac, 2093, t + 0.7, 0.6, { type: "sine", gain: 0.08 });
+  tone(ac, 2637, t + 0.75, 0.6, { type: "sine", gain: 0.06 });
+}
+
+/**
  * 해금 팡파레 — 새 코스튬/펫/뱃지 등이 해금됐을 때.
  * 짧고 산뜻한 4음 아르페지오 + 스파클.
  */

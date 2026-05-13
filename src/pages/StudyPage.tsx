@@ -420,6 +420,10 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
                 <button
                   key={c.id}
                   onClick={() => {
+                    // 캐릭터 변경 시 해당 직업의 공격 사운드를 미리 들려줘 차별감을 강조
+                    if (settings.effects.sound && c.id !== selected_character) {
+                      playAttack(c.id as CharacterId);
+                    }
                     setCharacter(c.id as CharacterId);
                     setPickerOpen(false);
                   }}

@@ -11,12 +11,14 @@ import { getRankProgress } from "../data/ranks";
 import { TITLES_BY_ID } from "../data/titles";
 import { BADGES_BY_ID } from "../data/badges";
 import { FRAMES_BY_ID } from "../data/frames";
+import { playEnter, playNav } from "../lib/sfx";
 
 export default function HomePage() {
   // 진행 상태/덱이 변할 때 리렌더
   useProgressStore((s) => s.byWord);
   useDecksStore((s) => s.words);
-  const { nickname, selected_character, equipped } = useProfileStore();
+  const { nickname, selected_character, equipped, settings } = useProfileStore();
+  const soundOn = settings.effects.sound;
   const stats = dungeonStats();
   const kills = totalKills();
   const { current, next, pct, remaining } = getRankProgress(kills);
@@ -112,6 +114,9 @@ export default function HomePage() {
       {/* 카나 수련장 — 던전(어휘) 전에 거치는 기초 훈련소 */}
       <Link
         to="/kana"
+        onClick={() => {
+          if (soundOn) playEnter();
+        }}
         className="group relative block overflow-hidden border-2 border-black bg-gradient-to-r from-parchment-700/40 via-parchment-500/30 to-parchment-400/30 p-2.5 transition hover:-translate-y-0.5"
         style={{ boxShadow: "0 4px 0 0 rgba(0,0,0,0.7)" }}
       >
@@ -146,10 +151,22 @@ export default function HomePage() {
             🗺️ 던전
           </h3>
           <div className="flex items-center gap-1.5">
-            <Link to="/review" className="badge-pixel hover:bg-dungeon-100">
+            <Link
+              to="/review"
+              onClick={() => {
+                if (soundOn) playNav();
+              }}
+              className="badge-pixel hover:bg-dungeon-100"
+            >
               🔖 다시보기
             </Link>
-            <Link to="/mydeck" className="badge-pixel hover:bg-dungeon-100">
+            <Link
+              to="/mydeck"
+              onClick={() => {
+                if (soundOn) playNav();
+              }}
+              className="badge-pixel hover:bg-dungeon-100"
+            >
               📜 단어장
             </Link>
           </div>
