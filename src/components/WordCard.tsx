@@ -61,29 +61,34 @@ export default function WordCard({
         }}
       >
         {/* FRONT */}
-        <div className="flip-face panel-parchment scanline flex cursor-pointer flex-col items-center justify-center gap-2 p-4 sm:p-6">
-          {word.part_of_speech && (
-            <span className="badge-pixel !bg-parchment-300 !text-parchment-900">
-              {word.part_of_speech}
-            </span>
-          )}
+        {/* 단어 본문은 카드의 정확한 가운데에 위치시키고,
+            "탭해서 뒤집기" 힌트는 카드 하단에 고정한다.
+            (이전엔 힌트의 mt-auto 가 위쪽 공간을 흡수해 단어가 위로 붙어 보였음) */}
+        <div className="flip-face panel-parchment scanline relative flex cursor-pointer flex-col p-4 sm:p-6">
+          <div className="flex flex-1 flex-col items-center justify-center gap-2">
+            {word.part_of_speech && (
+              <span className="badge-pixel !bg-parchment-300 !text-parchment-900">
+                {word.part_of_speech}
+              </span>
+            )}
 
-          {isHiraganaOnly ? (
-            <div className="pixel-text-jp text-6xl font-bold text-parchment-900 sm:text-7xl">
-              {word.reading}
-            </div>
-          ) : (
-            <>
-              <div className="pixel-text-jp text-6xl font-bold leading-none text-parchment-900 sm:text-8xl">
-                {word.headword}
-              </div>
-              <div className="pixel-text-jp mt-2 text-2xl text-parchment-700 sm:text-3xl">
+            {isHiraganaOnly ? (
+              <div className="pixel-text-jp text-6xl font-bold text-parchment-900 sm:text-7xl">
                 {word.reading}
               </div>
-            </>
-          )}
+            ) : (
+              <>
+                <div className="pixel-text-jp text-6xl font-bold leading-none text-parchment-900 sm:text-8xl">
+                  {word.headword}
+                </div>
+                <div className="pixel-text-jp mt-2 text-2xl text-parchment-700 sm:text-3xl">
+                  {word.reading}
+                </div>
+              </>
+            )}
+          </div>
 
-          <div className="mt-auto pt-3 font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
+          <div className="shrink-0 pt-3 text-center font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
             ▲ 탭해서 뒤집기
           </div>
         </div>
