@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
@@ -16,6 +16,19 @@ export default function LoginPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+
+  // 네이버 OAuth 콜백에서 실패 시 ?login_error=... 로 돌아옴
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const loginError = params.get("login_error");
+    if (loginError) {
+      setError(`네이버 로그인 실패: ${loginError}`);
+      params.delete("login_error");
+      const next = window.location.pathname +
+        (params.toString() ? `?${params.toString()}` : "");
+      window.history.replaceState({}, "", next);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,11 +82,12 @@ export default function LoginPage() {
   };
 
   const handleNaver = () => {
-    alert(
-      "네이버 OAuth는 Vercel Serverless Function 콜백 연동 후 활성화됩니다.\n현재는 로컬 데모로 진입합니다.",
-    );
-    setLocalSession("guest@naver.com");
-    navigate("/character");
+    if (!isSupabaseEnabled) {
+      setLocalSession("guest@naver.com");
+      navigate("/character");
+      return;
+    }
+    window.location.href = "/api/auth/naver/start";
   };
 
   return (
@@ -186,13 +200,18 @@ export default function LoginPage() {
             🟢 네이버로 시작
           </button>
 
-          {!isSupabaseEnabled && (
-            <p className="font-pixel text-[10px] text-parchment-300">
-              ⚠ 데모 모드 (로컬 저장). <code>.env.local</code> 에 Supabase
-              환경변수 추가 시 실제 인증 연동.
-            </p>
-          )}
         </form>
+
+        <p className="text-center font-pixel text-[10px] leading-relaxed text-parchment-300">
+          이용 중 문의가 있다면{" "}
+          <a
+            href="mailto:noino0819@naver.com"
+            className="text-rune-400 underline underline-offset-2 hover:text-rune-300"
+          >
+            noino0819@naver.com
+          </a>
+          {" "}으로 알려주세요.
+        </p>
       </div>
     </div>
   );

@@ -62,13 +62,10 @@ export default function Layout() {
 }
 
 function SyncDot() {
+  // 사용자에겐 단순히 "온라인 동기화" / "오프라인 모드" 로만 노출
   return (
     <span
-      title={
-        isSupabaseEnabled
-          ? "Supabase 연결됨 (서버 동기화)"
-          : "로컬 모드 (오프라인)"
-      }
+      title={isSupabaseEnabled ? "온라인 동기화 중" : "오프라인 모드"}
       className={`inline-block h-2.5 w-2.5 rounded-full border border-black ${
         isSupabaseEnabled ? "bg-emerald-400" : "bg-parchment-300/50"
       }`}

@@ -152,10 +152,10 @@ export default function SettingsPage() {
               isSupabaseEnabled ? "bg-emerald-400" : "bg-parchment-300/50"
             }`}
           />
-          {isSupabaseEnabled ? "Supabase 연결됨" : "로컬 모드"}
+          {isSupabaseEnabled ? "온라인 동기화 중" : "오프라인 모드"}
         </div>
         <div className="text-sm text-parchment-200">
-          이메일: {email ?? "(데모 모드)"}
+          이메일: {email ?? "게스트"}
         </div>
         <button onClick={handleSignOut} className="btn-ghost mt-3 w-full">
           로그아웃
