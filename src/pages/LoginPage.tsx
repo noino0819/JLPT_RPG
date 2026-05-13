@@ -82,11 +82,7 @@ export default function LoginPage() {
   };
 
   const handleNaver = () => {
-    if (!isSupabaseEnabled) {
-      setLocalSession("guest@naver.com");
-      navigate("/character");
-      return;
-    }
+    if (!isSupabaseEnabled) return;
     window.location.href = "/api/auth/naver/start";
   };
 
@@ -195,9 +191,27 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={handleNaver}
-            className="btn-pixel w-full bg-[#03c75a] text-white hover:bg-[#02b14f]"
+            disabled={!isSupabaseEnabled}
+            title={
+              !isSupabaseEnabled
+                ? "데모 모드에서는 네이버 로그인을 사용할 수 없습니다"
+                : undefined
+            }
+            className="btn-pixel flex w-full items-center justify-center gap-2 bg-[#03c75a] text-white hover:bg-[#02b14f] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            🟢 네이버로 시작
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+              className="h-4 w-4 shrink-0"
+            >
+              <rect width="20" height="20" fill="#03c75a" />
+              <path
+                d="M11.5 4.5h3v11h-3L8.5 11v4.5h-3v-11h3l3 4.5v-4.5z"
+                fill="#ffffff"
+              />
+            </svg>
+            <span>네이버로 시작</span>
           </button>
 
         </form>
