@@ -248,10 +248,10 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
 
   return (
     <div
-      // 모바일에서 스크롤이 생기지 않도록 헤더/네비게이션 높이를 제외한
-      // 뷰포트 영역을 가득 채우는 flex 컨테이너.
-      // (Layout: 상단 헤더 ~64px, 하단 네비 ~52px, main py-5 ~40px ≈ 156px)
-      className={`flex flex-col gap-2 h-[calc(100dvh-156px)] ${
+      // Layout 의 <main> 이 이미 (헤더/네비를 제외한) 정확한 높이를 잡아주므로
+      // 여기서는 그 안을 h-full 로 가득 채우기만 하면 된다.
+      // overflow-hidden 으로 자식이 살짝 넘쳐도 스크롤이 절대 생기지 않도록 보장.
+      className={`flex h-full flex-col gap-2 overflow-hidden ${
         dungeon
           ? `-mx-4 -my-5 px-4 py-3 bg-gradient-to-b ${dungeon.theme.bg}`
           : ""

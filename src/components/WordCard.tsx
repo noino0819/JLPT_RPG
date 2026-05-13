@@ -36,11 +36,9 @@ export default function WordCard({
 
   const isHiraganaOnly = !word.headword;
 
-  // fillHeight=true 일 때 부모(flex 컨테이너)의 남은 공간을 차지하면서
-  // 너무 작아지지 않도록 min-h 만 보장한다.
-  const innerSize = fillHeight
-    ? "h-full min-h-[260px] sm:min-h-[360px]"
-    : "h-[360px] sm:h-[420px]";
+  // fillHeight=true 일 때 부모(flex 컨테이너)의 남은 공간을 그대로 채운다.
+  // 작은 화면에서 스크롤이 생기지 않도록 별도의 min-h 는 두지 않는다.
+  const innerSize = fillHeight ? "h-full min-h-0" : "h-[360px] sm:h-[420px]";
 
   return (
     <div

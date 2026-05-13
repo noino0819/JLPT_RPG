@@ -13,8 +13,11 @@ export default function Layout() {
   const kills = totalKills();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-30 border-b-2 border-black bg-dungeon-200/95 backdrop-blur">
+    // 뷰포트 전체 높이를 정확히 차지하는 flex 컨테이너.
+    // header/nav 는 shrink-0, main 만 남는 공간을 차지하면서 자체 스크롤.
+    // 이렇게 해야 학습 페이지처럼 "스크롤 없이 정확히 채우는" 화면을 만들 수 있다.
+    <div className="flex h-dvh flex-col overflow-hidden">
+      <header className="shrink-0 border-b-2 border-black bg-dungeon-200/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/" className="flex items-center gap-2">
             <PixelSword size={28} />
@@ -45,11 +48,11 @@ export default function Layout() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-5">
+      <main className="mx-auto w-full max-w-3xl flex-1 min-h-0 overflow-y-auto px-4 py-5">
         <Outlet />
       </main>
 
-      <nav className="sticky bottom-0 z-30 border-t-2 border-black bg-dungeon-200/95 backdrop-blur">
+      <nav className="shrink-0 border-t-2 border-black bg-dungeon-200/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-around gap-1 px-2 py-1">
           <NavTab to="/" label="던전" icon="🏯" />
           <NavTab to="/review" label="다시보기" icon="🔖" />
