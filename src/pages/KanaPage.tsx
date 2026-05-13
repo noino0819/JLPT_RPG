@@ -22,76 +22,55 @@ type Mode = "table" | "flashcard" | "quiz";
 // - 표 뷰: 五十音図를 한눈에 보고 셀별 숙련도를 확인
 // - 플래시카드: 카드 뒤집기로 발음 외우기
 // - 퀴즈: 4지선다로 발음 맞추기
+//
+// 레이아웃 원칙: 퀴즈/플래시카드에서 스크롤이 발생하지 않도록
+// "기본(낮은 레벨)" 화면은 [헤더 + 모드 + 본문] 만 노출하고,
+// 문자 체계(히라/카타) 와 그룹(청음/탁음/요음) 선택은 헤더의 한 줄 칩에서
+// 모달("윗 레벨")로 진입해 변경하도록 분리했다.
 export default function KanaPage() {
   const [script, setScript] = useState<KanaScript>("hira");
   const [group, setGroup] = useState<KanaGroup>("seion");
   const [mode, setMode] = useState<Mode>("table");
+  const [optionsOpen, setOptionsOpen] = useState(false);
 
   const charsInScope = useMemo(
     () => getKana(script, group),
     [script, group],
   );
 
+  // 표 모드에서만 자체 스크롤을 허용한다 (행이 많아 자연스럽게 스크롤이 필요).
+  // 퀴즈/플래시카드는 한 화면에 모두 들어가야 하므로 overflow-hidden.
+  const bodyOverflow =
+    mode === "table" ? "overflow-y-auto" : "overflow-hidden";
+
   return (
-    <div className="flex h-full flex-col gap-3">
-      <header className="flex items-center justify-between gap-2">
-        <div className="min-w-0">
-          <h2 className="pixel-text font-pixel text-xl text-parchment-100">
+    <div className="-my-5 -mx-4 flex h-[calc(100%+2.5rem)] flex-col gap-2 overflow-hidden px-4 pt-2 pb-1">
+      <header className="flex shrink-0 items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <h2 className="pixel-text shrink-0 font-pixel text-base text-parchment-100">
             🏯 카나 수련장
           </h2>
-          <div className="font-pixel text-[10px] text-parchment-300">
-            仮名修練場 · 五十音 道場
-          </div>
+          {/* 현재 선택 칩 — 탭하면 모달로 카나/그룹 변경 */}
+          <button
+            type="button"
+            onClick={() => setOptionsOpen(true)}
+            className="flex min-w-0 items-center gap-1 border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-[10px] text-parchment-100 hover:bg-dungeon-100"
+            aria-label="카나/그룹 변경"
+            title="카나/그룹 변경"
+          >
+            <span className="pixel-text-jp truncate">
+              {KANA_SCRIPT_LABEL[script].jp} · {KANA_GROUP_LABEL[group].jp}
+            </span>
+            <span aria-hidden className="text-parchment-300">▾</span>
+          </button>
         </div>
         <Link to="/" className="btn-ghost shrink-0 !px-3 !py-1.5 !text-[10px]">
           ✕ 나가기
         </Link>
       </header>
 
-      {/* 문자 체계 (히라가나 / 가타카나) 선택 */}
-      <SegmentSelector
-        value={script}
-        onChange={(v) => setScript(v as KanaScript)}
-        options={[
-          {
-            value: "hira",
-            label: `${KANA_SCRIPT_LABEL.hira.emoji} ${KANA_SCRIPT_LABEL.hira.jp}`,
-            sub: KANA_SCRIPT_LABEL.hira.ko,
-          },
-          {
-            value: "kata",
-            label: `${KANA_SCRIPT_LABEL.kata.emoji} ${KANA_SCRIPT_LABEL.kata.jp}`,
-            sub: KANA_SCRIPT_LABEL.kata.ko,
-          },
-        ]}
-      />
-
-      {/* 그룹 (청음 / 탁음 / 요음) 선택 */}
-      <SegmentSelector
-        value={group}
-        onChange={(v) => setGroup(v as KanaGroup)}
-        options={[
-          {
-            value: "seion",
-            label: KANA_GROUP_LABEL.seion.jp,
-            sub: KANA_GROUP_LABEL.seion.ko,
-          },
-          {
-            value: "dakuten",
-            label: KANA_GROUP_LABEL.dakuten.jp,
-            sub: KANA_GROUP_LABEL.dakuten.ko,
-          },
-          {
-            value: "youon",
-            label: KANA_GROUP_LABEL.youon.jp,
-            sub: KANA_GROUP_LABEL.youon.ko,
-          },
-        ]}
-        size="sm"
-      />
-
-      {/* 모드 선택 */}
-      <div className="grid grid-cols-3 gap-1.5">
+      {/* 모드 선택 — 페이지에 항상 보이는 1차 컨트롤 */}
+      <div className="grid shrink-0 grid-cols-3 gap-1.5">
         <ModeButton
           active={mode === "table"}
           onClick={() => setMode("table")}
@@ -112,13 +91,118 @@ export default function KanaPage() {
         />
       </div>
 
-      {/* 모드별 본문 */}
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      {/* 모드별 본문 — 남은 공간을 모두 차지 */}
+      <div className={`min-h-0 flex-1 ${bodyOverflow}`}>
         {mode === "table" && <KanaTable script={script} group={group} />}
         {mode === "flashcard" && (
           <KanaFlashcard chars={charsInScope} script={script} />
         )}
         {mode === "quiz" && <KanaQuiz chars={charsInScope} script={script} />}
+      </div>
+
+      {optionsOpen && (
+        <KanaOptionsModal
+          script={script}
+          group={group}
+          onChangeScript={setScript}
+          onChangeGroup={setGroup}
+          onClose={() => setOptionsOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+// ───────── 옵션 모달 ─────────
+
+function KanaOptionsModal({
+  script,
+  group,
+  onChangeScript,
+  onChangeGroup,
+  onClose,
+}: {
+  script: KanaScript;
+  group: KanaGroup;
+  onChangeScript: (v: KanaScript) => void;
+  onChangeGroup: (v: KanaGroup) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-40 flex items-end justify-center bg-black/60 p-4 sm:items-center"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="panel w-full max-w-sm space-y-3"
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="pixel-text font-pixel text-sm text-parchment-100">
+            카나/그룹 변경
+          </h3>
+          <button
+            onClick={onClose}
+            className="font-pixel text-xs text-parchment-300 hover:text-parchment-100"
+            aria-label="닫기"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-300">
+            문자 체계
+          </div>
+          <SegmentSelector
+            value={script}
+            onChange={(v) => onChangeScript(v as KanaScript)}
+            options={[
+              {
+                value: "hira",
+                label: `${KANA_SCRIPT_LABEL.hira.emoji} ${KANA_SCRIPT_LABEL.hira.jp}`,
+                sub: KANA_SCRIPT_LABEL.hira.ko,
+              },
+              {
+                value: "kata",
+                label: `${KANA_SCRIPT_LABEL.kata.emoji} ${KANA_SCRIPT_LABEL.kata.jp}`,
+                sub: KANA_SCRIPT_LABEL.kata.ko,
+              },
+            ]}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-300">
+            그룹
+          </div>
+          <SegmentSelector
+            value={group}
+            onChange={(v) => onChangeGroup(v as KanaGroup)}
+            options={[
+              {
+                value: "seion",
+                label: KANA_GROUP_LABEL.seion.jp,
+                sub: KANA_GROUP_LABEL.seion.ko,
+              },
+              {
+                value: "dakuten",
+                label: KANA_GROUP_LABEL.dakuten.jp,
+                sub: KANA_GROUP_LABEL.dakuten.ko,
+              },
+              {
+                value: "youon",
+                label: KANA_GROUP_LABEL.youon.jp,
+                sub: KANA_GROUP_LABEL.youon.ko,
+              },
+            ]}
+            size="sm"
+          />
+        </div>
+
+        <button onClick={onClose} className="btn-primary w-full !py-2">
+          확인
+        </button>
       </div>
     </div>
   );
@@ -382,14 +466,16 @@ function KanaFlashcard({
 
   return (
     <div className="flex h-full flex-col gap-2">
-      <div className="flex items-center justify-between font-pixel text-[10px] text-parchment-300">
+      <div className="flex shrink-0 items-center justify-between font-pixel text-[10px] text-parchment-300">
         <span>
           {index + 1} / {shuffled.length}
         </span>
         <span>{KANA_SCRIPT_LABEL[script].jp}</span>
       </div>
 
-      <div className="flip-perspective relative w-full" style={{ height: 280 }}>
+      {/* 카드는 남은 세로 공간을 모두 사용해 자동 크기 조절. 화면이 작아도
+          스크롤 없이 들어가도록 글자 크기는 clamp 로 자동 축소한다. */}
+      <div className="flip-perspective relative min-h-0 w-full flex-1">
         <div
           className={`flip-inner relative h-full w-full cursor-pointer ${
             flipped ? "flipped" : ""
@@ -405,8 +491,11 @@ function KanaFlashcard({
           }}
         >
           {/* FRONT */}
-          <div className="flip-face panel-parchment scanline flex flex-col items-center justify-center gap-2 p-4">
-            <div className="pixel-text-jp text-[120px] font-bold leading-none text-parchment-900 sm:text-[140px]">
+          <div className="flip-face panel-parchment scanline flex flex-col items-center justify-center gap-1 p-3">
+            <div
+              className="pixel-text-jp font-bold leading-none text-parchment-900"
+              style={{ fontSize: "clamp(80px, 22vh, 140px)" }}
+            >
               {current.char}
             </div>
             <div className="mt-auto font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
@@ -415,11 +504,17 @@ function KanaFlashcard({
           </div>
 
           {/* BACK */}
-          <div className="flip-face flip-back panel-parchment scanline flex flex-col items-center justify-center gap-3 p-4">
-            <div className="pixel-text-jp text-7xl font-bold text-parchment-900">
+          <div className="flip-face flip-back panel-parchment scanline flex flex-col items-center justify-center gap-2 p-3">
+            <div
+              className="pixel-text-jp font-bold text-parchment-900"
+              style={{ fontSize: "clamp(56px, 14vh, 88px)" }}
+            >
               {current.char}
             </div>
-            <div className="font-pixel text-3xl uppercase tracking-wider text-rune-600">
+            <div
+              className="font-pixel uppercase tracking-wider text-rune-600"
+              style={{ fontSize: "clamp(20px, 5vh, 30px)" }}
+            >
               {current.romaji}
             </div>
             <div className="font-pixel text-[10px] text-parchment-700">
@@ -432,7 +527,7 @@ function KanaFlashcard({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-1.5">
+      <div className="grid shrink-0 grid-cols-2 gap-1.5">
         <button
           onClick={() => goNext("known")}
           className="btn-gold !py-2.5"
@@ -531,8 +626,8 @@ function KanaQuiz({
   };
 
   return (
-    <div className="flex h-full flex-col gap-3">
-      <div className="flex items-center justify-between font-pixel text-[10px] text-parchment-300">
+    <div className="flex h-full flex-col gap-2">
+      <div className="flex shrink-0 items-center justify-between font-pixel text-[10px] text-parchment-300">
         <span>
           {index + 1} / {queue.length} · {KANA_SCRIPT_LABEL[script].jp}
         </span>
@@ -542,16 +637,21 @@ function KanaQuiz({
         </span>
       </div>
 
-      <div className="panel-parchment flex flex-col items-center justify-center gap-2 !p-6">
+      {/* 질문 패널은 남은 세로 공간을 모두 사용. 작은 화면에서도 글자가
+          버튼/하단 결과 텍스트를 밀어내지 않도록 clamp 로 자동 축소한다. */}
+      <div className="panel-parchment flex min-h-0 flex-1 flex-col items-center justify-center gap-1 !p-3">
         <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
           이 글자의 발음은?
         </div>
-        <div className="pixel-text-jp text-[110px] font-bold leading-none text-parchment-900 sm:text-[130px]">
+        <div
+          className="pixel-text-jp font-bold leading-none text-parchment-900"
+          style={{ fontSize: "clamp(72px, 20vh, 130px)" }}
+        >
           {current.char}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid shrink-0 grid-cols-2 gap-1.5">
         {options.map((opt) => {
           const isCorrect = opt === current.romaji;
           const isPicked = picked === opt;
@@ -571,7 +671,7 @@ function KanaQuiz({
               key={opt}
               onClick={() => handlePick(opt)}
               disabled={!!picked}
-              className={`border-2 px-3 py-3 font-pixel text-base uppercase transition active:translate-y-[1px] ${tone}`}
+              className={`border-2 px-3 py-2 font-pixel text-base uppercase transition active:translate-y-[1px] ${tone}`}
             >
               {opt}
             </button>
@@ -579,17 +679,18 @@ function KanaQuiz({
         })}
       </div>
 
-      {picked && (
-        <div className="text-center font-pixel text-xs text-parchment-200">
-          {picked === current.romaji ? (
+      {/* 결과 텍스트는 표시 여부와 무관하게 같은 높이를 차지해
+          정답/오답 시 버튼 그리드가 위로 밀리며 카드가 흔들리는 것을 막는다. */}
+      <div className="flex h-4 shrink-0 items-center justify-center text-center font-pixel text-xs text-parchment-200">
+        {picked &&
+          (picked === current.romaji ? (
             <span className="text-rune-400">⚔ 정답! +1 처치</span>
           ) : (
             <span className="text-volcano-400">
               💥 오답 — 정답은 "{current.romaji}"
             </span>
-          )}
-        </div>
-      )}
+          ))}
+      </div>
     </div>
   );
 }
