@@ -158,6 +158,7 @@ function BossBattle({ level, masteredWords }: BossBattleProps) {
 
   // 시각/사운드 효과 트리거
   const [attackTrigger, setAttackTrigger] = useState(0);
+  const [attacking, setAttacking] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [monsterState, setMonsterState] = useState<MonsterState>("idle");
   const [playerHurt, setPlayerHurt] = useState(false);
@@ -177,6 +178,9 @@ function BossBattle({ level, masteredWords }: BossBattleProps) {
   const triggerHit = () => {
     if (settings.effects.attack) {
       setAttackTrigger((t) => t + 1);
+      // 보스를 때릴 때 플레이어 캐릭터도 무기를 휘두르는 도트 모션을 재생
+      setAttacking(true);
+      setTimeout(() => setAttacking(false), 500);
     }
     if (settings.effects.card_shake) {
       setShaking(true);
@@ -389,6 +393,7 @@ function BossBattle({ level, masteredWords }: BossBattleProps) {
             <PixelCharacter
               id={selected_character}
               costumeId={equipped.costume[selected_character]}
+              attacking={attacking}
               size={44}
             />
           </div>
@@ -485,7 +490,9 @@ function VictoryScreen({
   flashKey: number;
 }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4">
+    // 좁은 화면에서도 보스 도트(140) + 헤더 + 인용 패널 + 버튼이
+    // 잘리지 않도록 min-h-full + overflow-y-auto 로 자체 스크롤을 허용한다.
+    <div className="flex min-h-full flex-col items-center justify-center gap-4 overflow-y-auto py-2">
       <div className="text-center">
         <div className="font-pixel text-xs tracking-widest text-rune-400">
           BOSS DEFEATED
@@ -495,15 +502,19 @@ function VictoryScreen({
         </h2>
       </div>
 
-      <div className="relative">
+      <div className="relative shrink-0">
         <PixelMonster level={level} size={140} state="dead" />
       </div>
 
-      <div className="panel-parchment max-w-sm text-center !text-parchment-900">
+      {/* w-full 로 항상 부모 가용 폭(최대 max-w-sm)을 채워, items-center
+          flex 안에서 max-content 폭으로 줄어들어 텍스트가 패널 밖으로
+          밀려 보이는 현상을 방지. break-keep 으로 한·일 혼용 텍스트의
+          어색한 단어 분절도 줄임. */}
+      <div className="panel-parchment w-full max-w-sm break-keep text-center !text-parchment-900">
         <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
           {bossNameJp} · {bossName}
         </div>
-        <p className="mt-1.5 italic">"{quote}"</p>
+        <p className="mt-1.5 italic leading-snug">"{quote}"</p>
       </div>
 
       <div className="flex w-full max-w-sm gap-2">
@@ -539,7 +550,7 @@ function DefeatScreen({
   onExit: () => void;
 }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4">
+    <div className="flex min-h-full flex-col items-center justify-center gap-4 overflow-y-auto py-2">
       <div className="text-center">
         <div className="font-pixel text-xs tracking-widest text-volcano-400">
           RETREAT
@@ -549,13 +560,15 @@ function DefeatScreen({
         </h2>
       </div>
 
-      <PixelMonster level={level} size={120} state="idle" />
+      <div className="shrink-0">
+        <PixelMonster level={level} size={120} state="idle" />
+      </div>
 
-      <div className="panel max-w-sm text-center">
+      <div className="panel w-full max-w-sm break-keep text-center">
         <p className="font-pixel text-sm text-parchment-100">
           단어들이 흔들렸어요.
         </p>
-        <p className="mt-2 text-sm text-parchment-200">
+        <p className="mt-2 text-sm leading-snug text-parchment-200">
           "헷갈려" 한 단어들은 <strong>가물가물</strong> 상태로 돌아갔습니다.
           학습에서 다시 외운 뒤 도전해보세요.
         </p>

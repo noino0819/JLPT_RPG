@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { CHARACTERS } from "../data/characters";
 import { COSTUMES_BY_ID } from "../data/cosmetics";
 import type { CharacterId } from "../types";
@@ -12,9 +13,17 @@ interface Props {
 }
 
 /**
- * Box-shadow 픽셀아트 + idle bobbing + attack swing.
- * 캐릭터마다 다른 16x16 sprite 와 팔레트를 사용해
- * 직업별 특징(헬멧, 고깔모자, 후드, 망토)이 한눈에 보이도록 차별화.
+ * Box-shadow 픽셀아트 + 다중 프레임 애니메이션.
+ *
+ * idle 상태   : 호흡/머리 흔들/깜빡임 등 정적 모션을 위해 idle 프레임을
+ *               일정 간격(380ms)으로 순환 재생.
+ * attack 상태 : `attacking` prop 이 true 인 동안 windup → swing → impact
+ *               순서로 빠르게(110ms) 프레임을 재생해 무기를 휘두르는
+ *               느낌을 표현. 동시에 기존 attackSwing transform 도 같이
+ *               동작해 몸이 살짝 기울며 임팩트를 강조한다.
+ *
+ * 캐릭터마다 다른 16x16 sprite 와 팔레트를 사용해 직업별 특징
+ * (헬멧/사도 고깔/후드/망토)이 한눈에 보이도록 차별화.
  */
 export default function PixelCharacter({
   id,
@@ -24,6 +33,41 @@ export default function PixelCharacter({
   costumeId,
 }: Props) {
   const c = CHARACTERS[id];
+  const [idleFrame, setIdleFrame] = useState(0);
+  const [attackFrame, setAttackFrame] = useState(0);
+
+  // idle 프레임 순환 — 호흡/깜빡임 등 미세 모션
+  useEffect(() => {
+    if (attacking) return;
+    const total = FRAMES[id].idle.length;
+    if (total <= 1) return;
+    const interval = setInterval(() => {
+      setIdleFrame((f) => (f + 1) % total);
+    }, 380);
+    return () => clearInterval(interval);
+  }, [id, attacking]);
+
+  // attack 프레임 — windup → release 순서로 빠르게 재생 후 마지막 프레임 유지
+  useEffect(() => {
+    if (!attacking) {
+      setAttackFrame(0);
+      return;
+    }
+    const total = FRAMES[id].attack.length;
+    setAttackFrame(0);
+    if (total <= 1) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      i = Math.min(i + 1, total - 1);
+      setAttackFrame(i);
+    }, 110);
+    return () => clearInterval(interval);
+  }, [id, attacking]);
+
+  const frames = FRAMES[id];
+  const sprite = attacking
+    ? (frames.attack[attackFrame] ?? frames.attack[0])
+    : (frames.idle[idleFrame] ?? frames.idle[0]);
 
   return (
     <div className="flex flex-col items-center gap-1">
@@ -31,7 +75,12 @@ export default function PixelCharacter({
         className={`relative ${attacking ? "animate-attackSwing" : "animate-bob"}`}
         style={{ width: size, height: size }}
       >
-        <CharacterSprite id={id} size={size} costumeId={costumeId} />
+        <CharacterSprite
+          id={id}
+          size={size}
+          costumeId={costumeId}
+          sprite={sprite}
+        />
       </div>
       {showName && (
         <div className="font-pixel text-[10px] text-parchment-200">
@@ -46,10 +95,12 @@ function CharacterSprite({
   id,
   size,
   costumeId,
+  sprite,
 }: {
   id: CharacterId;
   size: number;
   costumeId?: string;
+  sprite: string[];
 }) {
   const px = size / 16;
   const sty = (col: number, row: number, color: string) => ({
@@ -69,7 +120,6 @@ function CharacterSprite({
     costume && costume.characterId === id
       ? { ...base, ...costume.paletteOverride }
       : base;
-  const sprite = SPRITES[id];
 
   return (
     <div className="relative h-full w-full">
@@ -103,83 +153,341 @@ function CharacterSprite({
  *  w = 무기 손잡이 (나무)
  *  G = 마법/정령 글로우
  */
-const SPRITES: Record<CharacterId, string[]> = {
-  // 전사: 뿔 달린 헬멧 + 금장 갑옷 + 미소
-  warrior: [
-    "................",
-    "....h.....h.....",
-    "....hh...hh.....",
-    "...ohhhhhhho....",
-    "..ohhhhhhhhho...",
-    "..oHHHHHHHHHo...",
-    "...ohseesho.....",
-    "...ohsrMrsho....",
-    "....ossssoo.....",
-    "..mccccccccm....",
-    "..ccgmmmgccc....",
-    "..ccbbbbbbcc....",
-    "..ccccccccc.....",
-    "...cc...cc......",
-    "...oo...oo......",
-    "................",
-  ],
-  // 마법사: 별 달린 고깔모자 + 보라 로브 + 지팡이(오른쪽)
-  mage: [
-    "................",
-    "........S.......",
-    ".......hSh......",
-    "......hhhh......",
-    ".....hhhhhh.....",
-    "....hhhhhhhh....",
-    "...hhhhhhhhhh...",
-    "..HHHHHHHHHHHH..",
-    "....osseso......",
-    "....osMrso..G...",
-    "....osssso..G...",
-    "...CcccccccC.G..",
-    "..Cccgggccc.Gw..",
-    "..Ccccccccc..w..",
-    "..occcccccco.w..",
-    "................",
-  ],
-  // 궁수: 깃털 달린 후드 + 가죽끈(어깨) + 활(오른쪽)
-  archer: [
-    "................",
-    ".......hhS......",
-    "......hhhhS.....",
-    ".....hhhhhh.....",
-    "....hhhhhhhh....",
-    "...hHHHHHHHh....",
-    "...hosesseh.....",
-    "...hosrMrsh.....",
-    "....ossssoo.....",
-    "..bccccccccm....",
-    "..ccbcccccc.m...",
-    "..cccbcccccgw...",
-    "..ccccbcccc.m...",
-    "...cc.bb.cc.m...",
-    "...oo....oo.....",
-    "................",
-  ],
-  // 소환사: 깊은 후드 + 빛나는 눈 + 망토 + 옆을 떠다니는 정령
-  summoner: [
-    "................",
-    "....hhhhhhh.....",
-    "...hhhhhhhhh....",
-    "..hhhhhhhhhhh...",
-    "..hhHHHHHHHhh...",
-    "..hHH.....HHh...",
-    "..hH.eee.e.Hh...",
-    "..hH.......Hh...",
-    "..ohHHHHHHHho...",
-    "..CChhhhhhCC.G..",
-    ".CcccccccccC.G..",
-    ".Cccccgcccc..G..",
-    ".CcCcccccCcC....",
-    ".CCcccccccCC....",
-    ".occcccccccco...",
-    "................",
-  ],
+const FRAMES: Record<
+  CharacterId,
+  { idle: string[][]; attack: string[][] }
+> = {
+  // 전사: 뿔 헬멧 + 갑옷, 공격 시 검을 머리 위로 들었다가 우측으로 휘두름
+  warrior: {
+    idle: [
+      [
+        "................",
+        "....h.....h.....",
+        "....hh...hh.....",
+        "...ohhhhhhho....",
+        "..ohhhhhhhhho...",
+        "..oHHHHHHHHHo...",
+        "...ohseesho.....",
+        "...ohsrMrsho....",
+        "....ossssoo.....",
+        "..mccccccccm....",
+        "..ccgmmmgccc....",
+        "..ccbbbbbbcc....",
+        "..ccccccccc.....",
+        "...cc...cc......",
+        "...oo...oo......",
+        "................",
+      ],
+      // idle 보조 프레임 — 머리를 살짝 오른쪽으로 기울이고 눈을 감음 (호흡)
+      [
+        "................",
+        ".....h.....h....",
+        ".....hh...hh....",
+        "....ohhhhhhho...",
+        "...ohhhhhhhhho..",
+        "...oHHHHHHHHHo..",
+        "....ohsoosho....",
+        "....ohsrMrsho...",
+        ".....ossssoo....",
+        "..mccccccccm....",
+        "..ccgmmmgccc....",
+        "..ccbbbbbbcc....",
+        "..ccccccccc.....",
+        "...cc...cc......",
+        "...oo...oo......",
+        "................",
+      ],
+    ],
+    attack: [
+      // windup — 검을 머리 위로 치켜듦
+      [
+        ".............m..",
+        "....h.....h..m..",
+        "....hh...hh..m..",
+        "...ohhhhhhho.m..",
+        "..ohhhhhhhhhomm.",
+        "..oHHHHHHHHHom..",
+        "...ohseesho.....",
+        "...ohsrMrsho....",
+        "....ossssoo.....",
+        "..mccccccccm....",
+        "..ccgmmmgccc....",
+        "..ccbbbbbbcc....",
+        "..ccccccccc.....",
+        "...cc...cc......",
+        "...oo...oo......",
+        "................",
+      ],
+      // swing — 검을 우측으로 강하게 휘두름
+      [
+        "................",
+        "....h.....h.....",
+        "....hh...hh.....",
+        "...ohhhhhhho....",
+        "..ohhhhhhhhho.m.",
+        "..oHHHHHHHHHommm",
+        "...ohseesho.....",
+        "...ohsrMrsho....",
+        "....ossssoo.....",
+        "..mccccccccmmmmm",
+        "..ccgmmmgccc....",
+        "..ccbbbbbbcc....",
+        "..ccccccccc.....",
+        "...cc...cc......",
+        "...oo...oo......",
+        "................",
+      ],
+    ],
+  },
+
+  // 마법사: 별 고깔 + 보라 로브 + 지팡이, 공격 시 오브가 빛나며 마법 발사
+  mage: {
+    idle: [
+      [
+        "................",
+        "........S.......",
+        ".......hSh......",
+        "......hhhh......",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hhhhhhhhhh...",
+        "..HHHHHHHHHHHH..",
+        "....osseso......",
+        "....osMrso..G...",
+        "....osssso..G...",
+        "...CcccccccC.G..",
+        "..Cccgggccc.Gw..",
+        "..Ccccccccc..w..",
+        "..occcccccco.w..",
+        "................",
+      ],
+      // idle 보조 프레임 — 고깔이 살짝 오른쪽으로 흔들리고 눈을 깜빡임
+      [
+        "................",
+        ".........S......",
+        "........hSh.....",
+        ".......hhhh.....",
+        "......hhhhhh....",
+        ".....hhhhhhhh...",
+        "....hhhhhhhhhh..",
+        "..HHHHHHHHHHHH..",
+        "....ossoso......",
+        "....osMrso..G...",
+        "....osssso..G...",
+        "...CcccccccC.G..",
+        "..Cccgggccc.Gw..",
+        "..Ccccccccc..w..",
+        "..occcccccco.w..",
+        "................",
+      ],
+    ],
+    attack: [
+      // windup — 오브가 충전되며 글로우가 점점 커짐
+      [
+        "................",
+        "........S.......",
+        ".......hSh......",
+        "......hhhh......",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hhhhhhhhhh...",
+        "..HHHHHHHHHHHH..",
+        "....osseso.GGG..",
+        "....osMrso.GGGG.",
+        "....osssso.GGGG.",
+        "...CcccccccCGG..",
+        "..Cccgggccc.Gw..",
+        "..Ccccccccc..w..",
+        "..occcccccco.w..",
+        "................",
+      ],
+      // release — 마법 빔이 우측으로 발사
+      [
+        "................",
+        "........S.......",
+        ".......hSh......",
+        "......hhhh......",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hhhhhhhhhh...",
+        "..HHHHHHHHHHHH..",
+        "....osseso..GGGG",
+        "....osMrso.GGGGG",
+        "....osssso..GGGG",
+        "...CcccccccC.G..",
+        "..Cccgggccc.Gw..",
+        "..Ccccccccc..w..",
+        "..occcccccco.w..",
+        "................",
+      ],
+    ],
+  },
+
+  // 궁수: 깃털 후드 + 가죽, 공격 시 활을 당겨 화살이 날아감
+  archer: {
+    idle: [
+      [
+        "................",
+        ".......hhS......",
+        "......hhhhS.....",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hHHHHHHHh....",
+        "...hosesseh.....",
+        "...hosrMrsh.....",
+        "....ossssoo.....",
+        "..bccccccccm....",
+        "..ccbcccccc.m...",
+        "..cccbcccccgw...",
+        "..ccccbcccc.m...",
+        "...cc.bb.cc.m...",
+        "...oo....oo.....",
+        "................",
+      ],
+      // idle 보조 — 눈 깜빡 + 활시위 살짝 떨림
+      [
+        "................",
+        ".......hhS......",
+        "......hhhhS.....",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hHHHHHHHh....",
+        "...hosossoh.....",
+        "...hosrMrsh.....",
+        "....ossssoo.....",
+        "..bccccccccm....",
+        "..ccbccccccm....",
+        "..cccbcccccgw...",
+        "..ccccbccccm....",
+        "...cc.bb.ccm....",
+        "...oo....oo.....",
+        "................",
+      ],
+    ],
+    attack: [
+      // windup — 화살을 시위에 끼우고 우측으로 정조준
+      [
+        "................",
+        ".......hhS......",
+        "......hhhhS.....",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hHHHHHHHh....",
+        "...hoseesoh.....",
+        "...hosrMrsh.....",
+        "....ossssoo.....",
+        "..bccccccccm....",
+        "..ccbcccccc.m...",
+        "..cccbcccccgwmmm",
+        "..ccccbcccc.m...",
+        "...cc.bb.cc.m...",
+        "...oo....oo.....",
+        "................",
+      ],
+      // release — 화살이 날아가고 시위가 튕겨 돌아옴
+      [
+        "................",
+        ".......hhS......",
+        "......hhhhS.....",
+        ".....hhhhhh.....",
+        "....hhhhhhhh....",
+        "...hHHHHHHHh....",
+        "...hoseesoh.....",
+        "...hosrMrsh.....",
+        "....ossssoo.....",
+        "..bccccccccm....",
+        "..ccbccccccm....",
+        "..cccbcccccgw...",
+        "..ccccbccccm....",
+        "...cc.bb.ccm....",
+        "...oo....oo.....",
+        "................",
+      ],
+    ],
+  },
+
+  // 소환사: 어두운 후드 + 정령, 공격 시 정령이 한쪽에 모였다가 빛이 흩뿌려짐
+  summoner: {
+    idle: [
+      [
+        "................",
+        "....hhhhhhh.....",
+        "...hhhhhhhhh....",
+        "..hhhhhhhhhhh...",
+        "..hhHHHHHHHhh...",
+        "..hHH.....HHh...",
+        "..hH.eee.e.Hh...",
+        "..hH.......Hh...",
+        "..ohHHHHHHHho...",
+        "..CChhhhhhCC.G..",
+        ".CcccccccccC.G..",
+        ".Cccccgcccc..G..",
+        ".CcCcccccCcC....",
+        ".CCcccccccCC....",
+        ".occcccccccco...",
+        "................",
+      ],
+      // idle 보조 — 빛나는 눈 패턴이 깜빡이며 동행 정령이 살짝 떠다님
+      [
+        "................",
+        "....hhhhhhh.....",
+        "...hhhhhhhhh....",
+        "..hhhhhhhhhhh...",
+        "..hhHHHHHHHhh...",
+        "..hHH.....HHh...",
+        "..hH.e.eee.Hh...",
+        "..hH.......Hh...",
+        "..ohHHHHHHHho...",
+        "..CChhhhhhCC..G.",
+        ".CcccccccccC..G.",
+        ".Cccccgcccc...G.",
+        ".CcCcccccCcC....",
+        ".CCcccccccCC....",
+        ".occcccccccco...",
+        "................",
+      ],
+    ],
+    attack: [
+      // windup — 정령들이 우측에 응집
+      [
+        "................",
+        "....hhhhhhh.GG..",
+        "...hhhhhhhhh.G..",
+        "..hhhhhhhhhhh...",
+        "..hhHHHHHHHhh...",
+        "..hHH.....HHh.G.",
+        "..hH.eee.e.Hh.G.",
+        "..hH.......Hh.G.",
+        "..ohHHHHHHHho...",
+        "..CChhhhhhCC.G..",
+        ".CcccccccccC.G..",
+        ".Cccccgcccc..G..",
+        ".CcCcccccCcC....",
+        ".CCcccccccCC....",
+        ".occcccccccco...",
+        "................",
+      ],
+      // release — 정령들이 사방으로 튕겨나감
+      [
+        "................",
+        "....hhhhhhh.G...",
+        "...hhhhhhhhh.G..",
+        "..hhhhhhhhhhh.GG",
+        "..hhHHHHHHHhhGGG",
+        "..hHH.....HHh...",
+        "..hH.eee.e.HhGGG",
+        "..hH.......Hh.GG",
+        "..ohHHHHHHHho.GG",
+        "..CChhhhhhCC.G..",
+        ".CcccccccccC.G..",
+        ".Cccccgcccc..G..",
+        ".CcCcccccCcC....",
+        ".CCcccccccCC....",
+        ".occcccccccco...",
+        "................",
+      ],
+    ],
+  },
 };
 
 type Palette = Record<string, string>;
@@ -248,13 +556,22 @@ const PALETTES: Record<CharacterId, Palette> = {
 
 // 모든 sprite 행이 정확히 16자 인지 개발 모드에서 검증
 if (import.meta.env.DEV) {
-  for (const [id, sprite] of Object.entries(SPRITES)) {
-    sprite.forEach((row, i) => {
-      if (row.length !== 16) {
-        console.warn(
-          `[PixelCharacter] sprite ${id} row ${i} 길이=${row.length} (16 이어야 함): "${row}"`,
-        );
-      }
+  for (const [id, framesByState] of Object.entries(FRAMES)) {
+    (["idle", "attack"] as const).forEach((state) => {
+      framesByState[state].forEach((sprite, fi) => {
+        sprite.forEach((row, ri) => {
+          if (row.length !== 16) {
+            console.warn(
+              `[PixelCharacter] ${id}.${state}[${fi}] row ${ri} 길이=${row.length} (16 이어야 함): "${row}"`,
+            );
+          }
+        });
+        if (sprite.length !== 16) {
+          console.warn(
+            `[PixelCharacter] ${id}.${state}[${fi}] 행 개수=${sprite.length} (16 이어야 함)`,
+          );
+        }
+      });
     });
   }
 }
