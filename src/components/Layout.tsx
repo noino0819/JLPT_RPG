@@ -74,6 +74,7 @@ export default function Layout() {
       <nav className="shrink-0 border-t-2 border-black bg-dungeon-200/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-around gap-1 px-2 py-1">
           <NavTab to="/" label="던전" icon="🏯" />
+          <NavTab to="/kana" label="카나" icon="あ" jpIcon />
           <NavTab to="/review" label="다시보기" icon="🔖" />
           <NavTab to="/mydeck" label="단어장" icon="📜" />
           <NavTab to="/wardrobe" label="옷장" icon="🧝" />
@@ -99,10 +100,13 @@ function NavTab({
   to,
   label,
   icon,
+  jpIcon = false,
 }: {
   to: string;
   label: string;
   icon: string;
+  /** true 이면 일본어 픽셀 폰트로 아이콘을 렌더 (카나 탭 등) */
+  jpIcon?: boolean;
 }) {
   return (
     <NavLink
@@ -116,7 +120,9 @@ function NavTab({
         }`
       }
     >
-      <span className="text-lg">{icon}</span>
+      <span className={`text-lg ${jpIcon ? "pixel-text-jp leading-none" : ""}`}>
+        {icon}
+      </span>
       {label}
     </NavLink>
   );

@@ -109,6 +109,36 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 카나 수련장 — 던전(어휘) 전에 거치는 기초 훈련소 */}
+      <Link
+        to="/kana"
+        className="group relative block overflow-hidden border-2 border-black bg-gradient-to-r from-parchment-700/40 via-parchment-500/30 to-parchment-400/30 p-2.5 transition hover:-translate-y-0.5"
+        style={{ boxShadow: "0 4px 0 0 rgba(0,0,0,0.7)" }}
+      >
+        <div className="absolute inset-0 scanline opacity-30" />
+        <div className="relative flex items-center gap-3">
+          <div className="grid h-12 w-12 shrink-0 place-items-center border-2 border-black bg-parchment-100">
+            <span className="pixel-text-jp text-2xl font-bold leading-none text-parchment-900">
+              あア
+            </span>
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-200/80">
+              수련장 · 修練場
+            </div>
+            <div className="pixel-text font-pixel text-base text-parchment-100">
+              히라가나 · 가타카나
+            </div>
+            <div className="text-[11px] text-parchment-200/90">
+              五十音 도장에서 기초를 닦자
+            </div>
+          </div>
+          <span className="shrink-0 font-pixel text-2xl text-parchment-100 transition group-hover:translate-x-1">
+            ›
+          </span>
+        </div>
+      </Link>
+
       {/* 던전 섹션 - 영역 전체를 채우고 카드 자체는 컴팩트하게 */}
       <section className="flex min-h-0 flex-1 flex-col">
         <div className="mb-2 flex items-center justify-between">

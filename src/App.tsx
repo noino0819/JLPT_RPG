@@ -11,6 +11,7 @@ import WardrobePage from "./pages/WardrobePage";
 import StudyPage from "./pages/StudyPage";
 import ReviewPage from "./pages/ReviewPage";
 import MyDeckPage from "./pages/MyDeckPage";
+import KanaPage from "./pages/KanaPage";
 import SettingsPage from "./pages/SettingsPage";
 import PixelSword from "./components/PixelSword";
 import UnlockToast from "./components/UnlockToast";
@@ -59,6 +60,7 @@ export default function App() {
           <Route path="/study/deck/:deckId" element={<StudyPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/mydeck" element={<MyDeckPage />} />
+          <Route path="/kana" element={<KanaPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
