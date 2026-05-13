@@ -12,6 +12,7 @@ export interface Settings {
   exclude_memorized: boolean;
   probably_repeat_every: number; // every N words include 1 probably
   review_mix_weight: number; // weight multiplier for flagged words
+  show_character: boolean; // 학습 화면 캐릭터 표시 여부
   effects: {
     attack: boolean;
     card_shake: boolean;
@@ -24,6 +25,7 @@ export const DEFAULT_SETTINGS: Settings = {
   exclude_memorized: true,
   probably_repeat_every: 8,
   review_mix_weight: 3,
+  show_character: true,
   effects: { attack: true, card_shake: true, sound: false },
 };
 

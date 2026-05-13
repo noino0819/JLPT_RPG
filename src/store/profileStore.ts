@@ -41,6 +41,24 @@ export const useProfileStore = create<ProfileState>()(
           settings: DEFAULT_SETTINGS,
         }),
     }),
-    { name: "jlpt-rpg-profile" },
+    {
+      name: "jlpt-rpg-profile",
+      // 새로운 설정 키가 추가될 때 기존 영속화 데이터에 기본값을 보충
+      merge: (persisted, current) => {
+        const p = (persisted as Partial<ProfileState>) ?? {};
+        return {
+          ...current,
+          ...p,
+          settings: {
+            ...DEFAULT_SETTINGS,
+            ...(p.settings ?? {}),
+            effects: {
+              ...DEFAULT_SETTINGS.effects,
+              ...(p.settings?.effects ?? {}),
+            },
+          },
+        } as ProfileState;
+      },
+    },
   ),
 );

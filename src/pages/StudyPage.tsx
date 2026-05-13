@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CHARACTER_LIST } from "../data/characters";
 import { DUNGEONS } from "../data/dungeons";
@@ -164,8 +164,7 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
     }, delay);
   };
 
-  // 캐릭터 빠른 변경
-  const charPickerRef = useRef<HTMLDivElement>(null);
+  // 캐릭터 빠른 변경 (카드 위 캐릭터 클릭 시 모달로 표시)
   const [pickerOpen, setPickerOpen] = useState(false);
 
   if (!loaded) {
@@ -233,13 +232,16 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
 
   return (
     <div
-      className={`space-y-4 ${
+      // 모바일에서 스크롤이 생기지 않도록 헤더/네비게이션 높이를 제외한
+      // 뷰포트 영역을 가득 채우는 flex 컨테이너.
+      // (Layout: 상단 헤더 ~64px, 하단 네비 ~52px, main py-5 ~40px ≈ 156px)
+      className={`flex flex-col gap-3 h-[calc(100dvh-156px)] ${
         dungeon
-          ? `min-h-[80vh] -mx-4 -my-5 px-4 py-5 bg-gradient-to-b ${dungeon.theme.bg}`
+          ? `-mx-4 -my-5 px-4 py-4 bg-gradient-to-b ${dungeon.theme.bg}`
           : ""
       }`}
     >
-      <header className="flex items-center justify-between">
+      <header className="flex shrink-0 items-center justify-between">
         <div>
           <h2 className="pixel-text font-pixel text-xl text-parchment-100">
             {headerTitle}
@@ -253,8 +255,9 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
         </Link>
       </header>
 
-      <div className="relative">
-        <WordCard word={word} shaking={shaking} />
+      {/* 카드 영역: 남은 공간을 차지. 캐릭터는 좌측 하단에 절대 배치. */}
+      <div className="relative min-h-0 flex-1">
+        <WordCard word={word} shaking={shaking} fillHeight />
         <AttackEffect
           characterId={selected_character}
           trigger={attackTrigger}
@@ -268,9 +271,25 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
             {floatText}
           </div>
         )}
+
+        {settings.show_character && (
+          <button
+            type="button"
+            onClick={() => setPickerOpen((o) => !o)}
+            aria-label="캐릭터 변경"
+            title="캐릭터 변경"
+            className="absolute -bottom-2 -left-2 z-20 flex items-end"
+          >
+            <PixelCharacter
+              id={selected_character}
+              attacking={attacking}
+              size={56}
+            />
+          </button>
+        )}
       </div>
 
-      <div>
+      <div className="shrink-0">
         <div className="mb-1 flex items-center justify-between">
           <div className="flex items-center gap-2 font-pixel text-xs text-parchment-200">
             기억 상태
@@ -302,15 +321,21 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
         </div>
 
         <div className="grid grid-cols-2 gap-2">
-          <button onClick={() => handleAction("mastered")} className="btn-gold !py-4">
+          <button
+            onClick={() => handleAction("mastered")}
+            className="btn-gold !py-3"
+          >
             👑 완벽히 외움
           </button>
-          <button onClick={() => handleAction("probably")} className="btn-primary !py-4">
+          <button
+            onClick={() => handleAction("probably")}
+            className="btn-primary !py-3"
+          >
             ✓ 외운 것 같아요
           </button>
           <button
             onClick={() => handleAction("flag")}
-            className={`btn-pixel !py-4 ${
+            className={`btn-pixel !py-3 ${
               progress?.flagged
                 ? "bg-volcano-500 text-white"
                 : "bg-dungeon-50 text-parchment-100"
@@ -318,49 +343,58 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           >
             🔖 다시 보기
           </button>
-          <button onClick={() => handleAction("skip")} className="btn-ghost !py-4">
+          <button
+            onClick={() => handleAction("skip")}
+            className="btn-ghost !py-3"
+          >
             → 다음
           </button>
         </div>
       </div>
 
-      <div className="flex items-end justify-between" ref={charPickerRef}>
-        <div className="flex items-center gap-3">
-          <PixelCharacter
-            id={selected_character}
-            attacking={attacking}
-            size={64}
-          />
-          <button
-            onClick={() => setPickerOpen((o) => !o)}
-            className="border-2 border-black bg-dungeon-100 px-2 py-1 font-pixel text-[10px] text-parchment-100 hover:bg-dungeon-50"
-          >
-            캐릭터 변경
-          </button>
-        </div>
-      </div>
-
       {pickerOpen && (
-        <div className="panel grid grid-cols-4 gap-2">
-          {CHARACTER_LIST.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => {
-                setCharacter(c.id as CharacterId);
-                setPickerOpen(false);
-              }}
-              className={`flex flex-col items-center gap-1 border-2 p-2 ${
-                c.id === selected_character
-                  ? "border-rune-500 bg-rune-500/15"
-                  : "border-black bg-dungeon-50 hover:bg-dungeon-100"
-              }`}
-            >
-              <PixelCharacter id={c.id} size={40} />
-              <span className="font-pixel text-[10px] text-parchment-100">
-                {c.nameJp}
-              </span>
-            </button>
-          ))}
+        <div
+          className="fixed inset-0 z-40 flex items-end justify-center bg-black/60 p-4 sm:items-center"
+          onClick={() => setPickerOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="panel w-full max-w-sm space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="pixel-text font-pixel text-sm text-parchment-100">
+                캐릭터 변경
+              </h3>
+              <button
+                onClick={() => setPickerOpen(false)}
+                className="font-pixel text-xs text-parchment-300 hover:text-parchment-100"
+                aria-label="닫기"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              {CHARACTER_LIST.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => {
+                    setCharacter(c.id as CharacterId);
+                    setPickerOpen(false);
+                  }}
+                  className={`flex flex-col items-center gap-1 border-2 p-2 ${
+                    c.id === selected_character
+                      ? "border-rune-500 bg-rune-500/15"
+                      : "border-black bg-dungeon-50 hover:bg-dungeon-100"
+                  }`}
+                >
+                  <PixelCharacter id={c.id} size={40} />
+                  <span className="font-pixel text-[10px] text-parchment-100">
+                    {c.nameJp}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 

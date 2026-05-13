@@ -88,6 +88,12 @@ export default function SettingsPage() {
       </Section>
 
       <Section title="이펙트">
+        <Row label="캐릭터 표시">
+          <Toggle
+            on={settings.show_character}
+            onChange={(v) => updateSettings({ show_character: v })}
+          />
+        </Row>
         <Row label="공격 이펙트">
           <Toggle
             on={settings.effects.attack}

@@ -5,6 +5,11 @@ interface Props {
   word: Word;
   shaking?: boolean;
   onFlipChange?: (flipped: boolean) => void;
+  /**
+   * true 이면 부모 높이를 가득 채움 (학습 화면 - 스크롤 방지).
+   * false 이면 기존 고정 높이 유지.
+   */
+  fillHeight?: boolean;
 }
 
 /**
@@ -13,7 +18,12 @@ interface Props {
  * 뒷면: 뜻 + 어원 + 예문
  * 클릭으로 3D 플립.
  */
-export default function WordCard({ word, shaking, onFlipChange }: Props) {
+export default function WordCard({
+  word,
+  shaking,
+  onFlipChange,
+  fillHeight = false,
+}: Props) {
   const [flipped, setFlipped] = useState(false);
 
   useEffect(() => {
@@ -26,10 +36,20 @@ export default function WordCard({ word, shaking, onFlipChange }: Props) {
 
   const isHiraganaOnly = !word.headword;
 
+  // fillHeight=true 일 때 부모(flex 컨테이너)의 남은 공간을 차지하면서
+  // 너무 작아지지 않도록 min-h 만 보장한다.
+  const innerSize = fillHeight
+    ? "h-full min-h-[260px] sm:min-h-[360px]"
+    : "h-[360px] sm:h-[420px]";
+
   return (
-    <div className="flip-perspective relative w-full">
+    <div
+      className={`flip-perspective relative w-full ${
+        fillHeight ? "h-full" : ""
+      }`}
+    >
       <div
-        className={`flip-inner relative h-[360px] w-full sm:h-[420px] ${
+        className={`flip-inner relative w-full ${innerSize} ${
           flipped ? "flipped" : ""
         } ${shaking ? "animate-cardShake" : ""}`}
         onClick={() => setFlipped((f) => !f)}
