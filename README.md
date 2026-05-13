@@ -1,73 +1,213 @@
-# JLPT RPG 🗾⚔️
+<div align="center">
 
-JLPT(일본어 능력 시험) 단어를 외우면서 몬스터를 쓰러뜨리는 학습용 RPG 웹 게임입니다.
+<img src="https://readme-typing-svg.demolab.com?font=DotGothic16&size=34&duration=2800&pause=900&color=33C4FF&center=true&vCenter=true&width=620&lines=%F0%9F%97%A1%EF%B8%8F+JLPT+RPG+%C2%B7+%E6%BC%A2%E5%AD%97%E3%83%80%E3%83%B3%E3%82%B8%E3%83%A7%E3%83%B3;%EB%8B%A8%EC%96%B4%EB%A5%BC+%EC%99%B8%EC%9A%B0%EB%A9%B0+%EB%AA%AC%EC%8A%A4%ED%84%B0%EB%A5%BC+%EC%93%B0%EB%9F%AC%EB%9C%A8%EB%A6%AC%EB%8A%94+RPG;N5+%E2%86%92+N1+%C2%B7+JLPT+%EA%B3%B5%EC%8B%9D+%EC%96%B4%ED%9C%98+%EC%99%84%EC%A0%84+%EC%A0%95%EB%B3%B5" alt="JLPT RPG" />
+
+<br/>
+
+![React](https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-6-646cff?style=for-the-badge&logo=vite&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20DB-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-Serverless-000?style=for-the-badge&logo=vercel&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-Installable-7a4cf0?style=for-the-badge&logo=pwa&logoColor=white)
+
+<br/>
+
+**[ 🎮 Live Demo ](https://jlpt-rpg.vercel.app)** &nbsp;·&nbsp; **[ 📖 Supabase 설정 ](docs/SUPABASE_SETUP.md)** &nbsp;·&nbsp; **[ 🟢 네이버 OAuth ](docs/NAVER_OAUTH_SETUP.md)** &nbsp;·&nbsp; **[ 📨 이메일 템플릿 ](docs/email-templates/README.md)**
+
+</div>
+
+<br/>
+
+> **`📜 새 모험가에게 보내는 두루마리`**
+>
+> JLPT(일본어 능력 시험) 단어를 외우며 **N5 ~ N1 던전**을 정복하는 픽셀 RPG 웹앱.
+> 카드를 넘기며 단어를 학습하고, *기억 상태*에 따라 자동으로 복습할 단어가 쌓여요.
+> 캐릭터를 키우고, 한자 어원/예문을 함께 익히며, 일본어 어휘를 게임처럼 정복합니다. ⚔️✨
+
+<br/>
+
+---
 
 ## ✨ 주요 기능
 
-- **단어 수련 모드**: 플래시카드 형식으로 일본어 단어를 학습하고 EXP를 얻어요.
-- **전투 모드**: 단어 뜻 4지선다 퀴즈로 적을 공격! 틀리면 적의 반격을 받습니다.
-- **레벨업 시스템**: EXP를 모으면 자동 레벨업, HP/공격력이 상승합니다.
-- **JLPT 레벨 선택**: N5 ~ N1 중 도전할 단계를 자유롭게 선택할 수 있어요.
-- **로컬 스토리지 저장**: 진행 상황은 브라우저에 자동 저장됩니다.
+### 🏯 던전 (JLPT 레벨)
+
+| 던전 | 레벨 | 단어 수 | 비고 |
+|:---:|:---:|---:|---|
+| 🟢 **초원** | N5 | **301** | PDF 단어장 전체 어휘 시드 |
+| 🟡 **숲속** | N4 | **285** | 한자 어원 + 예문 2개씩 |
+| 🟠 **던전** | N3 | **450** | 의미 2개 · 한자 어원 2개 · 예문 2개씩 |
+| 🔴 **화산** | N2 | **1,356** | 한자 어원 + 예문 2개씩 |
+| ⚫ **마왕성** | N1 | *준비 중* | — |
+
+> 💡 모든 단어에는 *한자 어원 풀이* 와 *실전 예문* 이 포함되어 있어 시험 + 실사용 둘 다 노립니다.
+
+<br/>
+
+### 🗡️ 학습 · 전투 시스템
+
+- 🎴 **단어 카드 학습** — 플래시카드 형식으로 단어 → 뜻 → 예문 → 한자 어원 순차 공개
+- 🧠 **기억 상태 (SRS 풍)** — `처음 / 헷갈림 / 외움` 3단계로 분류 → 외운 단어는 자동 제외 가능
+- 🔁 **복습 모드 (Review)** — 헷갈리는 단어만 모아 따로 학습
+- 📦 **내 단어장 (MyDeck)** — 엑셀(.xlsx) 업로드로 나만의 덱 생성 / 예시 파일 다운로드 지원
+- 🎯 **정복 완료 화면** — 던전 클리어 시 외운 단어 제외 토글로 다음 회독 난이도 조절
+
+<br/>
+
+### 🧙 캐릭터 & 픽셀 아트
+
+- 👤 **직업 선택** — 캐릭터 페이지에서 직업별 외형 / 처치 이펙트 차별화
+- ⚔️ **픽셀 도트 아트** — 칼 · 캐릭터 · 던전 · 파비콘 · OG 이미지 모두 손수 픽셀 컴포넌트화
+- 🏆 **등급 (Rank) 시스템** — 정복 진행도에 따라 모험가 등급 배지 부여
+- 💥 **공격 / 처치 이펙트** — `framer-motion` 기반 부드러운 픽셀 모션
+
+<br/>
+
+### 🔐 인증 & 동기화
+
+- 📧 **이메일 회원가입 / 로그인** — Supabase Auth, 인증 메일은 픽셀 RPG 양피지 디자인
+- 🟢 **네이버 OAuth 로그인** — Vercel 서버리스 함수(`/api/auth/naver`) + Supabase 매직링크 결합
+- ☁️ **서버 동기화** — 프로필 · 진행상태 · 덱 · 단어 모두 Supabase 와 자동 동기화
+- 💾 **로컬 모드 fallback** — `.env` 없으면 자동으로 LocalStorage 만 사용 (오프라인 OK)
+- 📱 **PWA 설치형 앱** — 모바일 홈 화면 설치 지원, 네이버 OAuth PWA 무한 로딩 이슈도 해결됨
+
+<br/>
+
+---
 
 ## 🛠 기술 스택
 
-- [Vite](https://vitejs.dev/) + [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/) — UI 스타일링
-- [React Router](https://reactrouter.com/) — 페이지 라우팅
-- [Zustand](https://zustand-demo.pmnd.rs/) — 전역 상태 관리 (영속화 포함)
+<table>
+<tr>
+<td>
+
+**🎨 Frontend**
+- React 19 + Vite 6 + TypeScript 5.7
+- Tailwind CSS 3.4
+- React Router v7
+- Zustand (영속화 포함)
+- framer-motion
+
+</td>
+<td>
+
+**☁️ Backend / Infra**
+- Supabase (Auth · Postgres)
+- Vercel (정적 배포 + 서버리스 함수)
+- 네이버 OAuth 연동 함수
+- PWA (`site.webmanifest`)
+
+</td>
+<td>
+
+**📑 데이터**
+- read-excel-file / write-excel-file
+- papaparse
+- `db/*.sql` PDF 어휘 시드
+- `scripts/` 파이썬 PDF → SQL 변환기
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+---
 
 ## 🚀 시작하기
 
 ```bash
-# 의존성 설치
+# 1. 의존성 설치
 npm install
 
-# 개발 서버 실행 (http://localhost:5173)
+# 2. 개발 서버 (http://localhost:5173)
 npm run dev
 
-# 프로덕션 빌드
-npm run build
+# 3. 프로덕션 빌드
+npm run build && npm run preview
 ```
 
-### Supabase 연동 (선택)
+<br/>
 
-환경변수가 없으면 자동으로 **로컬 모드**로 동작합니다.
-서버 동기화를 원하면 `.env.example` 을 복사해 `.env.local` 을 만들고
-Supabase URL · anon key 를 채우세요.
+### ☁️ Supabase 연동 (선택)
 
-자세한 설정은 [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) 참조.
+환경변수가 없으면 자동으로 **로컬 모드**(LocalStorage)로 동작합니다.
+서버 동기화·OAuth 로그인을 쓰려면 `.env.local` 을 만들고 값을 채워주세요.
 
 ```bash
 cp .env.example .env.local
-# 값을 채운 뒤 dev 서버 재시작
+# Supabase URL · anon key · (선택) 네이버 OAuth 키 입력 후 dev 재시작
 ```
+
+자세한 절차는 다음 문서를 참고하세요.
+
+- 📖 [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) — DB 스키마 · RLS · 인증 설정
+- 🟢 [`docs/NAVER_OAUTH_SETUP.md`](docs/NAVER_OAUTH_SETUP.md) — 네이버 로그인 설정
+- 📨 [`docs/email-templates/README.md`](docs/email-templates/README.md) — 픽셀 RPG 이메일 4종 적용법
+
+<br/>
+
+---
 
 ## 📁 프로젝트 구조
 
 ```
-src/
-├── components/     # 공통 UI 컴포넌트 (Layout 등)
-├── data/           # 단어/적 데이터
-├── pages/          # 페이지 컴포넌트
-│   ├── HomePage.tsx
-│   ├── StudyPage.tsx
-│   ├── BattlePage.tsx
-│   └── StatusPage.tsx
-├── store/          # Zustand 상태 스토어
-├── App.tsx
-├── main.tsx
-└── index.css
+JLPTRPG/
+├── 📂 src/
+│   ├── 📂 components/      # PixelSword, PixelCharacter, WordCard, RankBadge ...
+│   ├── 📂 pages/           # Home · Character · Study · Review · MyDeck · Settings · Login
+│   ├── 📂 store/           # authStore · profileStore · decksStore · progressStore (Zustand)
+│   ├── 📂 hooks/           # useSupabaseSession · useProgressSync · useDecksSync ...
+│   ├── 📂 data/            # dungeons · characters · ranks · seed
+│   ├── 📂 lib/             # Supabase 클라이언트 등
+│   └── App.tsx · main.tsx · types.ts
+│
+├── 📂 api/auth/naver/      # Vercel 서버리스 함수 (네이버 OAuth 콜백)
+├── 📂 db/                  # N5 / N4 / N3 단어 시드 SQL
+├── 📂 scripts/             # PDF → SQL 변환 파이썬 스크립트 (n2_seed 등)
+├── 📂 docs/                # Supabase / 네이버 OAuth / 이메일 템플릿 가이드
+│   └── 📂 email-templates/ # 픽셀 RPG 양피지 메일 4종
+├── 📂 public/              # 픽셀 favicon · apple-touch-icon · OG 이미지 · manifest
+└── supabase_schema.sql · vercel.json · tailwind.config.js ...
 ```
 
-## 🗺 향후 로드맵
+<br/>
 
-- [ ] 단어 데이터 대량 추가 (JLPT 공식 어휘 리스트 기반)
-- [ ] 한자 읽기 / 듣기 / 문법 퀴즈 모드
-- [ ] 상점 (포션, 장비) 및 인벤토리
-- [ ] 보스 던전, 일일 미션
-- [ ] 학습 통계 / 복습 알고리즘 (SRS)
+---
+
+## 🧭 사용자 흐름
+
+```mermaid
+flowchart LR
+    A[🌐 첫 진입] --> B{로그인됨?}
+    B -- No --> L[🔐 LoginPage<br/>이메일 / 네이버]
+    L --> H
+    B -- Yes --> H[🏠 HomePage<br/>던전 선택]
+    H --> C[🧙 CharacterPage<br/>직업 / 등급]
+    H --> D{던전 선택}
+    D --> S[🗡️ StudyPage<br/>단어 카드 학습]
+    H --> R[🔁 ReviewPage<br/>헷갈린 단어]
+    H --> M[📦 MyDeckPage<br/>엑셀 업로드 덱]
+    S --> X[🏆 정복 완료<br/>외운 단어 토글]
+    X --> H
+```
+
+<br/>
+
+---
 
 ## 📜 라이선스
 
 MIT
+
+<div align="center">
+
+<br/>
+
+**🎴 漢字ダンジョン · JLPT RPG**
+
+<sub>*"일본어 단어를 외울 때마다 몬스터를 처치하고 등급이 오릅니다."*</sub>
+
+</div>
