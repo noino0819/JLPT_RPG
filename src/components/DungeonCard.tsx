@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { DUNGEONS } from "../data/dungeons";
 import type { JlptLevel } from "../types";
 import type { DungeonStat } from "../lib/stats";
+import PixelDungeon from "./PixelDungeon";
 
 interface Props {
   level: JlptLevel;
@@ -19,8 +20,8 @@ export default function DungeonCard({ level, stat }: Props) {
       style={{ boxShadow: "0 4px 0 0 rgba(0,0,0,0.7)" }}
     >
       <div className="absolute inset-0 scanline opacity-30" />
-      <div className="relative flex items-start justify-between">
-        <div>
+      <div className="relative flex items-start justify-between gap-3">
+        <div className="min-w-0">
           <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-200/80">
             {level}
           </div>
@@ -29,7 +30,9 @@ export default function DungeonCard({ level, stat }: Props) {
           </div>
           <div className="text-sm text-parchment-100">{d.name}</div>
         </div>
-        <div className="text-4xl">{d.emoji}</div>
+        <div className="shrink-0 transition group-hover:-translate-y-0.5">
+          <PixelDungeon level={level} size={56} />
+        </div>
       </div>
 
       <div className="relative mt-4">

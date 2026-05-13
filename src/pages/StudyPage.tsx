@@ -8,6 +8,7 @@ import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
 import type { CharacterId, JlptLevel, Mastery } from "../types";
 import PixelCharacter from "../components/PixelCharacter";
+import PixelDungeon from "../components/PixelDungeon";
 import AttackEffect from "../components/AttackEffect";
 import DefeatEffect from "../components/DefeatEffect";
 import WordCard from "../components/WordCard";
@@ -40,7 +41,7 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   const headerTitle = onlyFlagged
     ? "🔖 다시 보기"
     : dungeon
-      ? `${dungeon.emoji} ${dungeon.nameJp} (${level})`
+      ? `${dungeon.nameJp} (${level})`
       : customDeck
         ? `📜 ${customDeck.name}`
         : "학습";
@@ -241,16 +242,21 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           : ""
       }`}
     >
-      <header className="flex shrink-0 items-center justify-between">
-        <div>
-          <h2 className="pixel-text font-pixel text-xl text-parchment-100">
-            {headerTitle}
-          </h2>
-          <div className="font-pixel text-[10px] text-parchment-300">
-            {index + 1} / {queue.length}
+      <header className="flex shrink-0 items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          {dungeon && level && (
+            <PixelDungeon level={level} size={40} animate />
+          )}
+          <div className="min-w-0">
+            <h2 className="pixel-text truncate font-pixel text-xl text-parchment-100">
+              {headerTitle}
+            </h2>
+            <div className="font-pixel text-[10px] text-parchment-300">
+              {index + 1} / {queue.length}
+            </div>
           </div>
         </div>
-        <Link to="/" className="btn-ghost !px-3 !py-2 !text-[10px]">
+        <Link to="/" className="btn-ghost shrink-0 !px-3 !py-2 !text-[10px]">
           ✕ 나가기
         </Link>
       </header>
