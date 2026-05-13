@@ -563,10 +563,16 @@ function KanaQuiz({
   const [picked, setPicked] = useState<string | null>(null);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
-  const markMastered = useKanaProgressStore((s) => s.markMastered);
+  // 퀴즈는 markQuizCorrect 사용 (5회 누적 시 "통달" — 찍어맞추기 방지).
+  const markQuizCorrect = useKanaProgressStore((s) => s.markQuizCorrect);
   const markWrong = useKanaProgressStore((s) => s.markWrong);
+  const byChar = useKanaProgressStore((s) => s.byChar);
   const settings = useProfileStore((s) => s.settings);
   const selectedCharacter = useProfileStore((s) => s.selected_character);
+
+  // "통달" (level 2) 도달까지 필요한 퀴즈 정답 횟수.
+  // score = quiz_correct * 0.6 >= 3 → quiz_correct >= 5
+  const QUIZ_MASTERY_TARGET = 5;
 
   useEffect(() => {
     setQueue(shuffle(chars));
@@ -604,7 +610,7 @@ function KanaQuiz({
     setPicked(romaji);
     const correct = romaji === current.romaji;
     if (correct) {
-      markMastered(current.id);
+      markQuizCorrect(current.id);
       setStreak((s) => {
         const next = s + 1;
         setBestStreak((b) => Math.max(b, next));
@@ -683,11 +689,18 @@ function KanaQuiz({
       </div>
 
       {/* 결과 텍스트는 표시 여부와 무관하게 같은 높이를 차지해
-          정답/오답 시 버튼 그리드가 위로 밀리며 카드가 흔들리는 것을 막는다. */}
+          정답/오답 시 버튼 그리드가 위로 밀리며 카드가 흔들리는 것을 막는다.
+          정답 시 누적 정답 횟수(N/5)를 함께 보여줘 통달까지 얼마나 남았는지 안내. */}
       <div className="flex h-4 shrink-0 items-center justify-center text-center font-pixel text-xs text-parchment-200">
         {picked &&
           (picked === current.romaji ? (
-            <span className="text-rune-400">⚔ 정답! +1 처치</span>
+            <span className="text-rune-400">
+              ⚔ 정답! ({Math.min(
+                byChar[current.id]?.quiz_correct ?? 0,
+                QUIZ_MASTERY_TARGET,
+              )}
+              /{QUIZ_MASTERY_TARGET} 통달)
+            </span>
           ) : (
             <span className="text-volcano-400">
               💥 오답 — 정답은 "{current.romaji}"
