@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import {
+  fetchAllPaginated,
   isSupabaseEnabled,
   supabase,
   type DbWordProgress,
@@ -41,10 +42,16 @@ export function useProgressSync() {
     const client = supabase;
 
     (async () => {
-      const { data, error } = await client
-        .from("word_progress")
-        .select("*")
-        .eq("user_id", userId);
+      // 모든 단어를 학습한 사용자는 word_progress 가 2,000 건을 넘을 수 있어
+      // PostgREST 기본 limit(1,000) 에 걸리지 않도록 .range() 로 페이지네이션.
+      const { data, error } = await fetchAllPaginated<DbWordProgress>(
+        (from, to) =>
+          client
+            .from("word_progress")
+            .select("*")
+            .eq("user_id", userId)
+            .range(from, to),
+      );
 
       if (cancelled) return;
 
@@ -54,7 +61,7 @@ export function useProgressSync() {
         return;
       }
 
-      const rows = (data ?? []) as DbWordProgress[];
+      const rows = data;
       const byWord: Record<string, WordProgress> = {};
       for (const row of rows) {
         byWord[row.word_id] = {

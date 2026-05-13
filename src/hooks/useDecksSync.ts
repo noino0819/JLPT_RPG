@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import {
+  fetchAllPaginated,
   isSupabaseEnabled,
   supabase,
   type DbDeck,
@@ -71,10 +72,17 @@ export function useDecksSync() {
     useDecksStore.getState().setLoaded(false);
 
     (async () => {
+      // PostgREST 기본 limit 이 1,000 rows 이므로 .range() 로 페이지네이션.
+      // (words/examples 합쳐 약 7,000 rows 가 있어서 limit 에 걸리면
+      //  N3 같은 일부 덱이 통째로 누락된 채 hydrate 되는 버그가 발생.)
       const [decksRes, wordsRes, examplesRes] = await Promise.all([
         client.from("decks").select("*"),
-        client.from("words").select("*"),
-        client.from("examples").select("*"),
+        fetchAllPaginated<DbWord>((from, to) =>
+          client.from("words").select("*").range(from, to),
+        ),
+        fetchAllPaginated<DbExample>((from, to) =>
+          client.from("examples").select("*").range(from, to),
+        ),
       ]);
 
       if (cancelled) return;
@@ -89,8 +97,8 @@ export function useDecksSync() {
       }
 
       const dbDecks = (decksRes.data ?? []) as DbDeck[];
-      const dbWords = (wordsRes.data ?? []) as DbWord[];
-      const dbExamples = (examplesRes.data ?? []) as DbExample[];
+      const dbWords = wordsRes.data;
+      const dbExamples = examplesRes.data;
 
       const examplesByWord = new Map<string, Example[]>();
       for (const ex of dbExamples) {

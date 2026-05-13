@@ -73,3 +73,39 @@ export const supabase: SupabaseClient | null =
   url && anon ? createClient(url, anon) : null;
 
 export const isSupabaseEnabled = supabase !== null;
+
+/* ── 페이지네이션 헬퍼 ────────────────────────────────
+ * Supabase(PostgREST) 의 select 는 기본 limit 이 1,000 rows 다.
+ * 단어/예문 시드가 1,000 개를 넘어가면 일부 덱이 잘려 나가므로,
+ * .range() 로 페이지를 끊어 모두 가져온다.
+ */
+const PAGE_SIZE = 1000;
+
+/**
+ * 페이지를 끊어가며 모든 row 를 누적해서 반환한다.
+ *
+ * @example
+ *   const { data, error } = await fetchAllPaginated<DbWord>((from, to) =>
+ *     client.from("words").select("*").range(from, to),
+ *   );
+ */
+export async function fetchAllPaginated<T>(
+  pageQuery: (from: number, to: number) => PromiseLike<{
+    data: T[] | null;
+    error: { message: string } | null;
+  }>,
+): Promise<{ data: T[]; error: { message: string } | null }> {
+  const all: T[] = [];
+  let from = 0;
+  // 무한 루프 방지를 위한 안전 상한 (최대 100,000 rows)
+  for (let i = 0; i < 100; i++) {
+    const to = from + PAGE_SIZE - 1;
+    const { data, error } = await pageQuery(from, to);
+    if (error) return { data: all, error };
+    const rows = data ?? [];
+    all.push(...rows);
+    if (rows.length < PAGE_SIZE) break;
+    from += PAGE_SIZE;
+  }
+  return { data: all, error: null };
+}
