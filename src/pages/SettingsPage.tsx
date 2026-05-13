@@ -2,14 +2,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
+import { isSupabaseEnabled, supabase } from "../lib/supabase";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
-  const { email, signOut } = useAuthStore();
+  const email = useAuthStore((s) => s.email);
+  const signOutLocal = useAuthStore((s) => s.signOutLocal);
   const { nickname, setNickname, settings, updateSettings, toggleEffect } =
     useProfileStore();
   const resetProgress = useProgressStore((s) => s.reset);
   const resetProfile = useProfileStore((s) => s.reset);
+
+  const handleSignOut = async () => {
+    if (isSupabaseEnabled && supabase) {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        alert(`로그아웃 실패: ${error.message}`);
+        return;
+      }
+      // onAuthStateChange 가 setSession(null) 호출 → ready=true, signedIn=false
+    } else {
+      signOutLocal();
+    }
+    navigate("/login");
+  };
 
   return (
     <div className="space-y-5">
@@ -102,16 +118,18 @@ export default function SettingsPage() {
       </Section>
 
       <Section title="계정">
+        <div className="flex items-center gap-2 text-sm text-parchment-200">
+          <span
+            className={`inline-block h-2.5 w-2.5 rounded-full border border-black ${
+              isSupabaseEnabled ? "bg-emerald-400" : "bg-parchment-300/50"
+            }`}
+          />
+          {isSupabaseEnabled ? "Supabase 연결됨" : "로컬 모드"}
+        </div>
         <div className="text-sm text-parchment-200">
           이메일: {email ?? "(데모 모드)"}
         </div>
-        <button
-          onClick={() => {
-            signOut();
-            navigate("/login");
-          }}
-          className="btn-ghost mt-3 w-full"
-        >
+        <button onClick={handleSignOut} className="btn-ghost mt-3 w-full">
           로그아웃
         </button>
       </Section>

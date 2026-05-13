@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { useProfileStore } from "../store/profileStore";
 import { totalKills } from "../lib/stats";
 import { useProgressStore } from "../store/progressStore";
+import { isSupabaseEnabled } from "../lib/supabase";
 import RankBadge from "./RankBadge";
 
 export default function Layout() {
@@ -27,6 +28,7 @@ export default function Layout() {
           </Link>
 
           <div className="flex items-center gap-2">
+            <SyncDot />
             <RankBadge killCount={kills} compact />
             <span className="hidden font-pixel text-xs text-parchment-200 sm:inline">
               · {nickname}
@@ -55,6 +57,21 @@ export default function Layout() {
         </div>
       </nav>
     </div>
+  );
+}
+
+function SyncDot() {
+  return (
+    <span
+      title={
+        isSupabaseEnabled
+          ? "Supabase 연결됨 (서버 동기화)"
+          : "로컬 모드 (오프라인)"
+      }
+      className={`inline-block h-2.5 w-2.5 rounded-full border border-black ${
+        isSupabaseEnabled ? "bg-emerald-400" : "bg-parchment-300/50"
+      }`}
+    />
   );
 }
 

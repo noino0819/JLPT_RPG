@@ -1,6 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import { useAuthStore } from "./store/authStore";
+import { useSupabaseSession } from "./hooks/useSupabaseSession";
+import { useProgressSync } from "./hooks/useProgressSync";
+import { useProfileSync } from "./hooks/useProfileSync";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import CharacterPage from "./pages/CharacterPage";
@@ -10,7 +13,25 @@ import MyDeckPage from "./pages/MyDeckPage";
 import SettingsPage from "./pages/SettingsPage";
 
 export default function App() {
+  useSupabaseSession();
+  useProfileSync();
+  useProgressSync();
+
   const signedIn = useAuthStore((s) => s.signedIn);
+  const ready = useAuthStore((s) => s.ready);
+
+  if (!ready) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-dungeon-300">
+        <div className="text-center">
+          <div className="animate-bob text-5xl">🗡️</div>
+          <div className="mt-3 font-pixel text-xs text-parchment-300">
+            세션 확인 중...
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Routes>

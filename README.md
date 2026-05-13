@@ -30,6 +30,19 @@ npm run dev
 npm run build
 ```
 
+### Supabase 연동 (선택)
+
+환경변수가 없으면 자동으로 **로컬 모드**로 동작합니다.
+서버 동기화를 원하면 `.env.example` 을 복사해 `.env.local` 을 만들고
+Supabase URL · anon key 를 채우세요.
+
+자세한 설정은 [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) 참조.
+
+```bash
+cp .env.example .env.local
+# 값을 채운 뒤 dev 서버 재시작
+```
+
 ## 📁 프로젝트 구조
 
 ```
