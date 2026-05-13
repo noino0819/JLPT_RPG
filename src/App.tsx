@@ -13,6 +13,7 @@ import ReviewPage from "./pages/ReviewPage";
 import MyDeckPage from "./pages/MyDeckPage";
 import KanaPage from "./pages/KanaPage";
 import SettingsPage from "./pages/SettingsPage";
+import BossPage from "./pages/BossPage";
 import PixelSword from "./components/PixelSword";
 import UnlockToast from "./components/UnlockToast";
 
@@ -58,6 +59,7 @@ export default function App() {
           <Route path="/wardrobe" element={<WardrobePage />} />
           <Route path="/study/:level" element={<StudyPage />} />
           <Route path="/study/deck/:deckId" element={<StudyPage />} />
+          <Route path="/boss/:level" element={<BossPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/mydeck" element={<MyDeckPage />} />
           <Route path="/kana" element={<KanaPage />} />

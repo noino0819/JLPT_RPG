@@ -178,9 +178,113 @@ export default {
             opacity: "0",
           },
         },
+        // 보스 idle - 천천히 흔들흔들 (일반 캐릭터보다 느리고 큼직)
+        bobSlow: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
+        },
+        // 보스 등장 - 위에서 떨어지며 살짝 튀어오름
+        bossEntrance: {
+          "0%": { transform: "translateY(-80px) scale(0.6)", opacity: "0" },
+          "50%": { transform: "translateY(8px) scale(1.05)", opacity: "1" },
+          "75%": { transform: "translateY(-4px) scale(0.98)" },
+          "100%": { transform: "translateY(0) scale(1)", opacity: "1" },
+        },
+        // 보스 피격 - 좌우 흔들림 (붉은 깜빡과 동시 진행)
+        monsterHurt: {
+          "0%, 100%": { transform: "translateX(0) translateY(0)" },
+          "15%": { transform: "translateX(-5px) translateY(-2px)" },
+          "30%": { transform: "translateX(5px) translateY(0)" },
+          "45%": { transform: "translateX(-3px) translateY(-1px)" },
+          "60%": { transform: "translateX(3px) translateY(0)" },
+          "80%": { transform: "translateX(-1px)" },
+        },
+        // 피격 시 붉은 오버레이 깜빡임 (도트 위에 덮어 빨강 플래시)
+        hurtFlash: {
+          "0%": { opacity: "0.7" },
+          "50%": { opacity: "0.2" },
+          "100%": { opacity: "0" },
+        },
+        // 사망 직전 - 격하게 깜빡깜빡 + 흔들림
+        monsterDying: {
+          "0%, 100%": { transform: "translateX(0) scale(1)" },
+          "10%, 30%, 50%, 70%, 90%": {
+            transform: "translateX(-3px) scale(1.03)",
+            filter: "brightness(2.2) saturate(0)",
+          },
+          "20%, 40%, 60%, 80%": {
+            transform: "translateX(3px) scale(0.98)",
+            filter: "brightness(1)",
+          },
+        },
+        // 보스 산산조각 - 모든 픽셀이 사방으로 회전하며 흩어지고 페이드
+        monsterShatter: {
+          "0%": {
+            transform: "translate(0,0) rotate(0deg) scale(1)",
+            opacity: "1",
+          },
+          "20%": { opacity: "1" },
+          "100%": {
+            transform:
+              "translate(var(--dx,40px), var(--dy,-40px)) rotate(var(--rot,540deg)) scale(0.2)",
+            opacity: "0",
+          },
+        },
+        // 사망 시 영혼이 위로 천천히 떠오름
+        soulRise: {
+          "0%": {
+            transform: "translateX(var(--dx,0px)) translateY(0) scale(0.4)",
+            opacity: "0",
+          },
+          "20%": {
+            transform: "translateX(var(--dx,0px)) translateY(-8px) scale(1)",
+            opacity: "1",
+          },
+          "100%": {
+            transform:
+              "translateX(calc(var(--dx,0px) * 0.5)) translateY(-90px) scale(0.6)",
+            opacity: "0",
+          },
+        },
+        // 플레이어 피격 시 화면 가장자리 붉게 + 좌우 살짝 흔들림
+        playerHurt: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "20%": { transform: "translateX(-4px)" },
+          "40%": { transform: "translateX(4px)" },
+          "60%": { transform: "translateX(-2px)" },
+          "80%": { transform: "translateX(2px)" },
+        },
+        // HP 바가 깜빡거리며 위급 신호
+        hpPulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.55" },
+        },
+        // 화면 전체 붉게 비네팅 (피격 시)
+        bloodVignette: {
+          "0%": { opacity: "0" },
+          "20%": { opacity: "0.7" },
+          "100%": { opacity: "0" },
+        },
+        // 보스 사망 후 화이트 플래시
+        whiteFlash: {
+          "0%": { opacity: "0" },
+          "10%": { opacity: "0.85" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         bob: "bob 1.6s ease-in-out infinite",
+        bobSlow: "bobSlow 2.4s ease-in-out infinite",
+        bossEntrance: "bossEntrance 0.7s cubic-bezier(0.3,1.6,0.4,1) forwards",
+        monsterHurt: "monsterHurt 0.5s ease-in-out",
+        hurtFlash: "hurtFlash 0.5s ease-out forwards",
+        monsterDying: "monsterDying 1.0s linear",
+        monsterShatter: "monsterShatter 1.2s ease-out forwards",
+        soulRise: "soulRise 1.6s ease-out forwards",
+        playerHurt: "playerHurt 0.4s ease-in-out",
+        hpPulse: "hpPulse 0.8s ease-in-out infinite",
+        bloodVignette: "bloodVignette 0.6s ease-out forwards",
+        whiteFlash: "whiteFlash 0.5s ease-out forwards",
         attackSwing: "attackSwing 0.5s ease-out",
         slash: "slash 0.5s ease-out forwards",
         slashAlt: "slashAlt 0.5s ease-out forwards",
