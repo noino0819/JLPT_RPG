@@ -18,7 +18,11 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Open Graph (카카오톡 / 페이스북 등 공유 미리보기) -->
+    <!-- Open Graph (카카오톡 / 페이스북 / 디스코드 / 라인 공유 미리보기) -->
+    <!--
+      카카오톡/페이스북 크롤러는 SVG OG 이미지를 무시하고 og:image 가
+      상대 경로일 경우 캐시에 실패할 수 있어 절대 URL(PNG)을 사용한다.
+    -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="JLPT RPG" />
     <meta property="og:title" content="JLPT RPG - 일본어 학습 모험" />
@@ -26,12 +30,21 @@
       property="og:description"
       content="漢字ダンジョン. 단어를 외우고 몬스터를 처치하라."
     />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://jlpt-rpg.vercel.app/" />
+    <meta property="og:image" content="https://jlpt-rpg.vercel.app/og-image.png" />
+    <meta
+      property="og:image:secure_url"
+      content="https://jlpt-rpg.vercel.app/og-image.png"
+    />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1536" />
-    <meta property="og:image:height" content="1024" />
-    <meta property="og:image:alt" content="JLPT RPG - 한자 던전과 거대한 픽셀 칼" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="JLPT RPG - 한자 던전과 빛나는 룬 검 픽셀 아트"
+    />
     <meta property="og:locale" content="ko_KR" />
+    <meta property="og:locale:alternate" content="ja_JP" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -40,7 +53,14 @@
       name="twitter:description"
       content="漢字ダンジョン. 단어를 외우고 몬스터를 처치하라."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta
+      name="twitter:image"
+      content="https://jlpt-rpg.vercel.app/og-image.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="JLPT RPG - 한자 던전과 빛나는 룬 검 픽셀 아트"
+    />
   </head>
   <body class="bg-dungeon-300">
     <div id="root"></div>
