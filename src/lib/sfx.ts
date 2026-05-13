@@ -179,14 +179,24 @@ function playArcherAttack(ac: AudioContext, t: number) {
   });
 }
 
-// 소환사: 짧은 2음 화음 + 미세한 wisp
+// 소환사: 짧은 소환 종(triangle pluck) + 정령이 휘잉 날아드는 sweep + 가벼운 골드 임팩트
 function playSummonerAttack(ac: AudioContext, t: number) {
-  tone(ac, 329.63, t, 0.28, { type: "sine", gain: 0.1, attack: 0.02 }); // E4
-  tone(ac, 493.88, t, 0.28, { type: "sine", gain: 0.09, attack: 0.02 }); // B4
-  noise(ac, t + 0.04, 0.2, {
-    gain: 0.05,
-    filterFrom: 1500,
-    filterTo: 400,
+  // 1) 소환을 알리는 작은 종 (밝은 triangle 아르페지오 — G5 → C6)
+  tone(ac, 783.99, t, 0.1, { type: "triangle", gain: 0.13 });
+  tone(ac, 1046.5, t + 0.05, 0.12, { type: "triangle", gain: 0.12 });
+  // 2) 정령이 휙 — 음정이 살짝 올라가는 sine sweep
+  tone(ac, 660, t + 0.06, 0.18, {
+    type: "sine",
+    gain: 0.08,
+    sweepTo: 1320,
+    attack: 0.01,
+  });
+  // 3) 정령이 적에게 부딪치는 작은 임팩트 (얇은 고음 노이즈)
+  noise(ac, t + 0.16, 0.08, {
+    gain: 0.1,
+    filterFrom: 4000,
+    filterTo: 1200,
+    filterQ: 1.0,
   });
 }
 
@@ -276,29 +286,54 @@ function playArcherDefeat(ac: AudioContext, t: number) {
   tone(ac, 1760, t + 0.21, 0.12, { type: "triangle", gain: 0.08 });
 }
 
-// 소환사: 차분한 화음 + 천천히 사라지는 잔향
+// 소환사: 화려한 소환 종소리 → 정령 무리의 다중 휘잉 → 마무리 골드 임팩트
 function playSummonerDefeat(ac: AudioContext, t: number) {
-  const chord = [
-    { f: 329.63, g: 0.12 }, // E4
-    { f: 493.88, g: 0.1 }, // B4
-    { f: 659.25, g: 0.1 }, // E5
-    { f: 987.77, g: 0.09 }, // B5
+  // 1) 소환의 종 — 밝은 메이저 트라이어드 + 옥타브 (C5/E5/G5/C6)
+  const summonChord = [
+    { f: 523.25, g: 0.14 }, // C5
+    { f: 659.25, g: 0.12 }, // E5
+    { f: 783.99, g: 0.12 }, // G5
+    { f: 1046.5, g: 0.1 }, // C6
   ];
-  for (const c of chord) {
-    tone(ac, c.f, t, 0.7, { type: "sine", gain: c.g, attack: 0.04 });
+  for (const c of summonChord) {
+    tone(ac, c.f, t, 0.45, { type: "triangle", gain: c.g, attack: 0.01 });
   }
-  // ethereal up-glide
-  tone(ac, 880, t + 0.05, 0.6, {
-    type: "triangle",
-    gain: 0.08,
-    sweepTo: 1760,
+  // 2) 정령들이 적에게 달려드는 다중 sweep (시간차로 3마리)
+  const flights = [
+    { f: 600, to: 1320, o: 0.08 },
+    { f: 520, to: 1180, o: 0.18 },
+    { f: 700, to: 1500, o: 0.28 },
+  ];
+  for (const f of flights) {
+    tone(ac, f.f, t + f.o, 0.22, {
+      type: "sine",
+      gain: 0.09,
+      sweepTo: f.to,
+      attack: 0.01,
+    });
+    // 정령이 지나가는 휘잉 노이즈
+    noise(ac, t + f.o, 0.18, {
+      gain: 0.07,
+      filterFrom: 3500,
+      filterTo: 800,
+      filterQ: 1.2,
+    });
+  }
+  // 3) 정령들의 일제 강타 임팩트 (밝은 메탈 sweep + 굵은 노이즈)
+  tone(ac, 1320, t + 0.42, 0.18, {
+    type: "square",
+    gain: 0.14,
+    sweepTo: 660,
   });
-  // 짧은 wisp noise tail
-  noise(ac, t + 0.1, 0.4, {
-    gain: 0.06,
-    filterFrom: 2000,
+  noise(ac, t + 0.42, 0.22, {
+    gain: 0.16,
+    filterFrom: 5000,
     filterTo: 600,
+    filterQ: 0.8,
   });
+  // 4) 끝나는 황금 잔향 sparkle
+  tone(ac, 2093, t + 0.55, 0.45, { type: "sine", gain: 0.07 });
+  tone(ac, 2637, t + 0.6, 0.45, { type: "sine", gain: 0.05 });
 }
 
 // ─────────────────────────────────────────────────────────────────────

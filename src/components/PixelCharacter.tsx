@@ -406,7 +406,8 @@ const FRAMES: Record<
     ],
   },
 
-  // 소환사: 어두운 후드 + 정령, 공격 시 정령이 한쪽에 모였다가 빛이 흩뿌려짐
+  // 소환사: 어두운 망토 + 황금빛 정령 한쌍을 양쪽에 거느림.
+  // 공격 시 정령들이 휘몰아치며 우측 적에게 쏟아짐.
   summoner: {
     idle: [
       [
@@ -419,28 +420,28 @@ const FRAMES: Record<
         "..hH.eee.e.Hh...",
         "..hH.......Hh...",
         "..ohHHHHHHHho...",
-        "..CChhhhhhCC.G..",
+        "G.CChhhhhhCC.G..",
         ".CcccccccccC.G..",
-        ".Cccccgcccc..G..",
+        "GCccccgccccCG...",
         ".CcCcccccCcC....",
         ".CCcccccccCC....",
         ".occcccccccco...",
         "................",
       ],
-      // idle 보조 — 빛나는 눈 패턴이 깜빡이며 동행 정령이 살짝 떠다님
+      // idle 보조 — 정령들이 살짝 위로 떠오르고 눈을 한 번 깜빡임
       [
         "................",
         "....hhhhhhh.....",
         "...hhhhhhhhh....",
         "..hhhhhhhhhhh...",
         "..hhHHHHHHHhh...",
-        "..hHH.....HHh...",
-        "..hH.e.eee.Hh...",
-        "..hH.......Hh...",
+        "G.hHH.....HHhG..",
+        ".GhH.e.eee.HhG..",
+        ".GhH.......HhG..",
         "..ohHHHHHHHho...",
-        "..CChhhhhhCC..G.",
-        ".CcccccccccC..G.",
-        ".Cccccgcccc...G.",
+        "..CChhhhhhCC....",
+        ".CcccccccccC....",
+        ".CcccCgccccC....",
         ".CcCcccccCcC....",
         ".CCcccccccCC....",
         ".occcccccccco...",
@@ -448,41 +449,41 @@ const FRAMES: Record<
       ],
     ],
     attack: [
-      // windup — 정령들이 우측에 응집
+      // windup — 양옆 정령들이 소환사 주변에 폭발적으로 응집 (소환진 형성)
       [
         "................",
-        "....hhhhhhh.GG..",
-        "...hhhhhhhhh.G..",
-        "..hhhhhhhhhhh...",
-        "..hhHHHHHHHhh...",
-        "..hHH.....HHh.G.",
-        "..hH.eee.e.Hh.G.",
-        "..hH.......Hh.G.",
-        "..ohHHHHHHHho...",
-        "..CChhhhhhCC.G..",
-        ".CcccccccccC.G..",
-        ".Cccccgcccc..G..",
+        "GG..hhhhhhh.GG..",
+        "GG.hhhhhhhhh.GG.",
+        "G.hhhhhhhhhhh.GG",
+        "..hhHHHHHHHhh..G",
+        "G.hHH.....HHhG..",
+        "GGhH.eee.e.HhGG.",
+        "G.hH.......HhGG.",
+        ".GohHHHHHHHhoGG.",
+        "..CChhhhhhCC.GGG",
+        ".CcccccccccC.GG.",
+        ".Cccccgcccc..GG.",
         ".CcCcccccCcC....",
         ".CCcccccccCC....",
         ".occcccccccco...",
         "................",
       ],
-      // release — 정령들이 사방으로 튕겨나감
+      // release — 응집한 정령 무리가 우측 전방으로 일제히 쏟아져 적에게 돌격
       [
         "................",
-        "....hhhhhhh.G...",
-        "...hhhhhhhhh.G..",
-        "..hhhhhhhhhhh.GG",
+        "....hhhhhhh.....",
+        "...hhhhhhhhh.GGG",
+        "..hhhhhhhhhhhGGG",
         "..hhHHHHHHHhhGGG",
-        "..hHH.....HHh...",
+        "..hHH.....HHhGGG",
         "..hH.eee.e.HhGGG",
-        "..hH.......Hh.GG",
-        "..ohHHHHHHHho.GG",
-        "..CChhhhhhCC.G..",
-        ".CcccccccccC.G..",
-        ".Cccccgcccc..G..",
-        ".CcCcccccCcC....",
-        ".CCcccccccCC....",
+        "..hH.......HhGGG",
+        "..ohHHHHHHHhoGGG",
+        "..CChhhhhhCC.GGG",
+        ".CcccccccccC.GGG",
+        ".Cccccgcccc..GGG",
+        ".CcCcccccCcC.GG.",
+        ".CCcccccccCC.G..",
         ".occcccccccco...",
         "................",
       ],
@@ -541,16 +542,16 @@ const PALETTES: Record<CharacterId, Palette> = {
     m: "#7cd66a",
     w: "#794c24",
   },
-  // 소환사: 어두운 후드 + 빛나는 청록 눈 + 정령
+  // 소환사: 어두운 망토 + 황금빛 정령. 따뜻한 옐로우/골드로 테마 통일.
   summoner: {
     o: "#0a0610",
-    e: "#7be3ff",
-    h: "#1a1428",
-    H: "#3a1d50",
-    c: "#2a1450",
-    C: "#0f0b17",
-    g: "#33c4ff",
-    G: "#7be3ff",
+    e: "#ffe066", // 정령의 빛이 깃든 황금 눈
+    h: "#1a1428", // 망토 본색 (어둠)
+    H: "#2a1f3a", // 망토 그림자 — 살짝 보라가 도는 차분한 어둠
+    c: "#2a1450", // 안감
+    C: "#0f0b17", // 망토 외곽
+    g: "#ffd84a", // 망토 금장 트림
+    G: "#ffe066", // 소환된 정령의 발광 (황금 빛)
   },
 };
 

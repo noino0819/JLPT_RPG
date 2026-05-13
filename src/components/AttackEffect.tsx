@@ -108,20 +108,89 @@ function Arrow() {
   );
 }
 
+/**
+ * 소환사 — 적의 위치에 황금 소환진(링)이 잠깐 떠오르고,
+ * 좌측에서 소환된 정령(황금 오브 + 작은 눈)이 빠르게 날아와 적에게 부딪힌다.
+ * "정령을 소환해서 정령이 대신 싸운다" 는 컨셉을 시각적으로 강조.
+ */
 function Ring() {
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      <div className="animate-ring">
-        <div
-          className="rounded-full border-4 border-parchment-300"
-          style={{
-            width: 80,
-            height: 80,
-            boxShadow:
-              "0 0 0 2px rgba(207,147,66,0.5), 0 0 24px rgba(240,201,124,0.5)",
-          }}
-        />
+    <>
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="animate-ring">
+          <div
+            className="rounded-full"
+            style={{
+              width: 90,
+              height: 90,
+              border: "4px solid #ffd84a",
+              boxShadow:
+                "0 0 0 2px rgba(255,224,102,0.6), 0 0 28px rgba(240,201,124,0.7)",
+            }}
+          />
+        </div>
       </div>
+      <SummonedSpiritFlight />
+    </>
+  );
+}
+
+function SummonedSpiritFlight() {
+  // 좌측에서 우측으로 빠르게 날아드는 황금 정령. 약간 시간차로 두 마리.
+  const spirits = [
+    { dy: -8, delay: "0s" },
+    { dy: 10, delay: "0.08s" },
+  ];
+  return (
+    <>
+      {spirits.map((s, i) => (
+        <div
+          key={i}
+          className="absolute left-1 top-1/2 -translate-y-1/2"
+          style={{ marginTop: s.dy }}
+        >
+          <div className="animate-arrow" style={{ animationDelay: s.delay }}>
+            <SpiritOrb />
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function SpiritOrb() {
+  // 작은 황금 영체 — 빛나는 코어 + 외곽 흔들리는 후광 느낌의 단순 도트 오브
+  return (
+    <div className="relative" style={{ width: 28, height: 18 }}>
+      <span
+        className="absolute inset-0 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle at 40% 40%, #fff5c2 0%, #ffe066 45%, rgba(207,147,66,0.0) 80%)",
+          boxShadow: "0 0 12px rgba(255,224,102,0.85)",
+        }}
+      />
+      {/* 정령의 작은 눈 두 개 (귀여움 가미) */}
+      <span
+        className="absolute"
+        style={{
+          left: 9,
+          top: 6,
+          width: 2,
+          height: 3,
+          background: "#1a0e10",
+        }}
+      />
+      <span
+        className="absolute"
+        style={{
+          left: 14,
+          top: 6,
+          width: 2,
+          height: 3,
+          background: "#1a0e10",
+        }}
+      />
     </div>
   );
 }

@@ -46,21 +46,22 @@ const LABEL: Record<CharacterId, string> = {
   warrior: "처치!",
   mage: "소멸!",
   archer: "명중!",
-  summoner: "회수!",
+  // 정령 소환사 — 정령들이 적을 강타하는 의미로 "강타!"
+  summoner: "강타!",
 };
 
 const LABEL_COLOR: Record<CharacterId, string> = {
   warrior: "#ffd966",
   mage: "#cba8ff",
   archer: "#7cd66a",
-  summoner: "#7be3ff",
+  summoner: "#ffe066",
 };
 
 const FLASH_COLOR: Record<CharacterId, string> = {
   warrior: "rgba(255, 138, 76, 0.7)",
   mage: "rgba(123, 76, 240, 0.6)",
   archer: "rgba(124, 214, 106, 0.55)",
-  summoner: "rgba(123, 227, 255, 0.6)",
+  summoner: "rgba(255, 224, 102, 0.6)",
 };
 
 function FlashOverlay({ color }: { color: string }) {
@@ -268,7 +269,7 @@ function ArcherBurst() {
   );
 }
 
-// 소환사: 빛나는 영혼 위로 떠오름 + 청록 링
+// 소환사: 황금 소환진 + 사방에서 몰려와 적을 강타하는 정령들
 function SummonerBurst() {
   return (
     <>
@@ -276,16 +277,27 @@ function SummonerBurst() {
         <div
           className="animate-ring rounded-full"
           style={{
-            width: 90,
-            height: 90,
-            border: "3px solid #7be3ff",
+            width: 110,
+            height: 110,
+            border: "4px solid #ffd84a",
             boxShadow:
-              "0 0 0 2px rgba(51,196,255,0.5), 0 0 28px rgba(123,227,255,0.6)",
+              "0 0 0 2px rgba(255,217,74,0.55), 0 0 36px rgba(255,224,102,0.7)",
           }}
         />
       </div>
-      <Stars count={6} color="#7be3ff" />
-      <Spirits count={9} />
+      <Stars count={8} color="#ffe066" />
+      <Spirits count={11} />
+      {/* 정령 부대가 적을 강타하는 임팩트 — 사방에서 모여드는 골드 파편 */}
+      <Shards
+        count={14}
+        spread={95}
+        style={{ bg: "#ffe066", size: 5, rounded: true }}
+      />
+      <Shards
+        count={8}
+        spread={70}
+        style={{ bg: "#ffd84a", size: 4 }}
+      />
     </>
   );
 }
@@ -295,13 +307,14 @@ function Spirits({ count }: { count: number }) {
     <div className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2">
       {Array.from({ length: count }).map((_, i) => {
         const dx = (i - count / 2) * 14 + (Math.random() - 0.5) * 16;
-        const size = 8 + Math.random() * 6;
+        const size = 9 + Math.random() * 6;
         const css: CSSProperties = {
           width: size,
           height: size,
           background:
-            "radial-gradient(circle, #cdeeff 0%, #7be3ff 50%, transparent 80%)",
+            "radial-gradient(circle, #fff5c2 0%, #ffe066 50%, transparent 80%)",
           borderRadius: "50%",
+          boxShadow: "0 0 8px rgba(255,224,102,0.7)",
           ["--dx" as never]: `${dx.toFixed(1)}px`,
           animationDuration: `${(0.9 + Math.random() * 0.4).toFixed(2)}s`,
           animationDelay: `${(Math.random() * 0.2).toFixed(2)}s`,

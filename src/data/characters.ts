@@ -46,11 +46,12 @@ export const CHARACTERS: Record<CharacterId, CharacterMeta> = {
     id: "summoner",
     name: "소환사",
     nameJp: "召喚士",
-    emoji: "👻",
+    emoji: "🌟",
     weapon: "🔔",
     effect: "ring",
-    effectColor: "text-parchment-300",
-    bodyColor: "bg-parchment-500",
+    // 정령을 부리는 직업 — 따뜻한 황금빛으로 테마 통일
+    effectColor: "text-ruin-400",
+    bodyColor: "bg-ruin-400",
   },
 };
 
