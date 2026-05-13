@@ -490,21 +490,24 @@ function KanaFlashcard({
             }
           }}
         >
-          {/* FRONT */}
-          <div className="flip-face panel-parchment scanline flex flex-col items-center justify-center gap-1 p-3">
+          {/* FRONT — 글자를 카드 정중앙에 두기 위해 안내 텍스트는
+              flex 레이아웃에서 빼서 absolute 로 하단에 띄운다.
+              (mt-auto 를 쓰면 글자가 위쪽으로 쏠림) */}
+          <div className="flip-face panel-parchment scanline relative flex flex-col items-center justify-center p-3">
             <div
               className="pixel-text-jp font-bold leading-none text-parchment-900"
               style={{ fontSize: "clamp(80px, 22vh, 140px)" }}
             >
               {current.char}
             </div>
-            <div className="mt-auto font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
+            <div className="pointer-events-none absolute inset-x-0 bottom-2 text-center font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
               ▲ 탭해서 발음 확인
             </div>
           </div>
 
-          {/* BACK */}
-          <div className="flip-face flip-back panel-parchment scanline flex flex-col items-center justify-center gap-2 p-3">
+          {/* BACK — 본문(글자/로마지/행 표기)은 진짜 가운데에 두고,
+              하단 안내 텍스트는 마찬가지로 absolute 로 분리한다. */}
+          <div className="flip-face flip-back panel-parchment scanline relative flex flex-col items-center justify-center gap-2 p-3">
             <div
               className="pixel-text-jp font-bold text-parchment-900"
               style={{ fontSize: "clamp(56px, 14vh, 88px)" }}
@@ -520,7 +523,7 @@ function KanaFlashcard({
             <div className="font-pixel text-[10px] text-parchment-700">
               「{current.row}」행
             </div>
-            <div className="mt-auto font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
+            <div className="pointer-events-none absolute inset-x-0 bottom-2 text-center font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
               ▼ 탭해서 글자로
             </div>
           </div>
