@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUnlockToastStore } from "../store/unlockToastStore";
 import { useUnlockWatcher } from "../lib/cosmetics";
+import { useProfileStore } from "../store/profileStore";
+import { playUnlock } from "../lib/sfx";
 
 const KIND_LABEL_JP: Record<string, string> = {
   costume: "新装備",
@@ -30,12 +32,15 @@ export default function UnlockToast() {
   useUnlockWatcher();
   const head = useUnlockToastStore((s) => s.queue[0]);
   const dismiss = useUnlockToastStore((s) => s.dismiss);
+  const soundOn = useProfileStore((s) => s.settings.effects.sound);
 
   useEffect(() => {
     if (!head) return;
+    // 새 해금이 떠오르면 짧은 팡파레로 알림 (사운드 토글 존중)
+    if (soundOn) playUnlock();
     const t = setTimeout(() => dismiss(), TOAST_DURATION_MS);
     return () => clearTimeout(t);
-  }, [head, dismiss]);
+  }, [head, dismiss, soundOn]);
 
   if (!head) return null;
 

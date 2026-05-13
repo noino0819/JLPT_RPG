@@ -14,7 +14,7 @@ import AttackEffect from "../components/AttackEffect";
 import DefeatEffect from "../components/DefeatEffect";
 import WordCard from "../components/WordCard";
 import Toggle from "../components/Toggle";
-import { playClick, playDefeat } from "../lib/sfx";
+import { playAttack, playDefeat, playFlag, playSkip } from "../lib/sfx";
 
 interface Props {
   onlyFlagged?: boolean;
@@ -100,6 +100,8 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   const [floatText, setFloatText] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
 
+  // 시각 이펙트 + 플로팅 라벨만 담당. 사운드는 호출 측(handleAction)에서
+  // 액션별로 직접 재생해 직업/상황별 사운드 매핑을 단순화한다.
   const triggerAttack = (label: string, opts?: { defeat?: boolean }) => {
     if (settings.effects.attack) {
       setAttacking(true);
@@ -113,14 +115,6 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
       setShaking(true);
       setTimeout(() => setShaking(false), 400);
     }
-    // 사운드: 처치는 직업별 처치 사운드, 그 외는 가벼운 클릭
-    if (settings.effects.sound) {
-      if (opts?.defeat) {
-        playDefeat(selected_character);
-      } else {
-        playClick();
-      }
-    }
     setFloatText(label);
     setTimeout(() => setFloatText(null), 800);
   };
@@ -128,21 +122,33 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
   const handleAction = (kind: "mastered" | "probably" | "flag" | "skip") => {
     if (!word) return;
 
+    const soundOn = settings.effects.sound;
+
     switch (kind) {
       case "mastered":
         setMastery(word.id, "mastered" as Mastery);
         triggerAttack("⚔ +1 처치", { defeat: true });
+        // 마무리 일격 — 직업별 처치 사운드
+        if (soundOn) playDefeat(selected_character);
         break;
       case "probably":
         setMastery(word.id, "probably" as Mastery);
         triggerAttack("✓ 외운 것 같아요");
+        // 가벼운 한 방 — 직업별 공격 사운드
+        if (soundOn) playAttack(selected_character);
         break;
-      case "flag":
+      case "flag": {
+        // toggleFlag 호출 직전의 현재 상태를 기준으로 다음 상태(on/off)를 계산
+        const nextOn = !(byWord[word.id]?.flagged ?? false);
         toggleFlag(word.id);
-        triggerAttack("🔖 보관함 토글");
+        triggerAttack(nextOn ? "🔖 보관함에 추가" : "🔖 보관함에서 제거");
+        if (soundOn) playFlag(nextOn);
         break;
+      }
       case "skip":
         touch(word.id);
+        // 페이지 넘기는 듯한 가벼운 whoosh
+        if (soundOn) playSkip();
         break;
     }
 
@@ -278,9 +284,8 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
         </Link>
       </header>
 
-      {/* 카드 영역: 남은 공간을 모두 차지.
-          캐릭터는 카드 우측 하단에 떠다니는 동료처럼 absolute 로 띄워서
-          별도 행을 차지하지 않게 한다 (단어장 영역 최대 확보). */}
+      {/* 카드 영역: 단어 카드 전용. 캐릭터/펫과 절대 겹치지 않도록
+          카드 안에는 떠 있는 요소(이펙트/플로트 텍스트)만 둔다. */}
       <div className="relative min-h-0 flex-1">
         <WordCard word={word} shaking={shaking} fillHeight />
         <AttackEffect
@@ -291,35 +296,36 @@ export default function StudyPage({ onlyFlagged = false }: Props) {
           characterId={selected_character}
           trigger={defeatTrigger}
         />
-        {settings.show_character && (
-          <div className="pointer-events-none absolute bottom-1 right-1 z-10 flex items-end gap-1 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
-            {equipped.pet && (
-              <div className="pointer-events-none">
-                <PixelPet petId={equipped.pet} size={28} delayMs={350} />
-              </div>
-            )}
-            <button
-              type="button"
-              onClick={() => setPickerOpen((o) => !o)}
-              aria-label="캐릭터 변경"
-              title="캐릭터 변경"
-              className="pointer-events-auto"
-            >
-              <PixelCharacter
-                id={selected_character}
-                costumeId={equipped.costume[selected_character]}
-                attacking={attacking}
-                size={44}
-              />
-            </button>
-          </div>
-        )}
         {floatText && (
           <div className="pointer-events-none absolute left-1/2 top-12 z-30 -translate-x-1/2 animate-floatUp font-pixel text-base text-rune-400 drop-shadow">
             {floatText}
           </div>
         )}
       </div>
+
+      {/* 캐릭터/펫 전용 줄: 카드와 액션 버튼 사이에 자기 자리를 차지하여
+          단어장과 절대 겹치지 않게 한다. 카드 영역을 최대한 보존하기 위해
+          높이를 최소(약 44px)로 유지한다. */}
+      {settings.show_character && (
+        <div className="flex h-11 shrink-0 items-end justify-end gap-1.5 px-1 drop-shadow-[2px_2px_0_rgba(0,0,0,0.6)]">
+          {equipped.pet && (
+            <PixelPet petId={equipped.pet} size={28} delayMs={350} />
+          )}
+          <button
+            type="button"
+            onClick={() => setPickerOpen((o) => !o)}
+            aria-label="캐릭터 변경"
+            title="캐릭터 변경"
+          >
+            <PixelCharacter
+              id={selected_character}
+              costumeId={equipped.costume[selected_character]}
+              attacking={attacking}
+              size={40}
+            />
+          </button>
+        </div>
+      )}
 
       <div className="shrink-0">
         {/* 단어가 바뀔 때 뱃지가 나타나거나 사라지면서 행 높이가 변해

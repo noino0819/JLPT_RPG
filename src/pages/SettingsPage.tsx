@@ -107,14 +107,14 @@ export default function SettingsPage() {
             onChange={() => toggleEffect("card_shake")}
           />
         </Row>
-        <Row label="처치 사운드">
+        <Row label="전투 사운드">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => playPreview(selected_character)}
               className="border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-[10px] text-parchment-100 hover:bg-dungeon-100"
               aria-label="사운드 미리듣기"
-              title="현재 캐릭터의 처치 사운드 미리듣기"
+              title="현재 캐릭터의 공격 → 처치 사운드 미리듣기"
             >
               ▶ 듣기
             </button>
@@ -127,6 +127,9 @@ export default function SettingsPage() {
             />
           </div>
         </Row>
+        <p className="font-pixel text-[10px] leading-relaxed text-parchment-300">
+          직업별 공격·처치 사운드와 보관함 토글, 해금 팡파레까지 모두 포함됩니다.
+        </p>
       </Section>
 
       <Section title="프로필">

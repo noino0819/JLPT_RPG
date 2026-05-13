@@ -119,6 +119,81 @@ export function playClick(): void {
   tone(ac, 1320, t + 0.02, 0.05, { type: "square", gain: 0.05 });
 }
 
+// ─────────────────────────────────────────────────────────────────────
+// 직업별 공격 사운드 (가벼운 한 방 — 처치 사운드보다 짧고 임팩트가 약함)
+// ─────────────────────────────────────────────────────────────────────
+
+/** 직업별 일반 공격 사운드 — "외운 것 같아요" 등 가벼운 히트 시. */
+export function playAttack(id: CharacterId): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  switch (id) {
+    case "warrior":
+      playWarriorAttack(ac, t);
+      break;
+    case "mage":
+      playMageAttack(ac, t);
+      break;
+    case "archer":
+      playArcherAttack(ac, t);
+      break;
+    case "summoner":
+      playSummonerAttack(ac, t);
+      break;
+  }
+}
+
+// 전사: 빠른 검 휘두름 (짧은 노이즈 스윙 + 작은 메탈 탭)
+function playWarriorAttack(ac: AudioContext, t: number) {
+  noise(ac, t, 0.09, {
+    gain: 0.18,
+    filterFrom: 6000,
+    filterTo: 1500,
+    filterQ: 0.7,
+  });
+  tone(ac, 220, t + 0.06, 0.08, {
+    type: "sawtooth",
+    gain: 0.12,
+    sweepTo: 140,
+  });
+}
+
+// 마법사: 짧은 2음 상승 + 스파클 한 점
+function playMageAttack(ac: AudioContext, t: number) {
+  tone(ac, 659.25, t, 0.12, { type: "triangle", gain: 0.14 }); // E5
+  tone(ac, 880.0, t + 0.05, 0.16, { type: "triangle", gain: 0.14 }); // A5
+  tone(ac, 2637, t + 0.08, 0.18, { type: "sine", gain: 0.07 });
+}
+
+// 궁수: 활시위 트왕 + 화살 슝
+function playArcherAttack(ac: AudioContext, t: number) {
+  // 활시위 (낮은 square pluck)
+  tone(ac, 200, t, 0.06, { type: "square", gain: 0.16, sweepTo: 100 });
+  // 화살 슝 (필터 노이즈)
+  noise(ac, t + 0.02, 0.18, {
+    gain: 0.14,
+    filterFrom: 4000,
+    filterTo: 600,
+    filterQ: 1.2,
+  });
+}
+
+// 소환사: 짧은 2음 화음 + 미세한 wisp
+function playSummonerAttack(ac: AudioContext, t: number) {
+  tone(ac, 329.63, t, 0.28, { type: "sine", gain: 0.1, attack: 0.02 }); // E4
+  tone(ac, 493.88, t, 0.28, { type: "sine", gain: 0.09, attack: 0.02 }); // B4
+  noise(ac, t + 0.04, 0.2, {
+    gain: 0.05,
+    filterFrom: 1500,
+    filterTo: 400,
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// 직업별 처치 사운드 (마무리 일격 — 풍부한 잔향 + 임팩트)
+// ─────────────────────────────────────────────────────────────────────
+
 /** 직업별 처치 사운드 — 캐릭터 컨셉에 맞춰 차별화. */
 export function playDefeat(id: CharacterId): void {
   const ac = getCtx();
@@ -226,7 +301,83 @@ function playSummonerDefeat(ac: AudioContext, t: number) {
   });
 }
 
-/** 사용자가 토글을 켜면 호출 — 미리듣기 용. */
+// ─────────────────────────────────────────────────────────────────────
+// UI 인터랙션 사운드
+// ─────────────────────────────────────────────────────────────────────
+
+/**
+ * 보관함(🔖) 토글 사운드.
+ * - on: 책 펼치는 듯한 짧은 상승 2음 + 페이지 노이즈
+ * - off: 책 덮는 듯한 짧은 하강 2음
+ */
+export function playFlag(on: boolean): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  if (on) {
+    tone(ac, 660, t, 0.07, { type: "triangle", gain: 0.13 });
+    tone(ac, 990, t + 0.05, 0.09, { type: "triangle", gain: 0.13 });
+    // 종이 펄럭이는 짧은 노이즈
+    noise(ac, t + 0.02, 0.06, {
+      gain: 0.06,
+      filterFrom: 4000,
+      filterTo: 1500,
+    });
+  } else {
+    tone(ac, 990, t, 0.07, { type: "triangle", gain: 0.11 });
+    tone(ac, 660, t + 0.05, 0.09, { type: "triangle", gain: 0.11 });
+    noise(ac, t + 0.02, 0.05, {
+      gain: 0.05,
+      filterFrom: 3000,
+      filterTo: 1000,
+    });
+  }
+}
+
+/** "다음" 버튼 — 매우 가벼운 페이지 넘김 whoosh. */
+export function playSkip(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  noise(ac, t, 0.09, {
+    gain: 0.07,
+    filterFrom: 2400,
+    filterTo: 800,
+    filterQ: 0.6,
+  });
+  tone(ac, 520, t + 0.01, 0.05, { type: "triangle", gain: 0.05 });
+}
+
+/**
+ * 해금 팡파레 — 새 코스튬/펫/뱃지 등이 해금됐을 때.
+ * 짧고 산뜻한 4음 아르페지오 + 스파클.
+ */
+export function playUnlock(): void {
+  const ac = getCtx();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // C5 - E5 - G5 - C6 (메이저 트라이어드 + 옥타브)
+  const notes = [
+    { f: 523.25, o: 0.0 },
+    { f: 659.25, o: 0.07 },
+    { f: 783.99, o: 0.14 },
+    { f: 1046.5, o: 0.22 },
+  ];
+  for (const n of notes) {
+    tone(ac, n.f, t + n.o, 0.32, { type: "triangle", gain: 0.14 });
+  }
+  // 마지막 sparkle
+  tone(ac, 2093, t + 0.28, 0.5, { type: "sine", gain: 0.08 });
+  tone(ac, 2637, t + 0.32, 0.5, { type: "sine", gain: 0.06 });
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// 미리듣기
+// ─────────────────────────────────────────────────────────────────────
+
+/** 사용자가 토글을 켜면 호출 — 미리듣기 용 (공격 → 처치 시퀀스). */
 export function playPreview(id: CharacterId): void {
-  playDefeat(id);
+  playAttack(id);
+  // 공격 사운드의 자연스러운 잔향 뒤에 처치 사운드 이어 재생
+  window.setTimeout(() => playDefeat(id), 380);
 }
