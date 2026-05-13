@@ -8,6 +8,11 @@ import { useAuthStore } from "../store/authStore";
 import { useProgressStore } from "../store/progressStore";
 import type { WordProgress } from "../types";
 
+// Postgres UUID v1-v5 형식. Supabase words.id 는 항상 이 형식이다.
+// 로컬 시드의 `local-w-X` 같은 가짜 ID 를 걸러내기 위한 안전망.
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 /**
  * 진행 상태 ↔ Supabase 동기화.
  *
@@ -97,7 +102,18 @@ export function useProgressSync() {
 
       if (changed.length === 0) return;
 
-      const rows: DbWordProgress[] = changed.map((p) => ({
+      // UUID 가 아닌 word_id (예: 로컬 시드 `local-w-X`) 는 DB 에 존재할 수
+      // 없으므로 FK 위반을 막기 위해 업서트 대상에서 제외한다.
+      const validChanged = changed.filter((p) => UUID_RE.test(p.word_id));
+      const skipped = changed.length - validChanged.length;
+      if (skipped > 0) {
+        console.warn(
+          `[supabase] word_progress 동기화에서 ${skipped}개의 비-UUID word_id 를 건너뜀 (로컬 시드 잔여 데이터로 추정).`,
+        );
+      }
+      if (validChanged.length === 0) return;
+
+      const rows: DbWordProgress[] = validChanged.map((p) => ({
         user_id: userId,
         word_id: p.word_id,
         mastery: p.mastery,
@@ -113,7 +129,7 @@ export function useProgressSync() {
           if (error) {
             console.error("[supabase] upsert word_progress failed:", error);
           } else {
-            for (const p of changed) {
+            for (const p of validChanged) {
               lastSyncedRef.current[p.word_id] = p;
             }
           }

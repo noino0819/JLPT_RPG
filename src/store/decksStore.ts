@@ -139,6 +139,14 @@ export const useDecksStore = create<DecksState>()(
       deleteWord: (wordId) =>
         set((s) => ({ words: s.words.filter((w) => w.id !== wordId) })),
     }),
-    { name: "jlpt-rpg-decks" },
+    {
+      name: "jlpt-rpg-decks",
+      // `loaded` 는 매 부트마다 다시 계산해야 한다.
+      // (localStorage 에 stale 한 시드 ID (`local-w-X`) 가 남아 있는데
+      // loaded=true 인 채로 보이면, useDecksSync 가 Supabase 에서
+      // 새 UUID 를 받아오기 전에 사용자가 stale 카드를 클릭해
+      // word_progress FK 제약 위반을 일으킨다.)
+      partialize: (s) => ({ decks: s.decks, words: s.words }),
+    },
   ),
 );

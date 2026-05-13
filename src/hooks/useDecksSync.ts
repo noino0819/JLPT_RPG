@@ -65,6 +65,11 @@ export function useDecksSync() {
     let cancelled = false;
     const client = supabase;
 
+    // Supabase 데이터가 도착할 때까지 StudyPage 등에서 로딩 화면을 표시한다.
+    // (persist 로 복원된 stale 시드 단어(`local-w-X`) 를 사용자가 클릭하지
+    // 못하도록 막아 word_progress FK 위반을 예방.)
+    useDecksStore.getState().setLoaded(false);
+
     (async () => {
       const [decksRes, wordsRes, examplesRes] = await Promise.all([
         client.from("decks").select("*"),
