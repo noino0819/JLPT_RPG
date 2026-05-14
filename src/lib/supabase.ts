@@ -51,6 +51,17 @@ export interface DbExample {
   order_index: number;
 }
 
+// 단어 간 의미 관계 (≒ 유의 / ↔ 반의 / 관용 변형 / 문맥 페어)
+export interface DbWordRelation {
+  id: string;
+  word_id: string;
+  related_word_id: string;
+  relation_type: "synonym" | "antonym" | "idiom_variant" | "context_pair";
+  explanation: string | null;
+  order_index: number;
+  created_at: string;
+}
+
 export interface DbWordProgress {
   user_id: string;
   word_id: string;

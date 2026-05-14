@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import type { Word } from "../types";
+import type { RelatedWord, Word, WordRelationType } from "../types";
 import { useProfileStore } from "../store/profileStore";
 import { isTtsAvailable, speakJa, stopTts } from "../lib/tts";
+
+// 관계 타입별 표시 라벨/기호 (UI 상수)
+const RELATION_LABELS: Record<WordRelationType, { label: string; symbol: string }> = {
+  synonym: { label: "유의 표현", symbol: "≒" },
+  antonym: { label: "반의 표현", symbol: "↔" },
+  idiom_variant: { label: "관용 변형", symbol: "≈" },
+  context_pair: { label: "문맥 페어", symbol: "↔" },
+};
 
 interface Props {
   word: Word;
@@ -192,11 +200,138 @@ export default function WordCard({
             </div>
           )}
 
+          {word.related && word.related.length > 0 && (
+            <RelatedSection
+              related={word.related}
+              ttsOn={ttsOn}
+              onSpeak={speak}
+            />
+          )}
+
           <div className="mt-auto shrink-0 pt-3 text-center font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
             ▼ 탭해서 앞으로
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * 단어 카드 뒷면의 「유의 표현/반의 표현」 섹션.
+ * 관계 종류별로 그룹화하고, 각 표현마다 한자 어원·예문 2개·읽기 듣기 버튼까지 노출.
+ */
+function RelatedSection({
+  related,
+  ttsOn,
+  onSpeak,
+}: {
+  related: RelatedWord[];
+  ttsOn: boolean;
+  onSpeak: (t: string | null | undefined) => void;
+}) {
+  // 관계 type 별로 묶어 표시 (synonym 만 있어도, 차후 antonym 추가 시 같이 보임)
+  const grouped = new Map<WordRelationType, RelatedWord[]>();
+  for (const r of related) {
+    const list = grouped.get(r.relation_type) ?? [];
+    list.push(r);
+    grouped.set(r.relation_type, list);
+  }
+
+  return (
+    <div className="space-y-2">
+      {Array.from(grouped.entries()).map(([type, items]) => {
+        const meta = RELATION_LABELS[type];
+        return (
+          <div key={type}>
+            <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
+              {meta.symbol} {meta.label}
+            </div>
+            <ul className="mt-1 space-y-1.5">
+              {items.map((r) => {
+                const rw = r.word;
+                const jp = rw.headword ?? rw.reading;
+                return (
+                  <li
+                    key={rw.id}
+                    className="rounded-none border-2 border-parchment-700/30 bg-parchment-50/70 px-2 py-1.5"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-baseline gap-x-2">
+                          <span className="pixel-text-jp text-base font-bold leading-tight text-parchment-900 sm:text-lg">
+                            {jp}
+                          </span>
+                          {rw.headword && (
+                            <span className="pixel-text-jp text-xs text-parchment-700">
+                              {rw.reading}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-[12px] leading-snug text-parchment-800 sm:text-sm">
+                          {rw.meaning}
+                        </div>
+                      </div>
+                      {ttsOn && (
+                        <SpeakerButton
+                          ariaLabel="유의 표현 읽어주기"
+                          onClick={() => onSpeak(rw.reading || rw.headword)}
+                          size="sm"
+                        />
+                      )}
+                    </div>
+
+                    {rw.etymology && (
+                      <div className="mt-1 whitespace-pre-line text-[11px] leading-snug text-parchment-700 sm:text-[12px]">
+                        <span className="font-pixel text-[9px] uppercase tracking-widest text-parchment-700">
+                          한자 어원
+                        </span>{" "}
+                        {rw.etymology}
+                      </div>
+                    )}
+
+                    {r.explanation && (
+                      <div className="mt-1 text-[11px] leading-snug text-parchment-600 sm:text-[12px]">
+                        <span className="font-pixel text-[9px] uppercase tracking-widest text-parchment-700">
+                          관계
+                        </span>{" "}
+                        {r.explanation}
+                      </div>
+                    )}
+
+                    {rw.examples && rw.examples.length > 0 && (
+                      <ul className="mt-1 space-y-1">
+                        {rw.examples.map((ex) => (
+                          <li
+                            key={ex.id}
+                            className="border-l-2 border-parchment-700/30 pl-1.5"
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="pixel-text-jp text-[12px] leading-tight text-parchment-900 sm:text-sm">
+                                {ex.jp_sentence}
+                              </div>
+                              {ttsOn && (
+                                <SpeakerButton
+                                  ariaLabel="예문 읽어주기"
+                                  onClick={() => onSpeak(ex.jp_sentence)}
+                                  size="sm"
+                                />
+                              )}
+                            </div>
+                            <div className="text-[10px] leading-tight text-parchment-600 sm:text-[11px]">
+                              {ex.kr_translation}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   );
 }

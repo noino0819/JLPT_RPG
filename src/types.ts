@@ -115,6 +115,25 @@ export interface Example {
   order_index: number;
 }
 
+// 단어 사이의 의미적 관계 종류 (word_relations.relation_type 와 1:1 매칭)
+export type WordRelationType =
+  | "synonym"
+  | "antonym"
+  | "idiom_variant"
+  | "context_pair";
+
+// 단어 카드에 같이 표시되는 관련 표현 (≒/↔/관용 변형 등)
+export interface RelatedWord {
+  relation_type: WordRelationType;
+  explanation?: string;
+  word: Pick<
+    Word,
+    "id" | "headword" | "reading" | "meaning" | "etymology" | "part_of_speech"
+  > & {
+    examples?: Example[];
+  };
+}
+
 export interface Word {
   id: string;
   deck_id: string;
@@ -126,6 +145,8 @@ export interface Word {
   order_index: number;
   tags: string[];
   examples: Example[];
+  // 유의어/반의어 등 다른 표현과의 관계. 비어 있을 수 있음
+  related?: RelatedWord[];
 }
 
 export interface WordProgress {

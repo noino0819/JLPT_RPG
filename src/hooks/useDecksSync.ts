@@ -6,11 +6,12 @@ import {
   type DbDeck,
   type DbExample,
   type DbWord,
+  type DbWordRelation,
 } from "../lib/supabase";
 import { useAuthStore } from "../store/authStore";
 import { useDecksStore } from "../store/decksStore";
 import { OFFICIAL_DECKS, OFFICIAL_WORDS } from "../data/seed";
-import type { Deck, Example, Word } from "../types";
+import type { Deck, Example, RelatedWord, Word } from "../types";
 
 /**
  * 덱/단어 ↔ Supabase 동기화.
@@ -75,7 +76,7 @@ export function useDecksSync() {
       // PostgREST 기본 limit 이 1,000 rows 이므로 .range() 로 페이지네이션.
       // (words/examples 합쳐 약 7,000 rows 가 있어서 limit 에 걸리면
       //  N3 같은 일부 덱이 통째로 누락된 채 hydrate 되는 버그가 발생.)
-      const [decksRes, wordsRes, examplesRes] = await Promise.all([
+      const [decksRes, wordsRes, examplesRes, relationsRes] = await Promise.all([
         client.from("decks").select("*"),
         fetchAllPaginated<DbWord>((from, to) =>
           client.from("words").select("*").range(from, to),
@@ -83,14 +84,25 @@ export function useDecksSync() {
         fetchAllPaginated<DbExample>((from, to) =>
           client.from("examples").select("*").range(from, to),
         ),
+        fetchAllPaginated<DbWordRelation>((from, to) =>
+          client.from("word_relations").select("*").range(from, to),
+        ),
       ]);
 
       if (cancelled) return;
 
-      if (decksRes.error || wordsRes.error || examplesRes.error) {
+      if (
+        decksRes.error ||
+        wordsRes.error ||
+        examplesRes.error ||
+        relationsRes.error
+      ) {
         console.error(
-          "[supabase] failed to load decks/words/examples:",
-          decksRes.error || wordsRes.error || examplesRes.error,
+          "[supabase] failed to load decks/words/examples/relations:",
+          decksRes.error ||
+            wordsRes.error ||
+            examplesRes.error ||
+            relationsRes.error,
         );
         useDecksStore.getState().setLoaded(true);
         return;
@@ -99,6 +111,7 @@ export function useDecksSync() {
       const dbDecks = (decksRes.data ?? []) as DbDeck[];
       const dbWords = wordsRes.data;
       const dbExamples = examplesRes.data;
+      const dbRelations = relationsRes.data;
 
       const examplesByWord = new Map<string, Example[]>();
       for (const ex of dbExamples) {
@@ -112,6 +125,34 @@ export function useDecksSync() {
           order_index: ex.order_index,
         });
         examplesByWord.set(ex.word_id, list);
+      }
+
+      // 단어 id 로 빠르게 찾기 위한 인덱스
+      const wordById = new Map<string, DbWord>();
+      for (const w of dbWords) wordById.set(w.id, w);
+
+      // word_id → 관련 표현 목록 (해당 word 입장에서의 관계만 모음)
+      const relationsByWord = new Map<string, RelatedWord[]>();
+      for (const r of dbRelations) {
+        const related = wordById.get(r.related_word_id);
+        if (!related) continue; // 끊긴 참조 방어
+        const list = relationsByWord.get(r.word_id) ?? [];
+        list.push({
+          relation_type: r.relation_type,
+          explanation: r.explanation ?? undefined,
+          word: {
+            id: related.id,
+            headword: related.headword,
+            reading: related.reading,
+            meaning: related.meaning,
+            etymology: related.etymology ?? undefined,
+            part_of_speech: related.part_of_speech ?? undefined,
+            examples: (examplesByWord.get(related.id) ?? []).sort(
+              (a, b) => a.order_index - b.order_index,
+            ),
+          },
+        });
+        relationsByWord.set(r.word_id, list);
       }
 
       const decks: Deck[] = dbDecks.map((d) => ({
@@ -136,6 +177,7 @@ export function useDecksSync() {
         examples: (examplesByWord.get(w.id) ?? []).sort(
           (a, b) => a.order_index - b.order_index,
         ),
+        related: relationsByWord.get(w.id),
       }));
 
       useDecksStore.getState().hydrate(decks, words);

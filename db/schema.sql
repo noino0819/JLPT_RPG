@@ -135,6 +135,31 @@ create table public.examples (
 create index examples_word_idx on public.examples(word_id);
 
 
+-- ─────────── 4-2. word_relations ───────────
+-- 단어 사이의 유의/반의/관용 변형/문맥 페어 관계 (1:N)
+-- 자세한 도입 배경은 db/migrations/2026_05_14_word_relations.sql 참고
+create table public.word_relations (
+  id uuid primary key default gen_random_uuid(),
+  word_id uuid not null references public.words(id) on delete cascade,
+  related_word_id uuid not null references public.words(id) on delete cascade,
+  relation_type text not null check (relation_type in (
+    'synonym',
+    'antonym',
+    'idiom_variant',
+    'context_pair'
+  )),
+  explanation text,
+  order_index int not null default 0,
+  created_at timestamptz not null default now(),
+  unique (word_id, related_word_id, relation_type),
+  check (word_id <> related_word_id)
+);
+
+create index word_relations_word_idx    on public.word_relations(word_id);
+create index word_relations_related_idx on public.word_relations(related_word_id);
+create index word_relations_type_idx    on public.word_relations(relation_type);
+
+
 -- ─────────── 5. word_progress ───────────
 -- 유저별 × 단어별 학습 상태
 create table public.word_progress (
@@ -176,11 +201,12 @@ group by wp.user_id, d.jlpt_level;
 -- RLS (Row Level Security)
 -- ============================================================
 
-alter table public.profiles       enable row level security;
-alter table public.decks          enable row level security;
-alter table public.words          enable row level security;
-alter table public.examples       enable row level security;
-alter table public.word_progress  enable row level security;
+alter table public.profiles        enable row level security;
+alter table public.decks           enable row level security;
+alter table public.words           enable row level security;
+alter table public.examples        enable row level security;
+alter table public.word_relations  enable row level security;
+alter table public.word_progress   enable row level security;
 
 -- ──────────────────────────────────────────────────────────────
 -- 정책 작성 규칙
@@ -298,6 +324,52 @@ create policy "examples_update_own"
   ));
 create policy "examples_delete_own"
   on public.examples for delete
+  using (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = (select auth.uid())
+      and d.is_official = false
+  ));
+
+-- ──────────────────────────────────────────────────────────────
+-- word_relations: 단어와 동일 규칙
+-- ──────────────────────────────────────────────────────────────
+create policy "word_relations_select"
+  on public.word_relations for select
+  using (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and (d.is_official or d.owner_id = (select auth.uid()))
+  ));
+create policy "word_relations_insert_own"
+  on public.word_relations for insert
+  with check (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = (select auth.uid())
+      and d.is_official = false
+  ));
+create policy "word_relations_update_own"
+  on public.word_relations for update
+  using (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = (select auth.uid())
+      and d.is_official = false
+  ))
+  with check (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = (select auth.uid())
+      and d.is_official = false
+  ));
+create policy "word_relations_delete_own"
+  on public.word_relations for delete
   using (exists (
     select 1 from public.words w
     join public.decks d on d.id = w.deck_id
