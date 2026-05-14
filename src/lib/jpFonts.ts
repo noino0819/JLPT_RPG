@@ -41,17 +41,16 @@ export const JP_FONTS: Record<JpFontId, JpFontOption> = {
     jpLabel: "ドット",
     description: "8비트 도트 매트릭스 픽셀 글꼴",
     family: `"DotGothic16", ${FALLBACK}`,
-    // index.css 에서 이미 import 하므로 추가 로드 불필요
+    // 실제 stylesheet 는 index.html 의 통합 <link> 가 가져옴
     googleHref: null,
   },
-  train_one: {
-    id: "train_one",
-    label: "트레인 (굵은 블럭)",
-    jpLabel: "トレイン",
-    description: "굵직한 블럭형 픽셀 — 강한 임팩트",
-    family: `"Train One", ${FALLBACK}`,
-    googleHref:
-      "https://fonts.googleapis.com/css2?family=Train+One&display=swap",
+  noto_sans_jp: {
+    id: "noto_sans_jp",
+    label: "노토 (산세리프)",
+    jpLabel: "ノト",
+    description: "Google 표준 일본어 산세리프 — 가독성 최고",
+    family: `"Noto Sans JP", sans-serif`,
+    googleHref: null,
   },
   stick: {
     id: "stick",
@@ -137,10 +136,12 @@ export function applyJpFont(id: JpFontId): void {
 // 모든 옵션 폰트를 하나의 Google Fonts URL 로 묶어 가져오는 stylesheet href.
 // index.html 에서 동일 href 의 <link> 를 미리 로드하지만, 안전망으로 동적 주입
 // 함수도 제공한다(테스트/스토리북/캐시 미스 등 대비).
+// ⚠ index.html 의 <link> 와 정확히 같은 문자열이어야 ensureAllJpFontsLoaded 가
+// 중복 주입을 회피한다.
 const ALL_JP_FONTS_HREF =
   "https://fonts.googleapis.com/css2" +
   "?family=DotGothic16" +
-  "&family=Train+One" +
+  "&family=Noto+Sans+JP:wght@400;700" +
   "&family=Stick" +
   "&family=Reggae+One" +
   "&family=Yusei+Magic" +

@@ -7,11 +7,12 @@ export type Mastery = "none" | "probably" | "mastered";
 
 export type OrderMode = "random" | "sequential";
 
-// 단어 카드/카나에 사용되는 일본어 픽셀·레트로 폰트 식별자.
+// 단어 카드/카나에 사용되는 일본어 폰트 식별자.
+// 픽셀/레트로 글꼴 + 가독성용 표준 산세리프(noto_sans_jp).
 // 실제 글꼴 정의/CSS 패밀리/Google Fonts URL 은 src/lib/jpFonts.ts 참고.
 export type JpFontId =
   | "dotgothic16"
-  | "train_one"
+  | "noto_sans_jp"
   | "stick"
   | "reggae_one"
   | "yusei_magic"
