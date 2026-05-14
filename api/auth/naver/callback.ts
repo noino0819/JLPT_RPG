@@ -7,6 +7,7 @@ import {
   rejectIfMethodNotAllowed,
   safeEqual,
   sanitizeErrorMessage,
+  setApiResponseHeaders,
 } from "../../_lib/security";
 
 interface NaverTokenResponse {
@@ -59,15 +60,11 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ) {
+  setApiResponseHeaders(res);
   if (rejectIfMethodNotAllowed(req, res, ["GET"])) return;
 
   const origin = getOriginOrDefault(req);
   const isHttps = origin.startsWith("https://");
-
-  // 캐시 방지 (인증 콜백은 절대 캐싱되어선 안 됨)
-  res.setHeader("Cache-Control", "no-store");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Referrer-Policy", "no-referrer");
 
   try {
     const { code, state, error, error_description } = req.query as Record<

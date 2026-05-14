@@ -4,6 +4,7 @@ import {
   buildCookie,
   getOriginOrDefault,
   rejectIfMethodNotAllowed,
+  setApiResponseHeaders,
 } from "../../_lib/security";
 
 /**
@@ -21,11 +22,14 @@ import {
  * 환경변수: NAVER_CLIENT_ID
  */
 export default function handler(req: VercelRequest, res: VercelResponse) {
+  setApiResponseHeaders(res);
   if (rejectIfMethodNotAllowed(req, res, ["GET"])) return;
 
   const clientId = process.env.NAVER_CLIENT_ID;
   if (!clientId) {
-    res.status(500).send("NAVER_CLIENT_ID 가 설정되지 않았습니다");
+    // 환경변수 미설정 정보 노출 방지: 사용자에게 자세한 사유 숨김
+    console.error("[naver/start] NAVER_CLIENT_ID 누락");
+    res.status(500).send("서비스 설정 오류");
     return;
   }
 
@@ -45,11 +49,6 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       sameSite: "Lax",
     }),
   );
-
-  // 인덱싱/캐시 방지: 인증 시작 URL 은 절대로 캐싱되어선 안 된다.
-  res.setHeader("Cache-Control", "no-store");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Referrer-Policy", "no-referrer");
 
   const url = new URL("https://nid.naver.com/oauth2.0/authorize");
   url.searchParams.set("response_type", "code");

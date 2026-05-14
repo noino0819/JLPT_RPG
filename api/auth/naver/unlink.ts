@@ -1,6 +1,9 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
-import { rejectIfMethodNotAllowed } from "../../_lib/security";
+import {
+  rejectIfMethodNotAllowed,
+  setApiResponseHeaders,
+} from "../../_lib/security";
 
 /**
  * 네이버 "연결 끊기" 콜백.
@@ -42,6 +45,7 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ) {
+  setApiResponseHeaders(res);
   if (rejectIfMethodNotAllowed(req, res, ["POST"])) return;
 
   try {

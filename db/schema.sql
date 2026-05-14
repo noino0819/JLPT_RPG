@@ -177,13 +177,24 @@ alter table public.words          enable row level security;
 alter table public.examples       enable row level security;
 alter table public.word_progress  enable row level security;
 
+-- ──────────────────────────────────────────────────────────────
 -- profiles: 본인 것만
+-- ──────────────────────────────────────────────────────────────
+-- INSERT 는 트리거(handle_new_user)로만 자동 생성되지만, 보호망으로 정책 명시.
 create policy "profiles_select_own"
   on public.profiles for select using (auth.uid() = id);
+create policy "profiles_insert_self"
+  on public.profiles for insert with check (auth.uid() = id);
 create policy "profiles_update_own"
-  on public.profiles for update using (auth.uid() = id);
+  on public.profiles for update
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
 
+-- ──────────────────────────────────────────────────────────────
 -- decks: 공식이거나 본인 것 read, 본인 것만 write (공식 덱 사칭 불가)
+-- ──────────────────────────────────────────────────────────────
+-- WITH CHECK 가 빠지면 본인 덱을 is_official=true 로 변경하거나 owner_id 를
+-- 다른 사용자로 옮겨 권한을 우회할 수 있다. UPDATE 양쪽 모두 명시.
 create policy "decks_select"
   on public.decks for select
   using (is_official or owner_id = auth.uid());
@@ -191,11 +202,18 @@ create policy "decks_insert_own"
   on public.decks for insert
   with check (owner_id = auth.uid() and is_official = false);
 create policy "decks_update_own"
-  on public.decks for update using (owner_id = auth.uid());
+  on public.decks for update
+  using (owner_id = auth.uid() and is_official = false)
+  with check (owner_id = auth.uid() and is_official = false);
 create policy "decks_delete_own"
-  on public.decks for delete using (owner_id = auth.uid());
+  on public.decks for delete
+  using (owner_id = auth.uid() and is_official = false);
 
+-- ──────────────────────────────────────────────────────────────
 -- words: 접근 가능한 덱의 단어만 read, 본인 덱 단어만 write
+-- ──────────────────────────────────────────────────────────────
+-- 기존 정책은 USING 만 있어 UPDATE 시 deck_id 를 다른 사람 덱(또는 공식 덱)
+-- 으로 이동시켜 무단 수정 가능했다. WITH CHECK 를 추가해 차단.
 create policy "words_select"
   on public.words for select
   using (exists (
@@ -203,14 +221,40 @@ create policy "words_select"
     where d.id = deck_id
       and (d.is_official or d.owner_id = auth.uid())
   ));
-create policy "words_modify_own"
-  on public.words for all
+create policy "words_insert_own"
+  on public.words for insert
+  with check (exists (
+    select 1 from public.decks d
+    where d.id = deck_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
+  ));
+create policy "words_update_own"
+  on public.words for update
   using (exists (
     select 1 from public.decks d
-    where d.id = deck_id and d.owner_id = auth.uid()
+    where d.id = deck_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
+  ))
+  with check (exists (
+    select 1 from public.decks d
+    where d.id = deck_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
+  ));
+create policy "words_delete_own"
+  on public.words for delete
+  using (exists (
+    select 1 from public.decks d
+    where d.id = deck_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
   ));
 
--- examples: 단어와 동일 규칙
+-- ──────────────────────────────────────────────────────────────
+-- examples: 단어와 동일 규칙 (USING + WITH CHECK 모두 명시)
+-- ──────────────────────────────────────────────────────────────
 create policy "examples_select"
   on public.examples for select
   using (exists (
@@ -219,18 +263,54 @@ create policy "examples_select"
     where w.id = word_id
       and (d.is_official or d.owner_id = auth.uid())
   ));
-create policy "examples_modify_own"
-  on public.examples for all
+create policy "examples_insert_own"
+  on public.examples for insert
+  with check (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
+  ));
+create policy "examples_update_own"
+  on public.examples for update
   using (exists (
     select 1 from public.words w
     join public.decks d on d.id = w.deck_id
-    where w.id = word_id and d.owner_id = auth.uid()
+    where w.id = word_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
+  ))
+  with check (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
+  ));
+create policy "examples_delete_own"
+  on public.examples for delete
+  using (exists (
+    select 1 from public.words w
+    join public.decks d on d.id = w.deck_id
+    where w.id = word_id
+      and d.owner_id = auth.uid()
+      and d.is_official = false
   ));
 
--- word_progress: 본인 것만
-create policy "progress_own"
-  on public.word_progress for all
-  using (user_id = auth.uid());
+-- ──────────────────────────────────────────────────────────────
+-- word_progress: 본인 것만 (INSERT/UPDATE 양쪽에 user_id 검증)
+-- ──────────────────────────────────────────────────────────────
+create policy "progress_select_own"
+  on public.word_progress for select using (user_id = auth.uid());
+create policy "progress_insert_own"
+  on public.word_progress for insert with check (user_id = auth.uid());
+create policy "progress_update_own"
+  on public.word_progress for update
+  using (user_id = auth.uid())
+  with check (user_id = auth.uid());
+create policy "progress_delete_own"
+  on public.word_progress for delete using (user_id = auth.uid());
 
 
 -- ============================================================

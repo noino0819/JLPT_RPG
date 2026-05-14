@@ -78,12 +78,32 @@ export default function LoginPage() {
               data: { nickname: normalizedEmail.split("@")[0] },
             },
           });
-          if (error) throw error;
+          if (error) {
+            // 사용자 열거(User enumeration) 방지:
+            // "이미 등록된 이메일입니다" 같은 메시지는 공격자가 가입자
+            // 목록을 탐색할 수 있게 해 준다. rate-limit/format 오류처럼
+            // 클라이언트가 고칠 수 있는 에러만 가시화하고, 그 외는 일반화.
+            const msg = error.message || "";
+            const isClientFixable =
+              /password|email format|invalid email|rate|weak/i.test(msg);
+            if (isClientFixable) {
+              setError(
+                "회원가입 정보를 확인해 주세요 (이메일 형식/비밀번호 정책 등).",
+              );
+            } else {
+              // 이미 가입 여부와 무관하게 동일한 안내 메시지 → enumeration 차단
+              setInfo(
+                "회원가입 요청이 접수되었습니다. 메일함의 인증 링크를 확인해 주세요.",
+              );
+              setMode("login");
+            }
+            return;
+          }
 
           // confirm email 옵션이 켜져 있으면 session 이 null
           if (!data.session) {
             setInfo(
-              "회원가입 완료! 메일함의 인증 링크를 클릭한 뒤 다시 로그인해주세요.",
+              "회원가입 요청이 접수되었습니다. 메일함의 인증 링크를 확인해 주세요.",
             );
             setMode("login");
             return;

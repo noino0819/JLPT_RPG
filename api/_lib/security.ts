@@ -179,6 +179,8 @@ export function parseCookieHeader(
 /**
  * HTTP 메서드 가드. 허용되지 않으면 405 + Allow 헤더로 응답한 뒤 true 를 반환.
  * 호출부는 true 일 때 즉시 return 해야 한다.
+ *
+ * OPTIONS 는 항상 거절한다 (CORS preflight 차단 — 우리 API 는 동일 origin 전용).
  */
 export function rejectIfMethodNotAllowed(
   req: VercelRequest,
@@ -186,10 +188,31 @@ export function rejectIfMethodNotAllowed(
   allowed: ReadonlyArray<string>,
 ): boolean {
   const method = (req.method || "GET").toUpperCase();
+  if (method === "OPTIONS") {
+    // CORS preflight: 명시적으로 거부. 동일 origin 외 다른 origin 차단.
+    res.setHeader("Allow", allowed.join(", "));
+    res.status(405).json({ error: "method_not_allowed" });
+    return true;
+  }
   if (!allowed.includes(method)) {
     res.setHeader("Allow", allowed.join(", "));
     res.status(405).json({ error: "method_not_allowed" });
     return true;
   }
   return false;
+}
+
+/**
+ * 일반 API(자체 호출용) 의 보안 헤더 일괄 세팅.
+ * Vercel 의 vercel.json headers 는 정적/SPA 라우트와 별개로 함수 응답에도
+ * 적용되지만, 함수 본문에서도 한 번 더 명시해 둔다 (방어적 다중화).
+ */
+export function setApiResponseHeaders(res: VercelResponse): void {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0",
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "no-referrer");
 }
