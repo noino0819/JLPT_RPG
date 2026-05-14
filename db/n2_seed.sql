@@ -4,7 +4,7 @@
 -- 실행 시 기존 N2 공식 덱의 단어/예문(CASCADE)을 모두 삭제 후 재삽입합니다.
 -- 사용자 진행도(word_progress)도 함께 삭제됩니다.
 -- 멱등성: 여러 번 실행해도 결과 동일.
--- 총 1363단어 (1031개는 의미·한자어원·예문 2개씩 / 332개는 PDF 추출 기본정보)
+-- 총 1494단어 (PDF 어휘 906 + 「파이널 문법 체크북」 588 (형식판단 327 + 문장완성 141 + 문맥이해 120))
 -- ============================================================
 
 delete from public.words
@@ -5459,2753 +5459,4132 @@ begin
     (w, '定年退職を迎えた。', '정년 퇴직을 맞이했다.', 1),
     (w, '定年後の生活を考える。', '정년 후의 생활을 생각한다.', 2);
 
+  -- ============================================================
+  -- N2 「파이널 문법 체크북」 PDF: 일단합격JLPT완벽대비N2-단어장
+  -- 형식판단 327 + 문장완성 141 + 문맥이해 120 = 588 항목
+  -- order_index 907 ~ 1494, 각 항목 한자/구조 어원 + 예문 2개
+  -- ============================================================
+
+  -- ────────── 문법 형식 판단 (327개, 907~1233) ──────────
+
   -- 907. ～におうじて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～におうじて', '～におうじて', '~에 맞추어, ~에 대응하여', NULL, '문법', 907, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～におうじて', '~에 맞추어, ~에 대응하여', '応(응할 응)じる+て. 명사+に応じて. 「대상에 따라 적절히 대응」', '문법-형식판단', 907, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ニーズに応じて商品を提供する。', '니즈에 맞추어 상품을 제공한다.', 1),
-    (w, '状況に応じて対応を変える。', '상황에 따라 대응을 바꾼다.', 2);
+    (w, '能力に応じて給料が決まる。', '능력에 맞추어 급여가 정해진다.', 1),
+    (w, '状況に応じて対策を変える。', '상황에 맞추어 대책을 바꾼다.', 2);
 
   -- 908. ～途中で
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～途中で', '～とちゅうで', '~도중에', NULL, '문법', 908, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～途中で', 'とちゅうで', '~도중에', '途(길 도)+中(가운데). 명사の/동사 진행형+途中で. 행위/이동의 중간 시점', '문법-형식판단', 908, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '帰宅途中で雨に降られた。', '귀가 도중에 비를 맞았다.', 1),
+    (w, '帰宅の途中で雨に降られた。', '귀가 도중에 비를 맞았다.', 1),
     (w, '会議の途中で電話が鳴った。', '회의 도중에 전화가 울렸다.', 2);
 
   -- 909. ～にわたって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にわたって', '～にわたって', '~에 걸쳐서', NULL, '문법', 909, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にわたって', '~에 걸쳐서 (광범위·장기간)', '渡(건널 도)る+て. 명사(기간/범위)+にわたって. 「~의 전 범위에 걸침」', '문법-형식판단', 909, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '長期間にわたって調査した。', '장기간에 걸쳐 조사했다.', 1),
-    (w, '全国にわたって講演を行う。', '전국에 걸쳐 강연을 한다.', 2);
+    (w, '3日間にわたって会議が行われた。', '3일간에 걸쳐서 회의가 진행되었다.', 1),
+    (w, '全国にわたって雨が降った。', '전국에 걸쳐 비가 내렸다.', 2);
 
   -- 910. 何も～
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '何も～', 'なにも', '굳이~', NULL, '문법', 910, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '何も～', 'なにも', '굳이~, 일부러~', '何(어찌 하)+も+동사. 부정/반어 표현과 함께 「굳이/일부러」 어감', '문법-형식판단', 910, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '何もそんなに怒ることはない。', '굳이 그렇게 화낼 필요는 없다.', 1),
-    (w, '何も急ぐことはない。', '굳이 서두를 필요는 없다.', 2);
+    (w, '何もそこまで言わなくてもいい。', '굳이 거기까지 말 안 해도 된다.', 1),
+    (w, '何も急ぐ必要はない。', '굳이 서두를 필요는 없다.', 2);
 
   -- 911. ～一方だ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～一方だ', '～いっぽうだ', '~하기만 하다', NULL, '문법', 911, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～一方だ', 'いっぽうだ', '~하기만 하다 (한 방향 진행)', '一(한 일)+方(방향 방)+だ. 동사 사전형+一方だ. 한쪽 방향의 진행/악화', '문법-형식판단', 911, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '物価は上がる一方だ。', '물가는 오르기만 한다.', 1),
-    (w, '不安が増える一方だ。', '불안이 늘어가기만 한다.', 2);
+    (w, '人口は減る一方だ。', '인구는 줄어들기만 한다.', 2);
 
   -- 912. ～がたい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～がたい', '～がたい', '~하기 어렵다', NULL, '문법', 912, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～がたい', '~하기 어렵다 (심리·도덕적)', '難(어려울 난)い의 변형 がたい. 동사ます형+がたい. 「~하기 곤란/꺼려짐」', '문법-형식판단', 912, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '信じがたい話を聞いた。', '믿기 어려운 이야기를 들었다.', 1),
+    (w, '彼の話は信じがたい。', '그의 이야기는 믿기 어렵다.', 1),
     (w, '忘れがたい思い出だ。', '잊기 어려운 추억이다.', 2);
 
   -- 913. ～(さ)せていただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)せていただく', '～させていただく', '~하다 <겸양>', NULL, '문법', 913, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せていただく', '~하다 <겸양>', '사역형+ていただく. 자신의 행위를 가장 정중히 겸양 표현', '문법-형식판단', 913, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日休ませていただきます。', '내일 쉬도록 하겠습니다.', 1),
-    (w, '発表させていただきます。', '발표하도록 하겠습니다.', 2);
+    (w, '本日は休ませていただきます。', '오늘은 쉬겠습니다.', 1),
+    (w, '発表させていただきます。', '발표하겠습니다.', 2);
 
   -- 914. ～(さ)れる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)れる', '～される', '본의 아니게 ~하게 되다 <사역 수동>', NULL, '문법', 914, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)れる', '본의 아니게 ~하게 되다 <사역수동>', '사역(さ)せる+受(られ)る의 축약. 강요/유발된 행위', '문법-형식판단', 914, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '上司に残業させられた。', '상사에게 잔업하게 됐다.', 1),
-    (w, '先生に発表させられた。', '선생님에게 발표하게 됐다.', 2);
+    (w, '長時間待たされた。', '오랜 시간 기다리게 되었다.', 1),
+    (w, '無理にお酒を飲まされた。', '억지로 술을 마시게 되었다.', 2);
 
   -- 915. ～たところ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たところ', '～たところ', '~했더니', NULL, '문법', 915, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たところ', '~했더니 (결과 발견)', '동사 た형+ところ(곳/때). 어떤 동작 후의 결과·발견', '문법-형식판단', 915, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '聞いてみたところ、彼も知らなかった。', '물어봤더니 그도 몰랐다.', 1),
-    (w, '調べたところ、問題が見つかった。', '조사했더니 문제가 발견됐다.', 2);
+    (w, '相談したところ、いい意見をもらった。', '상담했더니 좋은 의견을 받았다.', 1),
+    (w, '駅へ行ったところ、電車が来ていた。', '역에 갔더니 전철이 와 있었다.', 2);
 
   -- 916. ～にすぎないとはいえ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にすぎないとはいえ', '～にすぎないとはいえ', '~에 지나지 않는다고는 해도', NULL, '문법', 916, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にすぎないとはいえ', '~에 지나지 않는다고는 해도', 'に+過(지날 과)ぎ+ない+とはいえ. 「불과하지만」+양보', '문법-형식판단', 916, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '噂にすぎないとはいえ気になる。', '소문에 지나지 않는다고는 해도 신경 쓰인다.', 1),
-    (w, '冗談にすぎないとはいえ失礼だ。', '농담에 지나지 않는다고는 해도 실례다.', 2);
+    (w, '冗談にすぎないとはいえ、傷ついた。', '농담에 지나지 않는다고는 해도 상처받았다.', 1),
+    (w, '少額にすぎないとはいえ、ありがたい。', '소액에 지나지 않는다고는 해도 고맙다.', 2);
 
   -- 917. ～はずだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～はずだ', '～はずだ', '틀림없이 ~일 것이다', NULL, '문법', 917, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～はずだ', '틀림없이 ~일 것이다 (근거 있는 확신)', '筈(はず, 마땅한 도리). 근거 있는 강한 추측', '문법-형식판단', 917, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は来るはずだ。', '그는 올 것이다.', 1),
-    (w, '答えはここに書いてあるはずだ。', '답은 여기 적혀 있을 것이다.', 2);
+    (w, '彼は今日来るはずだ。', '그는 오늘 올 것이다.', 1),
+    (w, '彼女なら知っているはずだ。', '그녀라면 알고 있을 것이다.', 2);
 
   -- 918. ～ままで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ままで', '～ままで', '~대로, ~인 채로', NULL, '문법', 918, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ままで', '~대로, ~인 채로', '儘(まま, 그대로)+で. 상태 유지 후 다른 행위', '문법-형식판단', 918, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '着替えないままで寝てしまった。', '갈아입지 않은 채로 자 버렸다.', 1),
-    (w, 'そのままでいてください。', '그대로 있어 주세요.', 2);
+    (w, '靴を履いたままで部屋に入る。', '신발을 신은 채로 방에 들어간다.', 1),
+    (w, '昔のままでとどめておく。', '옛 그대로 두다.', 2);
 
   -- 919. ～上で
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～上で', '～うえで', '~한 후에', NULL, '문법', 919, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～上で', 'うえで', '~한 후에 / ~하는 데에 있어서', '上(위 상)+で. 동사 た형/명사+の+上で. 전제·기준·후속', '문법-형식판단', 919, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'よく考えた上で決めた。', '잘 생각한 후 결정했다.', 1),
-    (w, '検討の上で返答します。', '검토한 후에 답변하겠습니다.', 2);
+    (w, 'よく考えた上で決めてください。', '잘 생각한 후에 결정해 주세요.', 1),
+    (w, '生活する上でお金は必要だ。', '생활하는 데에 있어서 돈은 필요하다.', 2);
 
   -- 920. ～でありながらも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～でありながらも', '～でありながらも', '~이면서도', NULL, '문법', 920, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～でありながらも', '~이면서도 (역접)', 'である(이다)+ながら(하면서)+も(도). 명사 술어 양보·역접', '문법-형식판단', 920, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '学生でありながらも会社を経営する。', '학생이면서도 회사를 경영한다.', 1),
-    (w, '忙しい身でありながらも参加した。', '바쁜 몸이면서도 참가했다.', 2);
+    (w, '彼は社長でありながらも謙虚だ。', '그는 사장이면서도 겸손하다.', 1),
+    (w, '医者でありながらも自分の健康を気にしない。', '의사이면서도 자기 건강을 신경 쓰지 않는다.', 2);
 
   -- 921. ～みたいだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～みたいだ', '～みたいだ', '~인 것 같다', NULL, '문법', 921, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～みたいだ', '~인 것 같다 / ~같다 <비유·추측>', '見たい에서 유래. 회화체 비유·추측·전문', '문법-형식판단', 921, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日は雨が降るみたいだ。', '내일은 비가 올 것 같다.', 1),
-    (w, '彼は風邪をひいているみたいだ。', '그는 감기에 걸린 것 같다.', 2);
+    (w, '雨が降っているみたいだ。', '비가 오고 있는 것 같다.', 1),
+    (w, '彼は子供みたいだ。', '그는 어린아이 같다.', 2);
 
   -- 922. とても～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'とても～ない', 'とてもない', '정말이지 ~않다', NULL, '문법', 922, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'とても～ない', '정말이지 ~않다, 도저히 ~않다', 'とても(정말)+ない. 강조된 전면 부정', '문법-형식판단', 922, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'とても信じられない話だ。', '정말이지 믿을 수 없는 이야기다.', 1),
-    (w, 'とても食べきれない量だ。', '정말이지 다 먹을 수 없는 양이다.', 2);
+    (w, 'とても信じられない。', '도저히 믿을 수 없다.', 1),
+    (w, 'とても一人では無理だ。', '도저히 혼자서는 무리다.', 2);
 
   -- 923. 必ずしも～わけではない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '必ずしも～わけではない', 'かならずしもわけではない', '반드시 ~한 것은 아니다', NULL, '문법', 923, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '必ずしも～わけではない', 'かならずしも', '반드시 ~한 것은 아니다 (부분 부정)', '必(반드시 필)+ずしも+わけではない. 부분 부정', '문법-형식판단', 923, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '高ければ必ずしも良いわけではない。', '비싸다고 해서 반드시 좋은 것은 아니다.', 1),
-    (w, '努力すれば必ずしも成功するわけではない。', '노력한다고 반드시 성공하는 것은 아니다.', 2);
+    (w, '高ければ必ずしも良いというわけではない。', '비싸다고 반드시 좋은 것은 아니다.', 1),
+    (w, '彼の話が必ずしも正しいわけではない。', '그의 이야기가 반드시 맞는 것은 아니다.', 2);
 
   -- 924. ～ようがない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようがない', '～ようがない', '~할 방도가 없다', NULL, '문법', 924, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようがない', '~할 방도가 없다, ~할 수가 없다', '동사ます형+よう(방법)+がない. 수단·방법의 부재', '문법-형식판단', 924, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '連絡先がないので連絡しようがない。', '연락처가 없어 연락할 방도가 없다.', 1),
-    (w, '逃げようがない状況だ。', '도망갈 방도가 없는 상황이다.', 2);
+    (w, '連絡先が分からないので、知らせようがない。', '연락처를 몰라서 알릴 방도가 없다.', 1),
+    (w, '壊れすぎて直しようがない。', '너무 망가져서 고칠 수가 없다.', 2);
 
   -- 925. 申し上げる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '申し上げる', 'もうしあげる', '말씀드리다 <겸양>', '겸양어', '동사', 925, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '申し上げる', 'もうしあげる', '말씀드리다 <겸양>', '申す(말하다 겸양)+上げる(올리다). 「말씀을 올리다」 최정중', '문법-형식판단', 925, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お願い申し上げます。', '부탁드립니다.', 1),
-    (w, '心からお礼を申し上げます。', '진심으로 감사드립니다.', 2);
+    (w, 'お礼を申し上げます。', '감사 말씀드립니다.', 1),
+    (w, 'ご報告申し上げます。', '보고드립니다.', 2);
 
   -- 926. ～ないでしょうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないでしょうか', '～ないでしょうか', '~아닐까요?, ~아닐런지요', NULL, '문법', 926, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないでしょうか', '~아닐까요?, ~아닐런지요', 'ない+でしょうか. 정중하고 완곡한 의문/제안', '문법-형식판단', 926, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これでよろしいのではないでしょうか。', '이걸로 괜찮지 않을까요?', 1),
-    (w, '彼が来るのではないでしょうか。', '그가 오지 않을까요?', 2);
+    (w, '少し休んだ方がいいのではないでしょうか。', '조금 쉬는 게 좋지 않을까요?', 1),
+    (w, '間違いがあるのではないでしょうか。', '실수가 있는 게 아닐까요?', 2);
 
   -- 927. ～(さ)せてくれる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)せてくれる', '～させてくれる', '~하게 해 주다', NULL, '문법', 927, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せてくれる', '~하게 해 주다 <허락>', '사역형+てくれる. 「내가 하는 것을 상대가 허용해 줌」', '문법-형식판단', 927, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '両親が留学させてくれた。', '부모님이 유학하게 해 주셨다.', 1),
-    (w, '好きなようにやらせてくれた。', '좋아하는 대로 하게 해 주었다.', 2);
+    (w, '父は私を留学させてくれた。', '아버지는 나를 유학하게 해 주셨다.', 1),
+    (w, '少し休ませてくれませんか。', '잠시 쉬게 해 주시지 않겠습니까?', 2);
 
   -- 928. ～てほしい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てほしい', '～てほしい', '~해 주었으면 좋겠다', NULL, '문법', 928, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てほしい', '~해 주었으면 좋겠다', '동사 て형+ほしい. 상대 행동에 대한 강한 희망', '문법-형식판단', 928, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もう少し早く来てほしい。', '좀 더 빨리 와 줬으면 좋겠다.', 1),
-    (w, '話を聞いてほしい。', '이야기를 들어 줬으면 좋겠다.', 2);
+    (w, '一度考え直してほしい。', '한 번 다시 생각해 줬으면 좋겠다.', 1),
+    (w, '正直に話してほしいです。', '솔직하게 말해 주었으면 좋겠습니다.', 2);
 
   -- 929. ～たばかりだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たばかりだ', '～たばかりだ', '막 ~한 참이다', NULL, '문법', 929, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たばかりだ', '막 ~한 참이다', '동사 た형+ばかり(뿐)+だ. 동작 직후', '문법-형식판단', 929, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '今帰ってきたばかりだ。', '지금 막 돌아온 참이다.', 1),
-    (w, '食べたばかりでお腹がいっぱいだ。', '막 먹은 참이라 배가 부르다.', 2);
+    (w, '今、起きたばかりだ。', '지금 막 일어난 참이다.', 1),
+    (w, '日本に来たばかりです。', '일본에 온 지 얼마 안 되었습니다.', 2);
 
   -- 930. ～かどうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かどうか', '～かどうか', '~인지 어떤지', NULL, '문법', 930, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かどうか', '~인지 어떤지', 'か(의문)+どうか. 불확실 양자택일', '문법-형식판단', 930, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '本当かどうか確認する。', '정말인지 어떤지 확인한다.', 1),
-    (w, '行くかどうか迷っている。', '갈지 말지 망설이고 있다.', 2);
+    (w, '彼が来るかどうか分からない。', '그가 올지 어떨지 모르겠다.', 1),
+    (w, '正しいかどうか確認してください。', '맞는지 어떤지 확인해 주세요.', 2);
 
   -- 931. ～とか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とか', '～とか', '~라든가, ~라는 식으로', NULL, '문법', 931, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とか', '~라든가, ~라는 식으로 (예시/전문)', 'と(인용)+か(불확정). 예시·전해 들음', '문법-형식판단', 931, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '映画とか食事に行こう。', '영화라든가 식사하러 가자.', 1),
-    (w, '忙しいとか言ってばかりだ。', '바쁘다든가 말만 한다.', 2);
+    (w, '映画とかドラマとかをよく見る。', '영화라든가 드라마 같은 걸 자주 본다.', 1),
+    (w, '彼は来ないとか聞いた。', '그는 안 온다고들 한다.', 2);
 
   -- 932. ～すえに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～すえに', '～すえに', '~한 끝에', NULL, '문법', 932, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すえに', '~한 끝에', '末(끝 말)に. 동사 た형/명사+の+すえに. 「오랜 과정 끝에」', '문법-형식판단', 932, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '長い議論のすえに決まった。', '긴 논의 끝에 결정되었다.', 1),
-    (w, '悩んだすえに転職した。', '고민한 끝에 전직했다.', 2);
+    (w, '長い議論のすえに結論が出た。', '오랜 논의 끝에 결론이 나왔다.', 1),
+    (w, '悩んだすえに退職を決めた。', '고민한 끝에 퇴직을 결정했다.', 2);
 
   -- 933. ～(さ)せられる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)せられる', '～させられる', '본의 아니게 ~하게 되다 <사역 수동>', NULL, '문법', 933, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せられる', '본의 아니게 ~하게 되다 <사역수동>', '사역+수동. 강요된 행위 또는 마음의 자극', '문법-형식판단', 933, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '毎日宿題をやらされる。', '매일 숙제를 하게 된다.', 1),
-    (w, '先輩に飲まされた。', '선배에게 술을 마시게 됐다.', 2);
+    (w, '長時間勉強させられた。', '오랜 시간 공부하게 되었다.', 1),
+    (w, '深く考えさせられる映画だ。', '깊이 생각하게 되는 영화다.', 2);
 
   -- 934. ～まい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～まい', '～まい', '~하지 않겠다, ~하지 않을 것이다', NULL, '문법', 934, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～まい', '~하지 않겠다 (의지·추측 부정)', '문어체 부정 의지·추측 조동사', '문법-형식판단', 934, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '二度と失敗するまい。', '두 번 다시 실패하지 않겠다.', 1),
-    (w, '彼は来るまい。', '그는 오지 않을 것이다.', 2);
+    (w, '二度と嘘はつくまい。', '두 번 다시 거짓말은 하지 않겠다.', 1),
+    (w, '彼はもう来るまい。', '그는 이제 오지 않을 것이다.', 2);
 
   -- 935. まいる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'まいる', '오다, 가다 <겸양>', '겸양어', '동사', 935, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '参る', 'まいる', '오다, 가다 <겸양>', '参(참여할 참). 行く/来る의 겸양어', '문법-형식판단', 935, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '私が参ります。', '제가 가겠습니다.', 1),
-    (w, '明日お宅にまいります。', '내일 댁으로 가겠습니다.', 2);
+    (w, 'すぐに参ります。', '곧 가겠습니다.', 1),
+    (w, 'お迎えに参りました。', '마중하러 왔습니다.', 2);
 
   -- 936. むしろ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'むしろ', '오히려, 차라리', '관용 부사', '부사', 936, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'むしろ', '오히려, 차라리', '寧(편안 녕)ろ에서 유래. 비교 후 선호 표현', '문법-형식판단', 936, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'むしろ感謝している。', '오히려 감사하고 있다.', 1),
-    (w, 'むしろ反対だと思う。', '차라리 반대라고 생각한다.', 2);
+    (w, 'むしろ家にいた方がいい。', '오히려 집에 있는 편이 낫다.', 1),
+    (w, '怒るよりむしろ笑った。', '화내기보다 차라리 웃었다.', 2);
 
   -- 937. ～になっているだろう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～になっているだろう', '～になっているだろう', '~이 되어 있을 것이다', NULL, '문법', 937, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～になっているだろう', '~이 되어 있을 것이다', '명사+に+なっている+だろう. 미래 상태 추측', '문법-형식판단', 937, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日には完成になっているだろう。', '내일이면 완성되어 있을 것이다.', 1),
-    (w, '将来は専門家になっているだろう。', '장래에는 전문가가 되어 있을 것이다.', 2);
+    (w, '10年後には立派な大人になっているだろう。', '10년 후에는 훌륭한 어른이 되어 있을 것이다.', 1),
+    (w, '夜には満員になっているだろう。', '밤에는 만원이 되어 있을 것이다.', 2);
 
   -- 938. ～ても～なくても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ても～なくても', '～てもなくても', '~해도 ~하지 않아도', NULL, '문법', 938, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ても～なくても', '~해도 ~하지 않아도', 'ても(양보)+なくても(양보). 어느 쪽이든 상관없음', '문법-형식판단', 938, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '参加してもしなくても自由だ。', '참가해도 안 해도 자유다.', 1),
-    (w, '行っても行かなくても結果は同じだ。', '가도 안 가도 결과는 같다.', 2);
+    (w, '行っても行かなくても構わない。', '가든 안 가든 상관없다.', 1),
+    (w, '雨が降っても降らなくても出発する。', '비가 오든 안 오든 출발한다.', 2);
 
   -- 939. ～すぎず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～すぎず', '～すぎず', '너무 ~하지 말고', NULL, '문법', 939, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すぎず', '너무 ~하지 말고', '過(지날 과)ぎ+ず(부정). 적절한 정도를 권유', '문법-형식판단', 939, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '食べすぎず適量を心がける。', '너무 먹지 말고 적당량을 신경 쓴다.', 1),
-    (w, '急ぎすぎず慎重に進める。', '너무 서두르지 말고 신중히 진행한다.', 2);
+    (w, '無理しすぎず体に気をつけて。', '너무 무리하지 말고 몸 조심해.', 1),
+    (w, '甘やかしすぎず厳しく育てる。', '너무 응석받이로 키우지 말고 엄하게 키운다.', 2);
 
   -- 940. ～でしかない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～でしかない', '～でしかない', '~밖에 되지 않다, ~에 불과하다', NULL, '문법', 940, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～でしかない', '~밖에 되지 않다, ~에 불과하다', 'で+しか(밖에)+ない. 한정·과소평가', '문법-형식판단', 940, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'それは言い訳でしかない。', '그것은 변명에 불과하다.', 1),
-    (w, '彼はただの友人でしかない。', '그는 그저 친구에 불과하다.', 2);
+    (w, '夢でしかない話だ。', '꿈에 불과한 이야기다.', 2);
 
   -- 941. ～わけがない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～わけがない', '～わけがない', '~할 리가 없다', NULL, '문법', 941, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わけがない', '~할 리가 없다', '訳(이유)+がない. 가능성을 강하게 부정', '문법-형식판단', 941, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼が嘘をつくわけがない。', '그가 거짓말할 리가 없다.', 1),
-    (w, 'そんなに簡単なわけがない。', '그렇게 간단할 리가 없다.', 2);
+    (w, '彼が知らないわけがない。', '그가 모를 리가 없다.', 1),
+    (w, 'こんな簡単な問題が分からないわけがない。', '이런 간단한 문제를 모를 리가 없다.', 2);
 
   -- 942. ～くらいだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～くらいだ', '～くらいだ', '~정도다', NULL, '문법', 942, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～くらいだ', '~정도다 (정도 강조)', '位(자리 위)에서. 「~할 정도로 ~함」', '문법-형식판단', 942, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '泣きたいくらいだ。', '울고 싶을 정도다.', 1),
-    (w, '信じられないくらいだ。', '믿기 힘들 정도다.', 2);
+    (w, '死にたいくらい辛い。', '죽고 싶을 정도로 힘들다.', 2);
 
   -- 943. ～もの
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～もの', '～もの', '~나 되는', NULL, '문법', 943, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～もの', '~나 되는 (양/정도 강조)', '物(もの). 수량+もの. 「~씩이나」', '문법-형식판단', 943, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '千人ものファンが集まった。', '천 명이나 되는 팬이 모였다.', 1),
-    (w, '十時間ものフライトだった。', '열 시간이나 되는 비행이었다.', 2);
+    (w, '10時間もの間待った。', '10시간씩이나 기다렸다.', 1),
+    (w, '1万円もの寄付を受けた。', '1만 엔이나 되는 기부를 받았다.', 2);
 
   -- 944. ～すら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～すら', '～すら', '~조차', NULL, '문법', 944, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すら', '~조차 (극단적 예 강조)', '문어체 조사. 극단적 예시를 통한 강조', '문법-형식판단', 944, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '水すら飲めない状態だ。', '물조차 마시지 못하는 상태다.', 1),
-    (w, '名前すら知らない。', '이름조차 모른다.', 2);
+    (w, '挨拶すらしない。', '인사조차 안 한다.', 1),
+    (w, '名前すら覚えていない。', '이름조차 기억하지 못한다.', 2);
 
   -- 945. ～くらい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～くらい', '～くらい', '~정도', NULL, '문법', 945, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～くらい', '~정도, ~만큼', '位(자리)에서 온 정도 표현. 양·정도', '문법-형식판단', 945, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '三十分くらいかかる。', '30분 정도 걸린다.', 1),
-    (w, '子供くらいの体力だ。', '아이 정도의 체력이다.', 2);
+    (w, '駅まで5分くらいだ。', '역까지 5분 정도다.', 1),
+    (w, '彼くらい優しい人はいない。', '그만큼 친절한 사람은 없다.', 2);
 
   -- 946. どうも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'どうも', '아무래도, 어쩐지', '관용 부사', '부사', 946, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どうも', '아무래도, 어쩐지', '부사. 명확하지 않지만 그렇게 보임/감사 인사', '문법-형식판단', 946, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どうも調子が悪い。', '아무래도 컨디션이 안 좋다.', 1),
-    (w, 'どうも納得できない。', '어쩐지 납득이 안 된다.', 2);
+    (w, 'どうも風邪をひいたようだ。', '아무래도 감기에 걸린 것 같다.', 1),
+    (w, 'どうもありがとうございます。', '대단히 감사합니다.', 2);
 
   -- 947. ～にこたえて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にこたえて', '～にこたえて', '~에 부응하여', NULL, '문법', 947, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にこたえて', '~에 부응하여', '応(응할 응)える+て. 요청/기대에 응함', '문법-형식판단', 947, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ファンの声援にこたえて頑張る。', '팬의 성원에 부응해 노력한다.', 1),
-    (w, '要望にこたえて改良した。', '요청에 부응해 개량했다.', 2);
+    (w, '声援にこたえて頑張る。', '응원에 부응하여 노력한다.', 1),
+    (w, '期待にこたえて勝利した。', '기대에 부응하여 승리했다.', 2);
 
   -- 948. ～うちに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～うちに', '～うちに', '~하는 사이에', NULL, '문법', 948, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～うちに', '~하는 사이에, ~동안에', '内(안 내)+に. 그 상태가 지속되는 동안', '문법-형식판단', 948, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明るいうちに帰ろう。', '밝을 때 돌아가자.', 1),
-    (w, '若いうちに挑戦したい。', '젊을 때 도전하고 싶다.', 2);
+    (w, '若いうちに勉強しよう。', '젊을 때 공부하자.', 1),
+    (w, '寝ているうちに雪が積もった。', '자고 있는 사이에 눈이 쌓였다.', 2);
 
   -- 949. ～によらず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～によらず', '～によらず', '~에 관계없이', NULL, '문법', 949, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によらず', '~에 관계없이', 'に+依(의지할 의)らず. 조건/사정 무관', '문법-형식판단', 949, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '年齢によらず歓迎する。', '연령에 관계없이 환영한다.', 1),
-    (w, '場所によらず参加できる。', '장소에 관계없이 참가할 수 있다.', 2);
+    (w, '年齢によらず誰でも参加できる。', '나이에 관계없이 누구든 참가할 수 있다.', 1),
+    (w, '見かけによらず親切だ。', '겉모습과 다르게 친절하다.', 2);
 
   -- 950. ～ないでもない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないでもない', '～ないでもない', '~않는 것도 아니다', NULL, '문법', 950, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないでもない', '~하지 않는 것도 아니다', '동사 ない형+で+も+ない. 약한 긍정/소극 인정', '문법-형식판단', 950, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'わからないでもない気持ちだ。', '모르는 것도 아닌 마음이다.', 1),
-    (w, '行きたくないでもない。', '가고 싶지 않은 것도 아니다.', 2);
+    (w, 'やってみないでもない。', '해 보지 않는 것도 아니다(=조금은 하겠다).', 1),
+    (w, '気にしないでもない。', '신경 쓰지 않는 것도 아니다.', 2);
 
   -- 951. ～とかなくちゃ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とかなくちゃ', '～とかなくちゃ', '~해 두지 않으면 <축약>', NULL, '문법', 951, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とかなくちゃ', '~해 두지 않으면 <축약>', 'ておく+なくては의 회화 축약. 준비/조치의 필요', '문법-형식판단', 951, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '連絡しとかなくちゃいけない。', '연락해 두지 않으면 안 된다.', 1),
-    (w, '準備しとかなくちゃ間に合わない。', '준비해 두지 않으면 늦는다.', 2);
+    (w, '早く言っとかなくちゃ。', '빨리 말해 두지 않으면.', 1),
+    (w, '宿題やっとかなくちゃ。', '숙제 해 두지 않으면.', 2);
 
   -- 952. ～たら～たで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たら～たで', '～たらたで', '~하면 ~하는 대로', NULL, '문법', 952, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たら～たで', '~하면 ~하는 대로', 'たら(가정)+たで(상태). 어떻게 되든 그 나름의 결과', '문법-형식판단', 952, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '大変だったら大変だで頑張る。', '힘들면 힘든 대로 노력한다.', 1),
-    (w, 'なかったらないで何とかなる。', '없으면 없는 대로 어떻게든 된다.', 2);
+    (w, 'なかったらなかったで何とかなる。', '없으면 없는 대로 어떻게든 된다.', 1),
+    (w, '失敗したら失敗したで学べる。', '실패하면 실패한 대로 배울 게 있다.', 2);
 
   -- 953. ～ざるをえない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ざるをえない', '～ざるをえない', '~하지 않을 수 없다', NULL, '문법', 953, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ざるをえない', '~하지 않을 수 없다', '문어체 부정 ざる+を+得(얻을 득)ない. 불가피', '문법-형식판단', 953, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '結果を受け入れざるをえない。', '결과를 받아들이지 않을 수 없다.', 1),
-    (w, '出席せざるをえない事情がある。', '출석하지 않을 수 없는 사정이 있다.', 2);
+    (w, '上司の命令だから従わざるをえない。', '상사의 명령이라 따르지 않을 수 없다.', 1),
+    (w, '雨だから中止せざるをえない。', '비라서 중지하지 않을 수 없다.', 2);
 
   -- 954. お～ですか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お～ですか', 'おですか', '~하십니까? <존경>', NULL, '문법', 954, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'お～ですか', '~하십니까? <존경>', 'お+동사ます형+ですか. 상대 행위에 대한 정중 질문', '문법-형식판단', 954, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お休みですか。', '쉬십니까?', 1),
-    (w, 'お探しですか。', '찾으십니까?', 2);
+    (w, 'お出かけですか。', '나가십니까?', 1),
+    (w, 'お元気ですか。', '잘 지내십니까?', 2);
 
   -- 955. ～も～ないで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～も～ないで', '～もないで', '~도 ~하지 않고', NULL, '문법', 955, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～も～ないで', '~도 ~하지 않고', 'も(도)+ないで. 두 가지를 다 안 함', '문법-형식판단', 955, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '食事もとらないで働き続けた。', '식사도 안 하고 일을 계속했다.', 1),
-    (w, '返事もしないで帰った。', '대답도 안 하고 돌아갔다.', 2);
+    (w, '挨拶もしないで帰った。', '인사도 하지 않고 돌아갔다.', 1),
+    (w, '朝ご飯も食べないで出かけた。', '아침도 안 먹고 나갔다.', 2);
 
   -- 956. ～をとわず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～をとわず', '～をとわず', '~을 불문하고', NULL, '문법', 956, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～をとわず', '~을 불문하고', '問(물을 문)わず. 「~을 묻지 않고」', '문법-형식판단', 956, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '性別をとわず採用する。', '성별을 불문하고 채용한다.', 1),
-    (w, '経験の有無をとわず歓迎します。', '경험의 유무를 불문하고 환영합니다.', 2);
+    (w, '年齢を問わず応募できる。', '나이를 불문하고 응모할 수 있다.', 1),
+    (w, '昼夜を問わず働く。', '낮밤을 가리지 않고 일한다.', 2);
 
   -- 957. もっとも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'もっとも', '다만, 단 <접속사>', '관용 표현', '접속사', 957, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'もっとも', '다만, 단 <접속사>', '尤(가장 우)も. 앞 내용에 단서를 더함', '문법-형식판단', 957, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '行きたい。もっとも忙しいけど。', '가고 싶다. 단, 바쁘지만.', 1),
-    (w, '賛成だ。もっとも条件付きだ。', '찬성한다. 단 조건부다.', 2);
+    (w, '行きます。もっとも遅れるかもしれません。', '갑니다. 다만 늦을지도 모릅니다.', 1),
+    (w, '安いですよ。もっとも品質はそれなりです。', '쌉니다. 단 품질은 그 나름이에요.', 2);
 
   -- 958. わかった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'わかった', '알았다 <감탄>', '관용 표현', '감탄사', 958, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'わかった', '알았다 <감탄/이해>', '分かる(이해하다)의 과거형. 깨달음/동의', '문법-형식판단', 958, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'わかった、すぐ行く。', '알았어, 바로 갈게.', 1),
-    (w, 'わかった、約束する。', '알았어, 약속할게.', 2);
+    (w, 'わかった、すぐ行く。', '알았어, 곧 갈게.', 1),
+    (w, 'わかった！その通りだ。', '알았다! 바로 그거다.', 2);
 
   -- 959. ～たってかまわない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たってかまわない', '～たってかまわない', '~해도 상관없다', NULL, '문법', 959, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たってかまわない', '~해도 상관없다', 'ても의 회화체 たって+かまわない. 양보 허용', '문법-형식판단', 959, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅くなったってかまわない。', '늦어도 상관없다.', 1),
-    (w, '失敗したってかまわない。', '실패해도 상관없다.', 2);
+    (w, '高くたってかまわない。', '비싸도 상관없다.', 1),
+    (w, '遅刻したってかまわない。', '지각해도 상관없다.', 2);
 
   -- 960. お越しくださる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しくださる', 'おこしくださる', '와 주시다', '존경어', '동사', 960, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'お越しくださる', 'おこしくださる', '와 주시다 <존경>', 'お+越(넘을 월)し+くださる. 「오심을 베풀어 주심」', '문법-형식판단', 960, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どうぞお越しください。', '부디 와 주십시오.', 1),
-    (w, 'お越しくださってありがとうございます。', '와 주셔서 감사합니다.', 2);
+    (w, '本日はお越しくださいましてありがとうございます。', '오늘 와 주셔서 감사합니다.', 1),
+    (w, 'ぜひお越しください。', '꼭 와 주십시오.', 2);
 
   -- 961. ～ている
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ている', '～ている', '~했었다 <완료>', NULL, '문법', 961, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ている', '~했었다 <완료/결과 지속>', '동사 て형+いる. 동작 완료 후 상태 지속', '문법-형식판단', 961, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もう食べている。', '이미 먹었다.', 1),
-    (w, '彼はその本を読んでいる。', '그는 그 책을 다 읽었다.', 2);
+    (w, '彼は既に到着している。', '그는 이미 도착해 있다.', 1),
+    (w, '窓が開いている。', '창문이 열려 있다.', 2);
 
   -- 962. ～へと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～へと', '～へと', '~으로', NULL, '문법', 962, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～へと', '~으로 (방향 강조)', 'へ(방향)+と. 변화 방향 강조', '문법-형식판단', 962, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '未来へと進む。', '미래로 나아간다.', 1),
-    (w, '新しい時代へと向かう。', '새로운 시대로 향한다.', 2);
+    (w, '新しい時代へと進む。', '새 시대로 나아간다.', 1),
+    (w, '彼は東京へと向かった。', '그는 도쿄로 향했다.', 2);
 
   -- 963. ～おかげで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～おかげで', '～おかげで', '~덕분에', NULL, '문법', 963, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～おかげで', '~덕분에 <긍정 원인>', 'お陰(かげ, 그늘=비호). 긍정적 결과의 원인', '문법-형식판단', 963, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君のおかげで成功した。', '네 덕분에 성공했다.', 1),
-    (w, '協力のおかげで早く終わった。', '협력 덕분에 일찍 끝났다.', 2);
+    (w, '先生のおかげで合格できた。', '선생님 덕분에 합격할 수 있었다.', 1),
+    (w, '彼のおかげで助かった。', '그 덕분에 살았다.', 2);
 
   -- 964. やる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'やる', '하다 <속어>', '관용 동사', '동사', 964, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'やる', '하다 <속어>', 'する의 회화체. 윗→아래/동·식물에게 베푸는 행위', '문법-형식판단', 964, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '宿題をやる。', '숙제를 한다.', 1),
-    (w, '友達と野球をやる。', '친구와 야구를 한다.', 2);
+    (w, '犬に餌をやる。', '강아지에게 먹이를 준다.', 2);
 
   -- 965. ～としたら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～としたら', '～としたら', '~라고 한다면', NULL, '문법', 965, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としたら', '~라고 한다면 <가정>', 'とする(라고 하다)+たら. 가정의 상황 설정', '문법-형식판단', 965, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もし彼が来るとしたら準備しよう。', '만약 그가 온다고 한다면 준비하자.', 1),
-    (w, '旅行に行くとしたらどこがいい？', '여행을 간다면 어디가 좋아?', 2);
+    (w, '宝くじが当たったとしたら何を買う？', '복권에 당첨된다면 뭘 사겠어?', 1),
+    (w, '本当だとしたら大変だ。', '사실이라면 큰일이다.', 2);
 
   -- 966. ～そうだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～そうだ', '～そうだ', '~할 것 같다 <양태>', NULL, '문법', 966, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうだ', '~할 것 같다 <양태>', '동사ます형/형용사 어간+そうだ. 외관 추측', '문법-형식판단', 966, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '雨が降りそうだ。', '비가 올 것 같다.', 1),
-    (w, 'おいしそうな料理だ。', '맛있어 보이는 요리다.', 2);
+    (w, '彼は元気そうだ。', '그는 건강해 보인다.', 2);
 
   -- 967. ～からこそ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～からこそ', '～からこそ', '~이기에, ~하기에', NULL, '문법', 967, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～からこそ', '~이기에, ~하기에', 'から(이유)+こそ(강조). 강조된 이유', '문법-형식판단', 967, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君だからこそ頼める。', '너이기에 부탁할 수 있다.', 1),
-    (w, '努力したからこそ成功した。', '노력했기에 성공했다.', 2);
+    (w, '愛しているからこそ厳しく言う。', '사랑하기에 엄하게 말한다.', 1),
+    (w, '友達だからこそ本音を言える。', '친구이기에 본심을 말할 수 있다.', 2);
 
   -- 968. ～ばかり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ばかり', '～ばかり', '~뿐, ~만', NULL, '문법', 968, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ばかり', '~뿐, ~만 (한정·반복)', '명사/사전형+ばかり. 한정·과다 행위', '문법-형식판단', 968, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遊んでばかりいる。', '놀기만 한다.', 1),
-    (w, '不平ばかり言う。', '불평만 한다.', 2);
+    (w, '甘いものばかり食べる。', '단것만 먹는다.', 1),
+    (w, '泣いてばかりいる。', '울고만 있다.', 2);
 
   -- 969. かりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'かりに', '만약', '관용 부사', '부사', 969, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '仮に', 'かりに', '만약, 가령', '仮(거짓 가)に. 가설 설정 부사', '문법-형식판단', 969, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'かりに失敗してもやり直せる。', '만약 실패해도 다시 할 수 있다.', 1),
-    (w, 'かりに彼が来たらどうする？', '만약 그가 온다면 어떻게 할까?', 2);
+    (w, '仮にお金があっても買わない。', '만약 돈이 있어도 안 산다.', 1),
+    (w, '仮に失敗したとしても諦めない。', '가령 실패한다 해도 포기하지 않는다.', 2);
 
   -- 970. ～ないうちに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないうちに', '～ないうちに', '~하기 전에', NULL, '문법', 970, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないうちに', '~하기 전에', '동사 ない형+うちに. 어떤 상태 발생 전 시점', '문법-형식판단', 970, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '忘れないうちにメモする。', '잊기 전에 메모한다.', 1),
-    (w, '雨が降らないうちに帰ろう。', '비가 오기 전에 돌아가자.', 2);
+    (w, '雨が降らないうちに帰ろう。', '비가 오기 전에 돌아가자.', 1),
+    (w, '忘れないうちにメモする。', '잊기 전에 메모한다.', 2);
 
   -- 971. ～ており
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ており', '～ており', '~하고 있어서', NULL, '문법', 971, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ており', '~하고 있어서 (정중 연결)', 'ている의 ます형 연용. 문어체/격식', '문법-형식판단', 971, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は会議に出ており不在です。', '그는 회의에 나가 있어 부재중입니다.', 1),
-    (w, '資料を準備しており時間がかかる。', '자료를 준비하고 있어 시간이 걸린다.', 2);
+    (w, '現在準備しており、来週発表します。', '현재 준비하고 있어서 다음 주 발표합니다.', 1),
+    (w, '会議は午後行われており、夜まで続く予定です。', '회의는 오후에 진행되고 있어서 밤까지 계속될 예정입니다.', 2);
 
-  -- 972. ～にもかかわらず~
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にもかかわらず~', '～にもかかわらず', '~(임)에도 불구하고', NULL, '문법', 972, array[]::text[]) returning id into w;
+  -- 972. ～にもかかわらず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にもかかわらず', '~(임)에도 불구하고', 'に+も+関(빗장 관)わる+ず. 강한 역접', '문법-형식판단', 972, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '努力したにもかかわらず失敗した。', '노력했음에도 실패했다.', 1),
-    (w, '雨にもかかわらず出かけた。', '비에도 불구하고 외출했다.', 2);
+    (w, '雨にもかかわらず試合は行われた。', '비에도 불구하고 시합은 진행되었다.', 1),
+    (w, '努力にもかかわらず失敗した。', '노력에도 불구하고 실패했다.', 2);
 
   -- 973. ～らしい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～らしい', '～らしい', '~답다 <접미어>', NULL, '문법', 973, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～らしい', '~답다 / ~인 것 같다 <접미·추측>', '명사+らしい. 본래 성질/전형성, 또는 추측', '문법-형식판단', 973, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '彼は男らしい人だ。', '그는 남자다운 사람이다.', 1),
-    (w, '学生らしい服装をする。', '학생다운 복장을 한다.', 2);
+    (w, '彼は来ないらしい。', '그는 안 오는 것 같다.', 2);
 
   -- 974. ～によっては
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～によっては', '～によっては', '~에 따라서는', NULL, '문법', 974, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によっては', '~에 따라서는', 'に+依る+ては. 조건/경우에 따른 차이 강조', '문법-형식판단', 974, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '人によっては考え方が違う。', '사람에 따라 사고방식이 다르다.', 1),
-    (w, '状況によっては変わる。', '상황에 따라서는 바뀐다.', 2);
+    (w, '人によっては苦手な食べ物がある。', '사람에 따라서는 싫어하는 음식이 있다.', 1),
+    (w, '日によっては忙しい。', '날에 따라서는 바쁘다.', 2);
 
   -- 975. ～(さ)せる/～たがる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)せる/～たがる', '～させるたがる', '~하게 하다 <사역> /~하고 싶어하다', NULL, '문법', 975, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せる/～たがる', '~하게 하다 <사역> / ~하고 싶어하다', '사역(させる) + 욕구(たがる, 3인칭). 두 표현 결합', '문법-형식판단', 975, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供を勉強させる。', '아이를 공부시킨다.', 1),
-    (w, '彼は外で遊びたがる。', '그는 밖에서 놀고 싶어 한다.', 2);
+    (w, '弟は本を読みたがるので、母は読ませる。', '동생이 책을 읽고 싶어해서 엄마가 읽게 한다.', 1),
+    (w, '子供がやりたがることをやらせる。', '아이가 하고 싶어 하는 일을 시킨다.', 2);
 
   -- 976. どれだけ～か
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'どれだけ～か', 'どれだけか', '얼마나 ~일까?', NULL, '문법', 976, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どれだけ～か', '얼마나 ~일까? <감탄·강조>', 'どれ(어느)+だけ(만큼)+か(의문). 정도 감탄', '문법-형식판단', 976, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どれだけうれしいか分からない。', '얼마나 기쁜지 모른다.', 1),
-    (w, 'どれだけ大変か想像してみて。', '얼마나 힘든지 상상해 봐.', 2);
+    (w, 'どれだけ嬉しかったか。', '얼마나 기뻤는지.', 1),
+    (w, 'どれだけ苦労したか分からない。', '얼마나 고생했는지 모른다.', 2);
 
   -- 977. ご覧
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご覧', 'ごらん', '보심 <존경>', '존경어', '명사', 977, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご覧', 'ごらん', '보심 <존경>', 'ご(존경)+覧(볼 람). 見る의 존경 명사형. ご覧ください 형태', '문법-형식판단', 977, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ご覧ください。', '봐 주십시오.', 1),
-    (w, 'どうぞご覧の通りです。', '보시는 대로입니다.', 2);
+    (w, 'こちらをご覧ください。', '이쪽을 봐 주십시오.', 1),
+    (w, 'ご覧の通りです。', '보시는 대로입니다.', 2);
 
   -- 978. ～(ら)れる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(ら)れる', '～られる', '~하게 되다', NULL, '문법', 978, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(ら)れる', '~하게 되다 <수동/가능/존경>', '동사 미연형+れる(1)/られる(2). 수동·가능·존경 다의', '문법-형식판단', 978, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この街で多くの人に愛されている。', '이 거리는 많은 사람에게 사랑받고 있다.', 1),
-    (w, '彼は先生に褒められた。', '그는 선생님에게 칭찬받았다.', 2);
+    (w, '先生に褒められた。', '선생님께 칭찬받았다.', 1),
+    (w, '一人で行かれる。', '혼자서 갈 수 있다.', 2);
 
   -- 979. ～ようならば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようならば', '～ようならば', '~할 것 같으면', NULL, '문법', 979, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようならば', '~할 것 같으면', '様+なら+ば. 그런 상태가 예상되면', '문법-형식판단', 979, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅れるようならば連絡してください。', '늦을 것 같으면 연락해 주세요.', 1),
-    (w, '難しいようならばやめましょう。', '어려울 것 같으면 그만둡시다.', 2);
+    (w, '雨が降るようならば出発を遅らせます。', '비가 올 것 같으면 출발을 늦추겠습니다.', 1),
+    (w, '間に合わないようならば連絡してください。', '늦을 것 같으면 연락해 주세요.', 2);
 
   -- 980. ～にのぼる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にのぼる', '～にのぼる', '~에 달하다', NULL, '문법', 980, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にのぼる', '~에 달하다', '登(오를 등)る. 수량이 ~에 이르다', '문법-형식판단', 980, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '被害は数億にのぼる。', '피해는 수억에 달한다.', 1),
+    (w, '被害は数百億にのぼる。', '피해는 수백억에 달한다.', 1),
     (w, '参加者は千人にのぼった。', '참가자는 천 명에 달했다.', 2);
 
   -- 981. ～てからでないと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てからでないと', '～てからでないと', '~한 후가 아니면', NULL, '문법', 981, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てからでないと', '~한 후가 아니면', 'てから+でないと. 「~을 끝낸 후가 아니면」', '문법-형식판단', 981, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '確認してからでないと進められない。', '확인한 후가 아니면 진행할 수 없다.', 1),
-    (w, '完成してからでないと見せられない。', '완성한 후가 아니면 보여줄 수 없다.', 2);
+    (w, '確認してからでないと答えられない。', '확인한 후가 아니면 답할 수 없다.', 1),
+    (w, '相談してからでないと決められない。', '상담한 후가 아니면 결정할 수 없다.', 2);
 
   -- 982. ～次第
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～次第', '～しだい', '~하는 대로', NULL, '문법', 982, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～次第', 'しだい', '~하는 대로 (즉시)', '次(다음 차)+第(차례 제). 동사ます형+次第. 「~하는 즉시」', '문법-형식판단', 982, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '着き次第ご連絡します。', '도착하는 대로 연락드리겠습니다.', 1),
-    (w, '完成次第お渡しします。', '완성하는 대로 드리겠습니다.', 2);
+    (w, '着き次第連絡します。', '도착하는 대로 연락하겠습니다.', 1),
+    (w, '分かり次第お知らせください。', '아는 대로 알려 주세요.', 2);
 
   -- 983. うけたまわる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'うけたまわる', '받다 <겸양, 겸손>', '겸양어', '동사', 983, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '承る', 'うけたまわる', '받다, 듣다, 떠맡다 <겸양>', '承(받들 승)る. 「받들어 모시다」. 承る는 引き受ける/聞く의 겸양', '문법-형식판단', 983, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ご注文を承りました。', '주문 받았습니다.', 1),
-    (w, 'お話をうけたまわります。', '말씀을 듣겠습니다.', 2);
+    (w, 'ご注文を承ります。', '주문을 받겠습니다.', 1),
+    (w, 'お話を承りました。', '말씀 잘 들었습니다.', 2);
 
   -- 984. ～わけにはいかない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～わけにはいかない', '～わけにはいかない', '~할 수는 없다', NULL, '문법', 984, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わけにはいかない', '~할 수는 없다', '訳(이유)+には+いかない. 사회/도덕적으로 그럴 수 없음', '문법-형식판단', 984, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ここで諦めるわけにはいかない。', '여기서 포기할 수는 없다.', 1),
-    (w, '彼を見捨てるわけにはいかない。', '그를 못 본 척할 수는 없다.', 2);
+    (w, '約束したから行かないわけにはいかない。', '약속했으니까 가지 않을 수는 없다.', 1),
+    (w, '一人だけ休むわけにはいかない。', '나만 쉴 수는 없다.', 2);
 
   -- 985. ～や何かで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～や何かで', '～やなにかで', '~와 같은 것에서 <예시>', NULL, '문법', 985, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～や何かで', '~와 같은 것에서 <예시>', 'や(나열)+何か(어떤 것). 막연한 예시', '문법-형식판단', 985, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '本や何かで調べてみる。', '책 같은 것에서 조사해 본다.', 1),
-    (w, '映画や何かで気分転換する。', '영화 같은 것으로 기분 전환한다.', 2);
+    (w, 'コーヒーや何かで一休みしよう。', '커피 같은 거 하면서 잠시 쉬자.', 1),
+    (w, '雑誌や何かで見た記事。', '잡지 같은 것에서 본 기사.', 2);
 
   -- 986. ～のに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～のに', '～のに', '~하는 데에, ~하는 때에', NULL, '문법', 986, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～のに', '~하는 데에, ~할 때에 (목적/용도)', 'の(명사화)+に. 「~을 위해」 「~할 때 사용」', '문법-형식판단', 986, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '料理を作るのに時間がかかる。', '요리를 만드는 데 시간이 걸린다.', 1),
-    (w, '行くのにお金が要る。', '가는 데 돈이 필요하다.', 2);
+    (w, '料理を作るのに2時間かかった。', '요리를 만드는 데에 2시간 걸렸다.', 1),
+    (w, 'これは手紙を書くのに使う。', '이것은 편지를 쓸 때 쓴다.', 2);
 
   -- 987. ～たびに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たびに', '～たびに', '~할 때마다', NULL, '문법', 987, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たびに', '~할 때마다', '度(たび, 횟수)+に. 동사 사전형/명사+の+たびに. 반복', '문법-형식판단', 987, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会うたびに元気がもらえる。', '만날 때마다 기운을 얻는다.', 1),
-    (w, '見るたびに思い出す。', '볼 때마다 떠오른다.', 2);
+    (w, '会うたびに彼は変わっていく。', '만날 때마다 그는 변해 간다.', 1),
+    (w, '旅行のたびに写真を撮る。', '여행할 때마다 사진을 찍는다.', 2);
 
   -- 988. ～かもしれない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かもしれない', '～かもしれない', '~일지도 모른다', NULL, '문법', 988, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かもしれない', '~일지도 모른다', 'か+も+知れない. 낮은 확률의 추측', '문법-형식판단', 988, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '明日は雨かもしれない。', '내일은 비가 올지도 모른다.', 1),
-    (w, '彼は来ないかもしれない。', '그는 오지 않을지도 모른다.', 2);
+    (w, '彼は来ないかもしれません。', '그는 안 올지도 모릅니다.', 2);
 
   -- 989. ～さえ～ば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～さえ～ば', '～さえば', '~만 ~하면', NULL, '문법', 989, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～さえ～ば', '~만 ~하면 (충분조건)', 'さえ(만)+ば(가정). 최소 조건만 충족되면', '문법-형식판단', 989, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間さえあれば行ける。', '시간만 있으면 갈 수 있다.', 1),
-    (w, '君さえいてくれれば十分だ。', '너만 있어 주면 충분하다.', 2);
+    (w, '君さえいれば幸せだ。', '너만 있으면 행복하다.', 1),
+    (w, 'お金さえあれば何でもできる。', '돈만 있으면 뭐든 할 수 있다.', 2);
 
   -- 990. ～において
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～において', '～において', '~에 있어서, ~에서', NULL, '문법', 990, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～において', '~에 있어서, ~에서 (격식)', '於(어조사 어)+て. 시간·장소·분야의 격식', '문법-형식판단', 990, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会議は東京においで開催する。', '회의는 도쿄에서 개최한다.', 1),
-    (w, '人生において大切なこと。', '인생에 있어서 중요한 것.', 2);
+    (w, '会議は東京において行われる。', '회의는 도쿄에서 진행된다.', 1),
+    (w, '科学において重要な発見だ。', '과학에 있어서 중요한 발견이다.', 2);
 
   -- 991. ～ものなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ものなら', '～ものなら', '~할 수만 있다면', NULL, '문법', 991, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ものなら', '~할 수만 있다면 (희망적 가정)', '物(もの)+なら(가정). 가능하다면 ~하고 싶다', '문법-형식판단', 991, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会えるものなら会いたい。', '만날 수만 있다면 만나고 싶다.', 1),
-    (w, 'できるものなら逃げたい。', '할 수만 있다면 도망가고 싶다.', 2);
+    (w, '行けるものならすぐに行きたい。', '갈 수만 있다면 당장 가고 싶다.', 1),
+    (w, '会えるものなら会いたい。', '만날 수만 있다면 만나고 싶다.', 2);
 
   -- 992. ただし
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ただし', '다만, 단', '관용 표현', '접속사', 992, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '但し', 'ただし', '다만, 단 <접속>', '但(다만 단)し. 앞 내용에 조건/예외 부가', '문법-형식판단', 992, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '参加自由。ただし会員のみ。', '참가 자유. 단 회원만.', 1),
-    (w, '無料です。ただし、予約が必要です。', '무료입니다. 단 예약이 필요합니다.', 2);
+    (w, '入場無料。ただし、子供のみ。', '입장 무료. 단, 어린이만.', 1),
+    (w, '参加可能。ただし、事前予約が必要。', '참가 가능. 다만 사전 예약이 필요.', 2);
 
   -- 993. ～勢いだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～勢いだ', '～いきおいだ', '~할 기세이다', NULL, '문법', 993, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～勢いだ', 'いきおいだ', '~할 기세이다', '勢(기세 세). 동사 사전형+勢いだ. 「~할 듯한 기세」', '문법-형식판단', 993, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '飛ぶ勢いだ。', '날아갈 기세다.', 1),
-    (w, '走り出す勢いだ。', '달려나갈 기세다.', 2);
+    (w, '今にも泣き出す勢いだ。', '금세라도 울음을 터뜨릴 기세다.', 1),
+    (w, '全部食べる勢いだ。', '전부 먹어 치울 기세다.', 2);
 
   -- 994. ご覧いただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご覧いただく', 'ごらんいただく', '보시다 <겸손>', '겸손어', '동사', 994, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご覧いただく', 'ごらんいただく', '보시다 <겸손>', 'ご覧(존경)+いただく(겸양 받음). 「봐 주심을 받음」', '문법-형식판단', 994, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '資料をご覧いただけますでしょうか。', '자료를 보실 수 있겠습니까?', 1),
-    (w, 'こちらをご覧いただきたく存じます。', '이쪽을 봐 주셨으면 합니다.', 2);
+    (w, '資料をご覧いただきたいです。', '자료를 봐 주셨으면 합니다.', 1),
+    (w, 'こちらをご覧いただけますか。', '이쪽을 봐 주시겠습니까?', 2);
 
   -- 995. ～にすぎない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にすぎない', '～にすぎない', '~에 지나지 않는다', NULL, '문법', 995, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にすぎない', '~에 지나지 않는다, ~에 불과하다', 'に+過(지날 과)ぎ+ない. 「그저 ~일 뿐」', '문법-형식판단', 995, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それは推測にすぎない。', '그것은 추측에 지나지 않는다.', 1),
-    (w, '彼は子供にすぎない。', '그는 아이에 지나지 않는다.', 2);
+    (w, 'それは噂にすぎない。', '그것은 소문에 지나지 않는다.', 1),
+    (w, '彼はまだ学生にすぎない。', '그는 아직 학생에 불과하다.', 2);
 
   -- 996. ～ならともかく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ならともかく', '～ならともかく', '~이라면 몰라도', NULL, '문법', 996, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ならともかく', '~이라면 몰라도', 'なら(라면)+ともかく(차치하고). 「~이라면 그래도」', '문법-형식판단', 996, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供ならともかく大人がそれは恥ずかしい。', '아이라면 몰라도 어른이 그것은 부끄럽다.', 1),
-    (w, '日本人ならともかく外国人には難しい。', '일본인이라면 몰라도 외국인에게는 어렵다.', 2);
+    (w, '子供ならともかく、大人がそんなことを言うのか。', '아이라면 몰라도 어른이 그런 말을 하나.', 1),
+    (w, '少しならともかく、こんなにたくさんは無理だ。', '조금이라면 몰라도 이렇게 많이는 무리다.', 2);
 
   -- 997. ～てもらう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てもらう', '～てもらう', '~해 주다', NULL, '문법', 997, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てもらう', '~해 주다 (상대로부터 받음)', '동사 て형+貰(받을 모)う. 화자가 타인의 행위를 받음', '문법-형식판단', 997, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '友達に手伝ってもらった。', '친구가 도와주었다.', 1),
-    (w, '先生に教えてもらう。', '선생님이 가르쳐 주신다.', 2);
+    (w, '友達に手伝ってもらった。', '친구에게 도움을 받았다.', 1),
+    (w, '先生に教えてもらいます。', '선생님께 가르침을 받습니다.', 2);
 
   -- 998. ～(さ)せる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)せる', '～させる', '~시키다, ~하게 하다 <사역>', NULL, '문법', 998, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せる', '~시키다, ~하게 하다 <사역>', '동사 미연형+せる(1)/させる(2). 사역 표현', '문법-형식판단', 998, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供に宿題をさせる。', '아이에게 숙제를 시킨다.', 1),
-    (w, '学生に発表させる。', '학생에게 발표하게 한다.', 2);
+    (w, '子供に勉強させる。', '아이에게 공부시킨다.', 1),
+    (w, '弟を泣かせた。', '동생을 울게 했다.', 2);
 
   -- 999. いたす
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'いたす', '하다 <겸양, 겸손>', '겸양어', '동사', 999, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '致す', 'いたす', '하다 <겸양>', '致(이를 치)す. する의 겸양어', '문법-형식판단', 999, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '私がいたします。', '제가 하겠습니다.', 1),
-    (w, 'お電話いたします。', '전화드리겠습니다.', 2);
+    (w, 'よろしくお願いいたします。', '잘 부탁드립니다.', 2);
 
   -- 1000. ～がち
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～がち', '～がち', '자주 ~함, 일쑤임', NULL, '문법', 1000, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～がち', '자주 ~함, 일쑤임', '勝(이길 승)ち에서 유래. 동사ます형/명사+がち. 부정적 경향', '문법-형식판단', 1000, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '忘れがちな約束だ。', '잊기 쉬운 약속이다.', 1),
-    (w, '遅刻しがちな人だ。', '지각하기 일쑤인 사람이다.', 2);
+    (w, '最近忘れがちだ。', '최근 자주 잊어버린다.', 1),
+    (w, '雨の日は遅れがちだ。', '비 오는 날은 자주 늦는다.', 2);
 
   -- 1001. ～とおりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とおりに', '～とおりに', '~대로', NULL, '문법', 1001, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とおりに', '~대로', '通(통할 통)り+に. 「~과 같이」, 지시·예상대로', '문법-형식판단', 1001, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '言われたとおりにした。', '말한 대로 했다.', 1),
-    (w, '計画とおりに進めた。', '계획대로 진행했다.', 2);
+    (w, '言うとおりにしてください。', '말하는 대로 해 주세요.', 1),
+    (w, '計画とおりに進んでいる。', '계획대로 진행되고 있다.', 2);
 
   -- 1002. ～にかけては
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にかけては', '～にかけては', '~에 관한 한', NULL, '문법', 1002, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にかけては', '~에 관한 한, ~에 있어서는', '掛(걸 괘)ける+ては. 분야 한정 강조', '문법-형식판단', 1002, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '料理にかけては自信がある。', '요리에 관한 한 자신이 있다.', 1),
-    (w, '歌にかけては誰にも負けない。', '노래에 관한 한 누구에게도 지지 않는다.', 2);
+    (w, '料理にかけては誰にも負けない。', '요리에 관한 한 누구에게도 안 진다.', 1),
+    (w, '速さにかけては自信がある。', '속도에 있어서는 자신 있다.', 2);
 
   -- 1003. ～(さ)せていただける
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(さ)せていただける', '～させていただける', '~해 주실 수 있다 <겸손>', NULL, '문법', 1003, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せていただける', '~해 주실 수 있다 <겸손>', '사역+ていただく의 가능형. 「~하게 해 받을 수 있음」', '문법-형식판단', 1003, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '参加させていただけますか。', '참가하게 해 주실 수 있습니까?', 1),
-    (w, '発表させていただけたらと思います。', '발표하게 해 주신다면 감사하겠습니다.', 2);
+    (w, '休ませていただけますか。', '쉬게 해 주실 수 있습니까?', 1),
+    (w, '質問させていただけませんか。', '질문하게 해 주실 수 없겠습니까?', 2);
 
   -- 1004. ～なりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なりに', '～なりに', '~나름대로', NULL, '문법', 1004, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なりに', '~나름대로', 'なる(되다)+に. 그 사람·상황에 맞는 방식', '문법-형식판단', 1004, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼なりに頑張っている。', '그 나름대로 노력하고 있다.', 1),
-    (w, '子供なりに考えた答えだ。', '아이 나름대로 생각한 답이다.', 2);
+    (w, '私なりに頑張った。', '나 나름대로 노력했다.', 1),
+    (w, '子供なりに考えている。', '아이 나름대로 생각하고 있다.', 2);
 
   -- 1005. ～(よ)うとする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(よ)うとする', '～ようとする', '~하려고 하다', NULL, '문법', 1005, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(よ)うとする', '~하려고 하다', '의지형(よう)+とする. 동작의 의도·시도', '문법-형식판단', 1005, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '話そうとしたが言葉が出ない。', '말하려 했지만 말이 안 나온다.', 1),
-    (w, '走り出そうとした瞬間。', '달려나가려고 한 순간.', 2);
+    (w, '出かけようとしたら雨が降った。', '나가려고 했더니 비가 왔다.', 1),
+    (w, '逃げようとした犯人を捕まえた。', '도망치려던 범인을 붙잡았다.', 2);
 
   -- 1006. ～てしょうがない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てしょうがない', '～てしょうがない', '~해서 어쩔 수가 없다, 매우 ~하다', NULL, '문법', 1006, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てしょうがない', '~해서 어쩔 수가 없다, 매우 ~하다', '仕様(しよう)+が+ない의 변형. 감정·욕구의 극한', '문법-형식판단', 1006, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '眠くてしょうがない。', '졸려서 어쩔 수가 없다.', 1),
-    (w, '寒くてしょうがない。', '너무 추워서 어쩔 수가 없다.', 2);
+    (w, '会いたくてしょうがない。', '너무 만나고 싶다.', 2);
 
   -- 1007. 見える
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '見える', 'みえる', '오시다 <존경>', '존경어', '동사', 1007, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '見える', 'みえる', '오시다 <존경> / 보이다', '見(볼 견)える. 「오심이 보이다」→오시다(존경). 또는 「보이다」', '문법-형식판단', 1007, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お客様が見えました。', '손님이 오셨습니다.', 1),
-    (w, '先生が見えるそうだ。', '선생님이 오신다고 한다.', 2);
+    (w, '先生がお見えになりました。', '선생님께서 오셨습니다.', 1),
+    (w, '富士山が見える。', '후지산이 보인다.', 2);
 
   -- 1008. ～ようであれば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようであれば', '～ようであれば', '~할 것 같으면', NULL, '문법', 1008, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようであれば', '~할 것 같으면 (정중)', '様+で+あれば. ようなら의 정중·문어체', '문법-형식판단', 1008, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '難しいようであれば中止する。', '어려울 것 같으면 중지한다.', 1),
-    (w, '遅れるようであれば連絡する。', '늦을 것 같으면 연락한다.', 2);
+    (w, '間に合わないようであればご連絡ください。', '늦을 것 같으면 연락 주십시오.', 1),
+    (w, '体調が悪いようであれば休んでください。', '컨디션이 안 좋으시면 쉬어 주세요.', 2);
 
   -- 1009. ～(よ)うじゃないか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(よ)うじゃないか', '～ようじゃないか', '~하지 않겠는가?', NULL, '문법', 1009, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(よ)うじゃないか', '~하지 않겠는가? <권유>', '의지형+じゃないか(부정 의문). 동조 권유', '문법-형식판단', 1009, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'みんなで頑張ろうじゃないか。', '다 함께 힘내지 않겠는가?', 1),
-    (w, '出かけようじゃないか。', '나가지 않겠는가?', 2);
+    (w, 'みんなで頑張ろうじゃないか。', '다 같이 노력하지 않겠는가?', 1),
+    (w, '一緒に行こうじゃないか。', '함께 가지 않겠는가?', 2);
 
   -- 1010. 伝わる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '伝わる', 'つたわる', '전달되다', '伝(전할 전)', '동사', 1010, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '伝わる', 'つたわる', '전달되다, 전해지다', '伝(전할 전)わる. 자동사. 정보·감정·문화 등이 전해짐', '문법-형식판단', 1010, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '噂が広く伝わった。', '소문이 널리 퍼졌다.', 1),
-    (w, '気持ちが伝わった。', '마음이 전해졌다.', 2);
+    (w, '気持ちが伝わった。', '마음이 전해졌다.', 1),
+    (w, '昔から伝わる話だ。', '옛날부터 전해 내려오는 이야기다.', 2);
 
   -- 1011. ～ままに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ままに', '～ままに', '~한 채로', NULL, '문법', 1011, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ままに', '~한 채로, ~대로', '儘(まま)+に. 상태 유지/지시 따름', '문법-형식판단', 1011, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '感じたままに表現する。', '느낀 그대로 표현한다.', 1),
-    (w, '言われたままに従う。', '들은 그대로 따른다.', 2);
+    (w, '言われるままにやった。', '시키는 대로 했다.', 1),
+    (w, '思いつくままに書いた。', '생각나는 대로 썼다.', 2);
 
   -- 1012. あるいは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'あるいは', '혹은, 또는', '관용 접속사', '접속사', 1012, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '或いは', 'あるいは', '혹은, 또는', '或(혹시 혹)いは. 선택지 제시 접속사', '문법-형식판단', 1012, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '電話あるいはメールでお願いします。', '전화 혹은 메일로 부탁합니다.', 1),
-    (w, '月曜あるいは火曜に行く。', '월요일 또는 화요일에 간다.', 2);
+    (w, 'コーヒーあるいは紅茶を選んでください。', '커피 혹은 홍차를 선택해 주세요.', 1),
+    (w, '電話あるいはメールで連絡する。', '전화 또는 메일로 연락한다.', 2);
 
   -- 1013. ～だって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だって', '～だって', '~도, ~라도 <예시, 강조>', NULL, '문법', 1013, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だって', '~도, ~라도 <예시·강조>', 'でも의 회화체. 양보·강조', '문법-형식판단', 1013, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供だってわかる話だ。', '아이라도 아는 이야기다.', 1),
-    (w, '私だって頑張っている。', '나도 노력하고 있다.', 2);
+    (w, '子供だってわかる。', '아이도 안다.', 1),
+    (w, '私だって行きたい。', '나도 가고 싶어.', 2);
 
   -- 1014. ～だけに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけに', '～だけに', '~인 만큼', NULL, '문법', 1014, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけに', '~인 만큼 (당연·예상되는 결과)', 'だけ(만)+に. 「~한 만큼 더더욱」', '문법-형식판단', 1014, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '努力しただけに残念だ。', '노력한 만큼 아쉽다.', 1),
-    (w, '期待していただけに失望が大きい。', '기대했던 만큼 실망이 크다.', 2);
+    (w, '長年練習しただけに上手だ。', '오랜 기간 연습한 만큼 잘한다.', 1),
+    (w, '期待していただけに残念だ。', '기대했던 만큼 아쉽다.', 2);
 
   -- 1015. ～とのことだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とのことだ', '～とのことだ', '~라는 것이다', NULL, '문법', 1015, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とのことだ', '~라는 것이다 <전달>', 'と(인용)+の+こと+だ. 들은 정보의 정중한 전달', '문법-형식판단', 1015, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は来ないとのことだ。', '그는 안 온다고 한다.', 1),
-    (w, '会議は中止とのことだ。', '회의는 중지라는 것이다.', 2);
+    (w, '彼は休むとのことだ。', '그는 쉰다는 것이다.', 1),
+    (w, '会議は明日とのことです。', '회의는 내일이라고 합니다.', 2);
 
   -- 1016. ～しかない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～しかない', '～しかない', '~할 수밖에 없다', NULL, '문법', 1016, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～しかない', '~할 수밖에 없다', 'しか(밖에)+ない. 유일한 선택', '문법-형식판단', 1016, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '我慢するしかない。', '참을 수밖에 없다.', 1),
-    (w, '諦めるしかない状況だ。', '포기할 수밖에 없는 상황이다.', 2);
+    (w, 'もう諦めるしかない。', '이제 포기할 수밖에 없다.', 1),
+    (w, '待つしかなかった。', '기다릴 수밖에 없었다.', 2);
 
   -- 1017. お越しいただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しいただく', 'おこしいただく', '와 주시다 <겸손>', '겸손어', '동사', 1017, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'お越しいただく', 'おこしいただく', '와 주시다 <겸손>', 'お+越し+いただく. 손님께서 와 주심', '문법-형식판단', 1017, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お越しいただきありがとうございます。', '와 주셔서 감사합니다.', 1),
-    (w, '先生にお越しいただいた。', '선생님께서 와 주셨다.', 2);
+    (w, '本日はお越しいただきありがとうございます。', '오늘 와 주셔서 감사합니다.', 1),
+    (w, 'またのお越しをお待ちいたします。', '또 와 주시기를 기다리겠습니다.', 2);
 
   -- 1018. ～というから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～というから', '～というから', '~라고 하니까', NULL, '문법', 1018, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というから', '~라고 하니까', 'という(인용)+から(이유). 들은 정보를 근거로', '문법-형식판단', 1018, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '美味しいというから食べてみた。', '맛있다고 하니까 먹어 봤다.', 1),
-    (w, '混んでいるというから早く出た。', '붐빈다고 하니까 일찍 나왔다.', 2);
+    (w, '彼が来るというから待っている。', '그가 온다고 하니까 기다리고 있다.', 1),
+    (w, '安いというから買った。', '싸다고 하니까 샀다.', 2);
 
   -- 1019. ～ように
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ように', '～ように', '~하도록', NULL, '문법', 1019, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように', '~하도록 (목적·기원)', '様(모양 양)+に. 목적·기원·지시', '문법-형식판단', 1019, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅れないように早めに出る。', '늦지 않도록 일찍 나간다.', 1),
-    (w, '忘れないようにメモする。', '잊지 않도록 메모한다.', 2);
+    (w, '見えるように字を大きく書いた。', '보이도록 글자를 크게 썼다.', 1),
+    (w, '健康でいられますように。', '건강하게 지낼 수 있도록.', 2);
 
   -- 1020. ～がる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～がる', '～がる', '~해하다', NULL, '문법', 1020, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～がる', '~해하다 (제3자의 감정)', '형용사 어간+がる. 3인칭의 감정·욕구 외적 표출', '문법-형식판단', 1020, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供は新しいおもちゃを欲しがる。', '아이는 새 장난감을 갖고 싶어 한다.', 1),
-    (w, '彼は寒がっている。', '그는 추워하고 있다.', 2);
+    (w, '子供が寒がる。', '아이가 추워한다.', 1),
+    (w, '彼女は欲しがっている。', '그녀는 갖고 싶어한다.', 2);
 
   -- 1021. ～なきゃいけない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なきゃいけない', '～なきゃいけない', '~하지 않으면 안 된다 <축약>', NULL, '문법', 1021, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なきゃいけない', '~하지 않으면 안 된다 <축약>', 'なければいけない의 회화 축약. 의무', '문법-형식판단', 1021, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '今行かなきゃいけない。', '지금 가지 않으면 안 된다.', 1),
-    (w, '早く寝なきゃいけない。', '일찍 자야 한다.', 2);
+    (w, '早く帰らなきゃいけない。', '빨리 돌아가야 한다.', 1),
+    (w, '宿題やらなきゃいけない。', '숙제해야 한다.', 2);
 
   -- 1022. ～つつある
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～つつある', '～つつある', '~하는 중이다', NULL, '문법', 1022, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～つつある', '~하는 중이다, ~해 가고 있다', '동사ます형+つつ+ある. 점진적 진행', '문법-형식판단', 1022, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '状況は改善しつつある。', '상황은 개선되고 있다.', 1),
-    (w, '人口は減りつつある。', '인구는 감소하고 있다.', 2);
+    (w, '社会は変わりつつある。', '사회는 변해 가고 있다.', 1),
+    (w, '景気は回復しつつある。', '경기는 회복 중이다.', 2);
 
   -- 1023. ～によって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～によって', '～によって', '~에 의해서', NULL, '문법', 1023, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によって', '~에 의해서, ~로 인해', 'に+依る+て. 수단·원인·근거', '문법-형식판단', 1023, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '結果は努力によって決まる。', '결과는 노력에 따라 결정된다.', 1),
-    (w, '国によって文化が違う。', '나라에 따라 문화가 다르다.', 2);
+    (w, '台風によって被害が出た。', '태풍으로 인해 피해가 발생했다.', 1),
+    (w, '法律によって守られている。', '법률에 의해 보호받고 있다.', 2);
 
   -- 1024. ～あまり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～あまり', '～あまり', '~한 나머지', NULL, '문법', 1024, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～あまり', 'あまり', '~한 나머지', '余(남을 여)り. 감정·정도가 과해서 발생한 결과', '문법-형식판단', 1024, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '忙しさのあまり食事を忘れた。', '바쁨의 나머지 식사를 잊었다.', 1),
-    (w, '驚きのあまり言葉が出ない。', '놀라운 나머지 말이 안 나온다.', 2);
+    (w, '驚いたあまり言葉が出なかった。', '놀란 나머지 말이 안 나왔다.', 1),
+    (w, '緊張のあまり手が震えた。', '긴장한 나머지 손이 떨렸다.', 2);
 
   -- 1025. ～ほど
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ほど', '～ほど', '~정도, ~만큼', NULL, '문법', 1025, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ほど', '~정도, ~만큼', '程(법 정). 정도·비례 표현', '문법-형식판단', 1025, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '泣きたいほど嬉しい。', '울고 싶을 만큼 기쁘다.', 1),
-    (w, '山ほど仕事がある。', '산만큼 일이 있다.', 2);
+    (w, '泣きたいほど嬉しい。', '울고 싶을 정도로 기쁘다.', 1),
+    (w, '彼ほど優しい人はいない。', '그만큼 친절한 사람은 없다.', 2);
 
   -- 1026. ～ものの
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ものの', '～ものの', '~이지만', NULL, '문법', 1026, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ものの', '~이지만, ~했지만 (역접)', '物(もの)+の. 격식 있는 역접', '문법-형식판단', 1026, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '引き受けたものの自信がない。', '맡았지만 자신이 없다.', 1),
-    (w, '行ったものの誰もいなかった。', '갔지만 아무도 없었다.', 2);
+    (w, '習ったものの、すぐに忘れた。', '배웠지만 금세 잊어버렸다.', 1),
+    (w, '免許を取ったものの、車を持っていない。', '면허는 땄지만 차는 없다.', 2);
 
   -- 1027. ～ことはない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことはない', '～ことはない', '~할 필요는 없다', NULL, '문법', 1027, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことはない', '~할 필요는 없다', '事(こと)+は+ない. 「그렇게 할 필요가 없다」', '문법-형식판단', 1027, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '心配することはない。', '걱정할 필요는 없다.', 1),
-    (w, '謝ることはない。', '사과할 필요는 없다.', 2);
+    (w, 'そんなに急ぐことはない。', '그렇게 서두를 필요는 없다.', 2);
 
   -- 1028. ～ないことには
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないことには', '～ないことには', '~하지 않고서는', NULL, '문법', 1028, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないことには', '~하지 않고서는', 'ない+こと+には. 「~하지 않으면 진전 없음」', '문법-형식판단', 1028, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '確認しないことには進めない。', '확인하지 않고서는 진행할 수 없다.', 1),
-    (w, '会わないことには分からない。', '만나지 않고서는 알 수 없다.', 2);
+    (w, 'やってみないことには分からない。', '해 보지 않고서는 모른다.', 1),
+    (w, '見ないことには判断できない。', '보지 않고서는 판단할 수 없다.', 2);
 
   -- 1029. ～だけ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけ', '～だけ', '~한 만큼, ~할 수 있는 한', NULL, '문법', 1029, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけ', '~한 만큼, ~할 수 있는 한', '丈(키 장)에서 유래. 정도·한도', '문법-형식판단', 1029, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'できるだけ早くやる。', '할 수 있는 한 빨리 한다.', 1),
-    (w, '欲しいだけ持っていって。', '원하는 만큼 가져가.', 2);
+    (w, '食べたいだけ食べていい。', '먹고 싶은 만큼 먹어도 된다.', 1),
+    (w, 'できるだけ早く来てください。', '가능한 한 빨리 와 주세요.', 2);
 
   -- 1030. ～てくれる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てくれる', '～てくれる', '(나에게) ~해 주다', NULL, '문법', 1030, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てくれる', '(나에게) ~해 주다', '동사 て형+呉(줄 호)れる. 타인이 나/우리에게 베푸는 행위', '문법-형식판단', 1030, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '友達が荷物を運んでくれた。', '친구가 짐을 옮겨 주었다.', 1),
-    (w, '先生が説明してくれた。', '선생님이 설명해 주셨다.', 2);
+    (w, '友達が手伝ってくれた。', '친구가 도와줬다.', 1),
+    (w, '先生が教えてくれる。', '선생님이 가르쳐 준다.', 2);
 
   -- 1031. ～ずに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ずに', '～ずに', '~하지 않고', NULL, '문법', 1031, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ずに', '~하지 않고', '문어체 부정 ず+に. 「~없이/안 하고」', '문법-형식판단', 1031, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '朝食を食べずに出かけた。', '아침을 안 먹고 외출했다.', 1),
-    (w, '寝ずに勉強した。', '자지 않고 공부했다.', 2);
+    (w, '朝ご飯を食べずに出かけた。', '아침을 먹지 않고 나갔다.', 1),
+    (w, '何も言わずに帰った。', '아무 말도 하지 않고 돌아갔다.', 2);
 
   -- 1032. ～おきに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～おきに', '～おきに', '~간격으로, 걸러서', NULL, '문법', 1032, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～おきに', '~간격으로, ~걸러서', '置(둘 치)き+に. 일정 간격의 반복', '문법-형식판단', 1032, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '一日おきに運動する。', '하루 걸러 운동한다.', 1),
-    (w, '十分おきにバスが来る。', '10분 간격으로 버스가 온다.', 2);
+    (w, '一日おきにジムへ行く。', '하루 걸러 헬스장에 간다.', 1),
+    (w, '5分おきにバスが来る。', '5분 간격으로 버스가 온다.', 2);
 
   -- 1033. かえって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'かえって', '도리어, 오히려', '관용 부사', '부사', 1033, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '却って', 'かえって', '도리어, 오히려', '却(물리칠 각)って. 예상과 정반대 결과', '문법-형식판단', 1033, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '心配したらかえって悪くなった。', '걱정했더니 오히려 나빠졌다.', 1),
-    (w, '急いだらかえって遅くなった。', '서둘렀더니 도리어 늦어졌다.', 2);
+    (w, '薬を飲んでかえって悪化した。', '약을 먹고 도리어 악화됐다.', 1),
+    (w, '謝ったらかえって怒られた。', '사과했더니 오히려 화를 냈다.', 2);
 
   -- 1034. ～きる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～きる', '～きる', '완전히 ~하다', NULL, '문법', 1034, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～きる', '완전히 ~하다', '切(끊을 절)る. 동사ます형+きる. 끝까지·완전히', '문법-형식판단', 1034, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '全力を出しきった。', '전력을 다 냈다.', 1),
-    (w, '走りきって倒れた。', '끝까지 달리고 쓰러졌다.', 2);
+    (w, '本を読みきった。', '책을 다 읽었다.', 1),
+    (w, '使いきってしまった。', '다 써 버렸다.', 2);
 
   -- 1035. ～ほかない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ほかない', '～ほかない', '~할 수밖에 없다', NULL, '문법', 1035, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ほかない', '~할 수밖에 없다', '他(다를 타)+ない. 「다른 방법이 없음」', '문법-형식판단', 1035, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '諦めるほかない。', '포기할 수밖에 없다.', 1),
-    (w, '謝るほかない状況だ。', '사과할 수밖에 없는 상황이다.', 2);
+    (w, '待つほかなかった。', '기다릴 수밖에 없었다.', 2);
 
   -- 1036. ～こと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～こと', '～こと', '~할 것 <명령>', NULL, '문법', 1036, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～こと', '~할 것 <명령·규칙>', '事(こと). 규칙·지시 문체에서 명령적', '문법-형식판단', 1036, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間を守ること。', '시간을 지킬 것.', 1),
-    (w, '事前に予約すること。', '사전에 예약할 것.', 2);
+    (w, '校内では静かにすること。', '교내에서는 조용히 할 것.', 1),
+    (w, '時間を守ること。', '시간을 지킬 것.', 2);
 
   -- 1037. ～なきゃって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なきゃって', '～なきゃって', '~해야 한다고', NULL, '문법', 1037, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なきゃって', '~해야 한다고', 'なきゃ(なければ)+って(인용). 회화체 의무 인용', '문법-형식판단', 1037, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '頑張らなきゃって思った。', '노력해야 한다고 생각했다.', 1),
-    (w, '早く寝なきゃって思いつつ起きていた。', '일찍 자야 한다고 생각하면서 깨어 있었다.', 2);
+    (w, '早く行かなきゃって思っている。', '빨리 가야 한다고 생각하고 있다.', 1),
+    (w, '電話しなきゃって言ってた。', '전화해야 한다고 말했다.', 2);
 
   -- 1038. ～てほしいだろうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てほしいだろうか', '～てほしいだろうか', '~해 주기를 바라는 것일까?', NULL, '문법', 1038, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てほしいだろうか', '~해 주기를 바라는 것일까?', 'てほしい+だろうか. 상대의 희망 추측 의문', '문법-형식판단', 1038, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は何をしてほしいだろうか。', '그는 무엇을 해 주기를 바라는 걸까?', 1),
-    (w, 'どうしてほしいだろうかと考える。', '어떻게 해 주기를 바라는지 생각한다.', 2);
+    (w, '彼は本当に来てほしいだろうか。', '그는 정말로 와 주기를 바라는 것일까?', 1),
+    (w, '助けてほしいだろうか、考えてみよう。', '도와주기를 바라는 것일지 생각해 보자.', 2);
 
   -- 1039. ～につぐ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～につぐ', '～につぐ', '~에 이어지는', NULL, '문법', 1039, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～につぐ', '~에 이어지는, ~다음으로', '次(다음 차)ぐ. 「~의 뒤를 잇다」', '문법-형식판단', 1039, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '優勝につぐ栄誉だ。', '우승에 이어지는 영예다.', 1),
-    (w, '最高記録につぐ二位だ。', '최고 기록에 이어지는 2위다.', 2);
+    (w, '東京につぐ大都市は大阪だ。', '도쿄에 이은 대도시는 오사카다.', 1),
+    (w, '優勝につぐ準優勝に終わった。', '우승에 이은 준우승으로 끝났다.', 2);
 
   -- 1040. ～にしては
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にしては', '～にしては', '~치고는', NULL, '문법', 1040, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にしては', '~치고는', 'に+する+ては. 일반적 예상과 다른 평가', '문법-형식판단', 1040, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供にしては大人びている。', '아이치고는 어른스럽다.', 1),
-    (w, '初心者にしては上手だ。', '초보치고는 능숙하다.', 2);
+    (w, '初心者にしては上手だ。', '초보자치고는 잘한다.', 1),
+    (w, '冬にしては暖かい。', '겨울치고는 따뜻하다.', 2);
 
   -- 1041. お越しになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しになる', 'おこしになる', '오시다, 가시다 <존경>', '존경어', '동사', 1041, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'お越しになる', 'おこしになる', '오시다, 가시다 <존경>', 'お+越し+になる. 行く/来る의 존경어', '문법-형식판단', 1041, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '先生がお越しになりました。', '선생님이 오셨습니다.', 1),
-    (w, 'お越しになる時間を教えてください。', '오시는 시간을 알려 주세요.', 2);
+    (w, '社長がお越しになりました。', '사장님께서 오셨습니다.', 1),
+    (w, 'こちらへお越しになってください。', '이쪽으로 오십시오.', 2);
 
   -- 1042. ～かけ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かけ', '～かけ', '~하던 도중', NULL, '문법', 1042, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かけ', '~하던 도중, ~하다 만', '掛(걸 괘)け. 동사ます형+かけ. 진행 중인 동작 중단', '문법-형식판단', 1042, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '読みかけの本がある。', '읽다 만 책이 있다.', 1),
-    (w, '食べかけのケーキを残す。', '먹다 만 케이크를 남긴다.', 2);
+    (w, '飲みかけのコーヒー。', '마시다 만 커피.', 1),
+    (w, '言いかけてやめた。', '말하다 말았다.', 2);
 
   -- 1043. おいでになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'おいでになる', '오시다, 가시다 <존경>', '존경어', '동사', 1043, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'おいでになる', 'おいでになる', '오시다, 가시다, 계시다 <존경>', 'お+出で+になる. 行く/来る/いる의 존경어', '문법-형식판단', 1043, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どちらにおいでになりますか。', '어디에 가십니까?', 1),
-    (w, '先生がおいでになりました。', '선생님이 오셨습니다.', 2);
+    (w, '先生はおいでになりますか。', '선생님 계십니까?', 1),
+    (w, 'いつおいでになりますか。', '언제 오십니까?', 2);
 
   -- 1044. ～ものだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ものだ', '～ものだ', '~로구나 <감동>', NULL, '문법', 1044, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ものだ', '~로구나 <감동·당위>', '物(もの)+だ. 감동·일반 진리·도덕적 당위', '문법-형식판단', 1044, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間が経つのは早いものだ。', '시간이 가는 게 빠르구나.', 1),
-    (w, '子供は元気なものだ。', '아이는 활기차구나.', 2);
+    (w, '時間が経つのは早いものだ。', '시간이 흐르는 것은 빠르구나.', 1),
+    (w, '年寄りを敬うものだ。', '노인을 공경하는 법이다.', 2);
 
   -- 1045. ～かねる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かねる', '～かねる', '~하기 어렵다', NULL, '문법', 1045, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かねる', '~하기 어렵다, ~할 수 없다', '兼(겸할 겸)ねる. 동사ます형+かねる. 정중한 거절', '문법-형식판단', 1045, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'お答えしかねます。', '답변드리기 어렵습니다.', 1),
-    (w, '判断しかねる状況だ。', '판단하기 어려운 상황이다.', 2);
+    (w, 'お受けしかねます。', '받기 어렵습니다.', 2);
 
   -- 1046. ～っこない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～っこない', '～っこない', '~할 리가 없다', NULL, '문법', 1046, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～っこない', '~할 리가 없다 <회화>', '동사ます형+っこない. 강한 부정 회화체', '문법-형식판단', 1046, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そんなこと、わかりっこない。', '그런 거 알 리가 없다.', 1),
-    (w, 'できっこないと諦めた。', '할 수 있을 리가 없다고 포기했다.', 2);
+    (w, '勝てっこない。', '이길 리가 없다.', 1),
+    (w, 'そんなこと、できっこない。', '그런 거 될 리가 없다.', 2);
 
   -- 1047. ～に対して
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に対して', '～にたいして', '~에 대해서', NULL, '문법', 1047, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に対して', 'にたいして', '~에 대해서', '対(대할 대). 대상·태도·비교', '문법-형식판단', 1047, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼に対して感謝の気持ちがある。', '그에 대해 감사의 마음이 있다.', 1),
-    (w, '問題に対して真剣に取り組む。', '문제에 대해 진지하게 임한다.', 2);
+    (w, '質問に対して答える。', '질문에 대해 답한다.', 1),
+    (w, '彼に対して優しい。', '그에게 친절하다.', 2);
 
   -- 1048. お～する
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お～する', 'おする', '~하다 <겸손>', NULL, '문법', 1048, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'お～する', '~하다 <겸손>', 'お/ご+동사ます형/한자어+する. 화자 행위의 겸양', '문법-형식판단', 1048, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お手伝いします。', '도와드리겠습니다.', 1),
-    (w, 'お知らせします。', '알려드리겠습니다.', 2);
+    (w, 'お持ちします。', '들어 드리겠습니다.', 1),
+    (w, 'ご案内します。', '안내해 드리겠습니다.', 2);
 
   -- 1049. そのうち
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'そのうち', '머지않아, 가까운 시일 안에', '관용 부사', '부사', 1049, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そのうち', '머지않아, 가까운 시일 안에', 'その(그)+うち(안/사이). 시간 안에 곧', '문법-형식판단', 1049, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そのうち良くなるだろう。', '머지않아 좋아질 것이다.', 1),
-    (w, 'そのうち会いに行く。', '조만간 만나러 간다.', 2);
+    (w, 'そのうち分かるよ。', '머지않아 알게 될 거야.', 1),
+    (w, 'そのうち遊びに行く。', '가까운 시일 내에 놀러 갈게.', 2);
 
   -- 1050. ～以上
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～以上', '～いじょう', '~한 이상', NULL, '문법', 1050, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～以上', 'いじょう', '~한 이상 (당연한 귀결)', '以(써 이)+上(위 상). 「~인 이상은 당연히」', '문법-형식판단', 1050, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '約束した以上守る。', '약속한 이상 지킨다.', 1),
-    (w, '引き受けた以上最後までやる。', '맡은 이상 끝까지 한다.', 2);
+    (w, '約束した以上守るべきだ。', '약속한 이상 지켜야 한다.', 1),
+    (w, '日本に来た以上、日本語を学ぶ。', '일본에 온 이상 일본어를 배운다.', 2);
 
   -- 1051. ～とする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とする', '～とする', '~라고 하다 <가정, 판단>', NULL, '문법', 1051, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とする', '~라고 하다 <가정·판단>', 'と(인용)+する. 가정·간주', '문법-형식판단', 1051, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日晴れるとする。', '내일 맑다고 하자.', 1),
-    (w, '彼が来るとする。', '그가 온다고 가정하자.', 2);
+    (w, '結果は同じだとする。', '결과는 같다고 하자.', 1),
+    (w, '彼を犯人とする証拠はない。', '그를 범인이라 할 증거는 없다.', 2);
 
   -- 1052. ～だけなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけなら', '～だけなら', '~뿐이라면', NULL, '문법', 1052, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけなら', '~뿐이라면', 'だけ(만)+なら(라면). 한정 조건', '문법-형식판단', 1052, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '話を聞くだけならいい。', '이야기만 듣는 거라면 괜찮다.', 1),
-    (w, '見るだけなら無料だ。', '보기만 한다면 무료다.', 2);
+    (w, '見るだけなら無料です。', '보는 것뿐이라면 무료입니다.', 1),
+    (w, '少しだけなら飲める。', '조금뿐이라면 마실 수 있다.', 2);
 
   -- 1053. ～てからにする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てからにする', '～てからにする', '~하고 나서 하다', NULL, '문법', 1053, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てからにする', '~하고 나서 하다', 'てから+にする. 「~을 끝낸 후로 미루다」', '문법-형식판단', 1053, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '食事をしてからにする。', '식사를 하고 나서 한다.', 1),
+    (w, '食事してからにしよう。', '식사하고 나서 하자.', 1),
     (w, '相談してからにします。', '상담하고 나서 하겠습니다.', 2);
 
   -- 1054. ～することになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～することになる', '～することになる', '~하게 되다', NULL, '문법', 1054, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～することになる', '~하게 되다', 'する+こと+になる. 외부적 결정', '문법-형식판단', 1054, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '来月引っ越すことになる。', '다음 달 이사하게 된다.', 1),
-    (w, '転勤することになった。', '전근하게 되었다.', 2);
+    (w, '来月から出張することになった。', '다음 달부터 출장하게 되었다.', 1),
+    (w, '会議に参加することになる。', '회의에 참가하게 된다.', 2);
 
   -- 1055. ～ないことがある
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないことがある', '～ないことがある', '~하지 않는 경우가 있다', NULL, '문법', 1055, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないことがある', '~하지 않는 경우가 있다', 'ない+こと+がある. 가끔의 부정 경우', '문법-형식판단', 1055, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は来ないことがある。', '그는 안 오는 경우가 있다.', 1),
-    (w, '働かないことがある。', '일하지 않는 경우가 있다.', 2);
+    (w, '彼は約束を守らないことがある。', '그는 약속을 안 지키는 경우가 있다.', 1),
+    (w, '時々返事しないことがある。', '가끔 답장하지 않는 경우가 있다.', 2);
 
   -- 1056. ～って
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～って', '～って', '~라고 해 <인용>', NULL, '문법', 1056, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～って', '~라고 해 <인용>', 'と의 회화체. 인용·전문', '문법-형식판단', 1056, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼が来るって言った。', '그가 온다고 했다.', 1),
-    (w, '難しいって聞いた。', '어렵다고 들었다.', 2);
+    (w, '行くって言ってた。', '간다고 말했어.', 1),
+    (w, '雨だって聞いた。', '비라고 들었어.', 2);
 
   -- 1057. たとえ～ても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'たとえ～ても', 'たとえても', '설령 ~할지라도', NULL, '문법', 1057, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '例え～ても', 'たとえ', '설령 ~할지라도', '例(법식 례)え+ても. 강한 가정·양보', '문법-형식판단', 1057, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'たとえ大変でも頑張る。', '설령 힘들어도 노력한다.', 1),
-    (w, 'たとえ反対されてもやる。', '설령 반대받아도 한다.', 2);
+    (w, 'たとえ失敗しても諦めない。', '설령 실패해도 포기하지 않는다.', 1),
+    (w, 'たとえ雨でも行く。', '설령 비라도 간다.', 2);
 
   -- 1058. ～おそれがある
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～おそれがある', '～おそれがある', '~할 우려가 있다', NULL, '문법', 1058, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～恐れがある', 'おそれ', '~할 우려가 있다', '恐(두려울 공)れ+がある. 부정적 가능성', '문법-형식판단', 1058, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日は雨のおそれがある。', '내일은 비 올 우려가 있다.', 1),
-    (w, '遅れるおそれがある。', '늦을 우려가 있다.', 2);
+    (w, '大雪のおそれがある。', '폭설의 우려가 있다.', 1),
+    (w, '事故が起きるおそれがある。', '사고가 일어날 우려가 있다.', 2);
 
   -- 1059. ～ないかな
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないかな', '～ないかな', '~하지 않으려나, ~하지 않을까?', NULL, '문법', 1059, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないかな', '~하지 않을까? <기대·바람>', 'ない+か+な. 자신의 희망/기대를 혼잣말처럼', '문법-형식판단', 1059, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '早く来ないかな。', '빨리 오지 않으려나.', 1),
-    (w, 'うまくいかないかな。', '잘 안 될까?', 2);
+    (w, '早く春が来ないかな。', '빨리 봄이 오지 않을까.', 1),
+    (w, '誰か助けてくれないかな。', '누가 도와주지 않을까.', 2);
 
   -- 1060. ～というように
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～というように', '～というように', '~라는 식으로, ~라는 것처럼', NULL, '문법', 1060, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というように', '~라는 식으로, ~라는 것처럼', 'という+ように. 인용+양태', '문법-형식판단', 1060, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '急ぐというように手を振った。', '서두르라는 듯 손을 흔들었다.', 1),
-    (w, 'OKというように頷いた。', 'OK라는 듯 끄덕였다.', 2);
+    (w, '「もう帰りたい」というように見えた。', '"이제 돌아가고 싶다"는 것처럼 보였다.', 1),
+    (w, '無理だというように首を振った。', '무리라는 듯이 고개를 흔들었다.', 2);
 
   -- 1061. ～じゃない？
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～じゃない？', '～じゃない', '~아닐까?', NULL, '문법', 1061, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～じゃない？', '~아닐까? <확인·동의>', 'ではない의 회화체+の상승억양. 동의 구함', '문법-형식판단', 1061, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '変じゃない？', '이상하지 않아?', 1),
-    (w, '大丈夫じゃない？', '괜찮지 않아?', 2);
+    (w, 'いいんじゃない？', '좋은 거 아냐?', 1),
+    (w, 'これ、君のじゃない？', '이거 네 거 아냐?', 2);
 
   -- 1062. ～できるものなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～できるものなら', '～できるものなら', '~할 수만 있다면', NULL, '문법', 1062, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～できるものなら', '~할 수만 있다면', '可能(できる)+物なら. 거의 불가능한 일을 가정', '문법-형식판단', 1062, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会えるものなら会いたい。', '만날 수만 있다면 만나고 싶다.', 1),
-    (w, '代われるものなら代わりたい。', '대신할 수 있다면 대신하고 싶다.', 2);
+    (w, '行けるものなら今すぐ行きたい。', '갈 수만 있다면 지금 당장 가고 싶다.', 1),
+    (w, 'やり直せるものならやり直したい。', '다시 할 수만 있다면 다시 하고 싶다.', 2);
 
   -- 1063. ～てならない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てならない', '～てならない', '너무 ~하다', NULL, '문법', 1063, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てならない', '너무 ~하다, 견딜 수 없이 ~하다', '동사 て형+ならない. 자연발생적 감정 극한', '문법-형식판단', 1063, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '気になってならない。', '너무 신경 쓰여서 견딜 수 없다.', 1),
-    (w, '悔しくてならない。', '너무 분하다.', 2);
+    (w, '残念でならない。', '너무 안타깝다.', 1),
+    (w, '気になってならない。', '너무 신경 쓰인다.', 2);
 
   -- 1064. お～です
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お～です', 'おです', '~하시다 <존경>', NULL, '문법', 1064, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'お～です', '~하시다 <존경>', 'お+동사ます형+です. 상대 행위 정중 존경', '문법-형식판단', 1064, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お元気ですか。', '건강하십니까?', 1),
-    (w, 'お忙しいですね。', '바쁘시군요.', 2);
+    (w, 'お忙しいですか。', '바쁘십니까?', 1),
+    (w, 'お休みです。', '쉬고 계십니다.', 2);
 
   -- 1065. ～にでも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にでも', '～にでも', '~에라도', NULL, '문법', 1065, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にでも', '~에라도', 'に+でも. 막연한 대상/시점 제시', '문법-형식판단', 1065, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お茶にでも行きましょう。', '차나 마시러 갑시다.', 1),
-    (w, '散歩にでも出かけよう。', '산책이라도 하러 가자.', 2);
+    (w, '明日にでも始めよう。', '내일이라도 시작하자.', 1),
+    (w, '公園にでも行こうか。', '공원에라도 갈까?', 2);
 
   -- 1066. ～はずがない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～はずがない', '～はずがない', '~할 리가 없다', NULL, '문법', 1066, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～はずがない', '~할 리가 없다', '筈+がない. 가능성 강한 부정', '문법-형식판단', 1066, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そんなはずがない。', '그럴 리가 없다.', 1),
-    (w, '彼が嘘をつくはずがない。', '그가 거짓말할 리가 없다.', 2);
+    (w, '彼が嘘をつくはずがない。', '그가 거짓말할 리가 없다.', 1),
+    (w, 'こんな問題が解けないはずがない。', '이런 문제를 못 풀 리가 없다.', 2);
 
   -- 1067. ～を通して
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～を通して', '～をとおして', '~을 통해', NULL, '문법', 1067, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～を通して', 'をとおして', '~을 통해', '通(통할 통)す+て. 매개·기간', '문법-형식판단', 1067, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '友人を通して紹介された。', '친구를 통해 소개받았다.', 1),
-    (w, 'インターネットを通して情報を得る。', '인터넷을 통해 정보를 얻는다.', 2);
+    (w, '友人を通して知った。', '친구를 통해 알게 됐다.', 1),
+    (w, '一年を通して暖かい。', '일년 내내 따뜻하다.', 2);
 
   -- 1068. ～なら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なら', '～なら', '~라면 <화제 제시>', NULL, '문법', 1068, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なら', '~라면 <화제 제시>', '단정 だ의 가정형. 화제·가정 양용', '문법-형식판단', 1068, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君ならできる。', '너라면 할 수 있다.', 1),
-    (w, '私なら行かない。', '나라면 안 간다.', 2);
+    (w, '日本語ならまかせて。', '일본어라면 맡겨.', 1),
+    (w, '安いなら買おう。', '싸다면 사자.', 2);
 
   -- 1069. まさか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'まさか', '설마', '관용 부사', '부사', 1069, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '真逆', 'まさか', '설마', '真(참 진)+逆. 부정·반어와 호응', '문법-형식판단', 1069, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'まさか彼が来るとは。', '설마 그가 올 줄이야.', 1),
-    (w, 'まさかそんなことが。', '설마 그런 일이.', 2);
+    (w, 'まさかそんなはずがない。', '설마 그럴 리가 없다.', 1),
+    (w, 'まさか彼が？', '설마 그가?', 2);
 
   -- 1070. ～てばかりだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てばかりだ', '～てばかりだ', '~하기만 한다', NULL, '문법', 1070, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てばかりだ', '~하기만 한다', '동사 て형+ばかり+だ. 같은 행위 반복·과다', '문법-형식판단', 1070, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遊んでばかりだ。', '놀기만 한다.', 1),
-    (w, '不満を言ってばかりだ。', '불만만 늘어놓는다.', 2);
+    (w, '泣いてばかりだ。', '울고만 있다.', 1),
+    (w, '寝てばかりいる。', '잠만 자고 있다.', 2);
 
   -- 1071. ～ということだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ということだ', '～ということだ', '~라는 것이다 <전달, 전문>', NULL, '문법', 1071, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ということだ', '~라는 것이다 <전달·결론>', 'という+こと+だ. 전문·결론·해석', '문법-형식판단', 1071, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会議は中止ということだ。', '회의는 중지라는 것이다.', 1),
-    (w, '彼は退院したということだ。', '그는 퇴원했다는 것이다.', 2);
+    (w, '彼は退職するということだ。', '그는 퇴직한다는 것이다.', 1),
+    (w, 'つまり、無理だということだ。', '즉, 무리라는 것이다.', 2);
 
   -- 1072. ございます
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ございます', '있습니다 <정중>', '정중어', '동사', 1072, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'ございます', '있습니다 <정중>', '御座(어좌)+ます. ある의 정중어', '문법-형식판단', 1072, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '資料はこちらにございます。', '자료는 이쪽에 있습니다.', 1),
+    (w, 'こちらに資料がございます。', '이쪽에 자료가 있습니다.', 1),
     (w, 'ありがとうございます。', '감사합니다.', 2);
 
   -- 1073. どうやって～したか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'どうやって～したか', 'どうやってしたか', '어떻게 ~한 것인지', NULL, '문법', 1073, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どうやって～したか', '어떻게 ~한 것인지', 'どう+やって(방법). 방법 의문', '문법-형식판단', 1073, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どうやって解決したか教えて。', '어떻게 해결한 건지 알려 줘.', 1),
-    (w, 'どうやって到着したか分からない。', '어떻게 도착했는지 모른다.', 2);
+    (w, 'どうやって解いたか教えて。', '어떻게 푼 것인지 알려줘.', 1),
+    (w, 'どうやって来たか知りたい。', '어떻게 왔는지 알고 싶다.', 2);
 
   -- 1074. ～(よ)うとしないで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(よ)うとしないで', '～ようとしないで', '~하려고 하지 말고', NULL, '문법', 1074, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(よ)うとしないで', '~하려고 하지 말고', '의지형+とする의 부정+で. 의지 자제 권유', '문법-형식판단', 1074, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '急ごうとしないで落ち着いて。', '서두르려고 하지 말고 침착해.', 1),
-    (w, '無理しようとしないで。', '무리하려고 하지 마.', 2);
+    (w, '無理にやろうとしないで休んで。', '무리해서 하려고 하지 말고 쉬어.', 1),
+    (w, '隠そうとしないで話して。', '숨기려 하지 말고 말해줘.', 2);
 
   -- 1075. もらってくれない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'もらってくれない', 'もらってくれない', '받지 않을래? <부탁, 의뢰>', NULL, '문법', 1075, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'もらってくれない', '받지 않을래? <부탁·의뢰>', '貰う+てくれる의 부정 의뢰형. 받아 달라', '문법-형식판단', 1075, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これ、もらってくれない？', '이거, 받아 주지 않을래?', 1),
-    (w, '要らないからもらってくれない？', '필요 없으니까 받아 주지 않을래?', 2);
+    (w, 'これ、もらってくれない？', '이거, 받아주지 않을래?', 1),
+    (w, '古い本、もらってくれない？', '오래된 책 받아주지 않을래?', 2);
 
   -- 1076. ～たほうがよかった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たほうがよかった', '～たほうがよかった', '~하는 편이 좋았다 <아쉬움>', NULL, '문법', 1076, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たほうがよかった', '~하는 편이 좋았다 <아쉬움>', '동사 た형+ほうがよかった. 사후 후회', '문법-형식판단', 1076, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もっと早く始めたほうがよかった。', '좀 더 일찍 시작하는 편이 좋았다.', 1),
-    (w, '行ったほうがよかった。', '가는 편이 좋았다.', 2);
+    (w, '早く出発したほうがよかった。', '빨리 출발하는 편이 좋았다.', 1),
+    (w, 'もっと勉強したほうがよかった。', '더 공부하는 편이 좋았다.', 2);
 
   -- 1077. ～てくださる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てくださる', '～てくださる', '~해 주시다 <존경>', NULL, '문법', 1077, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てくださる', '~해 주시다 <존경>', 'てくれる의 존경어 くださる. 상대→나에게', '문법-형식판단', 1077, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '先生が教えてくださった。', '선생님이 가르쳐 주셨다.', 1),
-    (w, 'お返事してくださり感謝します。', '답장해 주셔서 감사합니다.', 2);
+    (w, '先生が教えてくださった。', '선생님께서 가르쳐 주셨다.', 1),
+    (w, '手伝ってくださいませんか。', '도와주시지 않겠습니까?', 2);
 
-  -- 1078. ～向け
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～向け', '～むけ', '~대상, ~용', NULL, '문법', 1078, array[]::text[]) returning id into w;
+  -- 1078. ～にしては (변형: 일반/특정)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にしては(2)', '~치고는 (일반과 비교)', 'にする+ては. 같은 표현이나 다양한 문맥 활용', '문법-형식판단', 1078, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供向けの本だ。', '아이 대상의 책이다.', 1),
-    (w, '初心者向けのコースだ。', '초보자용 코스다.', 2);
+    (w, '子供にしては大人びている。', '아이치고는 어른스럽다.', 1),
+    (w, '安いにしては質がいい。', '싼 것치고는 품질이 좋다.', 2);
 
-  -- 1079. ～たがる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たがる', '～たがる', '~하고 싶어하다', NULL, '문법', 1079, array[]::text[]) returning id into w;
+  -- 1079. いたす
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '致す(2)', 'いたす', '하다 <겸양·정중>', '致す의 다양한 정중 회화 활용', '문법-형식판단', 1079, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は出かけたがる。', '그는 외출하고 싶어 한다.', 1),
-    (w, '子供は遊びたがる。', '아이는 놀고 싶어 한다.', 2);
+    (w, 'お預かりいたします。', '맡아 두겠습니다.', 1),
+    (w, '失礼いたしました。', '실례했습니다.', 2);
 
-  -- 1080. ～だけで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけで', '～だけで', '~만으로', NULL, '문법', 1080, array[]::text[]) returning id into w;
+  -- 1080. ～向け
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～向け', 'むけ', '~대상, ~용', '向(향할 향)け. 대상자 설정', '문법-형식판단', 1080, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '見るだけで嬉しい。', '보기만 해도 기쁘다.', 1),
-    (w, '話を聞くだけで疲れた。', '이야기만 들어도 피곤하다.', 2);
+    (w, '子供向けの番組だ。', '아이들을 위한 프로그램이다.', 1),
+    (w, '海外向けの製品。', '해외용 제품.', 2);
 
-  -- 1081. ～ておきなさい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ておきなさい', '～ておきなさい', '~해 두세요', NULL, '문법', 1081, array[]::text[]) returning id into w;
+  -- 1081. ～たところ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たところ(2)', '~했더니, ~한 결과', '발견·전개 강조의 たところ 재활용', '문법-형식판단', 1081, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '予習しておきなさい。', '예습해 두세요.', 1),
-    (w, '準備しておきなさい。', '준비해 두세요.', 2);
+    (w, '聞いたところ、本当だった。', '들어 보니 사실이었다.', 1),
+    (w, '尋ねたところ、丁寧に答えてくれた。', '물어봤더니 정성껏 답해 주었다.', 2);
 
-  -- 1082. ～かと思う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かと思う', '～かとおもう', '~할까 하고 생각하다', NULL, '문법', 1082, array[]::text[]) returning id into w;
+  -- 1082. ～たがる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たがる', '~하고 싶어하다', 'たい+がる. 3인칭의 욕구 외적 표출', '문법-형식판단', 1082, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '帰ろうかと思う。', '돌아갈까 한다.', 1),
-    (w, '出かけようかと思う。', '나갈까 한다.', 2);
+    (w, '弟は外で遊びたがる。', '동생은 밖에서 놀고 싶어한다.', 1),
+    (w, '彼女は留学したがっている。', '그녀는 유학하고 싶어한다.', 2);
 
-  -- 1083. ～もしないで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～もしないで', '～もしないで', '~도 하지 않고', NULL, '문법', 1083, array[]::text[]) returning id into w;
+  -- 1083. ～わけにはいかない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わけにはいかない(2)', '~할 수는 없다 (의무·도덕)', '동일 표현, 사회·도덕적 제약 재활용', '문법-형식판단', 1083, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '確認もしないで提出した。', '확인도 안 하고 제출했다.', 1),
-    (w, '返事もしないで帰った。', '대답도 안 하고 돌아갔다.', 2);
+    (w, '途中でやめるわけにはいかない。', '도중에 그만둘 수는 없다.', 1),
+    (w, '黙っているわけにはいかない。', '잠자코 있을 수는 없다.', 2);
 
-  -- 1084. ～ついでに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ついでに', '～ついでに', '~하는 김에', NULL, '문법', 1084, array[]::text[]) returning id into w;
+  -- 1084. 申し上げる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '申し上げる(2)', 'もうしあげる', '말씀드리다 <겸양·정중>', '편지·격식문에서의 申し上げる', '문법-형식판단', 1084, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '買い物のついでに寄った。', '쇼핑 가는 김에 들렀다.', 1),
-    (w, '散歩のついでに郵便を出した。', '산책 가는 김에 우편을 보냈다.', 2);
+    (w, '心からお礼申し上げます。', '진심으로 감사 말씀드립니다.', 1),
+    (w, 'ご挨拶を申し上げます。', '인사 말씀드립니다.', 2);
 
-  -- 1085. いったい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'いったい', '도대체', '관용 부사', '부사', 1085, array[]::text[]) returning id into w;
+  -- 1085. ～だけで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけで', '~만으로, ~하기만 해도', 'だけ(만)+で. 한정 조건·간이 결과', '문법-형식판단', 1085, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'いったいどうしたんだ。', '도대체 어떻게 된 거야.', 1),
-    (w, 'いったい何が起きた？', '도대체 무슨 일이 일어났어?', 2);
+    (w, '見るだけで楽しい。', '보기만 해도 즐겁다.', 1),
+    (w, '考えるだけで疲れる。', '생각만 해도 피곤하다.', 2);
 
-  -- 1086. ～にしたがって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にしたがって', '～にしたがって', '~에 따라', NULL, '문법', 1086, array[]::text[]) returning id into w;
+  -- 1086. ～ように (지시·내용)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように(2)', '~하도록 (간접지시·인용)', '간접지시·간접명령 ように 재활용', '문법-형식판단', 1086, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間が経つにしたがって慣れた。', '시간이 지남에 따라 익숙해졌다.', 1),
-    (w, '経験を積むにしたがって自信がついた。', '경험을 쌓음에 따라 자신감이 붙었다.', 2);
+    (w, '遅れないようにと言われた。', '늦지 않도록 말을 들었다.', 1),
+    (w, '気をつけるようにしている。', '조심하도록 하고 있다.', 2);
 
-  -- 1087. ～ざるを得ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ざるを得ない', '～ざるをえない', '~하지 않을 수 없다', NULL, '문법', 1087, array[]::text[]) returning id into w;
+  -- 1087. ～ておきなさい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ておきなさい', '~해 두세요 <지시>', 'ておく+なさい. 사전 준비 지시', '문법-형식판단', 1087, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '結果を受け入れざるを得ない。', '결과를 받아들이지 않을 수 없다.', 1),
-    (w, '謝らざるを得ない。', '사과하지 않을 수 없다.', 2);
+    (w, '宿題をやっておきなさい。', '숙제를 해 두세요.', 1),
+    (w, '部屋を片付けておきなさい。', '방을 정리해 두세요.', 2);
 
-  -- 1088. お/ご～です
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お/ご～です', 'おごです', '~하시다 〈존경〉', NULL, '문법', 1088, array[]::text[]) returning id into w;
+  -- 1088. ～そうだ (전문)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうだ(전문)', '~라고 한다', '동사 보통형+そうだ. 들은 정보 전달', '문법-형식판단', 1088, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お忙しい中ありがとうございます。', '바쁘신 중 감사합니다.', 1),
-    (w, 'ご遠慮なくお話しください。', '사양 마시고 말씀해 주십시오.', 2);
+    (w, '彼は結婚するそうだ。', '그는 결혼한다고 한다.', 1),
+    (w, '明日は雪が降るそうだ。', '내일은 눈이 온다고 한다.', 2);
 
-  -- 1089. ～しか～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～しか～ない', '～しかない', '~밖에 ~할 수 없다', NULL, '문법', 1089, array[]::text[]) returning id into w;
+  -- 1089. ～かと思う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かと思う', '~할까 하고 생각하다', 'か+と+思う. 막연한 의도/추측', '문법-형식판단', 1089, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これしか方法がない。', '이것밖에 방법이 없다.', 1),
-    (w, '信じるしかない。', '믿을 수밖에 없다.', 2);
+    (w, '少し休もうかと思っている。', '잠시 쉴까 하고 생각하고 있다.', 1),
+    (w, '出かけようかと思った。', '나갈까 하고 생각했다.', 2);
 
-  -- 1090. ～よりも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～よりも', '～よりも', '~보다도', NULL, '문법', 1090, array[]::text[]) returning id into w;
+  -- 1090. ～もしないで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～もしないで', '~도 하지 않고', 'も+しないで. 부정 동작 강조', '문법-형식판단', 1090, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '昨日よりも暑い。', '어제보다 덥다.', 1),
-    (w, '彼よりも背が高い。', '그보다 키가 크다.', 2);
+    (w, '勉強もしないで遊んでいる。', '공부도 안 하고 놀고 있다.', 1),
+    (w, '挨拶もしないで出て行った。', '인사도 없이 나가 버렸다.', 2);
 
-  -- 1091. ～ままにせず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ままにせず', '～ままにせず', '~한 채로 두지 말고', NULL, '문법', 1091, array[]::text[]) returning id into w;
+  -- 1091. ～ついでに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～ついでに', 'ついでに', '~하는 김에', '序(차례 서)で. 어떤 행위 기회에 다른 행위', '문법-형식판단', 1091, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '汚れたままにせず洗ってください。', '더러운 채로 두지 말고 씻으세요.', 1),
-    (w, 'そのままにせず修理する。', '그대로 두지 말고 수리한다.', 2);
+    (w, '買い物のついでに郵便局へ行った。', '쇼핑하는 김에 우체국에 갔다.', 1),
+    (w, '散歩のついでにパンを買った。', '산책 하는 김에 빵을 샀다.', 2);
 
-  -- 1092. ～ようとする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようとする', '～ようとする', '~하려고 하다', NULL, '문법', 1092, array[]::text[]) returning id into w;
+  -- 1092. いったい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '一体', 'いったい', '도대체', '一(한 일)+体(몸 체). 강조 의문 부사', '문법-형식판단', 1092, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '話そうとしたが言えなかった。', '말하려 했지만 못 했다.', 1),
-    (w, '逃げようとした瞬間。', '도망가려 한 순간.', 2);
+    (w, 'いったいどうしたの？', '도대체 무슨 일이야?', 1),
+    (w, 'いったい誰が言ったの？', '도대체 누가 말한 거야?', 2);
 
-  -- 1093. ～させてもらう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～させてもらう', '～させてもらう', '~하다 〈사역수동〉', NULL, '문법', 1093, array[]::text[]) returning id into w;
+  -- 1093. ～にしたがって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にしたがって', '~에 따라 (변화·지시)', '従(따를 종)う+て. 비례·지시 따름', '문법-형식판단', 1093, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '本日はお休みさせてもらいます。', '오늘은 쉬도록 하겠습니다.', 1),
-    (w, '発表させてもらいます。', '발표하도록 하겠습니다.', 2);
+    (w, '年を取るにしたがって体力が落ちる。', '나이가 들어 감에 따라 체력이 떨어진다.', 1),
+    (w, '指示にしたがって行動する。', '지시에 따라 행동한다.', 2);
 
-  -- 1094. ～だらけ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だらけ', '～だらけ', '~투성이', NULL, '문법', 1094, array[]::text[]) returning id into w;
+  -- 1094. ～一方だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～一方だ(2)', 'いっぽうだ', '~하기만 하다 (악화)', '같은 표현, 부정적 진행 강조', '문법-형식판단', 1094, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '服が泥だらけだ。', '옷이 진흙투성이다.', 1),
-    (w, '間違いだらけのレポート。', '실수투성이의 보고서.', 2);
+    (w, '景気は悪くなる一方だ。', '경기는 악화되기만 한다.', 1),
+    (w, '彼の態度は冷たくなる一方だ。', '그의 태도는 차가워지기만 한다.', 2);
 
-  -- 1095. ～としても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～としても', '～としても', '~라고 할지라도', NULL, '문법', 1095, array[]::text[]) returning id into w;
+  -- 1095. ～ざるを得ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ざるを得ない(2)', '~하지 않을 수 없다 (격식)', '문어체 변형 ざるを得ない. 격식', '문법-형식판단', 1095, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '冗談としても言っていい。', '농담이라고 해도 말해도 된다.', 1),
-    (w, '事実としても受け入れがたい。', '사실이라 해도 받아들이기 어렵다.', 2);
+    (w, '事実を認めざるを得ない。', '사실을 인정하지 않을 수 없다.', 1),
+    (w, '彼の意見に賛成せざるを得ない。', '그의 의견에 찬성하지 않을 수 없다.', 2);
 
-  -- 1096. ～にあたって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にあたって', '～にあたって', '~에 즈음하여, ~에 있어서', NULL, '문법', 1096, array[]::text[]) returning id into w;
+  -- 1096. お/ご～です
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'お/ご～です', '~하시다 <존경>', 'お/ご+ます형/한자어+です. 상대의 행위·상태 존경', '문법-형식판단', 1096, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '開会にあたって挨拶する。', '개회에 즈음해 인사한다.', 1),
-    (w, '出発にあたって準備を整える。', '출발에 즈음해 준비를 마친다.', 2);
+    (w, 'お待ちです。', '기다리고 계십니다.', 1),
+    (w, 'ご利用です。', '이용하고 계십니다.', 2);
 
-  -- 1097. ～てたまらない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てたまらない', '～てたまらない', '~해서 견딜 수 없다 (너무 ~하다)', NULL, '문법', 1097, array[]::text[]) returning id into w;
+  -- 1097. ～しか～ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～しか～ない', '~밖에 ~할 수 없다', 'しか(밖에)+ない. 한정·소량 강조', '문법-형식판단', 1097, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '暑くてたまらない。', '너무 더워서 견딜 수 없다.', 1),
-    (w, '会いたくてたまらない。', '너무 보고 싶어서 견딜 수 없다.', 2);
+    (w, '500円しか持っていない。', '500엔밖에 가지고 있지 않다.', 1),
+    (w, '彼にしかできない。', '그밖에 할 수 없다.', 2);
 
-  -- 1098. そういう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'そういう', '그러한', '관용 표현', '연체사', 1098, array[]::text[]) returning id into w;
+  -- 1098. ～よりも
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～よりも', '~보다도', 'より(보다)+も(도). 비교 강조', '문법-형식판단', 1098, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そういう話は聞いていない。', '그런 이야기는 듣지 못했다.', 1),
-    (w, 'そういう人は珍しい。', '그런 사람은 드물다.', 2);
+    (w, '今日は昨日よりも寒い。', '오늘은 어제보다도 춥다.', 1),
+    (w, '何よりも健康が大事だ。', '무엇보다도 건강이 중요하다.', 2);
 
-  -- 1099. ～としては
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～としては', '～としては', '~의 입장에서는', NULL, '문법', 1099, array[]::text[]) returning id into w;
+  -- 1099. ～ままにせず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ままにせず', '~한 채로 두지 말고', 'まま+に+せず. 방치 부정', '문법-형식판단', 1099, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '私としては賛成だ。', '저로서는 찬성이다.', 1),
-    (w, '会社としては大きな決断だ。', '회사 입장에서는 큰 결단이다.', 2);
+    (w, '汚れたままにせず洗おう。', '더러운 채로 두지 말고 씻자.', 1),
+    (w, '放置したままにせずに対処してください。', '방치한 채로 두지 말고 대처해 주세요.', 2);
 
-  -- 1100. ～ば～ほど
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ば～ほど', '～ばほど', '~하면 ~할수록', NULL, '문법', 1100, array[]::text[]) returning id into w;
+  -- 1100. ～ようとする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようとする(2)', '~하려고 하다', '의지·시도 표현 재활용', '문법-형식판단', 1100, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '勉強すればするほど分かる。', '공부하면 할수록 안다.', 1),
-    (w, '見れば見るほど好きになる。', '보면 볼수록 좋아진다.', 2);
+    (w, '寝ようとしたら電話が鳴った。', '자려고 했더니 전화가 울렸다.', 1),
+    (w, '何度もやろうとしたが失敗した。', '여러 번 하려 했지만 실패했다.', 2);
 
-  -- 1101. どうしても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'どうしても', '무슨 일이 있어도, 꼭', '관용 부사', '부사', 1101, array[]::text[]) returning id into w;
+  -- 1101. ～させてもらう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～させてもらう', '~하다 <사역수동·겸양>', '사역+てもらう. 「~하게 받음」 겸양', '문법-형식판단', 1101, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どうしても今日終わらせたい。', '무슨 일이 있어도 오늘 끝내고 싶다.', 1),
-    (w, 'どうしても会いたい人がいる。', '꼭 만나고 싶은 사람이 있다.', 2);
+    (w, 'お先に帰らせてもらいます。', '먼저 돌아가겠습니다.', 1),
+    (w, '発表させてもらいます。', '발표하겠습니다.', 2);
 
-  -- 1102. ～だろうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だろうか', '～だろうか', '~일까?', NULL, '문법', 1102, array[]::text[]) returning id into w;
+  -- 1102. ～だらけ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だらけ', '~투성이', '명사+だらけ. 부정적 가득 상태', '문법-형식판단', 1102, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これでよいのだろうか。', '이것으로 좋을까?', 1),
-    (w, '彼は来るのだろうか。', '그는 올까?', 2);
+    (w, '泥だらけの靴。', '진흙투성이 신발.', 1),
+    (w, 'ミスだらけの答案。', '실수투성이 답안.', 2);
 
-  -- 1103. ～末(に)
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～末(に)', '～すえに', '~한 끝에', NULL, '문법', 1103, array[]::text[]) returning id into w;
+  -- 1103. ～としても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としても', '~라고 할지라도', 'とする+ても. 가정 양보', '문법-형식판단', 1103, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '長い議論の末に決定した。', '긴 논의 끝에 결정했다.', 1),
+    (w, '行くとしても遅れる。', '간다고 해도 늦는다.', 1),
+    (w, '本当だとしても信じられない。', '사실이라 해도 믿을 수 없다.', 2);
+
+  -- 1104. ～にあたって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にあたって', '~에 즈음하여, ~에 있어서', '当(마땅 당)たる+て. 중요 시점/사태에 즈음', '문법-형식판단', 1104, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '開会にあたって挨拶した。', '개회에 즈음하여 인사했다.', 1),
+    (w, '出発にあたって注意事項を確認する。', '출발에 즈음하여 주의 사항을 확인한다.', 2);
+
+  -- 1105. ～てたまらない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てたまらない', '~해서 견딜 수 없다 (너무 ~하다)', '堪(견딜 감)らない. 감각·욕구 극한', '문법-형식판단', 1105, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会いたくてたまらない。', '너무 만나고 싶다.', 1),
+    (w, '暑くてたまらない。', '너무 더워서 견딜 수 없다.', 2);
+
+  -- 1106. そういう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そういう', '그러한', 'そう(그렇게)+いう. 지시 연체사', '문법-형식판단', 1106, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そういう人は珍しい。', '그러한 사람은 드물다.', 1),
+    (w, 'そういう場合はどうするの？', '그러한 경우엔 어떻게 해?', 2);
+
+  -- 1107. ～きる(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～きる(2)', '완전히 ~하다 (완수)', '동일 표현, 동작 완수 강조', '문법-형식판단', 1107, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '走りきった。', '끝까지 달렸다.', 1),
+    (w, '言いきった。', '단언했다.', 2);
+
+  -- 1108. ～ように (목적)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように(목적)', '~하도록 (목적)', '동사 사전형/ない형+ように. 목적·예방', '문법-형식판단', 1108, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '間に合うように早く出た。', '늦지 않게 일찍 나갔다.', 1),
+    (w, '風邪をひかないように気をつけて。', '감기에 걸리지 않도록 조심해.', 2);
+
+  -- 1109. ～としては
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としては', '~의 입장에서는, ~로서는', 'と+しては. 입장·관점 제시', '문법-형식판단', 1109, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '私としては賛成だ。', '나로서는 찬성이다.', 1),
+    (w, '会社としては答えられない。', '회사로서는 답할 수 없다.', 2);
+
+  -- 1110. ～ば～ほど
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ば～ほど', '~하면 ~할수록', 'ば(가정)+ほど(정도). 비례 변화', '문법-형식판단', 1110, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '考えれば考えるほど分からなくなる。', '생각하면 생각할수록 모르게 된다.', 1),
+    (w, '早ければ早いほどいい。', '빠르면 빠를수록 좋다.', 2);
+
+  -- 1111. どうしても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どうしても', '무슨 일이 있어도, 꼭', 'どう+しても. 강한 의지/필연성', '문법-형식판단', 1111, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうしても行きたい。', '꼭 가고 싶다.', 1),
+    (w, 'どうしても忘れられない。', '아무리 해도 잊을 수 없다.', 2);
+
+  -- 1112. ～そうだ (전문 2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうだ(전문2)', '~라고 한다 <전문>', '전문 そうだ의 재활용', '문법-형식판단', 1112, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は留学するそうだ。', '그는 유학한다고 한다.', 1),
+    (w, '昨日地震があったそうだ。', '어제 지진이 있었다고 한다.', 2);
+
+  -- 1113. ～だろうか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だろうか', '~일까? <자문·의문>', 'だろう+か. 자신/타인에 대한 의문', '문법-형식판단', 1113, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は本当に来るだろうか。', '그는 정말 올까?', 1),
+    (w, 'これでいいのだろうか。', '이걸로 될까?', 2);
+
+  -- 1114. ～末(に)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～末(に)', 'すえに', '~한 끝에', '末(끝 말). 오랜 과정 후의 결과', '문법-형식판단', 1114, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '迷った末に決めた。', '망설인 끝에 결정했다.', 1),
     (w, '苦労の末に成功した。', '고생 끝에 성공했다.', 2);
 
-  -- 1104. ～たことにする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たことにする', '～たことにする', '~한 것으로 치다', NULL, '문법', 1104, array[]::text[]) returning id into w;
+  -- 1115. ～たことにする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たことにする', '~한 것으로 치다', 'た+こと+にする. 사실과 다르게 처리', '문법-형식판단', 1115, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '今日のことは見なかったことにする。', '오늘 일은 못 본 걸로 한다.', 1),
-    (w, '何も聞かなかったことにしよう。', '아무것도 못 들은 걸로 하자.', 2);
+    (w, '聞かなかったことにする。', '못 들은 걸로 한다.', 1),
+    (w, '行ったことにしておこう。', '갔던 걸로 해 두자.', 2);
 
-  -- 1105. ～だろう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だろう', '～だろう', '~일 것이다', NULL, '문법', 1105, array[]::text[]) returning id into w;
+  -- 1116. ～だろう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だろう', '~일 것이다', 'だ의 추량형. 추측·확인', '문법-형식판단', 1116, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '明日は晴れるだろう。', '내일은 맑을 것이다.', 1),
     (w, '彼は来るだろう。', '그는 올 것이다.', 2);
 
-  -- 1106. ～に備えて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に備えて', '～にそなえて', '~에 대비하여', NULL, '문법', 1106, array[]::text[]) returning id into w;
+  -- 1117. ～に備えて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に備えて', 'にそなえて', '~에 대비하여', '備(갖출 비)える+て. 사전 준비', '문법-형식판단', 1117, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '地震に備えて準備する。', '지진에 대비해 준비한다.', 1),
-    (w, '老後に備えて貯金する。', '노후에 대비해 저축한다.', 2);
+    (w, '地震に備えて備蓄する。', '지진에 대비하여 비축한다.', 1),
+    (w, '試験に備えて勉強する。', '시험에 대비하여 공부한다.', 2);
 
-  -- 1107. ～もあれば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～もあれば', '～もあれば', '~정도만 있다면', NULL, '문법', 1107, array[]::text[]) returning id into w;
+  -- 1118. ～もあれば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～もあれば', '~정도만 있다면', 'も+あれば. 충분조건/병렬', '문법-형식판단', 1118, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間もあれば手伝う。', '시간만 있다면 도울 텐데.', 1),
-    (w, 'お金もあれば旅行に行ける。', '돈만 있다면 여행 갈 수 있다.', 2);
+    (w, '一日もあれば終わる。', '하루만 있으면 끝난다.', 1),
+    (w, '時間もあれば余裕で間に合う。', '시간만 있으면 여유롭게 간다.', 2);
 
-  -- 1108. お/ご～くださる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お/ご～くださる', 'おごくださる', '~해 주시다 〈존경〉', NULL, '문법', 1108, array[]::text[]) returning id into w;
+  -- 1119. お/ご～くださる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'お/ご～くださる', '~해 주시다 <존경>', 'お/ご+ます형+くださる. 상대 행위 정중 존경', '문법-형식판단', 1119, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お電話くださってありがとうございます。', '전화 주셔서 감사합니다.', 1),
-    (w, 'ご連絡くださり助かります。', '연락 주셔서 도움이 되었습니다.', 2);
+    (w, 'お読みくださる。', '읽어 주시다.', 1),
+    (w, 'ご利用くださる。', '이용해 주시다.', 2);
 
-  -- 1109. ～に決まっている
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に決まっている', '～にきまっている', '반드시 ~하게 되어 있다, 틀림없이 ~하다', NULL, '문법', 1109, array[]::text[]) returning id into w;
+  -- 1120. ～に決まっている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～に決まっている', '반드시 ~하게 되어 있다, 틀림없이 ~하다', '決(결정할 결)まる+ている. 강한 확신', '문법-형식판단', 1120, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は来るに決まっている。', '그는 올 게 뻔하다.', 1),
-    (w, '成功するに決まっている。', '반드시 성공한다.', 2);
+    (w, '彼が勝つに決まっている。', '그가 이길 게 뻔하다.', 1),
+    (w, '冬は寒いに決まっている。', '겨울은 추운 게 당연하다.', 2);
 
-  -- 1110. ～ようにしておく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようにしておく', '～ようにしておく', '~하도록 해 두다', NULL, '문법', 1110, array[]::text[]) returning id into w;
+  -- 1121. ～しか～ない (2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～しか～ない(2)', '~밖에 ~할 수 없다 (가능)', '가능형 부정과 결합한 한정 표현', '문법-형식판단', 1121, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '事前に確認するようにしておく。', '사전에 확인하도록 해 둔다.', 1),
-    (w, '早く帰れるようにしておく。', '일찍 돌아갈 수 있게 해 둔다.', 2);
+    (w, '日本語しか話せない。', '일본어밖에 말할 수 없다.', 1),
+    (w, '一人しか入れない。', '한 명밖에 들어갈 수 없다.', 2);
 
-  -- 1111. ～に違いない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に違いない', '～にちがいない', '~에 틀림없다', NULL, '문법', 1111, array[]::text[]) returning id into w;
+  -- 1122. ～ようにしておく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようにしておく', '~하도록 해 두다', 'ようにする+ておく. 사전 준비 의도', '문법-형식판단', 1122, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は嘘をついているに違いない。', '그는 거짓말을 하고 있음에 틀림없다.', 1),
-    (w, '成功するに違いない。', '성공할 게 틀림없다.', 2);
+    (w, '見えるようにしておく。', '보이도록 해 둔다.', 1),
+    (w, '使えるようにしておく。', '쓸 수 있도록 해 둔다.', 2);
 
-  -- 1112. ～てよかった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てよかった', '～てよかった', '~해서 다행이다', NULL, '문법', 1112, array[]::text[]) returning id into w;
+  -- 1123. ～に違いない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～に違いない', '~에 틀림없다', '違(어긋날 위)い+ない. 강한 확신', '문법-형식판단', 1123, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '参加できてよかった。', '참가할 수 있어서 다행이다.', 1),
-    (w, '会えてよかった。', '만날 수 있어서 다행이다.', 2);
+    (w, '彼は嘘をついているに違いない。', '그는 거짓말하고 있는 게 틀림없다.', 1),
+    (w, 'これは本物に違いない。', '이건 진품임에 틀림없다.', 2);
 
-  -- 1113. ～ぶりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ぶりに', '～ぶりに', '~만에', NULL, '문법', 1113, array[]::text[]) returning id into w;
+  -- 1124. ～ように (목적3)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように(3)', '~하도록 (지시·인용)', '간접 지시·간접 명령 ように', '문법-형식판단', 1124, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '十年ぶりに会った。', '10년 만에 만났다.', 1),
-    (w, '久しぶりに帰省した。', '오랜만에 귀성했다.', 2);
+    (w, '気をつけるように伝えてください。', '조심하라고 전해 주세요.', 1),
+    (w, '早く来るようにと言われた。', '빨리 오라고 들었다.', 2);
 
-  -- 1114. ～こそ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～こそ', '～こそ', '~야말로', NULL, '문법', 1114, array[]::text[]) returning id into w;
+  -- 1125. ～てよかった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てよかった', '~해서 다행이다', '동사 て형+よかった. 만족·안도', '문법-형식판단', 1125, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '今日こそ頑張る。', '오늘이야말로 노력한다.', 1),
-    (w, '君こそ友達だ。', '너야말로 친구다.', 2);
+    (w, '会えてよかった。', '만나서 다행이다.', 1),
+    (w, '無事でよかった。', '무사해서 다행이다.', 2);
 
-  -- 1115. ～ところから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ところから', '～ところから', '~때문에', NULL, '문법', 1115, array[]::text[]) returning id into w;
+  -- 1126. ～ぶりに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ぶりに', '~만에', '振(떨칠 진)り. 시간 경과 후 재발생', '문법-형식판단', 1126, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は早起きするところから一日が始まる。', '그는 일찍 일어나는 데서 하루가 시작된다.', 1),
-    (w, '寒いところから外出を控える。', '춥기 때문에 외출을 자제한다.', 2);
+    (w, '5年ぶりに会った。', '5년 만에 만났다.', 1),
+    (w, '一週間ぶりに晴れた。', '일주일 만에 맑게 갰다.', 2);
 
-  -- 1116. あとは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'あとは', '이제는, 남은 일은', '관용 표현', '관용', 1116, array[]::text[]) returning id into w;
+  -- 1127. ～こそ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～こそ', '~야말로', '강조 조사 こそ. 한정 강조', '문법-형식판단', 1127, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今度こそ成功する。', '이번에야말로 성공한다.', 1),
+    (w, '今こそチャンスだ。', '지금이야말로 기회다.', 2);
+
+  -- 1128. ～ところから
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ところから', '~때문에, ~한 점에서', '所(ところ)+から. 사물의 일면을 근거로', '문법-형식판단', 1128, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降っているところから出かけない。', '비가 오고 있어서 나가지 않는다.', 1),
+    (w, '彼が知っているところから尋ねる。', '그가 안다는 점에서 묻는다.', 2);
+
+  -- 1129. あとは
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '後は', 'あとは', '이제는, 남은 일은', '後(뒤 후)+は. 「남은 것은」', '문법-형식판단', 1129, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'あとは結果を待つだけだ。', '이제는 결과를 기다릴 뿐이다.', 1),
-    (w, 'あとは君次第だ。', '이제는 너에게 달려 있다.', 2);
+    (w, 'あとは君次第だ。', '남은 일은 너에게 달렸다.', 2);
 
-  -- 1117. ～場合でも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～場合でも', '～ばあいでも', '~한 경우라도', NULL, '문법', 1117, array[]::text[]) returning id into w;
+  -- 1130. ～場合でも
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～場合でも', 'ばあいでも', '~한 경우라도', '場合(경우)+でも. 양보적 가정', '문법-형식판단', 1130, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '失敗した場合でも責任を取る。', '실패한 경우라도 책임을 진다.', 1),
-    (w, '無理な場合でも連絡する。', '무리한 경우라도 연락한다.', 2);
+    (w, '雨の場合でも開催する。', '비가 오는 경우라도 개최한다.', 1),
+    (w, '失敗した場合でも責任は取らない。', '실패한 경우라도 책임은 안 진다.', 2);
 
-  -- 1118. ～ようでいて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようでいて', '～ようでいて', '~한 것 같지만', NULL, '문법', 1118, array[]::text[]) returning id into w;
+  -- 1131. ～ようでいて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようでいて', '~한 것 같지만', '様+で+いて. 외관과 실제의 차이', '문법-형식판단', 1131, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '簡単なようでいて難しい。', '간단한 것 같지만 어렵다.', 1),
-    (w, '冷たいようでいて優しい人だ。', '차가운 듯 다정한 사람이다.', 2);
+    (w, '簡単なようでいて実は難しい。', '쉬워 보이지만 실은 어렵다.', 1),
+    (w, '冷たいようでいて優しい。', '차가워 보이지만 다정하다.', 2);
 
-  -- 1119. ～てしまわないか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てしまわないか', '～てしまわないか', '~해 버리지 않을까', NULL, '문법', 1119, array[]::text[]) returning id into w;
+  -- 1132. ～てしまわないか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てしまわないか', '~해 버리지 않을까', 'てしまう+ない+か. 부정적 결과 우려', '문법-형식판단', 1132, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '忘れてしまわないかと心配だ。', '잊어 버리지 않을까 걱정이다.', 1),
-    (w, '遅れてしまわないか不安だ。', '늦어 버리지 않을까 불안하다.', 2);
+    (w, '忘れてしまわないか心配だ。', '잊어버리지 않을까 걱정이다.', 1),
+    (w, '壊してしまわないか不安だ。', '망가뜨리지 않을까 불안하다.', 2);
 
-  -- 1120. ～つもりだっだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～つもりだっだ', '～つもりだっだ', '~할 생각이었다', NULL, '문법', 1120, array[]::text[]) returning id into w;
+  -- 1133. ～つもりだった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～つもりだった', '~할 생각이었다', 'つもり+だった. 의도했으나 미실현', '문법-형식판단', 1133, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'すぐ帰るつもりだった。', '곧 돌아갈 생각이었다.', 1),
-    (w, '参加するつもりだった。', '참가할 생각이었다.', 2);
+    (w, '行くつもりだったが行けなかった。', '갈 생각이었지만 못 갔다.', 1),
+    (w, '断るつもりだった。', '거절할 생각이었다.', 2);
 
-  -- 1121. よければ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'よければ', '괜찮다면, 좋다면', '관용 표현', '관용', 1121, array[]::text[]) returning id into w;
+  -- 1134. ～かねる(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かねる(2)', '~할 수 없다, ~하기 어렵다', '兼ねる. 정중한 불가/거절', '문법-형식판단', 1134, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'よければ一緒に行きませんか。', '괜찮으면 함께 가지 않을래요?', 1),
-    (w, 'よければ手伝います。', '좋다면 돕겠습니다.', 2);
+    (w, '判断しかねます。', '판단하기 어렵습니다.', 1),
+    (w, '分かりかねます。', '알기 어렵습니다.', 2);
 
-  -- 1122. ～を問わず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～を問わず', '～をとわず', '~을 불문하고', NULL, '문법', 1122, array[]::text[]) returning id into w;
+  -- 1135. ～そうだ(양태2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうだ(양태2)', '~할 것 같다', '양태 そうだ 재활용', '문법-형식판단', 1135, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '年齢を問わず参加できる。', '연령을 불문하고 참가할 수 있다.', 1),
-    (w, '経験を問わず歓迎する。', '경험을 불문하고 환영한다.', 2);
+    (w, '泣きそうだ。', '울 것 같다.', 1),
+    (w, '崩れそうな壁。', '무너질 듯한 벽.', 2);
 
-  -- 1123. ～にかぎる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にかぎる', '～にかぎる', '~에 한해서(~할 때만)', NULL, '문법', 1123, array[]::text[]) returning id into w;
+  -- 1136. お越しくださる(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'お越しくださる(2)', 'おこしくださる', '오시다 <존경>', '재활용. 정중한 초대 표현', '문법-형식판단', 1136, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供にかぎり無料だ。', '아이에 한해서 무료다.', 1),
-    (w, '会員にかぎりサービスを提供する。', '회원에 한해 서비스를 제공한다.', 2);
+    (w, 'ぜひお越しくださいませ。', '꼭 와 주십시오.', 1),
+    (w, 'お越しくださり光栄です。', '와 주셔서 영광입니다.', 2);
 
-  -- 1124. ～せいか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～せいか', '～せいか', '~탓인지', NULL, '문법', 1124, array[]::text[]) returning id into w;
+  -- 1137. よければ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '良ければ', 'よければ', '괜찮다면, 좋다면', '良(좋을 양)い+ば. 정중한 제안', '문법-형식판단', 1137, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '疲れたせいか頭が痛い。', '피곤한 탓인지 머리가 아프다.', 1),
-    (w, '寒いせいか体調が悪い。', '추운 탓인지 컨디션이 나쁘다.', 2);
+    (w, 'よければご一緒にどうですか。', '괜찮으시면 같이 어떠세요?', 1),
+    (w, 'よければ手伝います。', '괜찮다면 돕겠습니다.', 2);
 
-  -- 1125. ～ことに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことに', '～ことに', '~하게도', NULL, '문법', 1125, array[]::text[]) returning id into w;
+  -- 1138. ～すら(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すら(2)', '~조차, ~마저', '극단적 예시 すら 재활용', '문법-형식판단', 1138, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '驚いたことに彼が現れた。', '놀랍게도 그가 나타났다.', 1),
-    (w, '残念なことに失敗した。', '안타깝게도 실패했다.', 2);
+    (w, '基本すら知らない。', '기본조차 모른다.', 1),
+    (w, '水すら飲めなかった。', '물조차 마실 수 없었다.', 2);
 
-  -- 1126. ～ないと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないと', '～ないと', '~하지 않으면', NULL, '문법', 1126, array[]::text[]) returning id into w;
+  -- 1139. どうも(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どうも(2)', '어쩐지, 도무지', '추측·확언 부정과 호응하는 부사', '문법-형식판단', 1139, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうも分からない。', '도무지 모르겠다.', 1),
+    (w, 'どうも変だ。', '어쩐지 이상하다.', 2);
+
+  -- 1140. ～を問わず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～を問わず', 'をとわず', '~을 불문하고', '問(물을 문)わず. 조건 무관', '문법-형식판단', 1140, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '男女を問わず参加できる。', '남녀를 불문하고 참가할 수 있다.', 1),
+    (w, '経験を問わず採用する。', '경험을 불문하고 채용한다.', 2);
+
+  -- 1141. ～にかぎる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～にかぎる', 'にかぎる', '~에 한해서 (~할 때만)', '限(한할 한)る. 한정·최선 강조', '문법-형식판단', 1141, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '夏はビールに限る。', '여름엔 맥주가 최고다.', 1),
+    (w, '会員にかぎる。', '회원에 한한다.', 2);
+
+  -- 1142. ～せいか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～せいか', '~탓인지', '所為(せい, 탓)+か. 부정적 원인 추측', '문법-형식판단', 1142, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '寒いせいか体調が悪い。', '추운 탓인지 몸이 안 좋다.', 1),
+    (w, '疲れているせいか集中できない。', '피곤한 탓인지 집중이 안 된다.', 2);
+
+  -- 1143. ～ことに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことに', '~하게도', '事+に. 화자 감정 강조', '문법-형식판단', 1143, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '驚いたことに彼が来た。', '놀랍게도 그가 왔다.', 1),
+    (w, '残念なことに合格しなかった。', '안타깝게도 합격하지 못했다.', 2);
+
+  -- 1144. ～ないと
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないと', '~하지 않으면', 'ない+と. 부정 조건', '문법-형식판단', 1144, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '急がないと遅れる。', '서두르지 않으면 늦는다.', 1),
     (w, '勉強しないと合格できない。', '공부하지 않으면 합격할 수 없다.', 2);
 
-  -- 1127. ～られなかったら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～られなかったら', '～られなかったら', '~할 수 없다면', NULL, '문법', 1127, array[]::text[]) returning id into w;
+  -- 1145. ～られなかったら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～られなかったら', '~할 수 없다면', '가능형+ない+たら. 가능 불성립 가정', '문법-형식판단', 1145, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '来られなかったら連絡してください。', '올 수 없다면 연락해 주세요.', 1),
-    (w, '続けられなかったらやめてもいい。', '계속할 수 없으면 그만둬도 된다.', 2);
+    (w, '行かれなかったら教えて。', '갈 수 없다면 알려줘.', 1),
+    (w, '答えられなかったら助ける。', '답할 수 없다면 도와줄게.', 2);
 
-  -- 1128. ～ぬく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ぬく', '～ぬく', '끝까지 ~하다', NULL, '문법', 1128, array[]::text[]) returning id into w;
+  -- 1146. ～ぬく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ぬく', '끝까지 ~하다', '抜(뺄 발)く. 동사ます형+ぬく. 끝까지 관철', '문법-형식판단', 1146, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '最後までやりぬく。', '끝까지 해내다.', 1),
-    (w, '考えぬいた末の決断だ。', '끝까지 생각한 끝의 결단이다.', 2);
+    (w, '考えぬいて出した結論。', '끝까지 생각해 낸 결론.', 2);
 
-  -- 1129. 伺う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '伺う', 'うかがう', '듣다, 여쭈다 〈겸양〉', '겸양어', '동사', 1129, array[]::text[]) returning id into w;
+  -- 1147. 伺う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '伺う', 'うかがう', '듣다, 여쭈다, 찾아뵙다 <겸양>', '伺(엿볼 사)う. 訪問·尋ねる·聞く의 겸양', '문법-형식판단', 1147, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お話を伺ってもよろしいですか。', '말씀을 들어도 되겠습니까?', 1),
-    (w, '先生に伺いたいことがあります。', '선생님께 여쭙고 싶은 것이 있습니다.', 2);
+    (w, 'お話を伺いたいです。', '말씀을 듣고 싶습니다.', 1),
+    (w, '明日伺います。', '내일 찾아뵙겠습니다.', 2);
 
-  -- 1130. ～ばいい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ばいい', '～ばいい', '~하면 된다', NULL, '문법', 1130, array[]::text[]) returning id into w;
+  -- 1148. ～させてもらう(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～させてもらう(2)', '~하다 <사역수동·겸양>', '겸양적 행위 표현 재활용', '문법-형식판단', 1148, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ここに座ればいい。', '여기 앉으면 된다.', 1),
-    (w, '早めに行けばいい。', '일찍 가면 된다.', 2);
+    (w, '休ませてもらいます。', '쉬겠습니다.', 1),
+    (w, '考えさせてもらう。', '생각하게 해 주세요.', 2);
 
-  -- 1131. ～というより
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～というより', '～というより', '~라기보다', NULL, '문법', 1131, array[]::text[]) returning id into w;
+  -- 1149. ～ばいい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ばいい', '~하면 된다', 'ば+いい. 조언·충분조건', '문법-형식판단', 1149, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '優しいというより無関心だ。', '다정하다기보다 무관심하다.', 1),
-    (w, '好きというより尊敬している。', '좋아한다기보다 존경한다.', 2);
+    (w, '電話すればいい。', '전화하면 된다.', 1),
+    (w, '謝ればいいでしょ。', '사과하면 되잖아.', 2);
 
-  -- 1132. ～て以来
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～て以来', '～ていらい', '~한 이래', NULL, '문법', 1132, array[]::text[]) returning id into w;
+  -- 1150. ～しかない(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～しかない(2)', '~할 수밖에 없다', '유일 선택 표현 재활용', '문법-형식판단', 1150, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '引っ越して以来連絡がない。', '이사한 이래 연락이 없다.', 1),
-    (w, '卒業して以来会っていない。', '졸업한 이래 만나지 못했다.', 2);
+    (w, 'やるしかない。', '할 수밖에 없다.', 1),
+    (w, '我慢するしかない。', '참을 수밖에 없다.', 2);
 
-  -- 1133. ～にでもなって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にでもなって', '～にでもなって', '~나 되어서, ~라도 되어서', NULL, '문법', 1133, array[]::text[]) returning id into w;
+  -- 1151. ～にあたって(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にあたって(2)', '~에 즈음하여 (격식)', '격식·공식문 にあたって 재활용', '문법-형식판단', 1151, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '専門家にでもなったつもりで話す。', '전문가라도 된 듯 말한다.', 1),
-    (w, '大臣にでもなったつもりだ。', '장관이라도 된 듯하다.', 2);
+    (w, '新年を迎えるにあたってご挨拶申し上げます。', '신년을 맞이하면서 인사 말씀드립니다.', 1),
+    (w, '開業にあたって祝辞を述べる。', '개업에 즈음하여 축사를 한다.', 2);
 
-  -- 1134. ～たらよかった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たらよかった', '～たらよかった', '~했으면 좋았을 텐데', NULL, '문법', 1134, array[]::text[]) returning id into w;
+  -- 1152. まさか(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'まさか(2)', '설마', '강한 의외 표현 まさか 재활용', '문법-형식판단', 1152, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もっと早く来たらよかった。', '좀 더 빨리 왔으면 좋았을 텐데.', 1),
-    (w, '教えてくれたらよかったのに。', '알려 줬으면 좋았을 텐데.', 2);
+    (w, 'まさかと思った。', '설마 했다.', 1),
+    (w, 'まさかこんなことになるとは。', '설마 이렇게 될 줄이야.', 2);
 
-  -- 1135. ～に向けて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に向けて', '～にむけて', '~를 목표로', NULL, '문법', 1135, array[]::text[]) returning id into w;
+  -- 1153. ～というより
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というより', '~라기보다', 'という+より. 비교·정정', '문법-형식판단', 1153, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '試験に向けて勉強する。', '시험을 목표로 공부한다.', 1),
-    (w, '未来に向けて頑張る。', '미래를 향해 노력한다.', 2);
+    (w, '寒いというより痛い。', '춥다기보다 아프다.', 1),
+    (w, '友達というより家族だ。', '친구라기보다 가족이다.', 2);
 
-  -- 1136. ～からといって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～からといって', '～からといって', '~라고 해서', NULL, '문법', 1136, array[]::text[]) returning id into w;
+  -- 1154. ～て以来
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～て以来', 'ていらい', '~한 이래', '以(써 이)+来(올 래). 어떤 시점 이후 지속', '문법-형식판단', 1154, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '忙しいからといって連絡しないのは失礼だ。', '바쁘다고 해서 연락 안 하는 것은 실례다.', 1),
-    (w, '安いからといって質が悪いとは限らない。', '싸다고 해서 품질이 나쁘다고 단정할 수 없다.', 2);
+    (w, '日本に来て以来、一度も帰っていない。', '일본에 온 이래 한 번도 돌아가지 않았다.', 1),
+    (w, '別れて以来、会っていない。', '헤어진 이래 만나지 않고 있다.', 2);
 
-  -- 1137. ～だっけ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だっけ', '～だっけ', '~였더라?', NULL, '문법', 1137, array[]::text[]) returning id into w;
+  -- 1155. ～ならともかく(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ならともかく(2)', '~이라면 몰라도', '양보·예외 표현 재활용', '문법-형식판단', 1155, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '何だったっけ。', '뭐였더라?', 1),
-    (w, '会議は何時だっけ。', '회의는 몇 시였더라?', 2);
+    (w, '一度ならともかく毎回はひどい。', '한 번이라면 몰라도 매번은 심하다.', 1),
+    (w, '無料ならともかく有料では行かない。', '무료라면 몰라도 유료라면 안 간다.', 2);
 
-  -- 1138. ～ずにいる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ずにいる', '～ずにいる', '~하지 않고 있다', NULL, '문법', 1138, array[]::text[]) returning id into w;
+  -- 1156. ～にでもなって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にでもなって', '~나 되어서, ~라도 되어서', 'に+でも+なって. 어림짐작', '문법-형식판단', 1156, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '食べずにいる。', '먹지 않고 있다.', 1),
-    (w, '返事せずにいる。', '대답하지 않고 있다.', 2);
+    (w, '大人にでもなって考えてみろ。', '어른이라도 되어서 생각해 봐라.', 1),
+    (w, '医者にでもなったらと思う。', '의사라도 되었으면 한다.', 2);
 
-  -- 1139. ～そうになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～そうになる', '～そうになる', '~할 뻔 하다', NULL, '문법', 1139, array[]::text[]) returning id into w;
+  -- 1157. ～ように(4)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように(4)', '~하도록 (기원·습관)', '기원·습관 ように 재활용', '문법-형식판단', 1157, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '健康でありますように。', '건강하시기를.', 1),
+    (w, '毎日運動するようにしている。', '매일 운동하도록 하고 있다.', 2);
+
+  -- 1158. ～ようがない(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようがない(2)', '~할 수가 없다, ~할 방도가 없다', '수단 부재 ようがない 재활용', '문법-형식판단', 1158, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '助けようがない。', '도울 방도가 없다.', 1),
+    (w, '答えようがない。', '답할 방도가 없다.', 2);
+
+  -- 1159. ご覧いただく(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご覧いただく(2)', 'ごらんいただく', '봐 주시다 <겸손>', '겸손 표현 ご覧いただく 재활용', '문법-형식판단', 1159, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こちらをご覧いただけますか。', '이쪽을 봐 주시겠습니까?', 1),
+    (w, 'ホームページをご覧いただきたい。', '홈페이지를 봐 주셨으면 합니다.', 2);
+
+  -- 1160. ～きる(3)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～きる(3)', '완전히 ~하다 (완료)', '완료 きる 재활용', '문법-형식판단', 1160, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '読みきってしまった。', '다 읽어 버렸다.', 1),
+    (w, '疲れきった顔。', '완전히 지친 얼굴.', 2);
+
+  -- 1161. ～たらよかった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たらよかった', '~했으면 좋았을 텐데', 'たら+よかった. 사후 후회', '문법-형식판단', 1161, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もっと早く行ったらよかった。', '더 빨리 갔으면 좋았을 텐데.', 1),
+    (w, '正直に話したらよかった。', '솔직하게 말했으면 좋았을 텐데.', 2);
+
+  -- 1162. ～かけ(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かけ(2)', '~하던 도중', '진행 중단 かけ 재활용', '문법-형식판단', 1162, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '読みかけの本。', '읽다 만 책.', 1),
+    (w, '言いかけの言葉。', '말하다 만 말.', 2);
+
+  -- 1163. むしろ(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'むしろ(2)', '오히려, 차라리', '비교 후 선호 むしろ 재활용', '문법-형식판단', 1163, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '行くよりむしろやめたい。', '가기보다 차라리 그만두고 싶다.', 1),
+    (w, 'むしろその方がいい。', '오히려 그게 낫다.', 2);
+
+  -- 1164. ～に向けて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に向けて', 'にむけて', '~를 목표로, ~를 향해', '向(향할 향)け+て. 목적/대상', '문법-형식판단', 1164, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '試験合格に向けて頑張る。', '시험 합격을 목표로 노력한다.', 1),
+    (w, '若者に向けて発信する。', '젊은이들을 향해 발신한다.', 2);
+
+  -- 1165. ～なら(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なら(2)', '~이라면', '화제·가정 なら 재활용', '문법-형식판단', 1165, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ラーメンなら大好きだ。', '라멘이라면 정말 좋아한다.', 1),
+    (w, '本当ならすぐ行く。', '사실이라면 당장 간다.', 2);
+
+  -- 1166. ～ように(5)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように(5)', '~하도록 (희망)', '희망·기원 ように 재활용', '문법-형식판단', 1166, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '合格できますように。', '합격할 수 있도록.', 1),
+    (w, '幸せでありますように。', '행복하시기를.', 2);
+
+  -- 1167. ～からといって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～からといって', '~라고 해서', 'から+といって. 이유와 다른 결과/부분 부정', '문법-형식판단', 1167, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '高いからといっていいわけではない。', '비싸다고 해서 다 좋은 것은 아니다.', 1),
+    (w, '雨だからといって中止にはならない。', '비라고 해서 중지되지는 않는다.', 2);
+
+  -- 1168. ～たびに(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たびに(2)', '~할 때마다', '반복 たびに 재활용', '문법-형식판단', 1168, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見るたびに泣いてしまう。', '볼 때마다 울고 만다.', 1),
+    (w, '聞くたびに新しい発見がある。', '들을 때마다 새로운 발견이 있다.', 2);
+
+  -- 1169. ～だっけ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だっけ', '~였더라?', 'だ+っけ. 기억 확인 회화체', '문법-형식판단', 1169, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会議は明日だっけ？', '회의는 내일이었더라?', 1),
+    (w, '彼の名前、何だっけ？', '그 사람 이름이 뭐였더라?', 2);
+
+  -- 1170. ～ずにいる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ずにいる', '~하지 않고 있다', 'ず+に+いる. 부정 상태 지속', '문법-형식판단', 1170, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何も食べずにいる。', '아무것도 안 먹고 있다.', 1),
+    (w, '連絡せずにいた。', '연락하지 않고 있었다.', 2);
+
+  -- 1171. 申し上げる(3)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '申し上げる(3)', 'もうしあげる', '말씀드리다 <겸양>', '겸양어 申し上げる 재활용', '문법-형식판단', 1171, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'お詫び申し上げます。', '사과 말씀드립니다.', 1),
+    (w, 'ご報告申し上げます。', '보고드립니다.', 2);
+
+  -- 1172. ～そうになる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうになる', '~할 뻔 하다', '양태 そう+になる. 동작 직전 상태', '문법-형식판단', 1172, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '転びそうになった。', '넘어질 뻔했다.', 1),
     (w, '泣きそうになる。', '울 뻔하다.', 2);
 
-  -- 1140. ～どころか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～どころか', '～どころか', '~는커녕', NULL, '문법', 1140, array[]::text[]) returning id into w;
+  -- 1173. ～ほど(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ほど(2)', '~정도', '정도 ほど 재활용', '문법-형식판단', 1173, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '褒められるどころか怒られた。', '칭찬받기는커녕 혼났다.', 1),
-    (w, '休むどころか追加の仕事が入った。', '쉬기는커녕 추가 일이 들어왔다.', 2);
+    (w, '1時間ほど待った。', '1시간 정도 기다렸다.', 1),
+    (w, '驚くほど安い。', '놀랄 만큼 싸다.', 2);
 
-  -- 1141. ～だけは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけは', '～だけは', '~만은', NULL, '문법', 1141, array[]::text[]) returning id into w;
+  -- 1174. ～もあれば(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～もあれば(2)', '~정도만 있다면', '충분 조건 もあれば 재활용', '문법-형식판단', 1174, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '30分もあれば終わる。', '30분만 있으면 끝난다.', 1),
+    (w, 'お金もあれば旅行できる。', '돈만 있으면 여행할 수 있다.', 2);
+
+  -- 1175. そのうち(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そのうち(2)', '머지않아', '시간 そのうち 재활용', '문법-형식판단', 1175, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そのうち会おう。', '머지않아 만나자.', 1),
+    (w, 'そのうちわかるだろう。', '머지않아 알게 될 것이다.', 2);
+
+  -- 1176. ～どころか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～どころか', '~는커녕', '所(ところ)+か. 예상보다 더 강한 부정', '문법-형식판단', 1176, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勉強どころか遊んでばかりだ。', '공부는커녕 놀기만 한다.', 1),
+    (w, '寒いどころか凍えそうだ。', '추운 정도는커녕 얼어 죽을 것 같다.', 2);
+
+  -- 1177. ～だけは
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけは', '~만은', 'だけ+は. 한정적 강조', '문법-형식판단', 1177, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'これだけは譲れない。', '이것만은 양보할 수 없다.', 1),
-    (w, '君だけは信じる。', '너만은 믿는다.', 2);
+    (w, '約束だけは守る。', '약속만은 지킨다.', 2);
 
-  -- 1142. ～にともなって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にともなって', '～にともなって', '~에 따라서', NULL, '문법', 1142, array[]::text[]) returning id into w;
+  -- 1178. ～にともなって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にともなって', '~에 따라서', '伴(짝 반)う+て. 동반·비례 변화', '문법-형식판단', 1178, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '人口増加にともなって需要が増えた。', '인구 증가에 따라 수요가 늘었다.', 1),
-    (w, '経済発展にともなって変化が起きた。', '경제 발전에 따라 변화가 일어났다.', 2);
+    (w, '人口の増加に伴って問題が増えた。', '인구 증가에 따라 문제가 늘었다.', 1),
+    (w, '時代の変化に伴って働き方も変わる。', '시대 변화에 따라 일하는 방식도 변한다.', 2);
 
-  -- 1143. ～ことから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことから', '～ことから', '~로 인해, ~때문에', NULL, '문법', 1143, array[]::text[]) returning id into w;
+  -- 1179. ～うちに(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～うちに(2)', '~하는 사이에', '상태 지속 中 うちに 재활용', '문법-형식판단', 1179, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '事故が増えたことから対策を強化した。', '사고가 늘었기 때문에 대책을 강화했다.', 1),
-    (w, '彼が来たことから始まった。', '그가 와서 시작되었다.', 2);
+    (w, '読んでいるうちに眠くなった。', '읽고 있는 사이에 졸렸다.', 1),
+    (w, '冷めないうちに食べよう。', '식기 전에 먹자.', 2);
 
-  -- 1144. いらっしゃる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'いらっしゃる', '계시다 〈존경〉', '존경어', '동사', 1144, array[]::text[]) returning id into w;
+  -- 1180. ～ことから
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことから', '~로 인해, ~때문에', '事+から. 사실을 근거로 한 추론', '문법-형식판단', 1180, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お元気でいらっしゃいますか。', '건강히 계십니까?', 1),
-    (w, '先生はいらっしゃいますか。', '선생님 계십니까?', 2);
+    (w, '雪が積もっていることから道が滑る。', '눈이 쌓여 있어 길이 미끄럽다.', 1),
+    (w, '値段が安いことから人気が出た。', '가격이 싸서 인기가 생겼다.', 2);
 
-  -- 1145. ～がちだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～がちだ', '～がちだ', '~한 경향이 있다, ~하기 일쑤다', NULL, '문법', 1145, array[]::text[]) returning id into w;
+  -- 1181. いらっしゃる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'いらっしゃる', 'いらっしゃる', '계시다, 가시다, 오시다 <존경>', 'いる/行く/来る의 존경어', '문법-형식판단', 1181, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は遅刻しがちだ。', '그는 지각하기 일쑤다.', 1),
-    (w, '忘れがちなことに気をつける。', '잊기 쉬운 것에 주의한다.', 2);
+    (w, '先生はいらっしゃいますか。', '선생님 계십니까?', 1),
+    (w, 'またいらしてください。', '또 와 주세요.', 2);
 
-  -- 1146. ～ことにする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことにする', '～ことにする', '~하기로 하다', NULL, '문법', 1146, array[]::text[]) returning id into w;
+  -- 1182. ～がちだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～がちだ', '~한 경향이 있다, ~하기 일쑤다', '勝ち+だ. 부정적 경향', '문법-형식판단', 1182, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日は休むことにする。', '내일은 쉬기로 한다.', 1),
-    (w, '新しい仕事を始めることにした。', '새 일을 시작하기로 했다.', 2);
+    (w, '彼は忘れがちだ。', '그는 자주 잊어버린다.', 1),
+    (w, '冬は風邪をひきがちだ。', '겨울에는 감기에 걸리기 일쑤다.', 2);
 
-  -- 1147. ～ないといけない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないといけない', '～ないといけない', '~하지 않으면 안된다', NULL, '문법', 1147, array[]::text[]) returning id into w;
+  -- 1183. ～ことはない(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことはない(2)', '~할 필요는 없다', '필요성 부정 ことはない 재활용', '문법-형식판단', 1183, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '早く寝ないといけない。', '일찍 자야 한다.', 1),
-    (w, '返事をしないといけない。', '대답을 해야 한다.', 2);
+    (w, '泣くことはない。', '울 필요는 없다.', 1),
+    (w, '謝ることはない。', '사과할 필요는 없다.', 2);
 
-  -- 1148. ～につれて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～につれて', '～につれて', '~함에 따라서', NULL, '문법', 1148, array[]::text[]) returning id into w;
+  -- 1184. ～ことにする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことにする', '~하기로 하다', '동사 사전형+こと+にする. 자기 결정', '문법-형식판단', 1184, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間が経つにつれて慣れた。', '시간이 지남에 따라 익숙해졌다.', 1),
-    (w, '経験を積むにつれて自信がついた。', '경험을 쌓음에 따라 자신감이 붙었다.', 2);
+    (w, '毎朝走ることにした。', '매일 아침 달리기로 했다.', 1),
+    (w, '禁煙することにする。', '금연하기로 한다.', 2);
 
-  -- 1149. 二度と～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '二度と～ない', 'にどとない', '두 번 다시 ~하지 않는다', NULL, '문법', 1149, array[]::text[]) returning id into w;
+  -- 1185. ～ないといけない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないといけない', '~하지 않으면 안된다', 'ない+と+いけない. 의무·필요', '문법-형식판단', 1185, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '二度と遅刻しない。', '두 번 다시 지각하지 않는다.', 1),
-    (w, '二度と来ない人もいる。', '두 번 다시 오지 않는 사람도 있다.', 2);
+    (w, '早く起きないといけない。', '일찍 일어나야 한다.', 1),
+    (w, 'これを覚えないといけない。', '이걸 외워야 한다.', 2);
 
-  -- 1150. ～としてなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～としてなら', '～としてなら', '~로서라면', NULL, '문법', 1150, array[]::text[]) returning id into w;
+  -- 1186. ～につれて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～につれて', '~함에 따라서', '連(이을 련)れて. 비례 변화', '문법-형식판단', 1186, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '友人としてなら相談に乗る。', '친구로서라면 상담에 응한다.', 1),
-    (w, '先輩としてならアドバイスできる。', '선배로서라면 조언할 수 있다.', 2);
+    (w, '年を取るにつれて忘れっぽくなる。', '나이가 들어 감에 따라 잊기 쉬워진다.', 1),
+    (w, '近づくにつれて緊張する。', '가까워질수록 긴장된다.', 2);
 
-  -- 1151. ～ことで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことで', '～ことで', '~로 인해', NULL, '문법', 1151, array[]::text[]) returning id into w;
+  -- 1187. 二度と～ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '二度と～ない', 'にどと', '두 번 다시 ~하지 않는다', '二+度+と+ない. 강한 결심', '문법-형식판단', 1187, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '努力することで成長する。', '노력함으로써 성장한다.', 1),
-    (w, '話し合うことで解決した。', '논의함으로써 해결되었다.', 2);
+    (w, '二度と行かない。', '두 번 다시 안 간다.', 1),
+    (w, '二度と話さない。', '두 번 다시 안 말한다.', 2);
 
-  -- 1152. ～以来
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～以来', '～いらい', '~이래', NULL, '문법', 1152, array[]::text[]) returning id into w;
+  -- 1188. ～ものの(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ものの(2)', '~했지만 (역접)', '역접 ものの 재활용', '문법-형식판단', 1188, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '卒業以来会っていない。', '졸업 이래 만나지 못했다.', 1),
-    (w, '開業以来繁盛している。', '개업 이래 번창하고 있다.', 2);
+    (w, '言ったものの、後悔した。', '말은 했지만 후회했다.', 1),
+    (w, '頑張ったものの、結果は出なかった。', '노력했지만 결과는 안 나왔다.', 2);
 
-  -- 1153. ～にほかならない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にほかならない', '～にほかならない', '바로 ~이다, 다름 아닌 ~이다', NULL, '문법', 1153, array[]::text[]) returning id into w;
+  -- 1189. ～としてなら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としてなら', '~로서라면', 'として+なら. 자격·역할 조건', '문법-형식판단', 1189, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それは努力の結果にほかならない。', '그것은 다름 아닌 노력의 결과다.', 1),
-    (w, '成功は努力の積み重ねにほかならない。', '성공은 노력의 축적에 다름 아니다.', 2);
+    (w, '友人としてなら相談に乗る。', '친구로서라면 상담해 주겠다.', 1),
+    (w, '社員としてなら賛成だ。', '사원으로서라면 찬성이다.', 2);
 
-  -- 1154. ～べきだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～べきだ', '～べきだ', '~해야 한다', NULL, '문법', 1154, array[]::text[]) returning id into w;
+  -- 1190. ～たばかりだ(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たばかりだ(2)', '막 ~한 참이다', '동작 직후 たばかり 재활용', '문법-형식판단', 1190, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もっと運動すべきだ。', '좀 더 운동해야 한다.', 1),
-    (w, '早めに連絡すべきだ。', '일찍 연락해야 한다.', 2);
+    (w, '帰ったばかりだ。', '막 돌아온 참이다.', 1),
+    (w, '買ったばかりの服。', '막 산 옷.', 2);
 
-  -- 1155. ～おかげだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～おかげだ', '～おかげだ', '~덕분이다', NULL, '문법', 1155, array[]::text[]) returning id into w;
+  -- 1191. ～というように(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というように(2)', '~라는 식으로', '인용+양태 というように 재활용', '문법-형식판단', 1191, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君のおかげだ。', '네 덕분이다.', 1),
-    (w, '成功は努力のおかげだ。', '성공은 노력 덕분이다.', 2);
+    (w, '迷惑だというように顔をしかめた。', '귀찮다는 듯이 얼굴을 찌푸렸다.', 1),
+    (w, '何でもないというように笑った。', '아무것도 아니라는 듯이 웃었다.', 2);
 
-  -- 1156. ～に至って
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に至って', '～にいたって', '~에 이르러', NULL, '문법', 1156, array[]::text[]) returning id into w;
+  -- 1192. ～ことで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことで', '~로 인해, ~함으로써', '事+で. 원인·수단', '문법-형식판단', 1192, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この時期に至っても解決しない。', '이 시기에 이르러도 해결되지 않는다.', 1),
-    (w, '深夜に至るまで議論した。', '심야에 이르도록 논의했다.', 2);
+    (w, '練習することで上達する。', '연습함으로써 실력이 는다.', 1),
+    (w, '話したことで誤解が解けた。', '이야기함으로써 오해가 풀렸다.', 2);
 
-  -- 1157. ～にかかわらず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にかかわらず', '～にかかわらず', '~에 관계없이', NULL, '문법', 1157, array[]::text[]) returning id into w;
+  -- 1193. ～以来
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～以来', 'いらい', '~이래', '以(써 이)+来(올 래). 시점 이후 지속', '문법-형식판단', 1193, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '性別にかかわらず採用する。', '성별에 관계없이 채용한다.', 1),
-    (w, '天候にかかわらず開催する。', '날씨에 관계없이 개최한다.', 2);
+    (w, '入社以来、休んだことがない。', '입사 이래 쉰 적이 없다.', 1),
+    (w, 'あの日以来、連絡がない。', '그날 이래 연락이 없다.', 2);
 
-  -- 1158. いつのまに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'いつのまに', '어느 틈에', '관용 부사', '부사', 1158, array[]::text[]) returning id into w;
+  -- 1194. ～にほかならない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～にほかならない', 'にほかならない', '바로 ~이다, 다름 아닌 ~이다', 'に+他(다를 타)+ならない. 강한 단정', '문법-형식판단', 1194, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'いつのまに眠ってしまった。', '어느 틈에 자버렸다.', 1),
-    (w, 'いつのまに季節が変わった。', '어느 틈에 계절이 바뀌었다.', 2);
+    (w, '成功は努力の結果にほかならない。', '성공은 다름 아닌 노력의 결과다.', 1),
+    (w, 'これは彼の責任にほかならない。', '이것은 다름 아닌 그의 책임이다.', 2);
 
-  -- 1159. ～反面
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～反面', '～はんめん', '~반면', NULL, '문법', 1159, array[]::text[]) returning id into w;
+  -- 1195. ～とのことだ(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とのことだ(2)', '~라는 것이다 <전달>', '전문 とのことだ 재활용', '문법-형식판단', 1195, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会議は中止とのことだ。', '회의는 중지된다는 것이다.', 1),
+    (w, '明日来るとのことだった。', '내일 온다고 했다.', 2);
+
+  -- 1196. ～べきだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～べきだ', '~해야 한다', '可(べし)의 종지형 변형. 당위·도리', '문법-형식판단', 1196, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '約束は守るべきだ。', '약속은 지켜야 한다.', 1),
+    (w, '謝るべきだ。', '사과해야 한다.', 2);
+
+  -- 1197. ～おかげだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～おかげだ', '~덕분이다', 'お陰(かげ)+だ. 긍정적 원인 단정', '문법-형식판단', 1197, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '合格できたのは先生のおかげだ。', '합격할 수 있던 것은 선생님 덕분이다.', 1),
+    (w, '今があるのは家族のおかげだ。', '지금이 있는 건 가족 덕분이다.', 2);
+
+  -- 1198. ～に至って
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に至って', 'にいたって', '~에 이르러', '至(이를 지)る. 극단적 상황 도달', '문법-형식판단', 1198, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ここに至って後悔しても遅い。', '여기에 이르러 후회해도 늦다.', 1),
+    (w, '事件が起こるに至って対応した。', '사건이 일어남에 이르러 대응했다.', 2);
+
+  -- 1199. ～にかかわらず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にかかわらず', '~에 관계없이', '関(빗장 관)わる+ず. 조건 무관', '문법-형식판단', 1199, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '天候にかかわらず開催する。', '날씨에 관계없이 개최한다.', 1),
+    (w, '結果にかかわらず努力は無駄ではない。', '결과에 관계없이 노력은 헛되지 않다.', 2);
+
+  -- 1200. いつのまに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'いつのまに', 'いつのまに', '어느 틈에, 어느 사이에', '何(なに)+の+間(ま)+に. 무의식 중 변화', '문법-형식판단', 1200, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'いつのまに眠ってしまった。', '어느새 잠들어 버렸다.', 1),
+    (w, 'いつのまにか春になっていた。', '어느새 봄이 되어 있었다.', 2);
+
+  -- 1201. ～反面
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～反面', 'はんめん', '~반면', '反(되돌릴 반)+面(낯 면). 대립적 두 측면', '문법-형식판단', 1201, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '便利な反面、危険もある。', '편리한 반면 위험도 있다.', 1),
-    (w, '厳しい反面、優しい。', '엄격한 반면 다정하다.', 2);
+    (w, '優しい反面、厳しい所もある。', '다정한 반면 엄한 면도 있다.', 2);
 
-  -- 1160. ～でよければ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～でよければ', '～でよければ', '~로 괜찮다면', NULL, '문법', 1160, array[]::text[]) returning id into w;
+  -- 1202. ～でよければ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～でよければ', '~로 괜찮다면', 'で(수단/조건)+よければ. 정중한 제안', '문법-형식판단', 1202, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これでよければお使いください。', '이걸로 괜찮다면 사용해 주세요.', 1),
-    (w, '私でよければ手伝います。', '저로 괜찮다면 돕겠습니다.', 2);
+    (w, '私でよければ手伝います。', '저로 괜찮다면 돕겠습니다.', 1),
+    (w, 'これでよければお持ち帰りください。', '이것으로 괜찮으시면 가져가세요.', 2);
 
-  -- 1161. ～ないよう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないよう', '～ないよう', '~하지 않도록', NULL, '문법', 1161, array[]::text[]) returning id into w;
+  -- 1203. ～としたら(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としたら(2)', '~라고 한다면', '가정 としたら 재활용', '문법-형식판단', 1203, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅れないようにする。', '늦지 않도록 한다.', 1),
-    (w, '忘れないよう注意する。', '잊지 않도록 주의한다.', 2);
+    (w, '今買うとしたらどれがいい？', '지금 산다면 어느 게 좋을까?', 1),
+    (w, '行くとしたら午後だ。', '간다고 한다면 오후다.', 2);
 
-  -- 1162. ～次第だ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～次第だ', '～しだいだ', '~에 달렸다', NULL, '문법', 1162, array[]::text[]) returning id into w;
+  -- 1204. ～ないよう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないよう', '~하지 않도록', 'ない+よう(に의 회화체). 부정적 결과 방지', '문법-형식판단', 1204, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君の努力次第だ。', '네 노력에 달렸다.', 1),
-    (w, '結果は天気次第だ。', '결과는 날씨에 달렸다.', 2);
+    (w, '転ばないよう注意する。', '넘어지지 않도록 조심한다.', 1),
+    (w, '忘れないようメモする。', '잊지 않도록 메모한다.', 2);
 
-  -- 1163. ～ことがある
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことがある', '～ことがある', '~발생하는 경우가 있다.', NULL, '문법', 1163, array[]::text[]) returning id into w;
+  -- 1205. ～次第だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～次第だ', 'しだいだ', '~에 달렸다', '次第(차례)+だ. 결정 요인 강조', '문법-형식판단', 1205, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅刻することがある。', '지각하는 경우가 있다.', 1),
-    (w, '忘れることがある。', '잊는 경우가 있다.', 2);
+    (w, '成功は努力次第だ。', '성공은 노력에 달렸다.', 1),
+    (w, '行くかどうかは天気次第だ。', '갈지 안 갈지는 날씨에 달렸다.', 2);
 
-  -- 1164. ～なんか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なんか', '～なんか', '~같은 (것)', NULL, '문법', 1164, array[]::text[]) returning id into w;
+  -- 1206. ～ことがある
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことがある', '발생하는 경우가 있다', '事+がある. 가끔의 발생', '문법-형식판단', 1206, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '勉強なんかしたくない。', '공부 같은 거 하고 싶지 않다.', 1),
-    (w, 'お金なんか要らない。', '돈 같은 건 필요 없다.', 2);
+    (w, 'たまに遅刻することがある。', '가끔 지각하는 경우가 있다.', 1),
+    (w, '雨が降ることがある。', '비가 오는 경우가 있다.', 2);
 
-  -- 1165. どれほど
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'どれほど', '얼마나', '관용 부사', '부사', 1165, array[]::text[]) returning id into w;
+  -- 1207. ～(さ)せてくれる(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せてくれる(2)', '~하게 해 주다', '허락 사역 させてくれる 재활용', '문법-형식판단', 1207, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どれほど嬉しいか分からない。', '얼마나 기쁜지 모른다.', 1),
-    (w, 'どれほど大変だったか伝えたい。', '얼마나 힘들었는지 전하고 싶다.', 2);
+    (w, '少し見させてくれない？', '잠깐 보게 해 주지 않을래?', 1),
+    (w, '考えさせてください。', '생각하게 해 주세요.', 2);
 
-  -- 1166. ～といった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～といった', '～といった', '~와 같은 〈예시, 열거〉', NULL, '문법', 1166, array[]::text[]) returning id into w;
+  -- 1208. まいる(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '参る(2)', 'まいる', '오다, 가다 <겸양>', '겸양 行く/来る 재활용', '문법-형식판단', 1208, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'リンゴ、バナナといった果物。', '사과, 바나나 같은 과일.', 1),
-    (w, '犬や猫といったペット。', '개나 고양이 같은 반려동물.', 2);
+    (w, '会場までまいります。', '회장까지 가겠습니다.', 1),
+    (w, 'これから参ります。', '지금부터 가겠습니다.', 2);
 
-  -- 1167. ～きり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～きり', '～きり', '~한 채', NULL, '문법', 1167, array[]::text[]) returning id into w;
+  -- 1209. ～てもらう(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てもらう(2)', '~해 받다', '수혜 표현 てもらう 재활용', '문법-형식판단', 1209, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ベッドに横になったきり起きない。', '침대에 누운 채 일어나지 않는다.', 1),
-    (w, '出かけたきり戻らない。', '나간 채 돌아오지 않는다.', 2);
+    (w, '医者に診てもらった。', '의사에게 진찰받았다.', 1),
+    (w, '先輩に教えてもらう。', '선배에게 가르침을 받는다.', 2);
 
-  -- 1168. ～てみようか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てみようか', '～てみようか', '~해 볼까?', NULL, '문법', 1168, array[]::text[]) returning id into w;
+  -- 1210. ～なんか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なんか', '~같은 (것)', 'などか의 회화체. 예시·경시', '문법-형식판단', 1210, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '新しい料理を作ってみようか。', '새 요리를 만들어 볼까?', 1),
-    (w, '彼に聞いてみようか。', '그에게 물어볼까?', 2);
+    (w, '私なんか無理だ。', '나 같은 사람은 무리다.', 1),
+    (w, 'コーヒーなんかどう？', '커피 같은 거 어때?', 2);
 
-  -- 1169. ～のであれば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～のであれば', '～のであれば', '~한 것이라면', NULL, '문법', 1169, array[]::text[]) returning id into w;
+  -- 1211. どれほど
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どれほど', '얼마나', 'どれ+ほど. 정도 의문', '문법-형식판단', 1211, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '難しいのであれば手伝います。', '어려운 것이라면 돕겠습니다.', 1),
-    (w, '行くのであれば連絡して。', '간다면 연락해 줘.', 2);
+    (w, 'どれほど嬉しかったか。', '얼마나 기뻤는지.', 1),
+    (w, 'どれほど時間がかかるか分からない。', '얼마나 시간이 걸릴지 모른다.', 2);
 
-  -- 1170. ～ずつ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ずつ', '～ずつ', '~씩', NULL, '문법', 1170, array[]::text[]) returning id into w;
+  -- 1212. ～といった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といった', '~와 같은 <예시·열거>', 'と+いう의 활용. 예시 열거', '문법-형식판단', 1212, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '一人ずつ発表する。', '한 사람씩 발표한다.', 1),
+    (w, '東京や大阪といった大都市。', '도쿄나 오사카와 같은 대도시.', 1),
+    (w, 'リンゴやバナナといった果物。', '사과나 바나나 같은 과일.', 2);
+
+  -- 1213. ～きり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～きり', '~한 채 (그것만/그 이후로)', '切(끊을 절)り. 한정·계속', '문법-형식판단', 1213, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は出かけたきり戻らない。', '그는 나간 채 돌아오지 않는다.', 1),
+    (w, '二人きりで話す。', '둘이서만 이야기한다.', 2);
+
+  -- 1214. ～てみようか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てみようか', '~해 볼까?', 'てみる+よう+か. 자기 제안/시도 의문', '문법-형식판단', 1214, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '挑戦してみようか。', '도전해 볼까?', 1),
+    (w, '電話してみようか。', '전화해 볼까?', 2);
+
+  -- 1215. ～のであれば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～のであれば', '~한 것이라면', 'のだ+あれば. 정중한 조건 가정', '문법-형식판단', 1215, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '本当に必要なのであれば買おう。', '정말 필요한 것이라면 사자.', 1),
+    (w, '困っているのであれば助けます。', '곤란해하시는 것이라면 도와드리겠습니다.', 2);
+
+  -- 1216. ～ずつ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ずつ', '~씩', '균등 배분 조사. 수량+ずつ', '문법-형식판단', 1216, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '一人ずつ受け取る。', '한 명씩 받는다.', 1),
     (w, '少しずつ進める。', '조금씩 진행한다.', 2);
 
-  -- 1171. ～までになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～までになる', '～までになる', '~할 정도가 되다', NULL, '문법', 1171, array[]::text[]) returning id into w;
+  -- 1217. ～までになる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～までになる', '~할 정도가 되다', 'まで+になる. 정도·수준 달성', '문법-형식판단', 1217, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'プロまでになるには時間がかかる。', '프로가 되기까지는 시간이 걸린다.', 1),
-    (w, '歩けるまでになった。', '걸을 수 있을 정도가 되었다.', 2);
+    (w, '一人で歩けるまでになった。', '혼자 걸을 수 있을 정도가 되었다.', 1),
+    (w, '専門家と話せるまでになった。', '전문가와 이야기할 수 있을 정도가 되었다.', 2);
 
-  -- 1172. ～ばよかった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ばよかった', '～ばよかった', '~했으면 좋았을 텐데', NULL, '문법', 1172, array[]::text[]) returning id into w;
+  -- 1218. 欠かせない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '欠かせない', 'かかせない', '빠뜨릴 수 없다, 필요하다', '欠(이지러질 결)く+せ+ない. 필수적', '문법-형식판단', 1218, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もっと勉強すればよかった。', '좀 더 공부했더라면 좋았을 텐데.', 1),
-    (w, '早く来ればよかった。', '빨리 왔으면 좋았을 텐데.', 2);
+    (w, '彼は欠かせない存在だ。', '그는 빠뜨릴 수 없는 존재다.', 1),
+    (w, '健康に運動は欠かせない。', '건강에 운동은 필수다.', 2);
 
-  -- 1173. ～ということになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ということになる', '～ということになる', '~라는 것이 된다', NULL, '문법', 1173, array[]::text[]) returning id into w;
+  -- 1219. ～ばよかった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ばよかった', '~했으면 좋았을 텐데', 'ば+よかった. 사후 후회', '문법-형식판단', 1219, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '中止ということになる。', '중지라는 것이 된다.', 1),
-    (w, '参加できないということになる。', '참가할 수 없다는 것이 된다.', 2);
+    (w, 'もっと早く来ればよかった。', '더 일찍 왔으면 좋았을 텐데.', 1),
+    (w, '言わなければよかった。', '말하지 않았으면 좋았을 텐데.', 2);
 
-  -- 1174. ～さえ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～さえ', '～さえ', '~조차, ~마저', NULL, '문법', 1174, array[]::text[]) returning id into w;
+  -- 1220. ～ということになる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ということになる', '~라는 것이 된다', 'という+ことになる. 결론·논리적 귀결', '문법-형식판단', 1220, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '水さえ飲めない。', '물조차 마실 수 없다.', 1),
-    (w, '名前さえ知らない。', '이름조차 모른다.', 2);
+    (w, 'それでは中止ということになる。', '그러면 중지라는 것이 된다.', 1),
+    (w, '結局誰も来ないということになった。', '결국 아무도 안 온다는 것이 되었다.', 2);
 
-  -- 1175. まず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'まず', '거의, 대체로 〈부정〉', '관용 부사', '부사', 1175, array[]::text[]) returning id into w;
+  -- 1221. 伺う(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '伺う(2)', 'うかがう', '듣다, 여쭈다 <겸양>', '겸양어 伺う 재활용', '문법-형식판단', 1221, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'まずありえない。', '거의 있을 수 없다.', 1),
-    (w, 'まず大丈夫だろう。', '거의 괜찮을 것이다.', 2);
+    (w, 'お名前を伺ってもよろしいですか。', '성함을 여쭤도 될까요?', 1),
+    (w, '一度伺いたいです。', '한 번 찾아뵙고 싶습니다.', 2);
 
-  -- 1176. ～たび
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たび', '～たび', '~할 때마다', NULL, '문법', 1176, array[]::text[]) returning id into w;
+  -- 1222. ～さえ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～さえ', '~조차, ~마저', '강조 부조사. 극단 예시', '문법-형식판단', 1222, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会うたびに変化を感じる。', '만날 때마다 변화를 느낀다.', 1),
-    (w, '見るたびに思い出す。', '볼 때마다 떠오른다.', 2);
+    (w, '子供さえできる。', '아이조차 할 수 있다.', 1),
+    (w, '私さえ知らない。', '나조차 모른다.', 2);
 
-  -- 1177. ～たがらないのなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たがらないのなら', '～たがらないのなら', '~하고 싶어하지 않는 것이라면', NULL, '문법', 1177, array[]::text[]) returning id into w;
+  -- 1223. まず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'まず', '거의, 대체로 <부정>', '先(먼저 선)ず. 부정·추측과 호응', '문법-형식판단', 1223, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '参加したがらないのなら無理しない。', '참가하고 싶어하지 않는다면 무리 안 한다.', 1),
-    (w, '話したがらないのならそっとしておく。', '말하고 싶어하지 않는다면 가만히 둔다.', 2);
+    (w, 'まず無理だろう。', '거의 무리일 것이다.', 1),
+    (w, 'まず大丈夫だ。', '대체로 괜찮을 거다.', 2);
 
-  -- 1178. ～というような
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～というような', '～というような', '~라고 하는 듯한', NULL, '문법', 1178, array[]::text[]) returning id into w;
+  -- 1224. ～に対して(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に対して(2)', 'にたいして', '~에 대해서', '대상/대비 に対して 재활용', '문법-형식판단', 1224, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '諦めるというような感じだ。', '포기하는 듯한 느낌이다.', 1),
-    (w, '悲しむというような表情。', '슬퍼하는 듯한 표정.', 2);
+    (w, '彼の意見に対して反論した。', '그의 의견에 대해 반론했다.', 1),
+    (w, '一人に対して一冊ずつ配る。', '한 사람당 한 권씩 나눠준다.', 2);
 
-  -- 1179. ～わけではない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～わけではない', '～わけではない', '반드시 ~한 것은 아니다', NULL, '문법', 1179, array[]::text[]) returning id into w;
+  -- 1225. ～てからでないと(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てからでないと(2)', '~한 후가 아니면, ~하지 않고서는', '순서 조건 てからでないと 재활용', '문법-형식판단', 1225, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '予約してからでないと入れない。', '예약한 후가 아니면 못 들어간다.', 1),
+    (w, '確認してからでないと送れない。', '확인하지 않고서는 보낼 수 없다.', 2);
+
+  -- 1226. ～たび
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たび', '~할 때마다', '度(たび). 단독 활용 たび 반복', '문법-형식판단', 1226, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会うたび元気をもらう。', '만날 때마다 힘을 얻는다.', 1),
+    (w, '失敗するたび成長する。', '실패할 때마다 성장한다.', 2);
+
+  -- 1227. ～たがらないのなら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たがらないのなら', '~하고 싶어하지 않는 것이라면', 'たがる+ない+のなら. 의지 부재 가정', '문법-형식판단', 1227, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '行きたがらないのなら無理に誘わない。', '가고 싶어하지 않는다면 무리하게 권하지 않는다.', 1),
+    (w, '話したがらないのならそっとしておく。', '말하고 싶어하지 않는다면 그대로 둔다.', 2);
+
+  -- 1228. ～というような
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というような', '~라고 하는 듯한', 'という+ような. 인용+양태', '문법-형식판단', 1228, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '不満があるというような顔をした。', '불만이 있다는 듯한 얼굴을 했다.', 1),
+    (w, '面倒だというような態度。', '귀찮다는 듯한 태도.', 2);
+
+  -- 1229. ～わけではない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わけではない', '반드시 ~한 것은 아니다', '訳+ではない. 부분 부정', '문법-형식판단', 1229, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '嫌いなわけではない。', '싫어하는 것은 아니다.', 1),
-    (w, '忙しいわけではない。', '바쁜 것은 아니다.', 2);
+    (w, 'いつも遅刻するわけではない。', '항상 지각하는 것은 아니다.', 2);
 
-  -- 1180. ～ところだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ところだ', '～ところだ', '막 ~하는 참이다', NULL, '문법', 1180, array[]::text[]) returning id into w;
+  -- 1230. ～がたい(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～がたい(2)', '~하기 어렵다', '심리·도덕적 がたい 재활용', '문법-형식판단', 1230, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '受け入れがたい結果だ。', '받아들이기 어려운 결과다.', 1),
+    (w, '理解しがたい行動。', '이해하기 어려운 행동.', 2);
+
+  -- 1231. ～ところだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ところだ', '막 ~하는 참이다', '所(ところ)+だ. 동작 시점', '문법-형식판단', 1231, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '今出かけるところだ。', '지금 막 나가는 참이다.', 1),
-    (w, '今食べ終わったところだ。', '지금 막 다 먹은 참이다.', 2);
+    (w, 'ちょうど食べ終わったところだ。', '마침 다 먹은 참이다.', 2);
 
-  -- 1181. ～までで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～までで', '～までで', '~까지', NULL, '문법', 1181, array[]::text[]) returning id into w;
+  -- 1232. ～ことがある(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことがある(2)', '~하는 경우가 있다', '가끔 발생 ことがある 재활용', '문법-형식판단', 1232, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '今日までで終了する。', '오늘까지 종료한다.', 1),
-    (w, '先週までで応募を締め切った。', '지난주까지 응모를 마감했다.', 2);
+    (w, '時々遅れることがある。', '가끔 늦는 경우가 있다.', 1),
+    (w, '寝坊することがある。', '늦잠 자는 경우가 있다.', 2);
 
-  -- 1182. ～といっても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～といっても', '～といっても', '~라고 해도', NULL, '문법', 1182, array[]::text[]) returning id into w;
+  -- 1233. ～でしかない(2)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～でしかない(2)', '~밖에 되지 않다, ~에 불과하다', '한정·과소평가 でしかない 재활용', '문법-형식판단', 1233, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '料理といっても簡単なものだ。', '요리라고 해도 간단한 것이다.', 1),
-    (w, '旅行といっても日帰りだ。', '여행이라 해도 당일치기다.', 2);
+    (w, '彼は子供でしかない。', '그는 어린아이에 불과하다.', 1),
+    (w, '希望でしかない。', '희망에 불과하다.', 2);
 
-  -- 1183. ～からすると
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～からすると', '～からすると', '~로 보아', NULL, '문법', 1183, array[]::text[]) returning id into w;
+  -- ────────── 문법 문장 완성 (141개, 1234~1374) ──────────
+
+  -- 1234. ～までで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～までで', '~까지(로)', 'まで(까지)+で. 종결 시점·범위', '문법-문장완성', 1234, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼の様子からすると問題がある。', '그의 모습으로 보아 문제가 있다.', 1),
-    (w, '結果からすると成功だ。', '결과로 보아 성공이다.', 2);
+    (w, '受付は5時までで終了します。', '접수는 5시까지로 종료합니다.', 1),
+    (w, '本日までで20名集まった。', '오늘까지로 20명이 모였다.', 2);
 
-  -- 1184. ～じゃないかと思う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～じゃないかと思う', '～じゃないかとおもう', '~이 아닐까라고 생각한다', NULL, '문법', 1184, array[]::text[]) returning id into w;
+  -- 1235. ～といっても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といっても', '~라고 해도', 'と+いう+ても. 양보·정정', '문법-문장완성', 1235, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅刻じゃないかと思う。', '지각이 아닐까 생각한다.', 1),
-    (w, '失敗じゃないかと思う。', '실패가 아닐까 생각한다.', 2);
+    (w, '料理といってもインスタントだ。', '요리라고 해도 인스턴트다.', 1),
+    (w, '休みといっても忙しい。', '쉰다고 해도 바쁘다.', 2);
 
-  -- 1185. ご存知だ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご存知だ', 'ごぞんじだ', '알고 계시다 <존경>', '존경어', '동사', 1185, array[]::text[]) returning id into w;
+  -- 1236. ～によって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によって(차이)', '~에 따라서', 'に+依る+て. 차이/경우 분류', '문법-문장완성', 1236, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ご存知の通り変更があります。', '아시는 바와 같이 변경이 있습니다.', 1),
-    (w, '先生はご存知ですか。', '선생님은 알고 계십니까?', 2);
+    (w, '国によって文化が違う。', '나라에 따라 문화가 다르다.', 1),
+    (w, '人によって意見が異なる。', '사람에 따라 의견이 다르다.', 2);
 
-  -- 1186. ～にしたら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にしたら', '～にしたら', '~로서는, ~입장에서는', NULL, '문법', 1186, array[]::text[]) returning id into w;
+  -- 1237. ～ばかり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ばかり(2)', '~뿐, ~만', 'ばかり 재활용', '문법-문장완성', 1237, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '私にしたら難しい問題だ。', '저로서는 어려운 문제다.', 1),
-    (w, '子供にしたら大変だ。', '아이 입장에서는 힘들다.', 2);
+    (w, '甘いものばかり食べる。', '단것만 먹는다.', 1),
+    (w, '怒ってばかりいる。', '화만 내고 있다.', 2);
 
-  -- 1187. ～なんていう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なんていう', '～なんていう', '~라고 하는', NULL, '문법', 1187, array[]::text[]) returning id into w;
+  -- 1238. ～というような
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というような(2)', '~하는 것과 같은', 'という+ような 재활용', '문법-문장완성', 1238, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '失敗するなんていう不安があった。', '실패한다는 불안이 있었다.', 1),
-    (w, '諦めるなんていう選択はない。', '포기한다는 선택은 없다.', 2);
+    (w, '怒っているというような表情。', '화나 있는 것 같은 표정.', 1),
+    (w, '何かが起きるというような予感。', '뭔가 일어날 것 같은 예감.', 2);
 
-  -- 1188. ～てやる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～てやる', '～てやる', '(남에게) ~해 주다', NULL, '문법', 1188, array[]::text[]) returning id into w;
+  -- 1239. ～からすると
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～からすると', '~로 보아', 'から+する+と. 근거에 의한 판단', '문법-문장완성', 1239, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供にお菓子を買ってやる。', '아이에게 과자를 사 준다.', 1),
-    (w, '犬を散歩に連れてやる。', '개를 산책에 데려간다.', 2);
+    (w, '彼の様子からすると本気だ。', '그의 모습으로 보아 진심이다.', 1),
+    (w, '値段からすると高すぎる。', '가격으로 보아 너무 비싸다.', 2);
 
-  -- 1189. ～て初めて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～て初めて', '～てはじめて', '~해서야 비로소', NULL, '문법', 1189, array[]::text[]) returning id into w;
+  -- 1240. ～じゃないかと思う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～じゃないかと思う', '~이 아닐까라고 생각한다', 'じゃないか+と+思う. 완곡 추측', '문법-문장완성', 1240, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '失って初めて大切さに気付く。', '잃고 나서야 비로소 소중함을 깨닫는다.', 1),
-    (w, '経験して初めて分かる。', '경험해야 비로소 안다.', 2);
+    (w, '雨が降るんじゃないかと思う。', '비가 올 것 아닐까 생각한다.', 1),
+    (w, '彼は来ないんじゃないかと思う。', '그는 오지 않을 것 아닐까 생각한다.', 2);
 
-  -- 1190. ～かのようだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かのようだ', '～かのようだ', '~인 듯하다', NULL, '문법', 1190, array[]::text[]) returning id into w;
+  -- 1241. ～ないうちに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないうちに(2)', '~하기 전에', 'ない+うちに 재활용', '문법-문장완성', 1241, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '夢のような気分だ。', '꿈인 듯한 기분이다.', 1),
-    (w, '時間が止まったかのようだ。', '시간이 멈춘 듯하다.', 2);
+    (w, '暗くならないうちに帰ろう。', '어두워지기 전에 돌아가자.', 1),
+    (w, '熱くならないうちに飲もう。', '뜨거워지기 전에 마시자.', 2);
 
-  -- 1191. ～ことになっている
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ことになっている', '～ことになっている', '~하기로 되어 있다', NULL, '문법', 1191, array[]::text[]) returning id into w;
+  -- 1242. ～ものだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ものだ(법)', '~한 법이다', 'もの+だ. 도리·당위·일반 진리', '문법-문장완성', 1242, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日会議が開かれることになっている。', '내일 회의가 열리기로 되어 있다.', 1),
-    (w, '行くことになっている。', '가기로 되어 있다.', 2);
+    (w, '人は失敗するものだ。', '사람은 실패하는 법이다.', 1),
+    (w, '子供は元気なものだ。', '아이는 건강한 법이다.', 2);
 
-  -- 1192. ～ていただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ていただく', '～ていただく', '(상대에게) ~해 받다, (상대가) ~해 주다', NULL, '문법', 1192, array[]::text[]) returning id into w;
+  -- 1243. ご存知だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご存知だ', 'ごぞんじだ', '알고 계시다 <존경>', 'ご+存(있을 존)知. 知る의 존경어', '문법-문장완성', 1243, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ご説明していただきました。', '설명해 받았습니다.', 1),
-    (w, '教えていただきました。', '가르쳐 주셨습니다.', 2);
+    (w, 'この方をご存知ですか。', '이 분을 알고 계십니까?', 1),
+    (w, '先生はご存知のはずです。', '선생님은 알고 계실 것입니다.', 2);
 
-  -- 1193. ～も
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～も', '～も', '~이나 <수량의 강조>', NULL, '문법', 1193, array[]::text[]) returning id into w;
+  -- 1244. ～からこそ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～からこそ(2)', '~이기에', '강조된 이유 からこそ 재활용', '문법-문장완성', 1244, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '千円もする。', '천 엔이나 한다.', 1),
-    (w, '十回も呼んだ。', '열 번이나 불렀다.', 2);
+    (w, '君だからこそ言える。', '너이기에 말할 수 있다.', 1),
+    (w, '今だからこそ大事だ。', '지금이기에 중요하다.', 2);
 
-  -- 1194. ～から
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～から', '～から', '~할 테니까', NULL, '문법', 1194, array[]::text[]) returning id into w;
+  -- 1245. ～にしたら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にしたら', '~로서는, ~입장에서는', 'に+する+たら. 화자/주체의 관점', '문법-문장완성', 1245, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '私が行くから安心して。', '내가 갈 테니까 안심해.', 1),
-    (w, '急ぐから先に行く。', '서두르니까 먼저 간다.', 2);
+    (w, '親にしたら心配だろう。', '부모로서는 걱정될 것이다.', 1),
+    (w, '子供にしたら遊びだ。', '아이로서는 놀이다.', 2);
 
-  -- 1195. いずれにしても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'いずれにしても', '어느 쪽이든', '관용 표현', '관용', 1195, array[]::text[]) returning id into w;
+  -- 1246. ～なんていう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なんていう', '~라고 하는, ~따위라고 하는', 'なんて+いう. 의외·경시 인용', '문법-문장완성', 1246, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'いずれにしても結論を出す。', '어느 쪽이든 결론을 낸다.', 1),
-    (w, 'いずれにしても返事は必要だ。', '어느 쪽이든 답은 필요하다.', 2);
+    (w, '行けないなんていうのか。', '못 간다고 하는 거야?', 1),
+    (w, '嫌いだなんていう理由はない。', '싫다는 따위의 이유는 없다.', 2);
 
-  -- 1196. ～とあるが
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とあるが', '～とあるが', '~라고 적혀 있는데', NULL, '문법', 1196, array[]::text[]) returning id into w;
+  -- 1247. ～てくれる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てくれる(2)', '(나에게) ~해 주다', '수혜 てくれる 재활용', '문법-문장완성', 1247, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '資料にはそう書いてあるが疑問だ。', '자료에는 그렇게 적혀 있지만 의문이다.', 1),
-    (w, '開店時間とあるが間違いだ。', '개점 시간이라 적혀 있지만 잘못이다.', 2);
+    (w, '彼が連絡してくれた。', '그가 연락해 주었다.', 1),
+    (w, '友達が貸してくれた。', '친구가 빌려주었다.', 2);
 
-  -- 1197. ～といえば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～といえば', '～といえば', '~로 말하자면', NULL, '문법', 1197, array[]::text[]) returning id into w;
+  -- 1248. ～てやる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てやる', '(아랫사람/동물에게) ~해 주다', '동사 て형+やる. 윗→아래의 베풂', '문법-문장완성', 1248, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '日本といえば寿司だ。', '일본 하면 초밥이다.', 1),
-    (w, '夏といえばかき氷だ。', '여름 하면 빙수다.', 2);
+    (w, '弟に本を読んでやった。', '동생에게 책을 읽어 주었다.', 1),
+    (w, '犬に餌をやってやる。', '강아지에게 먹이를 주다.', 2);
 
-  -- 1198. ～はもとより
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～はもとより', '～はもとより', '~은 물론', NULL, '문법', 1198, array[]::text[]) returning id into w;
+  -- 1249. ～て初めて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～て初めて', 'てはじめて', '~해서야 비로소', '初(처음 초)めて. 「~한 후에 비로소」', '문법-문장완성', 1249, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '英語はもとより日本語も話せる。', '영어는 물론 일본어도 말할 수 있다.', 1),
-    (w, '子供はもとより大人にも人気だ。', '아이는 물론 어른에게도 인기다.', 2);
+    (w, '失って初めて大切さに気づく。', '잃고 나서야 비로소 소중함을 깨닫는다.', 1),
+    (w, '行ってみて初めて分かった。', '가 봐서야 비로소 알았다.', 2);
 
-  -- 1199. ～ぐらい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ぐらい', '～ぐらい', '~정도', NULL, '문법', 1199, array[]::text[]) returning id into w;
+  -- 1250. ～かのようだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かのようだ', '~인 듯하다, 마치 ~한 것 같다', 'か+の+ようだ. 마치 그러한 듯한 비유', '문법-문장완성', 1250, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '三十分ぐらいかかる。', '30분 정도 걸린다.', 1),
-    (w, '子供ぐらいの体力だ。', '아이 정도의 체력이다.', 2);
+    (w, '夢を見ているかのようだ。', '꿈을 꾸고 있는 듯하다.', 1),
+    (w, '何も知らないかのように振る舞う。', '아무것도 모르는 듯이 행동한다.', 2);
 
-  -- 1200. ～をはじめ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～をはじめ', '～をはじめ', '~을 비롯하여', NULL, '문법', 1200, array[]::text[]) returning id into w;
+  -- 1251. ～さえ～ば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～さえ～ば(2)', '~만 ~하면', '최소조건 さえ～ば 재활용', '문법-문장완성', 1251, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '校長をはじめ多くの先生が参加した。', '교장을 비롯해 많은 선생님이 참가했다.', 1),
-    (w, 'アジアをはじめ世界中で人気だ。', '아시아를 비롯해 전 세계에서 인기다.', 2);
+    (w, '時間さえあれば行く。', '시간만 있으면 간다.', 1),
+    (w, '元気さえあれば何でもできる。', '건강만 있으면 뭐든 할 수 있다.', 2);
 
-  -- 1201. ～に限る
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に限る', '～にかぎる', '~이 최고다', NULL, '문법', 1201, array[]::text[]) returning id into w;
+  -- 1252. ～としても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としても(2)', '~라고 할지라도', '가정 양보 としても 재활용', '문법-문장완성', 1252, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '暑い日はビールに限る。', '더운 날은 맥주가 최고다.', 1),
-    (w, '疲れた時は休むに限る。', '피곤할 때는 쉬는 게 최고다.', 2);
+    (w, '雨だとしても出かける。', '비라고 해도 나간다.', 1),
+    (w, '失敗したとしても挑戦する。', '실패한다 해도 도전한다.', 2);
 
-  -- 1202. ～ばいいのに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ばいいのに', '～ばいいのに', '~하면 좋을 텐데', NULL, '문법', 1202, array[]::text[]) returning id into w;
+  -- 1253. ～だって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だって(2)', '~라고 해도, ~도', 'でも 회화체 だって 재활용', '문법-문장완성', 1253, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '早く来ればいいのに。', '빨리 오면 좋을 텐데.', 1),
-    (w, '参加すればいいのに。', '참가하면 좋을 텐데.', 2);
+    (w, '子供だってできる。', '아이도 할 수 있다.', 1),
+    (w, 'いつだって構わない。', '언제라도 상관없다.', 2);
 
-  -- 1203. どんなに～ても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'どんなに～ても', 'どんなにても', '아무리 ~해도', NULL, '문법', 1203, array[]::text[]) returning id into w;
+  -- 1254. ～おかげだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～おかげだ(2)', '~덕분이다', '긍정 원인 おかげだ 재활용', '문법-문장완성', 1254, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どんなに頑張ってもダメだった。', '아무리 노력해도 안 됐다.', 1),
-    (w, 'どんなに考えても答えが出ない。', '아무리 생각해도 답이 안 나온다.', 2);
+    (w, '無事に着いたのは彼のおかげだ。', '무사히 도착한 것은 그 덕분이다.', 1),
+    (w, '成功は家族のおかげだ。', '성공은 가족 덕분이다.', 2);
 
-  -- 1204. ～とは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とは', '～とは', '~라니', NULL, '문법', 1204, array[]::text[]) returning id into w;
+  -- 1255. ～ほど
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ほど(3)', '~정도', '정도 ほど 재활용', '문법-문장완성', 1255, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'まさか彼が来るとは。', '설마 그가 올 줄이야.', 1),
-    (w, 'そんなことができるとは。', '그런 일이 가능하다니.', 2);
+    (w, '泣くほどではない。', '울 정도는 아니다.', 1),
+    (w, 'ご飯が食べられないほど忙しい。', '밥도 못 먹을 정도로 바쁘다.', 2);
 
-  -- 1205. ～なんて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～なんて', '～なんて', '~라니', NULL, '문법', 1205, array[]::text[]) returning id into w;
+  -- 1256. ～ことになっている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことになっている', '~하기로 되어 있다', '事+になっている. 규칙/예정', '문법-문장완성', 1256, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼が来るなんて思わなかった。', '그가 올 줄은 생각도 못했다.', 1),
-    (w, 'そんな話なんて信じられない。', '그런 이야기라니 믿을 수 없다.', 2);
+    (w, '会議は9時に始まることになっている。', '회의는 9시에 시작하기로 되어 있다.', 1),
+    (w, '校内は禁煙ということになっている。', '교내는 금연으로 되어 있다.', 2);
 
-  -- 1206. つい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'つい', '그만, 무심코', '관용 부사', '부사', 1206, array[]::text[]) returning id into w;
+  -- 1257. ～だけ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけ(2)', '~한 만큼', '한도 だけ 재활용', '문법-문장완성', 1257, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'つい食べ過ぎてしまった。', '그만 너무 먹었다.', 1),
-    (w, 'つい忘れてしまう。', '무심코 잊어버린다.', 2);
+    (w, 'できるだけのことをする。', '할 수 있는 만큼의 것을 한다.', 1),
+    (w, '欲しいだけ取ってよい。', '원하는 만큼 가져도 된다.', 2);
 
-  -- 1207. ～をこめて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～をこめて', '～をこめて', '~을 담아', NULL, '문법', 1207, array[]::text[]) returning id into w;
+  -- 1258. ～ていただく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ていただく', '~해 받다 / ~해 주시다 <겸양>', '동사 て형+いただく. 정중 수혜', '문법-문장완성', 1258, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '心をこめて作った。', '마음을 담아 만들었다.', 1),
-    (w, '愛をこめて贈る。', '사랑을 담아 보낸다.', 2);
+    (w, '先生に教えていただいた。', '선생님께 가르침을 받았다.', 1),
+    (w, '少しお待ちいただけますか。', '잠시 기다려 주시겠습니까?', 2);
 
-  -- 1208. ～として
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～として', '～として', '~로서', NULL, '문법', 1208, array[]::text[]) returning id into w;
+  -- 1259. ～も
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～も(수량강조)', '~이나 <수량의 강조>', '수량+も. 「~씩이나」 강조', '문법-문장완성', 1259, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'リーダーとして責任を持つ。', '리더로서 책임을 진다.', 1),
-    (w, '友人として相談に乗る。', '친구로서 상담에 응한다.', 2);
+    (w, '1時間も待った。', '1시간이나 기다렸다.', 1),
+    (w, '10人も集まった。', '10명이나 모였다.', 2);
 
-  -- 1209. ～どおりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～どおりに', '～どおりに', '~대로', NULL, '문법', 1209, array[]::text[]) returning id into w;
+  -- 1260. ～から
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～から(약속)', '~할 테니까', '의지/약속 표명 から', '문법-문장완성', 1260, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '計画どおりに進める。', '계획대로 진행한다.', 1),
-    (w, '指示どおりに動く。', '지시대로 움직인다.', 2);
+    (w, 'すぐ行くから待ってて。', '곧 갈 테니까 기다려.', 1),
+    (w, '今度はちゃんとやるから。', '이번엔 제대로 할 테니까.', 2);
 
-  -- 1210. ～のと～ないのでは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～のと～ないのでは', '～のとないのでは', '~하는 것과 하지 않는 것과는', NULL, '문법', 1210, array[]::text[]) returning id into w;
+  -- 1261. いずれにしても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'いずれにしても', '어느 쪽이든', '何れ+にしても. 결론 종합', '문법-문장완성', 1261, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '運動するのとしないのでは違う。', '운동하는 것과 하지 않는 것과는 다르다.', 1),
-    (w, '行くのと行かないのでは大違いだ。', '가는 것과 가지 않는 것은 큰 차이다.', 2);
+    (w, 'いずれにしても結果は同じだ。', '어느 쪽이든 결과는 같다.', 1),
+    (w, 'いずれにしてもやるしかない。', '어느 쪽이든 할 수밖에 없다.', 2);
 
-  -- 1211. ～うえに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～うえに', '～うえに', '~인 데다가', NULL, '문법', 1211, array[]::text[]) returning id into w;
+  -- 1262. ～とあるが
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とあるが', '~라고 적혀 있는데', 'と+ある+が. 문서/문장 인용+역접', '문법-문장완성', 1262, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '美味しいうえに安い。', '맛있는 데다가 싸다.', 1),
-    (w, '親切なうえに賢い。', '친절한 데다가 똑똑하다.', 2);
+    (w, '禁止とあるが、なぜか守られていない。', '금지라고 적혀 있는데 어쩐 일인지 지켜지지 않는다.', 1),
+    (w, '無料とあるが本当だろうか。', '무료라고 적혀 있는데 정말일까.', 2);
 
-  -- 1212. ～と思われる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～と思われる', '～とおもわれる', '~라고 생각되다', NULL, '문법', 1212, array[]::text[]) returning id into w;
+  -- 1263. ～はずだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～はずだ(2)', '틀림없이 ~일 것이다', '근거 추측 はずだ 재활용', '문법-문장완성', 1263, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これは正しいと思われる。', '이것은 옳다고 생각된다.', 1),
-    (w, '彼は正直だと思われる。', '그는 정직하다고 생각된다.', 2);
+    (w, '時間通りに来るはずだ。', '시간대로 올 것이다.', 1),
+    (w, 'もう着いているはずだ。', '이미 도착해 있을 것이다.', 2);
 
-  -- 1213. ～だけでなく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけでなく', '～だけでなく', '~뿐 아니라', NULL, '문법', 1213, array[]::text[]) returning id into w;
+  -- 1264. ～といえば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といえば', '~로 말하자면', 'と+いえば. 화제 제시', '문법-문장완성', 1264, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '英語だけでなく中国語も話せる。', '영어뿐 아니라 중국어도 한다.', 1),
-    (w, '子供だけでなく大人にも人気だ。', '아이뿐 아니라 어른에게도 인기다.', 2);
+    (w, '日本の料理といえば寿司だ。', '일본 요리로 말하자면 초밥이다.', 1),
+    (w, '夏といえば祭りだ。', '여름으로 말하자면 축제다.', 2);
 
-  -- 1214. ～ないで済む
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないで済む', '～ないですむ', '~하지 않아도 된다', NULL, '문법', 1214, array[]::text[]) returning id into w;
+  -- 1265. ～きり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～きり(2)', '~한 채, ~한 것을 끝으로', '한정·계속 きり 재활용', '문법-문장완성', 1265, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '心配しないで済む。', '걱정하지 않아도 된다.', 1),
-    (w, '謝らないで済む話だ。', '사과하지 않아도 되는 일이다.', 2);
+    (w, '昨日会ったきり、連絡がない。', '어제 만난 것을 끝으로 연락이 없다.', 1),
+    (w, '寝たきりの生活。', '누워만 있는 생활.', 2);
 
-  -- 1215. ～ながら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ながら', '～ながら', '~이지만 <역접>, ~하면서', NULL, '문법', 1215, array[]::text[]) returning id into w;
+  -- 1266. ～はもとより
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～はもとより', 'はもとより', '~은 물론', '元(근본 원)+より. 「말할 것도 없이」', '문법-문장완성', 1266, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供ながらしっかりしている。', '아이지만 야무지다.', 1),
-    (w, '音楽を聴きながら勉強する。', '음악을 들으면서 공부한다.', 2);
+    (w, '英語はもとより中国語も話せる。', '영어는 물론 중국어도 할 수 있다.', 1),
+    (w, '休日はもとより平日も忙しい。', '휴일은 물론 평일도 바쁘다.', 2);
 
-  -- 1216. 今にも～そうだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '今にも～そうだ', 'いまにもそうだ', '당장에라도 ~할 것 같다', NULL, '문법', 1216, array[]::text[]) returning id into w;
+  -- 1267. ～上で
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～上で(2)', 'うえで', '~하는 측면에서, ~하는 데 있어서', '上で 재활용. 기준·관점', '문법-문장완성', 1267, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '健康を考える上で食事は重要だ。', '건강을 생각하는 데 있어서 식사는 중요하다.', 1),
+    (w, '学ぶ上で参考になる。', '배우는 측면에서 참고가 된다.', 2);
+
+  -- 1268. ～ぐらい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ぐらい', '~정도', '位(자리 위). 정도 표현', '문법-문장완성', 1268, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'これぐらいの距離なら歩ける。', '이 정도 거리라면 걸을 수 있다.', 1),
+    (w, '1万円ぐらいする。', '1만 엔 정도 한다.', 2);
+
+  -- 1269. ～をはじめ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～をはじめ', '~을 비롯하여', '始(처음 시)め. 대표 예시로 시작', '문법-문장완성', 1269, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '東京をはじめ全国で開催する。', '도쿄를 비롯하여 전국에서 개최한다.', 1),
+    (w, '社長をはじめ全員参加した。', '사장을 비롯하여 전원 참가했다.', 2);
+
+  -- 1270. ～に限る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に限る', 'にかぎる', '~이 최고다, ~에 한한다', '限(한할 한)る. 최선/한정', '문법-문장완성', 1270, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '夏はかき氷に限る。', '여름엔 빙수가 최고다.', 1),
+    (w, '会員に限る。', '회원에 한한다.', 2);
+
+  -- 1271. ～すら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すら(3)', '~조차', '극단 강조 すら 재활용', '문법-문장완성', 1271, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '寝る時間すらない。', '잘 시간조차 없다.', 1),
+    (w, '名前すら知らない。', '이름조차 모른다.', 2);
+
+  -- 1272. ～ばいいのに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ばいいのに', '~하면 좋을 텐데', 'ば+いい+のに. 권유·아쉬움', '문법-문장완성', 1272, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '早く謝ればいいのに。', '빨리 사과하면 좋을 텐데.', 1),
+    (w, '休めばいいのに無理している。', '쉬면 좋을 텐데 무리하고 있다.', 2);
+
+  -- 1273. どんなに～ても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どんなに～ても', '아무리 ~해도', 'どんなに(아무리)+ても(양보). 강한 양보', '문법-문장완성', 1273, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どんなに頑張っても無理だ。', '아무리 노력해도 무리다.', 1),
+    (w, 'どんなに高くても買う。', '아무리 비싸도 산다.', 2);
+
+  -- 1274. ～きる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～きる(4)', '완전히 ~하다', '완료 きる 재활용', '문법-문장완성', 1274, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '飲みきった。', '다 마셨다.', 1),
+    (w, 'やりきった。', '끝까지 해냈다.', 2);
+
+  -- 1275. ～とは
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とは', '~라니, ~란', 'と(인용)+は(주제). 놀라움/정의', '문법-문장완성', 1275, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こんな事になるとは。', '이런 일이 되다니.', 1),
+    (w, '愛とは何か。', '사랑이란 무엇인가.', 2);
+
+  -- 1276. ～ことはない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことはない(3)', '~할 필요는 없다', '필요성 부정 ことはない 재활용', '문법-문장완성', 1276, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '焦ることはない。', '서두를 필요는 없다.', 1),
+    (w, 'そんなに気にすることはない。', '그렇게 신경 쓸 필요는 없다.', 2);
+
+  -- 1277. ～そうだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうだ(전문3)', '~라고 한다', '전문 そうだ 재활용', '문법-문장완성', 1277, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は来週引っ越すそうだ。', '그는 다음 주 이사한다고 한다.', 1),
+    (w, '昨日大雪だったそうだ。', '어제 폭설이었다고 한다.', 2);
+
+  -- 1278. ～なんて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なんて', '~라니, ~따위', 'などと의 회화체. 의외·경시', '문법-문장완성', 1278, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼が泣くなんて信じられない。', '그가 울다니 믿을 수 없다.', 1),
+    (w, '私なんて関係ない。', '나 따위는 상관없다.', 2);
+
+  -- 1279. ～につれて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～につれて(2)', '~함에 따라서', '비례 변화 につれて 재활용', '문법-문장완성', 1279, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '時間が経つにつれて慣れる。', '시간이 흐름에 따라 익숙해진다.', 1),
+    (w, '練習するにつれて上達する。', '연습할수록 잘하게 된다.', 2);
+
+  -- 1280. つい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'つい', '그만, 무심코', '무의식적 행위/감정 부사', '문법-문장완성', 1280, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'つい食べ過ぎてしまった。', '그만 과식해 버렸다.', 1),
+    (w, 'つい言ってしまった。', '무심코 말해 버렸다.', 2);
+
+  -- 1281. どうしても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どうしても(2)', '무슨 일이 있어도, 꼭', '강한 의지 どうしても 재활용', '문법-문장완성', 1281, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうしても勝ちたい。', '꼭 이기고 싶다.', 1),
+    (w, 'どうしても無理だ。', '아무리 해도 무리다.', 2);
+
+  -- 1282. ～をこめて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～をこめて', 'をこめて', '~을 담아', '込(담을 입)める+て. 마음/감정을 담음', '문법-문장완성', 1282, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '愛をこめて作った料理。', '사랑을 담아 만든 요리.', 1),
+    (w, '感謝をこめて贈る。', '감사를 담아 선물한다.', 2);
+
+  -- 1283. ～として
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～として', '~로서 (자격·역할)', 'と+して. 신분·자격·범주', '문법-문장완성', 1283, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '医者として働く。', '의사로서 일한다.', 1),
+    (w, '友人として助ける。', '친구로서 돕는다.', 2);
+
+  -- 1284. ～どおりに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～どおりに', '~대로', '通(통할 통)り+に. 「~과 같이」', '문법-문장완성', 1284, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '指示どおりに動く。', '지시대로 움직인다.', 1),
+    (w, '予定どおりに進む。', '예정대로 진행된다.', 2);
+
+  -- 1285. ～のと～ないのでは
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～のと～ないのでは', '~하는 것과 하지 않는 것과는', 'の+と+ない+のでは. 대조 비교', '문법-문장완성', 1285, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'やるのとやらないのでは大違いだ。', '하는 것과 안 하는 것은 큰 차이다.', 1),
+    (w, '知るのと知らないのでは結果が違う。', '아는 것과 모르는 것은 결과가 다르다.', 2);
+
+  -- 1286. ～ように
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ように(6)', '~하도록', '목적·인용 ように 재활용', '문법-문장완성', 1286, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '聞こえるように大きな声で話す。', '들리도록 큰 소리로 말한다.', 1),
+    (w, '間に合うように早めに出る。', '늦지 않도록 일찍 나간다.', 2);
+
+  -- 1287. ～うえに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～うえに', '~인 데다가', '上(うえ)+に. 첨가·누적', '문법-문장완성', 1287, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は優しいうえに頭もいい。', '그는 다정한 데다가 머리도 좋다.', 1),
+    (w, '雨のうえに風も強い。', '비도 오는 데다가 바람도 세다.', 2);
+
+  -- 1288. ～せいか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～せいか(2)', '~탓인지', '부정 원인 추측 せいか 재활용', '문법-문장완성', 1288, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '緊張したせいかミスをした。', '긴장한 탓인지 실수했다.', 1),
+    (w, '雨のせいか客が少ない。', '비 탓인지 손님이 적다.', 2);
+
+  -- 1289. ～といった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といった(2)', '~와 같은 <예시>', '예시 열거 といった 재활용', '문법-문장완성', 1289, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '東京や大阪といった大都市。', '도쿄나 오사카와 같은 대도시.', 1),
+    (w, '英語や中国語といった言語。', '영어나 중국어 같은 언어.', 2);
+
+  -- 1290. ～と思われる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～と思われる', '~라고 생각되다', '思う의 수동. 객관·완곡 추측', '문법-문장완성', 1290, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼が犯人だと思われる。', '그가 범인이라고 생각된다.', 1),
+    (w, '正しいと思われる。', '맞다고 생각된다.', 2);
+
+  -- 1291. ～(さ)せられる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せられる(2)', '본의 아니게 ~하게 되다', '사역수동 させられる 재활용', '문법-문장완성', 1291, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会議に出席させられた。', '회의에 출석하게 되었다.', 1),
+    (w, 'お酒を飲まされた。', '술을 마시게 되었다.', 2);
+
+  -- 1292. まず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'まず(2)', '거의, 대체로 <부정>', '부사 まず 재활용', '문법-문장완성', 1292, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'まず可能性はない。', '거의 가능성은 없다.', 1),
+    (w, 'まず無理だろう。', '대체로 무리일 거다.', 2);
+
+  -- 1293. ～ついでに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ついでに(2)', '~하는 김에', '겸사 ついでに 재활용', '문법-문장완성', 1293, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '出張のついでに観光した。', '출장하는 김에 관광했다.', 1),
+    (w, '散歩のついでに買い物。', '산책하는 김에 쇼핑.', 2);
+
+  -- 1294. ～だけでなく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけでなく', '~뿐 아니라', 'だけ+で+なく. 첨가/확장', '문법-문장완성', 1294, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は優しいだけでなく賢い。', '그는 다정할 뿐 아니라 똑똑하다.', 1),
+    (w, '安いだけでなく品質もよい。', '쌀 뿐 아니라 품질도 좋다.', 2);
+
+  -- 1295. ～ないで済む
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないで済む', '~하지 않아도 된다', 'ないで+済(건널 제)む. 면제·불필요', '문법-문장완성', 1295, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が止んで傘を差さないで済んだ。', '비가 그쳐서 우산을 안 써도 됐다.', 1),
+    (w, '会議に出なくて済んだ。', '회의에 안 나와도 됐다.', 2);
+
+  -- 1296. ～て以来
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～て以来(2)', 'ていらい', '~한 이래', '시점 이후 て以来 재활용', '문법-문장완성', 1296, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '大学を卒業して以来、会っていない。', '대학을 졸업한 이래 만나지 않았다.', 1),
+    (w, '結婚して以来、料理をしている。', '결혼한 이래 요리를 하고 있다.', 2);
+
+  -- 1297. 二度と～ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '二度と～ない(2)', 'にどと', '두 번 다시 ~않는다', '강한 결심 二度と 재활용', '문법-문장완성', 1297, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '二度と忘れない。', '두 번 다시 잊지 않는다.', 1),
+    (w, '二度とその話はしない。', '두 번 다시 그 얘기는 안 한다.', 2);
+
+  -- 1298. ～ながら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ながら', '~이지만 <역접>, ~하면서', '同時/逆接 ながら의 양용', '문법-문장완성', 1298, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '音楽を聞きながら勉強する。', '음악을 들으며 공부한다.', 1),
+    (w, '残念ながら参加できない。', '아쉽지만 참가할 수 없다.', 2);
+
+  -- 1299. 今にも～そうだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '今にも～そうだ', 'いまにも', '당장에라도 ~할 것 같다', '今+にも+そうだ. 임박', '문법-문장완성', 1299, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '今にも雨が降りそうだ。', '당장에라도 비가 올 것 같다.', 1),
-    (w, '今にも泣きそうな顔だ。', '당장에라도 울 것 같은 얼굴이다.', 2);
+    (w, '今にも泣きそうな顔。', '금방이라도 울 것 같은 얼굴.', 2);
 
-  -- 1217. ～であっても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～であっても', '～であっても', '~라도, ~일지라도', NULL, '문법', 1217, array[]::text[]) returning id into w;
+  -- 1300. ～かどうか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かどうか(2)', '~인지 어떤지', '양자택일 かどうか 재활용', '문법-문장완성', 1300, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供であっても理解できる。', '아이라도 이해할 수 있다.', 1),
-    (w, '私であっても同じだ。', '나라도 마찬가지다.', 2);
+    (w, '行けるかどうかわからない。', '갈 수 있을지 모르겠다.', 1),
+    (w, '正しいかどうか判断する。', '맞는지 어떤지 판단한다.', 2);
 
-  -- 1218. ～にとって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にとって', '～にとって', '~에게 있어서', NULL, '문법', 1218, array[]::text[]) returning id into w;
+  -- 1301. ～であっても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～であっても', '~라도, ~일지라도', 'で+ある+ても. 격식 양보', '문법-문장완성', 1301, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '私にとって大切な人だ。', '나에게 있어 소중한 사람이다.', 1),
-    (w, '子供にとって遊びは学びだ。', '아이에게 있어 놀이는 배움이다.', 2);
+    (w, '子供であっても責任がある。', '아이라도 책임이 있다.', 1),
+    (w, '雨であっても出かける。', '비라도 나간다.', 2);
 
-  -- 1219. ようやく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ようやく', '마침내', '관용 부사', '부사', 1219, array[]::text[]) returning id into w;
+  -- 1302. ～にとって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にとって', '~에게 있어서', 'に+取る+て. 화자·주체의 관점', '문법-문장완성', 1302, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '私にとって大切な人。', '나에게 있어 소중한 사람.', 1),
+    (w, '学生にとって試験は重要だ。', '학생에게 시험은 중요하다.', 2);
+
+  -- 1303. ようやく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'ようやく', '마침내, 가까스로', '漸(점차 점)く. 시간/노력 끝에 도달', '문법-문장완성', 1303, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ようやく完成した。', '마침내 완성했다.', 1),
-    (w, 'ようやく春が来た。', '마침내 봄이 왔다.', 2);
+    (w, 'ようやく晴れた。', '마침내 맑게 갰다.', 2);
 
-  -- 1220. なかなか～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'なかなか～ない', 'なかなかない', '좀처럼 ~하지 않다', NULL, '문법', 1220, array[]::text[]) returning id into w;
+  -- 1304. なかなか～ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'なかなか～ない', '좀처럼 ~하지 않다', '中々+ない. 어려운 진척', '문법-문장완성', 1304, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'なかなか決まらない。', '좀처럼 결정되지 않는다.', 1),
-    (w, 'なかなか会えない。', '좀처럼 만날 수 없다.', 2);
+    (w, 'なかなか上達しない。', '좀처럼 늘지 않는다.', 1),
+    (w, 'バスがなかなか来ない。', '버스가 좀처럼 안 온다.', 2);
 
-  -- 1221. ～だけの
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だけの', '～だけの', '~뿐인', NULL, '문법', 1221, array[]::text[]) returning id into w;
+  -- 1305. ～だけの
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけの', '~뿐인', 'だけ+の. 한정 수식', '문법-문장완성', 1305, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それだけの実力がある。', '그만큼의 실력이 있다.', 1),
-    (w, '話を聞くだけの会だ。', '이야기를 듣기만 하는 모임이다.', 2);
+    (w, '見ているだけの存在。', '보고만 있는 존재.', 1),
+    (w, '言うだけのことを言う。', '말할 만큼 말한다.', 2);
 
-  -- 1222. 決して～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '決して～ない', 'けっしてない', '결코~않는다', NULL, '문법', 1222, array[]::text[]) returning id into w;
+  -- 1306. ～すえに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すえに(2)', '~한 끝에', '末に 재활용', '문법-문장완성', 1306, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '決して諦めない。', '결코 포기하지 않는다.', 1),
-    (w, '決して忘れない。', '결코 잊지 않는다.', 2);
+    (w, '熟考のすえに決定した。', '숙고 끝에 결정했다.', 1),
+    (w, '長い議論のすえに合意した。', '오랜 논의 끝에 합의했다.', 2);
 
-  -- 1223. ～に欠かせない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に欠かせない', '～にかかせない', '~에 빠뜨릴 수 없다, ~에 필요하다', NULL, '문법', 1223, array[]::text[]) returning id into w;
+  -- 1307. 決して～ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '決して～ない', 'けっして', '결코 ~않는다', '決(터질 결)して+ない. 강한 부정', '문법-문장완성', 1307, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼はチームに欠かせない人材だ。', '그는 팀에 빠뜨릴 수 없는 인재다.', 1),
-    (w, '生活に欠かせない道具だ。', '생활에 빠뜨릴 수 없는 도구다.', 2);
+    (w, '決して忘れない。', '결코 잊지 않는다.', 1),
+    (w, '決して許さない。', '결코 용서하지 않는다.', 2);
 
-  -- 1224. ～次第で
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～次第で', '～しだいで', '~에 따라서는', NULL, '문법', 1224, array[]::text[]) returning id into w;
+  -- 1308. ～わけではない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わけではない(2)', '~인 것은 아니다', '부분 부정 わけではない 재활용', '문법-문장완성', 1308, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '結果は努力次第で変わる。', '결과는 노력에 따라 바뀐다.', 1),
+    (w, '反対するわけではない。', '반대하는 것은 아니다.', 1),
+    (w, '行きたくないわけではない。', '가고 싶지 않은 것은 아니다.', 2);
+
+  -- 1309. ～たびに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たびに(3)', '~할 때마다', '반복 たびに 재활용', '문법-문장완성', 1309, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '行くたびに違う発見がある。', '갈 때마다 다른 발견이 있다.', 1),
+    (w, '会うたびに楽しくなる。', '만날 때마다 즐거워진다.', 2);
+
+  -- 1310. ～に欠かせない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に欠かせない', 'にかかせない', '~에 빠뜨릴 수 없다', '欠かせない 응용. 필수 요소', '문법-문장완성', 1310, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '生活に欠かせないもの。', '생활에 빠뜨릴 수 없는 것.', 1),
+    (w, '健康に欠かせない運動。', '건강에 필수적인 운동.', 2);
+
+  -- 1311. ～なら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なら(3)', '~이라면', '화제 なら 재활용', '문법-문장완성', 1311, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ピアノなら弾ける。', '피아노라면 칠 수 있다.', 1),
+    (w, '本当なら申し訳ない。', '사실이라면 미안하다.', 2);
+
+  -- 1312. ～ないといけない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないといけない(2)', '~하지 않으면 안된다', '의무 ないといけない 재활용', '문법-문장완성', 1312, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '宿題を出さないといけない。', '숙제를 내야 한다.', 1),
+    (w, '練習しないといけない。', '연습해야 한다.', 2);
+
+  -- 1313. ～ほど
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ほど(4)', '~정도', '정도 ほど 재활용', '문법-문장완성', 1313, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '人が押し寄せるほど大盛況。', '인파가 몰릴 정도로 대성황.', 1),
+    (w, '足が痛いほど歩いた。', '발이 아플 정도로 걸었다.', 2);
+
+  -- 1314. 次第に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '次第に', 'しだいに', '점차', '次第+に. 시간 흐름에 따른 변화', '문법-문장완성', 1314, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '次第に明るくなる。', '점차 밝아진다.', 1),
+    (w, '次第に慣れていく。', '점차 익숙해진다.', 2);
+
+  -- 1315. ～として
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～として(2)', '~로서 (자격)', '자격 として 재활용', '문법-문장완성', 1315, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'リーダーとして責任を取る。', '리더로서 책임을 진다.', 1),
+    (w, '記念として残す。', '기념으로 남긴다.', 2);
+
+  -- 1316. ～につれて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～につれて(3)', '~함에 따라서', 'につれて 재활용', '문법-문장완성', 1316, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '春が近づくにつれて暖かくなる。', '봄이 가까워질수록 따뜻해진다.', 1),
+    (w, '人口が増えるにつれて問題も増える。', '인구가 늘수록 문제도 늘어난다.', 2);
+
+  -- 1317. ～によって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によって(원인)', '~에 의해서', '원인 によって 재활용', '문법-문장완성', 1317, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '事故によって遅刻した。', '사고로 인해 지각했다.', 1),
+    (w, '研究によって発見された。', '연구에 의해 발견되었다.', 2);
+
+  -- 1318. ～ことから
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことから(2)', '~로 인해', 'ことから 재활용', '문법-문장완성', 1318, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '言葉が似ていることから誤解された。', '말이 비슷해서 오해받았다.', 1),
+    (w, '形が花に似ていることから名づけられた。', '모양이 꽃을 닮아 이름이 붙었다.', 2);
+
+  -- 1319. ～うちに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～うちに(3)', '~하는 사이에', 'うちに 재활용', '문법-문장완성', 1319, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勉強しているうちに眠った。', '공부하는 사이에 잠들었다.', 1),
+    (w, '若いうちに旅行しよう。', '젊을 때 여행하자.', 2);
+
+  -- 1320. ～次第で
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～次第で', 'しだいで', '~에 따라서는', '次第+で. 조건/요인 의존', '문법-문장완성', 1320, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '結果は努力次第で変わる。', '결과는 노력에 따라 변한다.', 1),
     (w, '天気次第で予定が変わる。', '날씨에 따라 일정이 바뀐다.', 2);
 
-  -- 1225. もう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'もう', '벌써', '관용 부사', '부사', 1225, array[]::text[]) returning id into w;
+  -- 1321. もう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'もう', '벌써, 이미', '시간/상태 부사. 완료/임박', '문법-문장완성', 1321, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'もう終わった。', '벌써 끝났다.', 1),
-    (w, 'もう昼だ。', '벌써 점심이다.', 2);
+    (w, 'もう少しで着く。', '곧 도착한다.', 2);
 
-  -- 1226. ～に限らず
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に限らず', '～にかぎらず', '~뿐 아니라', NULL, '문법', 1226, array[]::text[]) returning id into w;
+  -- 1322. ～に限らず
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に限らず', 'にかぎらず', '~뿐 아니라', '限る+ず. 한정 부정', '문법-문장완성', 1322, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '若者に限らず人気だ。', '젊은이뿐 아니라 인기다.', 1),
-    (w, '日本に限らず世界中で愛される。', '일본뿐 아니라 전 세계에서 사랑받는다.', 2);
+    (w, '若者に限らず大人にも人気だ。', '젊은이뿐 아니라 어른에게도 인기다.', 1),
+    (w, '夏に限らず一年中食べる。', '여름뿐 아니라 일년 내내 먹는다.', 2);
 
-  -- 1227. ～は別にして
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～は別にして', '～はべつにして', '~는 별개로', NULL, '문법', 1227, array[]::text[]) returning id into w;
+  -- 1323. ～は別にして
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～は別にして', 'はべつにして', '~는 별개로', '別(다를 별)+にして. 「~을 차치하고」', '문법-문장완성', 1323, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '結果は別にして努力した。', '결과는 별개로 노력했다.', 1),
-    (w, '好き嫌いは別にして食べてみる。', '호불호는 별개로 먹어 본다.', 2);
+    (w, '値段は別にして品質はいい。', '가격은 별개로 품질은 좋다.', 1),
+    (w, '結果は別にして努力は認める。', '결과는 별개로 노력은 인정한다.', 2);
 
-  -- 1228. ～つつ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～つつ', '～つつ', '~하면서', NULL, '문법', 1228, array[]::text[]) returning id into w;
+  -- 1324. ～はずだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～はずだ(3)', '틀림없이 ~일 것이다', 'はずだ 재활용', '문법-문장완성', 1324, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '音楽を聴きつつ作業する。', '음악을 들으면서 작업한다.', 1),
-    (w, '悩みつつ決めた。', '고민하면서 결정했다.', 2);
+    (w, 'もう届いているはずだ。', '벌써 도착해 있을 것이다.', 1),
+    (w, '本当のはずだ。', '사실일 것이다.', 2);
 
-  -- 1229. ～ばいい/～たらいい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ばいい/～たらいい', '～ばいいたらいい', '~하면 된다', NULL, '문법', 1229, array[]::text[]) returning id into w;
+  -- 1325. ～てからでないと
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てからでないと(3)', '~한 후가 아니면', 'てからでないと 재활용', '문법-문장완성', 1325, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'こうすればいい/こうしたらいい。', '이렇게 하면 된다.', 1),
-    (w, '早く行けばいい/早く行ったらいい。', '빨리 가면 된다.', 2);
+    (w, '会員登録してからでないと利用できない。', '회원 등록한 후가 아니면 이용할 수 없다.', 1),
+    (w, '読んでからでないと感想は言えない。', '읽지 않고서는 감상을 말할 수 없다.', 2);
 
-  -- 1230. ～どおり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～どおり', '～どおり', '~대로', NULL, '문법', 1230, array[]::text[]) returning id into w;
+  -- 1326. ～つつ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～つつ', '~하면서', '문어체 동시 동작', '문법-문장완성', 1326, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '考えつつ歩く。', '생각하면서 걷는다.', 1),
+    (w, '反省しつつ続ける。', '반성하면서 계속한다.', 2);
+
+  -- 1327. ～ばいい/～たらいい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ばいい/～たらいい', '~하면 된다', 'ば/たら + いい. 충분조건/조언', '문법-문장완성', 1327, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こうすればいい。', '이렇게 하면 된다.', 1),
+    (w, '電話したらいい。', '전화하면 된다.', 2);
+
+  -- 1328. ～らしい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～らしい(2)', '~라는 것 같다', '추측 らしい 재활용', '문법-문장완성', 1328, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は来週帰国するらしい。', '그는 다음 주 귀국하는 것 같다.', 1),
+    (w, '雨が降るらしい。', '비가 오는 것 같다.', 2);
+
+  -- 1329. ～どおり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～どおり', '~대로', '通り의 명사화', '문법-문장완성', 1329, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '予定どおり進む。', '예정대로 진행된다.', 1),
-    (w, '計画どおりに完成した。', '계획대로 완성됐다.', 2);
+    (w, '指示どおりにやる。', '지시대로 한다.', 2);
 
-  -- 1231. ～に比べると
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に比べると', '～にくらべると', '~에 비해', NULL, '문법', 1231, array[]::text[]) returning id into w;
+  -- 1330. ～とおりに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とおりに(2)', '~대로', 'とおりに 재활용', '문법-문장완성', 1330, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '去年に比べると暖かい。', '작년에 비해 따뜻하다.', 1),
-    (w, '彼に比べると私はまだまだだ。', '그에 비해 나는 아직 멀었다.', 2);
+    (w, '思ったとおりに動いた。', '생각한 대로 움직였다.', 1),
+    (w, '言ったとおりにしてください。', '말한 대로 해 주세요.', 2);
 
-  -- 1232. ～抜きには
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～抜きには', '～ぬきには', '~빼고는', NULL, '문법', 1232, array[]::text[]) returning id into w;
+  -- 1331. ～に対して
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に対して(3)', 'にたいして', '~에 대해서', 'に対して 재활용', '문법-문장완성', 1331, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼抜きには考えられない。', '그를 빼고는 생각할 수 없다.', 1),
-    (w, '努力抜きには成功しない。', '노력 없이는 성공할 수 없다.', 2);
+    (w, '彼は私に対して優しい。', '그는 나에게 친절하다.', 1),
+    (w, 'この問題に対して答える。', '이 문제에 대해 답한다.', 2);
 
-  -- 1233. ～と思うと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～と思うと', '～とおもうと', '~라고 생각하니', NULL, '문법', 1233, array[]::text[]) returning id into w;
+  -- 1332. ～に比べると
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に比べると', 'にくらべると', '~에 비해', '比(견줄 비)べる. 비교', '문법-문장완성', 1332, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日休めると思うと嬉しい。', '내일 쉴 수 있다고 생각하니 기쁘다.', 1),
-    (w, '会えると思うとわくわくする。', '만날 수 있다고 생각하니 두근거린다.', 2);
+    (w, '去年に比べると暑い。', '작년에 비하면 덥다.', 1),
+    (w, '彼に比べると経験不足だ。', '그에 비하면 경험이 부족하다.', 2);
 
-  -- 1234. ～つもりでも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～つもりでも', '～つもりでも', '~한 줄 알았지만', NULL, '문법', 1234, array[]::text[]) returning id into w;
+  -- 1333. ～抜きには
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～抜きには', 'ぬきには', '~빼고는, ~없이는', '抜(뺄 발)き+に+は. 제외/필수 조건', '문법-문장완성', 1333, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '分かったつもりでも違った。', '안다고 생각했지만 달랐다.', 1),
-    (w, 'できるつもりでも難しい。', '할 수 있다고 생각했지만 어렵다.', 2);
+    (w, '彼抜きには成功しなかった。', '그 없이는 성공하지 못했다.', 1),
+    (w, '冗談抜きには話せない。', '농담 빼고는 말할 수 없다.', 2);
 
-  -- 1235. ～以上は
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～以上は', '～いじょうは', '~한 이상에는', NULL, '문법', 1235, array[]::text[]) returning id into w;
+  -- 1334. ～どころか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～どころか(2)', '~는커녕', 'どころか 재활용', '문법-문장완성', 1334, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '引き受けた以上はやり遂げる。', '맡은 이상은 끝까지 한다.', 1),
-    (w, '約束した以上は守る。', '약속한 이상은 지킨다.', 2);
+    (w, '感謝されるどころか怒られた。', '감사받기는커녕 혼났다.', 1),
+    (w, '休みどころか残業ばかりだ。', '쉬기는커녕 야근뿐이다.', 2);
 
-  -- 1236. ～ずにはいられない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ずにはいられない', '～ずにはいられない', '~하지 않을 수 없다', NULL, '문법', 1236, array[]::text[]) returning id into w;
+  -- 1335. ～と思うと
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～と思うと', '~라고 생각하니', 'と+思う+と. 연속 변화 묘사', '문법-문장완성', 1335, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '笑わずにはいられない。', '웃지 않을 수 없다.', 1),
-    (w, '心配せずにはいられない。', '걱정하지 않을 수 없다.', 2);
+    (w, '泣いていたかと思うと笑い出した。', '울고 있었나 싶더니 웃기 시작했다.', 1),
+    (w, '帰ったと思うとまた出かけた。', '돌아왔나 싶더니 또 나갔다.', 2);
 
-  -- 1237. ～まま
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～まま', '～まま', '~한 채', NULL, '문법', 1237, array[]::text[]) returning id into w;
+  -- 1336. ～とは
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とは(2)', '~라니', 'とは 재활용. 놀라움', '문법-문장완성', 1336, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '服を着たまま寝てしまった。', '옷을 입은 채 잠들었다.', 1),
-    (w, 'そのまま放置する。', '그대로 방치한다.', 2);
+    (w, 'まさか落ちるとは。', '설마 떨어지다니.', 1),
+    (w, 'ここで会うとは。', '여기서 만나다니.', 2);
 
-  -- 1238. ～だろうと思う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～だろうと思う', '～だろうとおもう', '~일 것이라고 생각하다', NULL, '문법', 1238, array[]::text[]) returning id into w;
+  -- 1337. ～うちに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～うちに(4)', '~하는 사이에', 'うちに 재활용', '문법-문장완성', 1337, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は来るだろうと思う。', '그는 올 것이라고 생각한다.', 1),
-    (w, 'きっとできるだろうと思う。', '분명 할 수 있을 것이라고 생각한다.', 2);
+    (w, '気づかないうちに夜になった。', '모르는 사이에 밤이 되었다.', 1),
+    (w, '考えているうちに眠くなった。', '생각하고 있는 사이에 졸렸다.', 2);
 
-  -- 1239. ～がきっかけだった
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～がきっかけだった', '～がきっかけだった', '~이 계기였다', NULL, '문법', 1239, array[]::text[]) returning id into w;
+  -- 1338. ～つもりでも
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～つもりでも', '~한 줄 알았지만', 'つもり+でも. 의도와 실제 차이', '문법-문장완성', 1338, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '旅行がきっかけだった。', '여행이 계기였다.', 1),
-    (w, '彼との出会いがきっかけだった。', '그와의 만남이 계기였다.', 2);
+    (w, '頑張ったつもりでも結果が出ない。', '노력한 줄 알았지만 결과가 안 나온다.', 1),
+    (w, '丁寧に話したつもりでも誤解された。', '정중히 말한 줄 알았지만 오해받았다.', 2);
 
-  -- 1240. ～となる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～となる', '～となる', '~이 되다', NULL, '문법', 1240, array[]::text[]) returning id into w;
+  -- 1339. ～そうだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～そうだ(전문4)', '~라고 한다', '전문 そうだ 재활용', '문법-문장완성', 1339, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '結果はこうとなる。', '결과는 이렇게 된다.', 1),
-    (w, '責任は彼となる。', '책임은 그가 된다.', 2);
+    (w, '彼女は退職するそうだ。', '그녀는 퇴직한다고 한다.', 1),
+    (w, 'その店は美味しいそうだ。', '그 가게는 맛있다고 한다.', 2);
 
-  -- 1241. ～と比べて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～と比べて', '～とくらべて', '~에 비해', NULL, '문법', 1241, array[]::text[]) returning id into w;
+  -- 1340. ～以上は
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～以上は', 'いじょうは', '~한 이상에는', '以上+は. 「~인 이상은 마땅히」', '문법-문장완성', 1340, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '昨日と比べて寒い。', '어제에 비해 춥다.', 1),
-    (w, '彼と比べて若い。', '그에 비해 어리다.', 2);
+    (w, '引き受けた以上は最後までやる。', '맡은 이상에는 끝까지 한다.', 1),
+    (w, '約束した以上は守る。', '약속한 이상에는 지킨다.', 2);
 
-  -- 1242. ～に先立って
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に先立って', '～にさきだって', '~에 앞서', NULL, '문법', 1242, array[]::text[]) returning id into w;
+  -- 1341. ～ずにはいられない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ずにはいられない', '~하지 않을 수 없다', 'ず+に+はいられない. 자제 불가', '문법-문장완성', 1341, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会議に先立って打ち合わせをする。', '회의에 앞서 협의를 한다.', 1),
-    (w, '発表に先立ってリハーサルをした。', '발표에 앞서 리허설을 했다.', 2);
+    (w, '泣かずにはいられない。', '울지 않을 수 없다.', 1),
+    (w, '助けずにはいられない。', '돕지 않을 수 없다.', 2);
 
-  -- 1243. ～せいで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～せいで', '～せいで', '~탓에', NULL, '문법', 1243, array[]::text[]) returning id into w;
+  -- 1342. ～まま
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～まま', '~한 채', '儘(まま). 상태 유지', '문법-문장완성', 1342, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '雨のせいで遅れた。', '비 탓에 늦었다.', 1),
-    (w, '彼のせいで失敗した。', '그의 탓에 실패했다.', 2);
+    (w, 'テレビをつけたまま寝た。', '텔레비전을 켠 채 잤다.', 1),
+    (w, '窓を開けたままだ。', '창문이 열린 채다.', 2);
 
-  -- 1244. ～ながらも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ながらも', '～ながらも', '~하면서도', NULL, '문법', 1244, array[]::text[]) returning id into w;
+  -- 1343. ～ていただく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ていただく(2)', '~해 받다 <겸양>', '겸양 ていただく 재활용', '문법-문장완성', 1343, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '失敗しながらも前進する。', '실패하면서도 전진한다.', 1),
-    (w, '遅れながらも到着した。', '늦으면서도 도착했다.', 2);
+    (w, '説明していただけませんか。', '설명해 주시지 않겠습니까?', 1),
+    (w, '送っていただきありがとうございます。', '보내 주셔서 감사합니다.', 2);
 
-  -- 1245. ～たらいいのか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たらいいのか', '～たらいいのか', '~하면 좋을지', NULL, '문법', 1245, array[]::text[]) returning id into w;
+  -- 1344. ～だろうと思う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だろうと思う', '~일 것이라고 생각하다', 'だろう+と+思う. 추측+생각', '문법-문장완성', 1344, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降るだろうと思う。', '비가 올 것이라고 생각한다.', 1),
+    (w, '彼は来るだろうと思う。', '그는 올 것이라고 생각한다.', 2);
+
+  -- 1345. ～がきっかけだった
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～がきっかけだった', '~이 계기였다', '切っ掛け. 시작의 계기', '문법-문장완성', 1345, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼との出会いがきっかけだった。', '그와의 만남이 계기였다.', 1),
+    (w, 'あの一言がきっかけだった。', '그 한마디가 계기였다.', 2);
+
+  -- 1346. ～となる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～となる', '~이 되다', 'と+なる. 결과/변화. 격식', '문법-문장완성', 1346, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼が代表となる。', '그가 대표가 된다.', 1),
+    (w, '結果は引き分けとなった。', '결과는 무승부가 되었다.', 2);
+
+  -- 1347. ～と比べて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～と比べて', 'とくらべて', '~에 비해', '比べる+て. 비교', '문법-문장완성', 1347, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '昔と比べて便利だ。', '옛날에 비해 편리하다.', 1),
+    (w, '兄と比べて背が低い。', '형에 비해 키가 작다.', 2);
+
+  -- 1348. ～によって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によって(수단)', '~에 의해서', '수단 によって 재활용', '문법-문장완성', 1348, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '機械によって製造される。', '기계에 의해 제조된다.', 1),
+    (w, '努力によって変えられる。', '노력에 의해 바꿀 수 있다.', 2);
+
+  -- 1349. ～に先立って
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に先立って', 'にさきだって', '~에 앞서', '先(먼저 선)立つ+て. 사전 행위', '문법-문장완성', 1349, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会議に先立って資料を配布する。', '회의에 앞서 자료를 배포한다.', 1),
+    (w, '出発に先立って点呼を取る。', '출발에 앞서 점호한다.', 2);
+
+  -- 1350. ～たびに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たびに(4)', '~할 때마다', 'たびに 재활용', '문법-문장완성', 1350, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '旅行のたびに新しい発見がある。', '여행할 때마다 새 발견이 있다.', 1),
+    (w, '訪れるたびに変わっている。', '방문할 때마다 변해 있다.', 2);
+
+  -- 1351. ～せいで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～せいで', '~탓에', '所為+で. 부정적 원인', '문법-문장완성', 1351, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨のせいで遅刻した。', '비 탓에 지각했다.', 1),
+    (w, '彼のせいで失敗した。', '그 탓에 실패했다.', 2);
+
+  -- 1352. どうしても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どうしても(3)', '무슨 일이 있어도, 꼭', 'どうしても 재활용', '문법-문장완성', 1352, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうしても食べたい。', '꼭 먹고 싶다.', 1),
+    (w, 'どうしても許せない。', '도저히 용서할 수 없다.', 2);
+
+  -- 1353. ～上で
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～上で(3)', 'うえで', '~한 후에', '순서 上で 재활용', '문법-문장완성', 1353, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'よく確認した上で送る。', '잘 확인한 후에 보낸다.', 1),
+    (w, '相談した上で決める。', '상담한 후에 결정한다.', 2);
+
+  -- 1354. ～としても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～としても(3)', '~라고 할지라도', 'としても 재활용', '문법-문장완성', 1354, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '冗談だとしても許せない。', '농담이라 해도 용서할 수 없다.', 1),
+    (w, '本当だとしても驚かない。', '사실이라 해도 놀라지 않는다.', 2);
+
+  -- 1355. ～すら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～すら(4)', '~조차', 'すら 재활용', '문법-문장완성', 1355, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '一言すら言えなかった。', '한 마디조차 못 했다.', 1),
+    (w, '基本すら知らない。', '기본조차 모른다.', 2);
+
+  -- 1356. ～ほど
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ほど(5)', '~정도', 'ほど 재활용', '문법-문장완성', 1356, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '声が出ないほど叫んだ。', '목소리가 안 나올 정도로 외쳤다.', 1),
+    (w, '泣くほど嬉しかった。', '울 정도로 기뻤다.', 2);
+
+  -- 1357. ～ながらも
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ながらも', '~하면서도 (역접)', 'ながら+も. 양보적 역접', '문법-문장완성', 1357, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '小さいながらも一軒家を持っている。', '작지만 한 채의 집을 가지고 있다.', 1),
+    (w, '残念ながらも諦めた。', '아쉽지만 포기했다.', 2);
+
+  -- 1358. ～たらいいのか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たらいいのか', '~하면 좋을지', 'たら+いい+のか. 방안 모색 의문', '문법-문장완성', 1358, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'どうしたらいいのか分からない。', '어떻게 하면 좋을지 모르겠다.', 1),
-    (w, '何を言えばいいのか迷った。', '무엇을 말하면 좋을지 망설였다.', 2);
+    (w, '何を言ったらいいのか。', '무슨 말을 하면 좋을지.', 2);
 
-  -- 1246. ～わりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～わりに', '～わりに', '~에 비해서', NULL, '문법', 1246, array[]::text[]) returning id into w;
+  -- 1359. ～わりに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わりに', '~에 비해서', '割(쪼갤 할)り+に. 비례 부적합', '문법-문장완성', 1359, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '年齢のわりに若く見える。', '나이에 비해 어려 보인다.', 1),
-    (w, '値段のわりに美味しい。', '가격에 비해 맛있다.', 2);
+    (w, '値段のわりに美味しい。', '가격에 비해 맛있다.', 1),
+    (w, '年のわりに若く見える。', '나이에 비해 젊어 보인다.', 2);
 
-  -- 1247. それなりの
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'それなりの', '나름대로의', '관용 표현', '연체사', 1247, array[]::text[]) returning id into w;
+  -- 1360. それなりの
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'それなりの', '나름대로의', 'それ+なり+の. 그에 상응하는', '문법-문장완성', 1360, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それなりの努力は必要だ。', '나름대로의 노력은 필요하다.', 1),
+    (w, 'それなりの努力が必要だ。', '나름대로의 노력이 필요하다.', 1),
     (w, 'それなりの理由がある。', '나름대로의 이유가 있다.', 2);
 
-  -- 1248. ～かねない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～かねない', '～かねない', '~할 수도 있다', NULL, '문법', 1248, array[]::text[]) returning id into w;
+  -- 1361. ～として
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～として(3)', '~로서', 'として 재활용', '문법-문장완성', 1361, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '失敗しかねない。', '실패할 수도 있다.', 1),
-    (w, '事故になりかねない。', '사고로 이어질 수도 있다.', 2);
+    (w, '父親として誇りに思う。', '아버지로서 자랑스럽다.', 1),
+    (w, '記念品として贈る。', '기념품으로서 선물한다.', 2);
 
-  -- 1249. ～について
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～について', '～について', '~에 대하여', NULL, '문법', 1249, array[]::text[]) returning id into w;
+  -- 1362. ～かねない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かねない', '~할 수도 있다 (부정적 가능)', '兼ねる+ない. 「~할 위험성」', '문법-문장완성', 1362, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この問題について話し合う。', '이 문제에 대해 논의한다.', 1),
-    (w, '日本文化について学ぶ。', '일본 문화에 대해 배운다.', 2);
+    (w, '彼ならやりかねない。', '그라면 저지를 수도 있다.', 1),
+    (w, '事故になりかねない。', '사고가 날 수도 있다.', 2);
 
-  -- 1250. ～と
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～と', '～と', '~하면, ~라면하면, ~라면', NULL, '문법', 1250, array[]::text[]) returning id into w;
+  -- 1363. ～といっても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といっても(2)', '~라고 해도', 'といっても 재활용', '문법-문장완성', 1363, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ボタンを押すと開く。', '버튼을 누르면 열린다.', 1),
-    (w, '君が来ると安心する。', '네가 오면 안심한다.', 2);
+    (w, '勉強といってもほんの少しだ。', '공부라고 해도 그저 조금이다.', 1),
+    (w, '雨といっても弱い雨だ。', '비라고 해도 약한 비다.', 2);
 
-  -- 1251. ～にもなったような
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～にもなったような', '～にもなったような', '~라도 된 것 같은', NULL, '문법', 1251, array[]::text[]) returning id into w;
+  -- 1364. ～について
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～について', '~에 대하여', '就(나아갈 취)く+て. 주제 제시', '문법-문장완성', 1364, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '大臣にもなったような気分だ。', '장관이 된 듯한 기분이다.', 1),
-    (w, 'セレブにもなったような態度だ。', '셀럽이라도 된 것 같은 태도다.', 2);
+    (w, '環境問題について話し合う。', '환경 문제에 대해 논의한다.', 1),
+    (w, 'この件について説明します。', '이 건에 대해 설명하겠습니다.', 2);
 
-  -- 1252. ～を込めて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～を込めて', '～をこめて', '~을 담아', NULL, '문법', 1252, array[]::text[]) returning id into w;
+  -- 1365. ～ことから
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ことから(3)', '~로 인해', 'ことから 재활용', '문법-문장완성', 1365, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '感謝を込めてプレゼントを贈った。', '감사를 담아 선물을 주었다.', 1),
-    (w, '祈りを込めて手紙を書いた。', '기도를 담아 편지를 썼다.', 2);
+    (w, '結果が出ていることから判断する。', '결과가 나와 있으므로 판단한다.', 1),
+    (w, '名前が似ていることから親子と思われた。', '이름이 비슷해서 부모자식으로 보였다.', 2);
 
-  -- 1253. ～わけだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～わけだ', '～わけだ', '~인 것이다', NULL, '문법', 1253, array[]::text[]) returning id into w;
+  -- 1366. ～ぐらい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ぐらい(2)', '~정도', 'ぐらい 재활용', '문법-문장완성', 1366, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '難しいわけだ。', '어려운 것이다.', 1),
-    (w, '彼が遅れたわけだ。', '그가 늦은 것이다.', 2);
+    (w, '泣きたいぐらい辛い。', '울고 싶을 정도로 힘들다.', 1),
+    (w, 'これぐらいできるよ。', '이 정도는 할 수 있어.', 2);
 
-  -- 1254. ～に関して
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～に関して', '～にかんして', '~에 관해서', NULL, '문법', 1254, array[]::text[]) returning id into w;
+  -- 1367. ～によって
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～によって(차이2)', '~에 의해서, ~에 따라', 'によって 재활용', '문법-문장완성', 1367, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この件に関して説明する。', '이 건에 관해 설명한다.', 1),
-    (w, '新しい計画に関して話し合う。', '새 계획에 관해 논의한다.', 2);
+    (w, '場合によって対応が違う。', '경우에 따라 대응이 다르다.', 1),
+    (w, '人によって好みが違う。', '사람에 따라 취향이 다르다.', 2);
 
-  -- 1255. ～ならば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ならば', '～ならば', '~이라면', NULL, '문법', 1255, array[]::text[]) returning id into w;
+  -- 1368. ～てたまらない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～てたまらない(2)', '너무 ~하다, 견딜 수 없다', 'てたまらない 재활용', '문법-문장완성', 1368, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君ならばできる。', '너라면 할 수 있다.', 1),
-    (w, '私ならば断る。', '나라면 거절한다.', 2);
+    (w, '寂しくてたまらない。', '너무 외롭다.', 1),
+    (w, '気になってたまらない。', '너무 신경 쓰인다.', 2);
 
-  -- 1256. ～ないのではない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ないのではない', '～ないのではない', '~할 수 없는 것은 아니다', NULL, '문법', 1256, array[]::text[]) returning id into w;
+  -- 1369. ～からすると
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～からすると(2)', '~로 보아', 'からすると 재활용', '문법-문장완성', 1369, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'できないのではない、しないだけだ。', '할 수 없는 것이 아니라 안 할 뿐이다.', 1),
-    (w, '行けないのではない、行かないだけだ。', '갈 수 없는 게 아니라 안 가는 것뿐이다.', 2);
+    (w, '声の感じからすると怒っている。', '목소리 느낌으로 보아 화나 있다.', 1),
+    (w, '結果からすると成功だ。', '결과로 보아 성공이다.', 2);
 
-  -- 1257. この
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'この', '이', '지시사', '연체사', 1257, array[]::text[]) returning id into w;
+  -- 1370. ～と
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～と', '~하면, ~라면 <조건>', '조사 と. 항상 그러한 결과/조건', '문법-문장완성', 1370, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '春になると暖かくなる。', '봄이 되면 따뜻해진다.', 1),
+    (w, 'お金が足りないと買えない。', '돈이 부족하면 살 수 없다.', 2);
+
+  -- 1371. ～だけ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だけ(3)', '~한 만큼, ~할 수 있는 한', 'だけ 재활용', '문법-문장완성', 1371, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'できるだけ努力する。', '가능한 한 노력한다.', 1),
+    (w, 'やれるだけやってみる。', '할 수 있는 만큼 해본다.', 2);
+
+  -- 1372. ～にもなったような
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～にもなったような', '~라도 된 것 같은', 'に+も+なる+ような. 가상의 비유', '문법-문장완성', 1372, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '王様にもなったような気分。', '왕이라도 된 것 같은 기분.', 1),
+    (w, '別人にもなったような顔。', '딴 사람이라도 된 것 같은 얼굴.', 2);
+
+  -- 1373. ～を込めて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～を込めて', 'をこめて', '~을 담아', '込める+て. をこめて 재활용', '문법-문장완성', 1373, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '心を込めて贈る。', '마음을 담아 선물한다.', 1),
+    (w, '感謝を込めて作った。', '감사를 담아 만들었다.', 2);
+
+  -- 1374. ～あまり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～あまり(2)', '~한 나머지', '余り 재활용', '문법-문장완성', 1374, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '喜びのあまり踊り出した。', '기쁜 나머지 춤을 추기 시작했다.', 1),
+    (w, '心配のあまり眠れなかった。', '걱정한 나머지 잠들지 못했다.', 2);
+
+  -- ────────── 문법 문맥 이해 (120개, 1375~1494) ──────────
+
+  -- 1375. ～もの
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～もの', '~것', '物(もの). 명사화. 사물/추상', '문법-문맥이해', 1375, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '大切なものを失った。', '소중한 것을 잃었다.', 1),
+    (w, '欲しいものは何ですか。', '갖고 싶은 것은 무엇입니까?', 2);
+
+  -- 1376. ～わけだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～わけだ', '~인 것이다 <설명·결론>', '訳(이유)+だ. 논리적 귀결·납득', '문법-문맥이해', 1376, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'だから遅れたわけだ。', '그래서 늦은 것이다.', 1),
+    (w, '彼が知らないわけだ。', '그가 모르는 것이 당연하다.', 2);
+
+  -- 1377. ～に関して
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～に関して', 'にかんして', '~에 관해서', '関(빗장 관). 주제 제시', '문법-문맥이해', 1377, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この問題に関して話す。', '이 문제에 관해 이야기한다.', 1),
+    (w, '彼に関して情報がない。', '그에 관해서 정보가 없다.', 2);
+
+  -- 1378. ～ならば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ならば', '~이라면 (격식)', 'なら+ば. 문어체 가정', '문법-문맥이해', 1378, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もし可能ならばお願いしたい。', '혹시 가능하다면 부탁드리고 싶다.', 1),
+    (w, '必要ならば連絡する。', '필요하다면 연락한다.', 2);
+
+  -- 1379. ～ないのではない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ないのではない', '~할 수 없는 것은 아니다', 'ない+の+ではない. 이중 부정', '문법-문맥이해', 1379, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '行けないのではないが、行きたくない。', '갈 수 없는 것은 아니지만 가고 싶지 않다.', 1),
+    (w, 'できないのではない、難しいだけだ。', '못 하는 것은 아니다, 단지 어려울 뿐이다.', 2);
+
+  -- 1380. この
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'この', '이', '근칭 연체사. 가까이 있는 것 지시', '문법-문맥이해', 1380, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'この本は面白い。', '이 책은 재미있다.', 1),
-    (w, 'この方法を試してみよう。', '이 방법을 시도해 보자.', 2);
+    (w, 'この件は重要だ。', '이 건은 중요하다.', 2);
 
-  -- 1258. このように
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'このように', '이처럼', '관용 표현', '부사', 1258, array[]::text[]) returning id into w;
+  -- 1381. このように
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'このように', '이처럼, 이렇게', 'この+ように. 방식 지시', '문법-문맥이해', 1381, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'このように考えると分かりやすい。', '이처럼 생각하면 이해하기 쉽다.', 1),
-    (w, 'このように手順を進める。', '이처럼 절차를 진행한다.', 2);
+    (w, 'このように準備します。', '이렇게 준비합니다.', 1),
+    (w, 'このようにして問題を解決した。', '이런 식으로 문제를 해결했다.', 2);
 
-  -- 1259. ～ましょう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ましょう', '～ましょう', '~합시다', NULL, '문법', 1259, array[]::text[]) returning id into w;
+  -- 1382. ～ましょう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ましょう', '~합시다', 'ます+よう. 권유/제안', '문법-문맥이해', 1382, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '一緒に行きましょう。', '같이 갑시다.', 1),
-    (w, '始めましょう。', '시작합시다.', 2);
+    (w, '頑張りましょう。', '힘냅시다.', 2);
 
-  -- 1260. ～が～だ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～が～だ', '～がだ', '~이(가) ~이다', NULL, '문법', 1260, array[]::text[]) returning id into w;
+  -- 1383. ～が～だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～が～だ', '~이(가) ~이다', '주격 조사 が+서술 だ. 강조·대비', '문법-문맥이해', 1383, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '君が君だ、私が私だ。', '너는 너고 나는 나다.', 1),
-    (w, '時代が時代だ。', '시대가 시대다.', 2);
+    (w, '味が問題だ。', '맛이 문제다.', 1),
+    (w, '時間が大事だ。', '시간이 중요하다.', 2);
 
-  -- 1261. ～たらどうですか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～たらどうですか', '～たらどうですか', '~하는 게 어떨까요?', NULL, '문법', 1261, array[]::text[]) returning id into w;
+  -- 1384. ～たらどうですか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たらどうですか', '~하는 게 어떨까요?', 'たら+どうですか. 제안', '문법-문맥이해', 1384, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '休んだらどうですか。', '쉬는 게 어떨까요?', 1),
-    (w, '相談したらどうですか。', '상담해 보는 게 어떨까요?', 2);
+    (w, '相談したらどうですか。', '상담하는 게 어떨까요?', 2);
 
-  -- 1262. どのように
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'どのように', '어떻게, 어떤 식으로', '관용 표현', '부사', 1262, array[]::text[]) returning id into w;
+  -- 1385. どのように
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どのように', '어떻게, 어떤 식으로', 'どの+ように. 방법 의문', '문법-문맥이해', 1385, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どのように使うのですか。', '어떻게 사용합니까?', 1),
-    (w, 'どのように対応しますか。', '어떤 식으로 대응합니까?', 2);
+    (w, 'どのように解決しますか。', '어떻게 해결합니까?', 1),
+    (w, 'どのように説明すればいい？', '어떤 식으로 설명하면 좋을까?', 2);
 
-  -- 1263. ほかに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ほかに', '그 밖에', '관용 부사', '부사', 1263, array[]::text[]) returning id into w;
+  -- 1386. ほかに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '他に', 'ほかに', '그 밖에', '他(다를 타)+に. 추가/제외', '문법-문맥이해', 1386, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ほかに何かありますか。', '그 밖에 뭔가 있습니까?', 1),
-    (w, 'ほかに必要なものは。', '그 밖에 필요한 것은?', 2);
+    (w, 'ほかに質問はありますか。', '그 밖에 질문 있습니까?', 1),
+    (w, 'ほかに方法はない。', '다른 방법은 없다.', 2);
 
-  -- 1264. こう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'こう', '이렇게', '지시 부사', '부사', 1264, array[]::text[]) returning id into w;
+  -- 1387. こう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'こう', '이렇게', '근칭 부사. 화자 가까이 방법 지시', '문법-문맥이해', 1387, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'こうしてみよう。', '이렇게 해 보자.', 1),
-    (w, 'こう言ってください。', '이렇게 말해 주세요.', 2);
+    (w, 'こうやってみてください。', '이렇게 해 보세요.', 1),
+    (w, 'こう寒くては外に出られない。', '이렇게 추워서는 밖에 나갈 수 없다.', 2);
 
-  -- 1265. 彼女たち
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '彼女たち', 'かのじょたち', '그녀들', '彼女 + たち', '명사', 1265, array[]::text[]) returning id into w;
+  -- 1388. 彼女たち
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '彼女たち', 'かのじょたち', '그녀들', '彼女+たち(복수). 여성 3인칭 복수', '문법-문맥이해', 1388, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼女たちは仲が良い。', '그녀들은 사이가 좋다.', 1),
-    (w, '彼女たちが集まっている。', '그녀들이 모여 있다.', 2);
+    (w, '彼女たちが話している。', '그녀들이 이야기하고 있다.', 1),
+    (w, '彼女たちの意見を聞きたい。', '그녀들의 의견을 듣고 싶다.', 2);
 
-  -- 1266. さまざまだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'さまざまだ', '다양하다', '관용 형용사', 'な형용사', 1266, array[]::text[]) returning id into w;
+  -- 1389. さまざまだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '様々だ', 'さまざまだ', '다양하다', '様(모양 양)々+だ. 다양·각종', '문법-문맥이해', 1389, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '人の意見はさまざまだ。', '사람의 의견은 다양하다.', 1),
-    (w, '趣味はさまざまだ。', '취미는 다양하다.', 2);
+    (w, '意見はさまざまだ。', '의견은 다양하다.', 1),
+    (w, 'さまざまな国を旅した。', '다양한 나라를 여행했다.', 2);
 
-  -- 1267. このような
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'このような', '이러한', '지시사', '연체사', 1267, array[]::text[]) returning id into w;
+  -- 1390. このような
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'このような', '이러한', 'この+ような. 종류·성질 지시', '문법-문맥이해', 1390, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'このような場面でどうする？', '이러한 상황에서 어떻게 할까?', 1),
-    (w, 'このような問題は珍しい。', '이러한 문제는 드물다.', 2);
+    (w, 'このような結果は珍しい。', '이러한 결과는 드물다.', 1),
+    (w, 'このような場合はどうしますか。', '이러한 경우에는 어떻게 합니까?', 2);
 
-  -- 1268. つまり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'つまり', '즉', '관용 접속사', '접속사', 1268, array[]::text[]) returning id into w;
+  -- 1391. ～(ら)れる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(ら)れる(2)', '~하게 되다, ~받다 <수동>', '수동/가능/존경 (ら)れる 재활용', '문법-문맥이해', 1391, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'つまり、賛成ということだ。', '즉, 찬성이라는 것이다.', 1),
-    (w, 'つまり彼は来ない。', '즉 그는 안 온다.', 2);
+    (w, '雨に降られた。', '비를 맞았다.', 1),
+    (w, '皆に愛されている。', '모두에게 사랑받고 있다.', 2);
 
-  -- 1269. たとえば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'たとえば', '예를 들면', '관용 접속사', '접속사', 1269, array[]::text[]) returning id into w;
+  -- 1392. つまり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'つまり', '즉, 다시 말해', '詰まり. 요약/결론 접속사', '문법-문맥이해', 1392, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'たとえば、リンゴのような果物。', '예를 들면 사과 같은 과일.', 1),
-    (w, 'たとえば早起きする習慣。', '예를 들면 일찍 일어나는 습관.', 2);
+    (w, 'つまり、もう無理だ。', '즉, 이제 무리다.', 1),
+    (w, 'つまり、これが結論だ。', '다시 말해 이것이 결론이다.', 2);
 
-  -- 1270. もちろん
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'もちろん', '물론', '관용 부사', '부사', 1270, array[]::text[]) returning id into w;
+  -- 1393. ～なら
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～なら(4)', '~이라면', 'なら 재활용', '문법-문맥이해', 1393, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'もちろん賛成だ。', '물론 찬성이다.', 1),
-    (w, 'もちろん参加します。', '물론 참가합니다.', 2);
+    (w, '本ならこちらにあります。', '책이라면 이쪽에 있습니다.', 1),
+    (w, '安いなら買う。', '싸다면 산다.', 2);
 
-  -- 1271. 場合
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '場合', 'ばあい', '경우', '場 + 合', '명사', 1271, array[]::text[]) returning id into w;
+  -- 1394. たとえば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '例えば', 'たとえば', '예를 들면', '例(법식 례)える. 예시 제시', '문법-문맥이해', 1394, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '雨の場合は中止だ。', '비가 올 경우는 중지다.', 1),
-    (w, '急な場合は連絡してください。', '급한 경우는 연락해 주세요.', 2);
+    (w, 'たとえばこんな場合だ。', '예를 들면 이런 경우다.', 1),
+    (w, 'たとえばリンゴやバナナです。', '예를 들면 사과나 바나나입니다.', 2);
 
-  -- 1272. ～というわけだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～というわけだ', '～というわけだ', '~인 것이다', NULL, '문법', 1272, array[]::text[]) returning id into w;
+  -- 1395. もちろん
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '勿論', 'もちろん', '물론, 당연히', '勿(말 물)+論. 당연 강조', '문법-문맥이해', 1395, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'つまり成功というわけだ。', '즉 성공이라는 것이다.', 1),
-    (w, '彼は休むというわけだ。', '그는 쉰다는 것이다.', 2);
+    (w, 'もちろん行きます。', '물론 가겠습니다.', 1),
+    (w, 'もちろん知っている。', '물론 알고 있다.', 2);
 
-  -- 1273. ～のである
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～のである', '～のである', '~인 것이다', NULL, '문법', 1273, array[]::text[]) returning id into w;
+  -- 1396. 場合
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '場合', 'ばあい', '경우', '場(마당 장)+合(합할 합). 사례·상황', '문법-문맥이해', 1396, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '努力が必要なのである。', '노력이 필요한 것이다.', 1),
-    (w, '彼は嘘をついたのである。', '그는 거짓말을 한 것이다.', 2);
+    (w, '雨の場合は中止する。', '비 오는 경우에는 중지한다.', 1),
+    (w, 'この場合はどうする？', '이 경우에는 어떻게 해?', 2);
 
-  -- 1274. 実は
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '実は', 'じつは', '실은', '実 + は', '부사', 1274, array[]::text[]) returning id into w;
+  -- 1397. ～というわけだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というわけだ', '~인 것이다 <결론>', 'という+わけだ. 결론/설명', '문법-문맥이해', 1397, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '実は彼が来た。', '실은 그가 왔다.', 1),
-    (w, '実は秘密がある。', '실은 비밀이 있다.', 2);
+    (w, 'つまり彼は知らないというわけだ。', '즉 그는 모른다는 것이다.', 1),
+    (w, '理由がないというわけだ。', '이유가 없다는 것이다.', 2);
 
-  -- 1275. ～とされる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とされる', '～とされる', '~라고 되다, ~라고 여겨지다', NULL, '문법', 1275, array[]::text[]) returning id into w;
+  -- 1398. ～のである
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～のである', '~인 것이다', 'のだ의 격식. 단정·설명', '문법-문맥이해', 1398, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は天才とされる。', '그는 천재로 여겨진다.', 1),
-    (w, '伝統的とされる行事だ。', '전통적이라 여겨지는 행사다.', 2);
+    (w, '彼は努力したのである。', '그는 노력한 것이다.', 1),
+    (w, 'これは真実なのである。', '이것은 진실인 것이다.', 2);
 
-  -- 1276. お～いただけますか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お～いただけますか', 'おいただけますか', '~하실 수 있겠습니까? <겸손>', NULL, '문법', 1276, array[]::text[]) returning id into w;
+  -- 1399. ～かもしれない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～かもしれない(2)', '~일지도 모른다', 'かもしれない 재활용', '문법-문맥이해', 1399, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '間違っているかもしれない。', '틀렸을지도 모른다.', 1),
+    (w, '雪が降るかもしれない。', '눈이 올지도 모른다.', 2);
+
+  -- 1400. 実は
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '実は', 'じつは', '실은', '実(열매 실)は. 진실 도입 부사', '문법-문맥이해', 1400, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '実は彼が来る。', '실은 그가 온다.', 1),
+    (w, '実は知らなかった。', '실은 몰랐다.', 2);
+
+  -- 1401. ～とされる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とされる', '~라고 되다, ~라고 여겨지다', 'と+する의 수동. 사회적 통념', '문법-문맥이해', 1401, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '健康に良いとされる食品。', '건강에 좋다고 여겨지는 식품.', 1),
+    (w, '正しいとされる方法。', '옳다고 여겨지는 방법.', 2);
+
+  -- 1402. お～いただけますか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'お～いただけますか', '~하실 수 있겠습니까? <겸손>', 'お+ます형+いただけますか. 매우 정중 의뢰', '문법-문맥이해', 1402, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'お電話いただけますか。', '전화 주실 수 있겠습니까?', 1),
-    (w, 'お時間いただけますか。', '시간 내 주실 수 있겠습니까?', 2);
+    (w, 'お待ちいただけますか。', '기다려 주실 수 있겠습니까?', 2);
 
-  -- 1277. そうでもない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'そうでもない', '그렇지도 않다', '관용 표현', '관용', 1277, array[]::text[]) returning id into w;
+  -- 1403. そうでもない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そうでもない', '그렇지도 않다', 'そう+でも+ない. 부분 부정', '문법-문맥이해', 1403, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '忙しいかと聞かれたがそうでもない。', '바쁘냐고 물었는데 그렇지도 않다.', 1),
-    (w, '難しそうだがそうでもない。', '어려워 보이지만 그렇지도 않다.', 2);
+    (w, '高いと思ったがそうでもない。', '비싸다고 생각했는데 그렇지도 않다.', 1),
+    (w, '忙しいかと思えばそうでもない。', '바쁘다고 생각하면 그렇지도 않다.', 2);
 
-  -- 1278. ～とは思えない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とは思えない', '～とはおもえない', '~라고는 생각되지 않는다', NULL, '문법', 1278, array[]::text[]) returning id into w;
+  -- 1404. ～とは思えない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とは思えない', '~라고는 생각되지 않는다', 'と+は+思える+ない. 강한 부정 추측', '문법-문맥이해', 1404, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '本当だとは思えない。', '정말이라고는 생각되지 않는다.', 1),
-    (w, '彼が来るとは思えない。', '그가 올 거라고는 생각되지 않는다.', 2);
+    (w, '本当だとは思えない。', '사실이라고는 생각되지 않는다.', 1),
+    (w, '彼が嘘をつくとは思えない。', '그가 거짓말한다고는 생각되지 않는다.', 2);
 
-  -- 1279. 理由
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '理由', 'りゆう', '이유', '理 + 由', '명사', 1279, array[]::text[]) returning id into w;
+  -- 1405. 理由
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '理由', 'りゆう', '이유', '理(다스릴 리)+由(말미암을 유). 근거', '문법-문맥이해', 1405, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '遅刻の理由を聞いた。', '지각 이유를 들었다.', 1),
-    (w, '断る理由がない。', '거절할 이유가 없다.', 2);
+    (w, '理由を教えてください。', '이유를 알려 주세요.', 1),
+    (w, 'その理由は何ですか。', '그 이유는 무엇입니까?', 2);
 
-  -- 1280. だが～
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'だが～', 'だが', '그렇지만~', '관용 접속사', '접속사', 1280, array[]::text[]) returning id into w;
+  -- 1406. だが～
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'だが～', '그렇지만~', 'だ+が. 역접 접속사', '문법-문맥이해', 1406, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'だが、結局は失敗した。', '그렇지만 결국은 실패했다.', 1),
-    (w, 'だが、希望はある。', '그렇지만 희망은 있다.', 2);
+    (w, '頑張った。だが結果は出なかった。', '노력했다. 그렇지만 결과는 안 나왔다.', 1),
+    (w, '寒い。だが行く。', '춥다. 그렇지만 간다.', 2);
 
-  -- 1281. 出会う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '出会う', 'であう', '만나다', '出 + 会', '동사', 1281, array[]::text[]) returning id into w;
+  -- 1407. ～(さ)せられる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(さ)せられる(3)', '본의 아니게 ~하게 되다', '사역수동 させられる 재활용', '문법-문맥이해', 1407, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '旅先で素敵な人に出会った。', '여행지에서 멋진 사람을 만났다.', 1),
-    (w, '偶然出会った友人だ。', '우연히 만난 친구다.', 2);
+    (w, '反省させられる本。', '반성하게 되는 책.', 1),
+    (w, '考えさせられる映画。', '생각하게 되는 영화.', 2);
 
-  -- 1282. ある
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ある', '어느', '관용', '연체사', 1282, array[]::text[]) returning id into w;
+  -- 1408. 出会う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '出会う', 'であう', '만나다, 마주치다', '出(날 출)+会(만날 회)う. 우연/운명적 만남', '문법-문맥이해', 1408, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼と偶然出会った。', '그와 우연히 만났다.', 1),
+    (w, '素晴らしい人に出会えた。', '훌륭한 사람을 만날 수 있었다.', 2);
+
+  -- 1409. ある
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '或る', 'ある', '어느, 어떤', '不特定. 「특정하지 않은」', '문법-문맥이해', 1409, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ある日、彼が来た。', '어느 날 그가 왔다.', 1),
-    (w, 'ある町で起きた事件。', '어느 마을에서 일어난 사건.', 2);
+    (w, 'ある人が言っていた。', '어떤 사람이 말했다.', 2);
 
-  -- 1283. ～と言える
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～と言える', '～といえる', '~라고 말할 수 있다', NULL, '문법', 1283, array[]::text[]) returning id into w;
+  -- 1410. ～と言える
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～と言える', '~라고 말할 수 있다', '言う의 가능형. 결론 도출', '문법-문맥이해', 1410, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これは成功と言える。', '이것은 성공이라고 할 수 있다.', 1),
-    (w, '彼は努力家と言える。', '그는 노력가라고 할 수 있다.', 2);
+    (w, 'これは成功だと言える。', '이것은 성공이라고 말할 수 있다.', 1),
+    (w, '彼は天才と言える。', '그는 천재라고 말할 수 있다.', 2);
 
-  -- 1284. ～とはいえ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～とはいえ', '～とはいえ', '~라고는 해도', NULL, '문법', 1284, array[]::text[]) returning id into w;
+  -- 1411. ～とはいえ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～とはいえ', '~라고는 해도', 'と+は+いえ. 격식 역접', '문법-문맥이해', 1411, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '簡単とはいえ油断はできない。', '간단하다고는 해도 방심할 수 없다.', 1),
-    (w, '忙しいとはいえ時間は作れる。', '바쁘다고는 해도 시간은 낼 수 있다.', 2);
+    (w, '冬とはいえ暖かい日もある。', '겨울이라고는 해도 따뜻한 날도 있다.', 1),
+    (w, '休みとはいえ忙しい。', '쉰다고는 해도 바쁘다.', 2);
 
-  -- 1285. ～(よ)うと思う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～(よ)うと思う', '～(よ)うとおもう', '~하려고 생각하다', NULL, '문법', 1285, array[]::text[]) returning id into w;
+  -- 1412. ～(よ)うと思う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～(よ)うと思う', '~하려고 생각하다', '의지형+と+思う. 의도 표명', '문법-문맥이해', 1412, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '明日行こうと思う。', '내일 가려고 생각한다.', 1),
-    (w, '新しいことを始めようと思う。', '새로운 것을 시작하려고 생각한다.', 2);
+    (w, '留学しようと思っている。', '유학하려고 생각하고 있다.', 1),
+    (w, '今度こそやろうと思う。', '이번엔 정말 하려고 생각한다.', 2);
 
-  -- 1286. その
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'その', '그', '지시사', '연체사', 1286, array[]::text[]) returning id into w;
+  -- 1413. その
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'その', '그', '중칭 연체사. 상대 가까이 지시', '문법-문맥이해', 1413, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'その本を貸してください。', '그 책을 빌려 주세요.', 1),
-    (w, 'その方法は良い。', '그 방법은 좋다.', 2);
+    (w, 'その本を貸してください。', '그 책을 빌려주세요.', 1),
+    (w, 'その時、雨が降った。', '그때 비가 왔다.', 2);
 
-  -- 1287. ～といい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～といい', '～といい', '~하면 좋다', NULL, '문법', 1287, array[]::text[]) returning id into w;
+  -- 1414. ～といい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といい', '~하면 좋다', 'と(조건)+いい. 조언/희망', '문법-문맥이해', 1414, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '早く来るといい。', '일찍 오면 좋다.', 1),
-    (w, '試してみるといい。', '시도해 보면 좋다.', 2);
+    (w, '早く来るといい。', '빨리 오면 좋다.', 1),
+    (w, '雨が止むといいな。', '비가 그치면 좋겠다.', 2);
 
-  -- 1288. 使用されている
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '使用されている', 'しようされている', '사용되고 있다', '使用 + される', '관용구', 1288, array[]::text[]) returning id into w;
+  -- 1415. 使用されている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '使用されている', 'しようされている', '사용되고 있다', '使(부릴 사)用(쓸 용)される+ている. 수동 진행', '문법-문맥이해', 1415, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この技術が広く使用されている。', '이 기술이 널리 사용되고 있다.', 1),
-    (w, '伝統的な方法が今も使用されている。', '전통적인 방법이 지금도 사용되고 있다.', 2);
+    (w, 'この技術は広く使用されている。', '이 기술은 널리 사용되고 있다.', 1),
+    (w, '古い言葉も今でも使用されている。', '옛 말도 지금도 사용되고 있다.', 2);
 
-  -- 1289. どのような
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'どのような', '어떠한', '지시사', '연체사', 1289, array[]::text[]) returning id into w;
+  -- 1416. ～に違いない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～に違いない(2)', '~에 틀림없다', 'に違いない 재활용', '문법-문맥이해', 1416, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どのような問題ですか。', '어떤 문제입니까?', 1),
-    (w, 'どのような対応をしますか。', '어떠한 대응을 합니까?', 2);
+    (w, '彼が来るに違いない。', '그가 올 게 틀림없다.', 1),
+    (w, 'これは本物に違いない。', '이것은 진품임에 틀림없다.', 2);
 
-  -- 1290. ～という(との)ことだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～という(との)ことだ', '～というとのことだ', '~라고 한다', NULL, '문법', 1290, array[]::text[]) returning id into w;
+  -- 1417. どのような
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どのような', '어떠한', 'どの+ような. 종류 의문', '문법-문맥이해', 1417, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は休むということだ。', '그는 쉰다고 한다.', 1),
-    (w, '会議は中止とのことだ。', '회의는 중지라고 한다.', 2);
+    (w, 'どのような結果ですか。', '어떠한 결과입니까?', 1),
+    (w, 'どのような方法で？', '어떠한 방법으로?', 2);
 
-  -- 1291. 要するに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '要するに', 'ようするに', '요컨대', '要 + する', '부사', 1291, array[]::text[]) returning id into w;
+  -- 1418. ～という(との)ことだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～という(との)ことだ', '~라고 한다', 'という+ことだ. 전문', '문법-문맥이해', 1418, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '要するに賛成だ。', '요컨대 찬성이다.', 1),
-    (w, '要するに彼が悪い。', '요컨대 그가 잘못이다.', 2);
+    (w, '彼は退院するということだ。', '그는 퇴원한다고 한다.', 1),
+    (w, '会議は中止になったとのことだ。', '회의는 중지되었다고 한다.', 2);
 
-  -- 1292. どの
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'どの', '어느', '지시사', '연체사', 1292, array[]::text[]) returning id into w;
+  -- 1419. 要するに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '要するに', 'ようするに', '요컨대', '要(요긴할 요)+する+に. 핵심 요약', '문법-문맥이해', 1419, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '要するに練習が大事だ。', '요컨대 연습이 중요하다.', 1),
+    (w, '要するに無理だということだ。', '요컨대 무리라는 것이다.', 2);
+
+  -- 1420. ～だろうか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だろうか(2)', '~일까?', 'だろうか 재활용', '문법-문맥이해', 1420, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '本当だろうか。', '정말일까?', 1),
+    (w, 'これでいいだろうか。', '이걸로 될까?', 2);
+
+  -- 1421. どの
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'どの', '어느', '不定 연체사. 선택 의문', '문법-문맥이해', 1421, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'どの本がいいですか。', '어느 책이 좋습니까?', 1),
-    (w, 'どの方法を選ぶ。', '어느 방법을 고르나.', 2);
+    (w, 'どの道に行く？', '어느 길로 갈래?', 2);
 
-  -- 1293. ～ようだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ようだ', '～ようだ', '~인 것 같다', NULL, '문법', 1293, array[]::text[]) returning id into w;
+  -- 1422. ～たところ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～たところ(3)', '~했더니, ~한 결과', 'たところ 재활용', '문법-문맥이해', 1422, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '雨が降るようだ。', '비가 올 것 같다.', 1),
-    (w, '彼は疲れているようだ。', '그는 피곤한 것 같다.', 2);
+    (w, '聞いてみたところ、わからないと言った。', '물어 봤더니 모른다고 했다.', 1),
+    (w, '調べたところ、間違いがあった。', '조사해 봤더니 오류가 있었다.', 2);
 
-  -- 1294. ～ではないか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ではないか', '～ではないか', '~가 아닐까?', NULL, '문법', 1294, array[]::text[]) returning id into w;
+  -- 1423. ～ようだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ようだ', '~인 것 같다, ~듯하다', '様+だ. 추측·비유', '문법-문맥이해', 1423, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それで十分ではないか。', '그것으로 충분하지 않을까?', 1),
-    (w, '彼が来るのではないか。', '그가 오는 것 아닐까?', 2);
+    (w, '雨が降っているようだ。', '비가 오고 있는 것 같다.', 1),
+    (w, '彼は怒っているようだ。', '그는 화가 난 것 같다.', 2);
 
-  -- 1295. ～以上だ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～以上だ', '～いじょうだ', '~이상이다', NULL, '문법', 1295, array[]::text[]) returning id into w;
+  -- 1424. ～ではないか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ではないか', '~가 아닐까?, ~이 아니냐', 'ではない+か. 동의 구함/추측', '문법-문맥이해', 1424, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '予想以上だ。', '예상 이상이다.', 1),
-    (w, '私の力以上だ。', '내 힘 이상이다.', 2);
+    (w, 'いい考えではないか。', '좋은 생각이 아닌가?', 1),
+    (w, 'これは違うのではないか。', '이건 틀린 게 아닐까?', 2);
 
-  -- 1296. こんな
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'こんな', '이러한', '지시사', '연체사', 1296, array[]::text[]) returning id into w;
+  -- 1425. ～以上だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～以上だ', 'いじょうだ', '~이상이다', '以上+だ. 종결/한계 표현', '문법-문맥이해', 1425, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'こんな日もある。', '이런 날도 있다.', 1),
-    (w, 'こんな話を聞いた。', '이런 이야기를 들었다.', 2);
+    (w, '報告は以上です。', '보고는 이상입니다.', 1),
+    (w, '今日の予定は以上だ。', '오늘의 예정은 이상이다.', 2);
 
-  -- 1297. すると
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'すると', '그랬더니, 그러자<접속사>', '관용 접속사', '접속사', 1297, array[]::text[]) returning id into w;
+  -- 1426. こんな
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'こんな', '이러한', 'この+ような의 회화체', '문법-문맥이해', 1426, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'すると彼が現れた。', '그러자 그가 나타났다.', 1),
-    (w, 'するとドアが開いた。', '그러자 문이 열렸다.', 2);
+    (w, 'こんな話は初めてだ。', '이런 이야기는 처음이다.', 1),
+    (w, 'こんなに寒いとは。', '이렇게 추울 줄이야.', 2);
 
-  -- 1298. ～ではないのか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～ではないのか', '～ではないのか', '~가 아닌 것일까?', NULL, '문법', 1298, array[]::text[]) returning id into w;
+  -- 1427. すると
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'すると', '그러자, 그랬더니 <접속사>', 'する+と. 시간적 후속', '문법-문맥이해', 1427, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それは間違いではないのか。', '그것은 잘못이 아닐까?', 1),
-    (w, '彼が嘘をついたのではないのか。', '그가 거짓말을 한 게 아닐까?', 2);
+    (w, 'すると、彼が現れた。', '그러자 그가 나타났다.', 1),
+    (w, '雨が降った。すると寒くなった。', '비가 왔다. 그러자 추워졌다.', 2);
 
-  -- 1299. こういう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'こういう', '이러한', '지시사', '연체사', 1299, array[]::text[]) returning id into w;
+  -- 1428. ～だろう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～だろう(2)', '~일 것이다', 'だろう 재활용', '문법-문맥이해', 1428, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'こういう場面では冷静になる。', '이런 상황에서는 침착해진다.', 1),
-    (w, 'こういう人は信頼できる。', '이런 사람은 신뢰할 수 있다.', 2);
+    (w, '彼は元気だろう。', '그는 잘 지낼 것이다.', 1),
+    (w, 'これで十分だろう。', '이걸로 충분할 것이다.', 2);
 
-  -- 1300. 確かに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '確かに', 'たしかに', '아마, 틀림없이', '確 + か', '부사', 1300, array[]::text[]) returning id into w;
+  -- 1429. ～ではないのか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～ではないのか', '~가 아닌 것일까?', 'ではない+のか. 강한 의문/확인', '문법-문맥이해', 1429, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '確かに彼の言う通りだ。', '확실히 그의 말 그대로다.', 1),
-    (w, '確かに見ました。', '틀림없이 봤습니다.', 2);
+    (w, 'もっと簡単な方法があるのではないのか。', '더 쉬운 방법이 있는 게 아닐까?', 1),
+    (w, 'これは間違いではないのか。', '이건 잘못된 게 아닐까?', 2);
 
-  -- 1301. ～のだろう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～のだろう', '～のだろう', '~인 것이겠지', NULL, '문법', 1301, array[]::text[]) returning id into w;
+  -- 1430. こういう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'こういう', '이러한', 'こう+いう. 종류 지시', '문법-문맥이해', 1430, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は疲れているのだろう。', '그는 피곤한 것이겠지.', 1),
-    (w, 'そういうことだったのだろう。', '그런 거였겠지.', 2);
+    (w, 'こういう人が好きだ。', '이런 사람이 좋다.', 1),
+    (w, 'こういう場合は注意が必要だ。', '이런 경우에는 주의가 필요하다.', 2);
 
-  -- 1302. ご存じだろうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご存じだろうか', 'ごぞんじだろうか', '알고 계시는 것일까?<존경>', '존경어', '관용', 1302, array[]::text[]) returning id into w;
+  -- 1431. ～らしい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～らしい(3)', '~라는 것 같다', '추측 らしい 재활용', '문법-문맥이해', 1431, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '皆さんはご存じだろうか。', '여러분은 알고 계실까요?', 1),
-    (w, '彼はご存じだろうか。', '그는 알고 계실까?', 2);
+    (w, '結果が出るらしい。', '결과가 나올 것 같다.', 1),
+    (w, '中止になるらしい。', '중지될 것 같다.', 2);
 
-  -- 1303. しかし
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'しかし', '그러나', '관용 접속사', '접속사', 1303, array[]::text[]) returning id into w;
+  -- 1432. 確かに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '確かに', 'たしかに', '확실히, 분명히', '確(굳을 확)か+に. 확신 부사', '문법-문맥이해', 1432, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'しかし結果は違った。', '그러나 결과는 달랐다.', 1),
-    (w, 'しかし努力は無駄ではない。', '그러나 노력은 헛되지 않다.', 2);
+    (w, '確かに受け取りました。', '확실히 받았습니다.', 1),
+    (w, '確かに彼は来ていた。', '분명히 그는 와 있었다.', 2);
 
-  -- 1304. こうして
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'こうして', '이렇게 해서', '관용 부사', '부사', 1304, array[]::text[]) returning id into w;
+  -- 1433. ～のだろう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～のだろう', '~인 것이겠지', 'のだ+だろう. 설명+추측', '문법-문맥이해', 1433, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'こうして物事は進む。', '이렇게 일이 진행된다.', 1),
-    (w, 'こうして決まった。', '이렇게 결정되었다.', 2);
+    (w, '彼は疲れているのだろう。', '그는 피곤한 것일 거다.', 1),
+    (w, '何か理由があるのだろう。', '뭔가 이유가 있는 것일 거다.', 2);
 
-  -- 1305. さらに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'さらに', '게다가, 더욱이', '관용 부사', '부사', 1305, array[]::text[]) returning id into w;
+  -- 1434. ご存じだろうか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご存じだろうか', 'ごぞんじだろうか', '알고 계시는 것일까? <존경>', 'ご存じ+だろうか. 정중한 추측 의문', '문법-문맥이해', 1434, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'さらに努力する必要がある。', '더욱 노력할 필요가 있다.', 1),
-    (w, 'さらに難しい問題が出た。', '게다가 어려운 문제가 나왔다.', 2);
+    (w, '皆様、ご存じだろうか。', '여러분, 알고 계실까요?', 1),
+    (w, 'この事実をご存じだろうか。', '이 사실을 알고 계실까?', 2);
 
-  -- 1306. それには
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'それには', '그렇게 하기 위해서는', '관용 표현', '관용', 1306, array[]::text[]) returning id into w;
+  -- 1435. しかし
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'しかし', '그러나', '대표적 역접 접속사', '문법-문맥이해', 1435, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それには時間が必要だ。', '그렇게 하기 위해서는 시간이 필요하다.', 1),
-    (w, 'それには努力が要る。', '그렇게 하기 위해서는 노력이 필요하다.', 2);
+    (w, '頑張った。しかし失敗した。', '노력했다. 그러나 실패했다.', 1),
+    (w, '寒い。しかし出かける。', '춥다. 그러나 나간다.', 2);
 
-  -- 1307. どのくらいの長さが要るのでしょう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'どのくらいの長さが要るのでしょう', 'どのくらいのながさがいるのでしょう', '어느 정도의 길이가 필요한 것일까요?', 'どのくらい + 長さ + 要る', '관용구', 1307, array[]::text[]) returning id into w;
+  -- 1436. こうして
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'こうして', '이렇게 해서', 'こう+して. 과정 지시', '문법-문맥이해', 1436, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どのくらいの長さが要るのでしょう。', '어느 정도의 길이가 필요한 것일까요?', 1),
-    (w, 'コードはどのくらいの長さが要るのでしょう。', '선은 어느 정도의 길이가 필요한 것일까요?', 2);
+    (w, 'こうして問題は解決した。', '이렇게 해서 문제는 해결되었다.', 1),
+    (w, 'こうして仲良くなった。', '이렇게 해서 친해졌다.', 2);
 
-  -- 1308. そんな大きな翼
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'そんな大きな翼', 'そんなおおきなつばさ', '그러한 커다란 날개', 'そんな + 大きな + 翼', '관용구', 1308, array[]::text[]) returning id into w;
+  -- 1437. さらに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '更に', 'さらに', '게다가, 더욱이', '更(다시 갱)に. 추가/심화', '문법-문맥이해', 1437, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そんな大きな翼を持つ鳥は珍しい。', '그러한 커다란 날개를 가진 새는 드물다.', 1),
-    (w, 'そんな大きな翼で空を飛ぶ。', '그런 큰 날개로 하늘을 난다.', 2);
+    (w, 'さらに練習を続ける。', '더욱 연습을 계속한다.', 1),
+    (w, 'さらに問題が増えた。', '게다가 문제가 늘었다.', 2);
 
-  -- 1309. こうして見てみると
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'こうして見てみると', 'こうしてみてみると', '이렇게 보면', 'こうして + 見る', '관용구', 1309, array[]::text[]) returning id into w;
+  -- 1438. それには
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'それには', '그렇게 하기 위해서는', 'それ+に+は. 목적 달성 조건', '문법-문맥이해', 1438, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'こうして見てみると違う印象だ。', '이렇게 보면 다른 인상이다.', 1),
-    (w, 'こうして見てみると問題が分かる。', '이렇게 보면 문제가 보인다.', 2);
+    (w, 'それには努力が必要だ。', '그렇게 하기 위해서는 노력이 필요하다.', 1),
+    (w, 'それには時間がかかる。', '그것에는 시간이 걸린다.', 2);
 
-  -- 1310. 難しそうです
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '難しそうです', 'むずかしそうです', '어려울 것 같습니다', '難しい + そうだ', '관용구', 1310, array[]::text[]) returning id into w;
+  -- 1439. ～のだろう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～のだろう(2)', '~인 것이겠지', 'のだろう 재활용', '문법-문맥이해', 1439, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この問題は難しそうです。', '이 문제는 어려울 것 같습니다.', 1),
-    (w, '試験は難しそうです。', '시험은 어려울 것 같습니다.', 2);
+    (w, '彼は何を考えているのだろう。', '그는 무엇을 생각하고 있는 것일까.', 1),
+    (w, 'なぜ来なかったのだろう。', '왜 안 온 것일까.', 2);
 
-  -- 1311. 道路
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '道路', 'どうろ', '도로', '道 + 路', '명사', 1311, array[]::text[]) returning id into w;
+  -- 1440. そんな大きな翼
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'そんな大きな翼', 'そんなおおきなつばさ', '그러한 커다란 날개', 'そんな+大きな+翼. 비유적 표현', '문법-문맥이해', 1440, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '道路が混んでいる。', '도로가 막히고 있다.', 1),
+    (w, 'そんな大きな翼で空を飛ぶ。', '그러한 커다란 날개로 하늘을 난다.', 1),
+    (w, 'そんな大きな翼を持つ鳥は珍しい。', '그러한 커다란 날개를 가진 새는 드물다.', 2);
+
+  -- 1441. こうして見てみると
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'こうして見てみると', 'こうしてみてみると', '이렇게 보면', 'こうして+見てみる+と. 관점 전환', '문법-문맥이해', 1441, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こうして見てみると意外と簡単だ。', '이렇게 보면 의외로 간단하다.', 1),
+    (w, 'こうして見てみると違いがわかる。', '이렇게 보면 차이를 알 수 있다.', 2);
+
+  -- 1442. 難しそうです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '難しそうです', 'むずかしそうです', '어려울 것 같습니다', '難(어려울 난)しい+양태そうだ+です', '문법-문맥이해', 1442, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この試験は難しそうです。', '이 시험은 어려워 보입니다.', 1),
+    (w, '今回の課題も難しそうです。', '이번 과제도 어려울 것 같습니다.', 2);
+
+  -- 1443. 道路
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '道路', 'どうろ', '도로', '道(길 도)+路(길 로). 차량 통행로', '문법-문맥이해', 1443, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '道路が混んでいる。', '도로가 막힌다.', 1),
     (w, '新しい道路ができた。', '새 도로가 생겼다.', 2);
 
-  -- 1312. また
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'また', '또, 다시', '관용 부사', '부사', 1312, array[]::text[]) returning id into w;
+  -- 1444. ご存じでしょうか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご存じだろうか(2)', 'ごぞんじだろうか', '알고 계실까?', 'ご存じ+だろうか. 정중한 추측 의문 재활용', '문법-문맥이해', 1444, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'またお会いしましょう。', '또 만나요.', 1),
-    (w, 'また忘れてしまった。', '또 잊어 버렸다.', 2);
+    (w, '皆様、ご存じでしょうか。', '여러분, 알고 계신가요?', 1),
+    (w, 'この事実をご存じでしょうか。', '이 사실을 알고 계실까요?', 2);
 
-  -- 1313. ～工夫も見られる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～工夫も見られる', '～くふうもみられる', '~하는 고안(궁리)도 볼 수 있다', '工夫 + 見られる', '관용구', 1313, array[]::text[]) returning id into w;
+  -- 1445. また
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '又', 'また', '또, 다시 / 게다가', '又(또 우). 반복/추가', '문법-문맥이해', 1445, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '新しい工夫も見られる商品だ。', '새로운 궁리도 볼 수 있는 상품이다.', 1),
-    (w, '省エネの工夫も見られる。', '에너지 절약 궁리도 볼 수 있다.', 2);
+    (w, 'また会いましょう。', '또 만납시다.', 1),
+    (w, 'また、新しい問題が出た。', '또한 새 문제가 나왔다.', 2);
 
-  -- 1314. 支えてくれているわけだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '支えてくれているわけだ', 'ささえてくれているわけだ', '지탱해주고 있는 것이다', '支える + くれる + わけだ', '관용구', 1314, array[]::text[]) returning id into w;
+  -- 1446. ～工夫も見られる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '～工夫も見られる', 'くふうもみられる', '~하는 고안(궁리)도 볼 수 있다', '工(만들 공)夫. 창의 관찰', '문법-문맥이해', 1446, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼が支えてくれているわけだ。', '그가 지탱해 주고 있는 것이다.', 1),
-    (w, '家族が支えてくれているわけだ。', '가족이 지탱해 주고 있는 것이다.', 2);
+    (w, 'デザインに工夫も見られる。', '디자인에 창의도 볼 수 있다.', 1),
+    (w, '節電する工夫も見られる。', '절전 노력도 볼 수 있다.', 2);
 
-  -- 1315. 挙げよう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '挙げよう', 'あげよう', '들어보자', '挙げる + よう', '관용구', 1315, array[]::text[]) returning id into w;
+  -- 1447. 支えてくれているわけだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '支えてくれているわけだ', 'ささえてくれているわけだ', '지탱해주고 있는 것이다', '支える+てくれる+わけだ. 수혜+결론', '문법-문맥이해', 1447, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '具体例を挙げよう。', '구체적 예를 들어 보자.', 1),
-    (w, '問題を挙げよう。', '문제를 들어 보자.', 2);
+    (w, '家族が支えてくれているわけだ。', '가족이 지탱해주고 있는 것이다.', 1),
+    (w, '友人たちが支えてくれているわけだ。', '친구들이 받쳐주고 있는 것이다.', 2);
 
-  -- 1316. そこで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'そこで', '그래서', '관용 접속사', '접속사', 1316, array[]::text[]) returning id into w;
+  -- 1448. 挙げよう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '挙げよう', 'あげよう', '들어보자, 예시하자', '挙(들 거)げる+よう. 예시 권유', '문법-문맥이해', 1448, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そこで彼が登場した。', '그래서 그가 등장했다.', 1),
-    (w, 'そこで方針を変えた。', '그래서 방침을 바꿨다.', 2);
+    (w, '例を挙げよう。', '예를 들어 보자.', 1),
+    (w, '理由を挙げよう。', '이유를 들어 보자.', 2);
 
-  -- 1317. 活用して
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '活用して', 'かつようして', '활용해서', '活用 + して', '부사', 1317, array[]::text[]) returning id into w;
+  -- 1449. そこで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そこで', '그래서, 그리하여', '인과·전환 접속사', '문법-문맥이해', 1449, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間を活用して勉強する。', '시간을 활용해 공부한다.', 1),
-    (w, '資料を活用してプレゼンする。', '자료를 활용해 발표한다.', 2);
+    (w, '雨が降った。そこで傘を差した。', '비가 왔다. 그래서 우산을 폈다.', 1),
+    (w, 'そこで提案がある。', '그래서 제안이 있다.', 2);
 
-  -- 1318. ～してみるのも悪くない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～してみるのも悪くない', '～してみるのもわるくない', '~해 보는 것도 나쁘지 않다', NULL, '문법', 1318, array[]::text[]) returning id into w;
+  -- 1450. 活用して
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '活用して', 'かつようして', '활용해서', '活(살 활)用. 적극 사용', '문법-문맥이해', 1450, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '挑戦してみるのも悪くない。', '도전해 보는 것도 나쁘지 않다.', 1),
-    (w, '試してみるのも悪くない。', '시도해 보는 것도 나쁘지 않다.', 2);
+    (w, '時間を活用して勉強する。', '시간을 활용해서 공부한다.', 1),
+    (w, '資源を活用して開発する。', '자원을 활용해서 개발한다.', 2);
 
-  -- 1319. 増えているそうです
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '増えているそうです', 'ふえているそうです', '늘고 있다고 합니다', '増える + そうだ', '관용구', 1319, array[]::text[]) returning id into w;
+  -- 1451. ～というわけだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～というわけだ(2)', '~인 것이다', 'というわけだ 재활용', '문법-문맥이해', 1451, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '利用者が増えているそうです。', '이용자가 늘고 있다고 합니다.', 1),
+    (w, 'つまり成功したというわけだ。', '즉 성공했다는 것이다.', 1),
+    (w, '理由はないというわけだ。', '이유는 없다는 것이다.', 2);
+
+  -- 1452. ～してみるのも悪くない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～してみるのも悪くない', '~해 보는 것도 나쁘지 않다', 'してみる+のも+悪くない. 권유', '문법-문맥이해', 1452, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '旅行してみるのも悪くない。', '여행해 보는 것도 나쁘지 않다.', 1),
+    (w, '挑戦してみるのも悪くない。', '도전해 보는 것도 나쁘지 않다.', 2);
+
+  -- 1453. 増えているそうです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '増えているそうです', 'ふえているそうです', '늘고 있다고 합니다', '増える+ている+そうです(전문)', '문법-문맥이해', 1453, array['grammar','jlpt_n2']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '若い利用者が増えているそうです。', '젊은 이용자가 늘고 있다고 합니다.', 1),
     (w, '需要が増えているそうです。', '수요가 늘고 있다고 합니다.', 2);
 
-  -- 1320. ただ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ただ', '다만', '관용 접속사', '접속사', 1320, array[]::text[]) returning id into w;
+  -- 1454. ただ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '只', 'ただ', '다만, 단지', '只. 한정 부사·접속사', '문법-문맥이해', 1454, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '賛成だ。ただ条件がある。', '찬성이다. 다만 조건이 있다.', 1),
-    (w, 'ただ、注意が必要だ。', '다만 주의가 필요하다.', 2);
+    (w, 'ただ見ているだけだ。', '단지 보고 있을 뿐이다.', 1),
+    (w, 'ただし、注意点がある。', '다만 주의점이 있다.', 2);
 
-  -- 1321. 下がるというわけです
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '下がるというわけです', 'さがるというわけです', '내려간다고 하는 것입니다', '下がる + わけだ', '관용구', 1321, array[]::text[]) returning id into w;
+  -- 1455. 下がるというわけです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '下がるというわけです', 'さがるというわけです', '내려간다고 하는 것입니다', '下がる+というわけです. 결론 설명', '문법-문맥이해', 1455, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '気温が下がるというわけです。', '기온이 내려간다는 것입니다.', 1),
-    (w, '価格が下がるというわけです。', '가격이 내려간다고 하는 것입니다.', 2);
+    (w, '結果、価格が下がるというわけです。', '결과적으로 가격이 내려간다는 것입니다.', 1),
+    (w, '冬になると気温が下がるというわけです。', '겨울이 되면 기온이 내려간다는 것입니다.', 2);
 
-  -- 1322. そのような理由が
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'そのような理由が', 'そのようなりゆうが', '그러한 이유가', 'そのような + 理由', '관용구', 1322, array[]::text[]) returning id into w;
+  -- 1456. そのような理由が
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'そのような理由が', 'そのようなりゆうが', '그러한 이유가', 'そのような+理由. 원인 지시', '문법-문맥이해', 1456, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そのような理由が背景にある。', '그러한 이유가 배경에 있다.', 1),
-    (w, 'そのような理由が考えられる。', '그러한 이유가 고려된다.', 2);
+    (w, 'そのような理由があったのか。', '그러한 이유가 있었던 것인가.', 1),
+    (w, 'そのような理由が考えられる。', '그러한 이유를 생각할 수 있다.', 2);
 
-  -- 1323. 納得させられました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '納得させられました', 'なっとくさせられました', '납득했습니다 〈사역수동〉', '納得 + させられる', '관용구', 1323, array[]::text[]) returning id into w;
+  -- 1457. 納得させられました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '納得させられました', 'なっとくさせられました', '납득했습니다 <사역수동>', '納(들일 납)得+させられる. 강한 납득', '문법-문맥이해', 1457, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '彼の説明に納得させられました。', '그의 설명에 납득했습니다.', 1),
-    (w, 'データに納得させられました。', '데이터에 납득했습니다.', 2);
+    (w, 'その理由に納得させられた。', '그 이유에 납득되었다.', 2);
 
-  -- 1324. 学び始めた
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '学び始めた', 'まなびはじめた', '배우기 시작했다', '学ぶ + 始める', '관용구', 1324, array[]::text[]) returning id into w;
+  -- 1458. 学び始めた
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '学び始めた', 'まなびはじめた', '배우기 시작했다', '学ぶ+始める의 과거. 학습 개시', '문법-문맥이해', 1458, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '日本語を学び始めた。', '일본어를 배우기 시작했다.', 1),
-    (w, '新しい技術を学び始めた。', '새로운 기술을 배우기 시작했다.', 2);
+    (w, '去年から日本語を学び始めた。', '작년부터 일본어를 배우기 시작했다.', 1),
+    (w, '最近、楽器を学び始めた。', '최근 악기를 배우기 시작했다.', 2);
 
-  -- 1325. わかれば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'わかれば', '알면', 'わかる + ば', '관용', 1325, array[]::text[]) returning id into w;
+  -- 1459. わかれば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '分かれば', 'わかれば', '알면', '分かる+ば. 가정 조건', '문법-문맥이해', 1459, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'わかれば簡単だ。', '알면 간단하다.', 1),
-    (w, 'わかればすぐ解ける。', '알면 바로 풀린다.', 2);
+    (w, 'わかれば苦労はしない。', '알면 고생하지 않는다.', 1),
+    (w, 'やり方がわかれば簡単だ。', '하는 방법을 알면 간단하다.', 2);
 
-  -- 1326. 命じられたことである
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '命じられたことである', 'めいじられたことである', '명령을 받았던 것이다', '命じる + される', '관용구', 1326, array[]::text[]) returning id into w;
+  -- 1460. こうして
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'こうして(2)', '이렇게', 'こうして 재활용', '문법-문맥이해', 1460, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'それは命じられたことである。', '그것은 명령을 받았던 것이다.', 1),
-    (w, '私は命じられたことを行った。', '나는 명령받은 일을 했다.', 2);
+    (w, 'こうして見ると違う。', '이렇게 보면 다르다.', 1),
+    (w, 'こうして長い時間が過ぎた。', '이렇게 긴 시간이 흘렀다.', 2);
 
-  -- 1327. 日本地図
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '日本地図', 'にほんちず', '일본 지도', '日本 + 地図', '명사', 1327, array[]::text[]) returning id into w;
+  -- 1461. 命じられたことである
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '命じられたことである', 'めいじられたことである', '명령을 받았던 것이다', '命(목숨 명)じる+수동+ことである. 격식 결론', '문법-문맥이해', 1461, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '日本地図を見ながら計画を立てる。', '일본 지도를 보면서 계획을 세운다.', 1),
-    (w, '教室に日本地図が飾ってある。', '교실에 일본 지도가 걸려 있다.', 2);
+    (w, 'それは王様に命じられたことである。', '그것은 왕에게 명령받았던 것이다.', 1),
+    (w, '上司に命じられたことである。', '상사에게 명령받았던 것이다.', 2);
 
-  -- 1328. ご存じでしょうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご存じでしょうか', 'ごぞんじでしょうか', '알고 계신가요?', '존경어', '관용', 1328, array[]::text[]) returning id into w;
+  -- 1462. 日本地図
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '日本地図', 'にほんちず', '일본 지도', '日本+地(땅 지)+図(그림 도)', '문법-문맥이해', 1462, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '皆さんはご存じでしょうか。', '여러분은 알고 계신가요?', 1),
-    (w, '先生はご存じでしょうか。', '선생님은 알고 계신가요?', 2);
+    (w, '日本地図を見ながら計画する。', '일본 지도를 보면서 계획한다.', 1),
+    (w, '日本地図には47都道府県がある。', '일본 지도에는 47개 도도부현이 있다.', 2);
 
-  -- 1329. 得られるのだそうです
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '得られるのだそうです', 'えられるのだそうです', '얻을 수 있는 것이라고 합니다', '得られる + そうだ', '관용구', 1329, array[]::text[]) returning id into w;
+  -- 1463. ご存じでしょうか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'ご存じでしょうか', 'ごぞんじでしょうか', '알고 계신가요?', 'ご存じ+でしょうか. 매우 정중 의문', '문법-문맥이해', 1463, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '貴重な経験が得られるのだそうです。', '귀중한 경험을 얻을 수 있다고 합니다.', 1),
-    (w, '新しい知識が得られるのだそうです。', '새로운 지식을 얻을 수 있다고 합니다.', 2);
+    (w, 'この道をご存じでしょうか。', '이 길을 아십니까?', 1),
+    (w, '彼の連絡先をご存じでしょうか。', '그의 연락처를 알고 계신가요?', 2);
 
-  -- 1330. 貢献できるようになりたいです
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '貢献できるようになりたいです', 'こうけんできるようになりたいです', '공헌할 수 있게 되고 싶다', '貢献 + できる + ようになりたい', '관용구', 1330, array[]::text[]) returning id into w;
+  -- 1464. そこで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そこで(2)', '그래서', 'そこで 재활용', '문법-문맥이해', 1464, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '社会に貢献できるようになりたいです。', '사회에 공헌할 수 있게 되고 싶습니다.', 1),
-    (w, '会社に貢献できるようになりたいです。', '회사에 공헌할 수 있게 되고 싶습니다.', 2);
+    (w, '困っていた。そこで助けを求めた。', '곤란했다. 그래서 도움을 요청했다.', 1),
+    (w, 'そこで一つ質問だ。', '그래서 한 가지 질문이다.', 2);
 
-  -- 1331. 気になるもの
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '気になるもの', 'きになるもの', '신경 쓰이는 것', '気になる + もの', '관용구', 1331, array[]::text[]) returning id into w;
+  -- 1465. 得られるのだそうです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '得られるのだそうです', 'えられるのだそうです', '얻을 수 있는 것이라고 합니다', '得る+가능+のだ+そうです. 전문+설명', '문법-문맥이해', 1465, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '最近気になるものがある。', '최근 신경 쓰이는 것이 있다.', 1),
-    (w, '私の気になるものを紹介する。', '내가 신경 쓰이는 것을 소개한다.', 2);
+    (w, '良い結果が得られるのだそうです。', '좋은 결과를 얻을 수 있다고 합니다.', 1),
+    (w, '無料で得られるのだそうです。', '무료로 얻을 수 있는 것이라고 합니다.', 2);
 
-  -- 1332. この取り組みは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'この取り組みは', 'このとりくみは', '이 대책은', 'この + 取り組み', '관용구', 1332, array[]::text[]) returning id into w;
+  -- 1466. 気になるもの
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '気になるもの', 'きになるもの', '신경 쓰이는 것', '気+になる+もの. 관심 대상', '문법-문맥이해', 1466, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この取り組みは効果的だ。', '이 대책은 효과적이다.', 1),
-    (w, 'この取り組みは多くの人に支持された。', '이 대책은 많은 사람에게 지지받았다.', 2);
+    (w, '気になるものがある。', '신경 쓰이는 것이 있다.', 1),
+    (w, '気になるものを見つけた。', '신경 쓰이는 것을 발견했다.', 2);
 
-  -- 1333. 期待できるそうだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '期待できるそうだ', 'きたいできるそうだ', '기대할 수 있다고 한다', '期待 + そうだ', '관용구', 1333, array[]::text[]) returning id into w;
+  -- 1467. そこで
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そこで(3)', '그래서', 'そこで 재활용', '문법-문맥이해', 1467, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '成果が期待できるそうだ。', '성과를 기대할 수 있다고 한다.', 1),
-    (w, '新製品は期待できるそうだ。', '신제품은 기대할 수 있다고 한다.', 2);
+    (w, 'そこで提案がある。', '그래서 제안이 있다.', 1),
+    (w, '雨が降った。そこで予定を変えた。', '비가 왔다. 그래서 예정을 바꿨다.', 2);
 
-  -- 1334. 思えなかったからだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '思えなかったからだ', 'おもえなかったからだ', '생각하지 못했기 때문이다', '思える 부정 + から', '관용구', 1334, array[]::text[]) returning id into w;
+  -- 1468. この取り組みは
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'この取り組みは', 'このとりくみは', '이 대책은, 이 노력은', '取り組み. 사회 활동/사업', '문법-문맥이해', 1468, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '成功するとは思えなかったからだ。', '성공할 거라 생각하지 못했기 때문이다.', 1),
-    (w, '可能だとは思えなかったからだ。', '가능할 거라 생각하지 못했기 때문이다.', 2);
+    (w, 'この取り組みは全国に広がっている。', '이 대책은 전국으로 퍼지고 있다.', 1),
+    (w, 'この取り組みは成功した。', '이 노력은 성공했다.', 2);
 
-  -- 1335. ところが
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'ところが', '그런데, 그러나', '관용 접속사', '접속사', 1335, array[]::text[]) returning id into w;
+  -- 1469. 期待できるそうだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '期待できるそうだ', 'きたいできるそうだ', '기대할 수 있다고 한다', '期(기약할 기)待+できる+そうだ(전문)', '문법-문맥이해', 1469, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ところが結果は違った。', '그런데 결과는 달랐다.', 1),
-    (w, 'ところが彼は来なかった。', '그런데 그는 오지 않았다.', 2);
+    (w, '効果が期待できるそうだ。', '효과를 기대할 수 있다고 한다.', 1),
+    (w, '今後の成長が期待できるそうだ。', '향후 성장을 기대할 수 있다고 한다.', 2);
 
-  -- 1336. 楽しむものだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '楽しむものだ', 'たのしむものだ', '즐기는 것이다', '楽しむ + ものだ', '관용구', 1336, array[]::text[]) returning id into w;
+  -- 1470. 思えなかったからだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '思えなかったからだ', 'おもえなかったからだ', '생각하지 못했기 때문이다', '思える(가능)+なかった+から+だ. 가능 부정 이유', '문법-문맥이해', 1470, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '旅は楽しむものだ。', '여행은 즐기는 것이다.', 1),
-    (w, '人生は楽しむものだ。', '인생은 즐기는 것이다.', 2);
+    (w, 'まさかと思えなかったからだ。', '설마라고 생각하지 못했기 때문이다.', 1),
+    (w, '当然と思えなかったからだ。', '당연하다고 생각하지 못했기 때문이다.', 2);
 
-  -- 1337. どんな表現
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'どんな表現', 'どんなひょうげん', '어떤 표현', 'どんな + 表現', '관용구', 1337, array[]::text[]) returning id into w;
+  -- 1471. ところが
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'ところが', '그런데, 그러나', '所(ところ)+が. 의외 역접', '문법-문맥이해', 1471, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'どんな表現が適切だろうか。', '어떤 표현이 적절할까?', 1),
-    (w, 'どんな表現を選ぶか悩む。', '어떤 표현을 고를지 고민한다.', 2);
+    (w, 'ところが、結果は違った。', '그런데 결과는 달랐다.', 1),
+    (w, '行くつもりだった。ところが急用ができた。', '갈 생각이었다. 그런데 급한 일이 생겼다.', 2);
 
-  -- 1338. 増えてきました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '増えてきました', 'ふえてきました', '늘어왔습니다, 늘어났습니다', '増える + てきた', '관용구', 1338, array[]::text[]) returning id into w;
+  -- 1472. 楽しむものだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '楽しむものだ', 'たのしむものだ', '즐기는 것이다', '楽(즐길 락)しむ+もの+だ. 당위', '문법-문맥이해', 1472, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '最近、外国人観光客が増えてきました。', '최근 외국인 관광객이 늘어났습니다.', 1),
-    (w, '要望が増えてきました。', '요청이 늘어났습니다.', 2);
+    (w, '人生は楽しむものだ。', '인생은 즐기는 것이다.', 1),
+    (w, '旅は楽しむものだ。', '여행은 즐기는 것이다.', 2);
 
-  -- 1339. 同じ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '同じ', 'おなじ', '같은', '同 + じ', '연체사', 1339, array[]::text[]) returning id into w;
+  -- 1473. どんな表現
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'どんな表現', 'どんなひょうげん', '어떤 표현', 'どんな+表(겉 표)現. 의문', '문법-문맥이해', 1473, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼と同じ意見だ。', '그와 같은 의견이다.', 1),
-    (w, '同じ場所で待ち合わせる。', '같은 장소에서 만나기로 한다.', 2);
+    (w, 'どんな表現を使うか考える。', '어떤 표현을 쓸지 생각한다.', 1),
+    (w, 'どんな表現が適切だろうか。', '어떤 표현이 적절할까.', 2);
 
-  -- 1340. 試してみてはいかがでしょうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '試してみてはいかがでしょうか', 'ためしてみてはいかがでしょうか', '시험해 보는 것은 어떨까요?', '試す + みる + いかが', '관용구', 1340, array[]::text[]) returning id into w;
+  -- 1474. 増えてきました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '増えてきました', 'ふえてきました', '늘어왔습니다, 늘어났습니다', '増える+てくる+ました. 과거부터의 증가', '문법-문맥이해', 1474, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '新しい方法を試してみてはいかがでしょうか。', '새로운 방법을 시험해 보는 것은 어떨까요?', 1),
-    (w, '料理を試してみてはいかがでしょうか。', '요리를 시험해 보는 것은 어떨까요?', 2);
+    (w, '最近、外国人が増えてきました。', '최근 외국인이 늘어났습니다.', 1),
+    (w, '冬が近づいて寒い日が増えてきました。', '겨울이 다가오며 추운 날이 늘어왔습니다.', 2);
 
-  -- 1341. 問題である
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '問題である', 'もんだいである', '문제이다', '問題 + である', '관용구', 1341, array[]::text[]) returning id into w;
+  -- 1475. ところが
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'ところが(2)', '그런데, 그러나', 'ところが 재활용', '문법-문맥이해', 1475, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '環境破壊が大きな問題である。', '환경 파괴가 큰 문제다.', 1),
-    (w, '教育が問題である。', '교육이 문제다.', 2);
+    (w, '簡単と思った。ところが難しかった。', '쉽다고 생각했다. 그런데 어려웠다.', 1),
+    (w, 'ところが、誰も来なかった。', '그런데 아무도 안 왔다.', 2);
 
-  -- 1342. つくられているというだけではない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'つくられているというだけではない', '만들어진다는 것만이 아니다', 'つくる + される + だけ', '관용구', 1342, array[]::text[]) returning id into w;
+  -- 1476. 同じ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '同じ', 'おなじ', '같은', '同(한가지 동). 동일성', '문법-문맥이해', 1476, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '商品は機能だけでつくられているというだけではない。', '상품은 기능만으로 만들어지는 것만이 아니다.', 1),
-    (w, '伝統だけでつくられているというだけではない。', '전통만으로 만들어지는 것은 아니다.', 2);
+    (w, '同じ意見だ。', '같은 의견이다.', 1),
+    (w, '同じものを買った。', '같은 것을 샀다.', 2);
 
-  -- 1343. このような駐輪場
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'このような駐輪場', 'このようなちゅうりんじょう', '이러한 자전거(를 세워) 두는 곳', 'このような + 駐輪場', '관용구', 1343, array[]::text[]) returning id into w;
+  -- 1477. 問題である
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '問題である', 'もんだいである', '문제이다', '問題+である. 문어체 단정', '문법-문맥이해', 1477, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'このような駐輪場が市内に増えている。', '이러한 자전거 보관소가 시내에 늘고 있다.', 1),
-    (w, 'このような駐輪場は便利だ。', '이러한 자전거 보관소는 편리하다.', 2);
+    (w, 'これは大きな問題である。', '이것은 큰 문제이다.', 1),
+    (w, '時間管理が問題である。', '시간 관리가 문제이다.', 2);
 
-  -- 1344. ～するために～
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～するために～', '～するために', '~하기 위해서', NULL, '문법', 1344, array[]::text[]) returning id into w;
+  -- 1478. このような駐輪場
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'このような駐輪場', 'このようなちゅうりんじょう', '이러한 자전거(를 세워) 두는 곳', '駐(머무를 주)輪(바퀴 륜)場(마당 장)', '문법-문맥이해', 1478, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '勉強するために留学する。', '공부하기 위해 유학한다.', 1),
-    (w, '成功するために努力する。', '성공하기 위해 노력한다.', 2);
+    (w, 'このような駐輪場が増えている。', '이런 자전거 주차장이 늘고 있다.', 1),
+    (w, 'このような駐輪場は便利だ。', '이런 자전거 주차장은 편리하다.', 2);
 
-  -- 1345. ～されています
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～されています', '～されています', '~로 여겨지고 있습니다', NULL, '문법', 1345, array[]::text[]) returning id into w;
+  -- 1479. ～するために～
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～するために～', '~하기 위해서', 'する+ために. 목적', '문법-문맥이해', 1479, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この方法は有効だとされています。', '이 방법은 유효하다고 여겨지고 있습니다.', 1),
-    (w, '古くから利用されています。', '예부터 이용되고 있습니다.', 2);
+    (w, '健康になるために運動する。', '건강해지기 위해 운동한다.', 1),
+    (w, '勝つために練習する。', '이기기 위해 연습한다.', 2);
 
-  -- 1346. そのため
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'そのため', '그 때문에', '관용 접속사', '접속사', 1346, array[]::text[]) returning id into w;
+  -- 1480. ～といっても
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～といっても(3)', '~라고 해도', 'といっても 재활용', '문법-문맥이해', 1480, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '雨が降った。そのため試合は中止だ。', '비가 왔다. 그 때문에 시합은 중지다.', 1),
-    (w, '事故が起きた。そのため遅延した。', '사고가 났다. 그 때문에 지연되었다.', 2);
+    (w, '料理といっても簡単なものだ。', '요리라고 해도 간단한 것이다.', 1),
+    (w, '雨といっても少しだけだ。', '비라고 해도 조금일 뿐이다.', 2);
 
-  -- 1347. いいものだと思いました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'いいものだと思いました', 'いいものだとおもいました', '좋다고 생각했습니다', 'いい + もの + 思う', '관용구', 1347, array[]::text[]) returning id into w;
+  -- 1481. ～されています
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～されています', '~로 여겨지고 있습니다', '수동+ている+ます. 사회적 통념', '문법-문맥이해', 1481, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この経験はいいものだと思いました。', '이 경험은 좋다고 생각했습니다.', 1),
-    (w, '新しい挑戦はいいものだと思いました。', '새로운 도전은 좋다고 생각했습니다.', 2);
+    (w, 'これは安全だとされています。', '이것은 안전하다고 여겨지고 있습니다.', 1),
+    (w, 'その本は名作とされています。', '그 책은 명작으로 여겨지고 있습니다.', 2);
 
-  -- 1348. ～するようにしてください
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '～するようにしてください', '～するようにしてください', '~하도록 해 주세요', NULL, '문법', 1348, array[]::text[]) returning id into w;
+  -- 1482. そのため
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'そのため', '그 때문에', 'その+ため. 결과 접속사', '문법-문맥이해', 1482, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '時間を守るようにしてください。', '시간을 지키도록 해 주세요.', 1),
-    (w, '早めに来るようにしてください。', '일찍 오도록 해 주세요.', 2);
+    (w, '雪が積もった。そのため電車が止まった。', '눈이 쌓였다. 그 때문에 전철이 멈췄다.', 1),
+    (w, 'そのため、計画を変更した。', '그 때문에 계획을 변경했다.', 2);
 
-  -- 1349. (負担を)かけることもあります
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '(負担を)かけることもあります', '(ふたんをかけることもあります(', '(부담을)주는 경우도 있습니다', '負担 + かける', '관용구', 1349, array[]::text[]) returning id into w;
+  -- 1483. いいものだと思いました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'いいものだと思いました', 'いいものだとおもいました', '좋다고 생각했습니다', 'いい+ものだ+と思う+ました. 감상 표현', '문법-문맥이해', 1483, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'お客様に負担をかけることもあります。', '손님께 부담을 드리는 경우도 있습니다.', 1),
-    (w, '近隣に負担をかけることもあります。', '이웃에 부담을 주는 경우도 있습니다.', 2);
+    (w, 'これは本当にいいものだと思いました。', '이건 정말 좋다고 생각했습니다.', 1),
+    (w, '便利でいいものだと思いました。', '편리해서 좋다고 생각했습니다.', 2);
 
-  -- 1350. 疲れてしまっては
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '疲れてしまっては', 'つかれてしまっては', '지쳐버리면', '疲れる + てしまう', '관용구', 1350, array[]::text[]) returning id into w;
+  -- 1484. 実は
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '実は(2)', 'じつは', '실은', '実は 재활용', '문법-문맥이해', 1484, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '疲れてしまっては元も子もない。', '지쳐 버리면 본전도 못 찾는다.', 1),
-    (w, '疲れてしまっては集中できない。', '지쳐 버리면 집중할 수 없다.', 2);
+    (w, '実は知っていた。', '실은 알고 있었다.', 1),
+    (w, '実は彼が来ていた。', '실은 그가 와 있었다.', 2);
 
-  -- 1351. そんな紅葉
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'そんな紅葉', 'そんなこうよう', '그런 단풍', 'そんな + 紅葉', '관용구', 1351, array[]::text[]) returning id into w;
+  -- 1485. (부담을)주는 경우도 있습니다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '(負担を)与える場合もあります', 'あたえるばあいもあります', '(부담을) 주는 경우도 있습니다', '与える(주다)+場合もあります. 가능 사례', '문법-문맥이해', 1485, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そんな紅葉を見たことがない。', '그런 단풍을 본 적이 없다.', 1),
-    (w, 'そんな紅葉が広がる景色だ。', '그런 단풍이 펼쳐지는 풍경이다.', 2);
+    (w, '負担を与える場合もあります。', '부담을 주는 경우도 있습니다.', 1),
+    (w, '影響を与える場合もあります。', '영향을 주는 경우도 있습니다.', 2);
 
-  -- 1352. はじまらないのです
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'はじまらないのです', '시작되지 않는 것입니다', '始まる 부정 + のです', '관용구', 1352, array[]::text[]) returning id into w;
+  -- 1486. 疲れてしまっては
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '疲れてしまっては', 'つかれてしまっては', '지쳐버리면', '疲れる+てしまう+ては. 부정적 가정', '문법-문맥이해', 1486, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '何事も話し合わなければはじまらないのです。', '무엇이든 의논하지 않으면 시작되지 않는 것입니다.', 1),
-    (w, '行動しなければはじまらないのです。', '행동하지 않으면 시작되지 않는 것입니다.', 2);
+    (w, '疲れてしまっては元も子もない。', '지쳐버리면 본전도 못 챙긴다.', 1),
+    (w, 'もう疲れてしまってはどうしようもない。', '이미 지쳐버려서 어쩔 수 없다.', 2);
 
-  -- 1353. 感じるようになりました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '感じるようになりました', 'かんじるようになりました', '느끼게 되었습니다', '感じる + ようになる', '관용구', 1353, array[]::text[]) returning id into w;
+  -- 1487. そんな紅葉
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'そんな紅葉', 'そんなこうよう', '그런 단풍', 'そんな+紅葉(단풍). 지시', '문법-문맥이해', 1487, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '最近、変化を感じるようになりました。', '최근 변화를 느끼게 되었습니다.', 1),
-    (w, '幸せを感じるようになりました。', '행복을 느끼게 되었습니다.', 2);
+    (w, 'そんな紅葉を一度見たい。', '그런 단풍을 한 번 보고 싶다.', 1),
+    (w, 'そんな紅葉に感動した。', '그런 단풍에 감동했다.', 2);
 
-  -- 1354. 例えば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '例えば', 'たとえば', '예를 들면', '관용 접속사', '접속사', 1354, array[]::text[]) returning id into w;
+  -- 1488. しかし
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, 'しかし(2)', '그러나', 'しかし 재활용', '문법-문맥이해', 1488, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '例えば、リンゴ。', '예를 들면 사과.', 1),
-    (w, '例えば、こんな場合だ。', '예를 들면 이런 경우다.', 2);
+    (w, 'しかし、現実は厳しい。', '그러나 현실은 가혹하다.', 1),
+    (w, 'しかし、続けるしかない。', '그러나 계속할 수밖에 없다.', 2);
 
-  -- 1355. 感動していた
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '感動していた', 'かんどうしていた', '감동했었다', '感動 + していた', '관용구', 1355, array[]::text[]) returning id into w;
+  -- 1489. はじまらないのです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '始まらないのです', 'はじまらないのです', '시작되지 않는 것입니다', '始まる+ない+のです. 설명/단정', '문법-문맥이해', 1489, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '彼は映画に感動していた。', '그는 영화에 감동했다.', 1),
-    (w, '音楽に感動していた。', '음악에 감동했다.', 2);
+    (w, '何も始まらないのです。', '아무것도 시작되지 않는 것입니다.', 1),
+    (w, 'やる気がないと始まらないのです。', '의욕이 없으면 시작되지 않는 것입니다.', 2);
 
-  -- 1356. やってみて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, NULL, 'やってみて', '해 보고', 'やる + てみる', '관용', 1356, array[]::text[]) returning id into w;
+  -- 1490. 感じるようになりました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '感じるようになりました', 'かんじるようになりました', '느끼게 되었습니다', '感じる+ようになる+ました. 변화', '문법-문맥이해', 1490, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'まずやってみて。', '우선 해 보고.', 1),
-    (w, 'やってみて分かることもある。', '해 봐야 알 수 있는 것도 있다.', 2);
+    (w, '最近、寒さを感じるようになりました。', '최근 추위를 느끼게 되었습니다.', 1),
+    (w, '責任を感じるようになりました。', '책임을 느끼게 되었습니다.', 2);
 
-  -- 1357. ２対１
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '２対１', 'にたいいち', '2 대 1 (비율 표기)', '対(대할 대): 서로 마주보다
-숫자、対、숫자 형태로 비율·점수를 표현', '명사', 1357, array['pdf_extracted']::text[]) returning id into w;
+  -- 1491. 例えば
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '例えば(2)', 'たとえば', '예를 들면', '例えば 재활용', '문법-문맥이해', 1491, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '試合は２対１で勝った。', '시합은 2 대 1로 이겼다.', 1),
-    (w, 'スコアは３対０だ。', '스코어는 3 대 0이다.', 2);
+    (w, '例えば、こんな問題がある。', '예를 들면 이런 문제가 있다.', 1),
+    (w, '例えば、料理が好きだ。', '예를 들면 요리가 좋다.', 2);
 
-  -- 1358. お越しいただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しいただく', 'おこしいただく', '(손님이) 와 주시다 <겸양>', 'お (접두 경어): 넓은 범위에 따르는 존경 표현
-越す(넘고 가다)·頂く(받다)의 겸양형 결합', '문법', 1358, array['pdf_extracted']::text[]) returning id into w;
+  -- 1492. ～も
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, NULL, '～も', '~도', '병렬·첨가 조사 も', '문법-문맥이해', 1492, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '本日はお越しいただき、ありがとうございます。', '오늘 와 주셔서 감사합니다.', 1),
-    (w, '遠方よりお越しいただき恌謝です。', '멀리서 와 주시니 감사합니다.', 2);
+    (w, '私も行く。', '나도 간다.', 1),
+    (w, '彼も知っている。', '그도 알고 있다.', 2);
 
-  -- 1359. 申し上げる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '申し上げる', 'もうしあげる', '말씀 드리다 <겸양>', '申(아륐 신): 말하다·아뢨다의 겸양 표현
-上げる(올리다): 아랫사람이 윗사람에게 올리는 의미', '문법', 1359, array['pdf_extracted']::text[]) returning id into w;
+  -- 1493. 感動していた
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, '感動していた', 'かんどうしていた', '감동했었다', '感動する+ていた. 과거의 감동 상태 지속', '문법-문맥이해', 1493, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '心からお詫び申し上げます。', '진심으로 사과 드립니다.', 1),
-    (w, 'ごあいさつ申し上げます。', '인사 드립니다.', 2);
+    (w, '彼の演説に感動していた。', '그의 연설에 감동했었다.', 1),
+    (w, '景色に感動していた。', '경치에 감동했었다.', 2);
 
-  -- 1360. お/ご〜です
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お/ご〜です', 'お/ご〜です', '~ 하시다 <존경>', 'お/ご + 명사/동사얰용형 + です 구조
-일본어 대표적인 존경 패턴', '문법', 1360, array['pdf_extracted']::text[]) returning id into w;
+  -- 1494. やってみて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n2, 'やってみて', 'やってみて', '해 보고', 'やる+てみる+て. 시도 후 결과', '문법-문맥이해', 1494, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '先生はお元気ですか。', '선생님은 건강하시거임용　?', 1),
-    (w, 'それはご本人です。', '이분이 본인이세요.', 2);
-
-  -- 1361. お越しくださる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しくださる', 'おこしくださる', '(손님이) 오시다 <존경>', 'お (접두 경어)
-越す(넘고 가다)·下さる(주시다)의 존경형', '문법', 1361, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ようこそお越しくださいました。', '잘 오셨습니다.', 1),
-    (w, 'どうぞお越しください。', '부디 오세요.', 2);
-
-  -- 1362. ご覧いただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご覧いただく', 'ごらんいただく', '봐 주시다, 보시도록 하다 <겸양>', 'ご (접두 경어)
-覧(볼 람)+頂く(받다)의 겸양 표현', '문법', 1362, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '資料をご覧いただきたいのですが。', '자료를 보셔 주셨으면 합니다만.', 1),
-    (w, 'メールをご覧いただけますか。', '메일을 확인해 주시겠습니까욨　?', 2);
-
-  -- 1363. ご存じだろうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご存じだろうか', 'ごぞんじだろうか', '알고 계실까? <존경>', 'ご (접두 경어)
-存じる(知っている의 겸양)　+ 의문 표현', '문법', 1363, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '田中さんをご存じだろうか。', '다나카씨를 알고 계실가요?', 1),
-    (w, 'このニュースをご存じだろうか。', '이 뉴스를 알고 계실까용　?', 2);
+    (w, 'やってみて初めてわかった。', '해 보고 비로소 알았다.', 1),
+    (w, 'やってみて損はない。', '해 봐서 손해는 없다.', 2);
 
 end $$;
