@@ -5,7 +5,7 @@ import {
   getOriginOrDefault,
   rejectIfMethodNotAllowed,
   setApiResponseHeaders,
-} from "../../_lib/security";
+} from "../../_lib/security.js";
 
 /**
  * 네이버 OAuth 시작점.

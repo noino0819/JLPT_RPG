@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import {
   rejectIfMethodNotAllowed,
   setApiResponseHeaders,
-} from "../../_lib/security";
+} from "../../_lib/security.js";
 
 /**
  * 네이버 "연결 끊기" 콜백.

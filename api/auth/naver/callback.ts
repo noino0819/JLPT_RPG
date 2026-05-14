@@ -8,7 +8,7 @@ import {
   safeEqual,
   sanitizeErrorMessage,
   setApiResponseHeaders,
-} from "../../_lib/security";
+} from "../../_lib/security.js";
 
 interface NaverTokenResponse {
   access_token?: string;
