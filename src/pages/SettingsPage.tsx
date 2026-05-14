@@ -11,7 +11,8 @@ import { showAlert, showConfirm } from "../store/modalStore";
 import { MAX_NICKNAME_LEN } from "../lib/validation";
 import {
   JP_FONT_OPTIONS,
-  ensureJpFontLoaded,
+  JP_FONT_PREVIEW,
+  ensureAllJpFontsLoaded,
   type JpFontOption,
 } from "../lib/jpFonts";
 import type { JpFontId } from "../types";
@@ -31,10 +32,10 @@ export default function SettingsPage() {
   const resetProgress = useProgressStore((s) => s.reset);
   const resetProfile = useProfileStore((s) => s.reset);
 
-  // 설정 페이지 진입 시 모든 일본어 폰트의 stylesheet 를 lazily 로드.
-  // 미리보기 카드에서 즉시 실제 폰트로 보이도록 사전 로드한다.
+  // 설정 페이지 진입 시 6종 일본어 폰트 stylesheet 를 한 번의 요청으로 prefetch.
+  // 카드 미리보기들이 폴백 글꼴로 잠깐 보이는 시간을 최소화한다.
   useEffect(() => {
-    JP_FONT_OPTIONS.forEach((opt) => ensureJpFontLoaded(opt.id));
+    ensureAllJpFontsLoaded();
   }, []);
 
   const handleSignOut = async () => {
@@ -390,8 +391,9 @@ function Slider({
 
 /**
  * 일본어 폰트 선택 카드.
- * 카드 자체에 해당 폰트를 inline-style 로 적용해 미리보기를 보여준다.
- * 선택된 카드는 rune 색상 테두리로 강조된다.
+ * 카드 안의 모든 일본어(한자 / 가나 읽기 / 가타카나 라벨)에 해당 폰트를
+ * inline-style 로 적용해 폰트 차이를 한눈에 볼 수 있게 한다.
+ * 한국어 보조 라벨은 일본어 폰트가 한글을 지원하지 않으므로 픽셀 폰트로 표시.
  */
 function JpFontCard({
   option,
@@ -408,19 +410,39 @@ function JpFontCard({
       onClick={() => onSelect(option.id)}
       aria-pressed={active}
       title={option.description}
-      className={`flex flex-col items-center gap-1 border-2 p-2 transition active:translate-y-[1px] ${
+      className={`relative flex flex-col items-center gap-0.5 border-2 px-2 pb-2 pt-3 transition active:translate-y-[1px] ${
         active
           ? "border-rune-500 bg-rune-500/15 text-parchment-100"
           : "border-black bg-dungeon-50 text-parchment-200 hover:bg-dungeon-100"
       }`}
     >
-      <span
-        className="text-3xl leading-none text-parchment-100"
+      {active && (
+        <span
+          className="absolute right-1 top-1 font-pixel text-[10px] text-rune-400"
+          aria-hidden
+        >
+          ✓
+        </span>
+      )}
+
+      {/* 폰트 적용 영역 — 한자(큰), 가나 읽기, 가타카나 라벨이 모두 동일 폰트로 보임 */}
+      <div
+        className="flex flex-col items-center gap-0.5 text-parchment-100"
         style={{ fontFamily: option.family }}
       >
-        {option.sample}
-      </span>
-      <span className="font-pixel text-[10px] uppercase tracking-wide">
+        <span className="text-4xl font-bold leading-none">
+          {JP_FONT_PREVIEW.headword}
+        </span>
+        <span className="text-xs leading-none text-parchment-300">
+          {JP_FONT_PREVIEW.reading}
+        </span>
+        <span className="mt-1 text-[11px] leading-none text-parchment-200">
+          {option.jpLabel}
+        </span>
+      </div>
+
+      {/* 한국어 보조 라벨 — 일본어 폰트는 한글 미지원이라 픽셀 폰트 유지 */}
+      <span className="mt-1 font-pixel text-[10px] uppercase tracking-wide">
         {option.label}
       </span>
     </button>
