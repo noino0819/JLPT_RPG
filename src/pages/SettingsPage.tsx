@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
@@ -8,6 +9,12 @@ import { hasJaVoice, isTtsAvailable, speakJa } from "../lib/tts";
 import Toggle from "../components/Toggle";
 import { showAlert, showConfirm } from "../store/modalStore";
 import { MAX_NICKNAME_LEN } from "../lib/validation";
+import {
+  JP_FONT_OPTIONS,
+  ensureJpFontLoaded,
+  type JpFontOption,
+} from "../lib/jpFonts";
+import type { JpFontId } from "../types";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -23,6 +30,12 @@ export default function SettingsPage() {
   } = useProfileStore();
   const resetProgress = useProgressStore((s) => s.reset);
   const resetProfile = useProfileStore((s) => s.reset);
+
+  // 설정 페이지 진입 시 모든 일본어 폰트의 stylesheet 를 lazily 로드.
+  // 미리보기 카드에서 즉시 실제 폰트로 보이도록 사전 로드한다.
+  useEffect(() => {
+    JP_FONT_OPTIONS.forEach((opt) => ensureJpFontLoaded(opt.id));
+  }, []);
 
   const handleSignOut = async () => {
     if (isSupabaseEnabled && supabase) {
@@ -94,6 +107,22 @@ export default function SettingsPage() {
           onChange={(v) => updateSettings({ review_mix_weight: v })}
           suffix="배"
         />
+      </Section>
+
+      <Section title="단어 폰트">
+        <p className="font-pixel text-[10px] leading-relaxed text-parchment-300">
+          단어 카드와 카나 수련장의 일본어 글꼴을 바꿉니다.
+        </p>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {JP_FONT_OPTIONS.map((opt) => (
+            <JpFontCard
+              key={opt.id}
+              option={opt}
+              active={settings.jp_font === opt.id}
+              onSelect={(id) => updateSettings({ jp_font: id })}
+            />
+          ))}
+        </div>
       </Section>
 
       <Section title="이펙트">
@@ -356,5 +385,44 @@ function Slider({
         className="mt-1 w-full accent-rune-500"
       />
     </div>
+  );
+}
+
+/**
+ * 일본어 폰트 선택 카드.
+ * 카드 자체에 해당 폰트를 inline-style 로 적용해 미리보기를 보여준다.
+ * 선택된 카드는 rune 색상 테두리로 강조된다.
+ */
+function JpFontCard({
+  option,
+  active,
+  onSelect,
+}: {
+  option: JpFontOption;
+  active: boolean;
+  onSelect: (id: JpFontId) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(option.id)}
+      aria-pressed={active}
+      title={option.description}
+      className={`flex flex-col items-center gap-1 border-2 p-2 transition active:translate-y-[1px] ${
+        active
+          ? "border-rune-500 bg-rune-500/15 text-parchment-100"
+          : "border-black bg-dungeon-50 text-parchment-200 hover:bg-dungeon-100"
+      }`}
+    >
+      <span
+        className="text-3xl leading-none text-parchment-100"
+        style={{ fontFamily: option.family }}
+      >
+        {option.sample}
+      </span>
+      <span className="font-pixel text-[10px] uppercase tracking-wide">
+        {option.label}
+      </span>
+    </button>
   );
 }

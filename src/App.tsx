@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import { useAuthStore } from "./store/authStore";
@@ -5,6 +6,8 @@ import { useSupabaseSession } from "./hooks/useSupabaseSession";
 import { useProgressSync } from "./hooks/useProgressSync";
 import { useProfileSync } from "./hooks/useProfileSync";
 import { useDecksSync } from "./hooks/useDecksSync";
+import { useProfileStore } from "./store/profileStore";
+import { applyJpFont } from "./lib/jpFonts";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import WardrobePage from "./pages/WardrobePage";
@@ -23,6 +26,14 @@ export default function App() {
   useProfileSync();
   useProgressSync();
   useDecksSync();
+
+  // 사용자가 설정에서 고른 일본어 픽셀 폰트를 :root --jp-font-family 로 적용.
+  // 변경 즉시 화면 전체의 .pixel-text-jp 가 새 폰트로 갱신되며,
+  // 외부 Google Fonts stylesheet 도 한 번만 lazily 주입된다.
+  const jpFont = useProfileStore((s) => s.settings.jp_font);
+  useEffect(() => {
+    applyJpFont(jpFont);
+  }, [jpFont]);
 
   const signedIn = useAuthStore((s) => s.signedIn);
   const ready = useAuthStore((s) => s.ready);

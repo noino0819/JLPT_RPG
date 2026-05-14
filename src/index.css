@@ -116,8 +116,13 @@
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
   }
 
+  /*
+    일본어 단어/카나에 사용되는 폰트.
+    사용자가 설정에서 선택한 폰트를 :root --jp-font-family 로 주입한다 (jpFonts.ts).
+    아직 적용 전이면 기본 픽셀 글꼴(DotGothic16)로 폴백.
+  */
   .pixel-text-jp {
-    font-family: "DotGothic16", monospace;
+    font-family: var(--jp-font-family, "DotGothic16", "Noto Sans JP", monospace);
   }
 
   .badge-pixel {
