@@ -98,6 +98,10 @@ export const useProfileStore = create<ProfileState>()(
               ...DEFAULT_SETTINGS.effects,
               ...(p.settings?.effects ?? {}),
             },
+            tts: {
+              ...DEFAULT_SETTINGS.tts,
+              ...(p.settings?.tts ?? {}),
+            },
           },
           equipped: {
             ...DEFAULT_EQUIPPED,

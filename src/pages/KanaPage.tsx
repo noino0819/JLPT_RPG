@@ -15,6 +15,7 @@ import {
 } from "../store/kanaProgressStore";
 import { useProfileStore } from "../store/profileStore";
 import { playClick, playDefeat } from "../lib/sfx";
+import { isTtsAvailable, speakJa, stopTts } from "../lib/tts";
 
 type Mode = "table" | "flashcard" | "quiz";
 
@@ -428,6 +429,7 @@ function KanaFlashcard({
   const touch = useKanaProgressStore((s) => s.touch);
   const settings = useProfileStore((s) => s.settings);
   const selectedCharacter = useProfileStore((s) => s.selected_character);
+  const ttsOn = settings.tts.enabled && isTtsAvailable();
 
   // script/group 이 바뀌면 새 풀로 재셔플.
   useEffect(() => {
@@ -437,6 +439,13 @@ function KanaFlashcard({
   }, [chars]);
 
   const current = shuffled[index];
+
+  // 자동 재생: 카드를 뒤집어 발음을 보여줄 때 한 번 읽어준다.
+  useEffect(() => {
+    if (!ttsOn || !settings.tts.autoplay || !flipped || !current) return;
+    speakJa(current.char, { rate: settings.tts.rate });
+    return () => stopTts();
+  }, [flipped, current?.id, ttsOn, settings.tts.autoplay, settings.tts.rate]);
 
   if (!current) {
     return (
@@ -508,6 +517,12 @@ function KanaFlashcard({
           {/* BACK — 본문(글자/로마지/행 표기)은 진짜 가운데에 두고,
               하단 안내 텍스트는 마찬가지로 absolute 로 분리한다. */}
           <div className="flip-face flip-back panel-parchment scanline relative flex flex-col items-center justify-center gap-2 p-3">
+            {ttsOn && (
+              <KanaSpeakerButton
+                onClick={() => speakJa(current.char, { rate: settings.tts.rate })}
+                className="absolute right-2 top-2"
+              />
+            )}
             <div
               className="pixel-text-jp font-bold text-parchment-900"
               style={{ fontSize: "clamp(56px, 14vh, 88px)" }}
@@ -569,6 +584,7 @@ function KanaQuiz({
   const byChar = useKanaProgressStore((s) => s.byChar);
   const settings = useProfileStore((s) => s.settings);
   const selectedCharacter = useProfileStore((s) => s.selected_character);
+  const ttsOn = settings.tts.enabled && isTtsAvailable();
 
   // "통달" (level 2) 도달까지 필요한 퀴즈 정답 횟수.
   // score = quiz_correct * 0.6 >= 3 → quiz_correct >= 5
@@ -648,7 +664,13 @@ function KanaQuiz({
 
       {/* 질문 패널은 남은 세로 공간을 모두 사용. 작은 화면에서도 글자가
           버튼/하단 결과 텍스트를 밀어내지 않도록 clamp 로 자동 축소한다. */}
-      <div className="panel-parchment flex min-h-0 flex-1 flex-col items-center justify-center gap-1 !p-3">
+      <div className="panel-parchment relative flex min-h-0 flex-1 flex-col items-center justify-center gap-1 !p-3">
+        {ttsOn && (
+          <KanaSpeakerButton
+            onClick={() => speakJa(current.char, { rate: settings.tts.rate })}
+            className="absolute right-2 top-2"
+          />
+        )}
         <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
           이 글자의 발음은?
         </div>
@@ -708,6 +730,31 @@ function KanaQuiz({
           ))}
       </div>
     </div>
+  );
+}
+
+// ───────── 카나 발음(🔊) 버튼 ─────────
+// 카드/패널 부모에 onClick(=뒤집기 등) 이 걸려있을 수 있어 stopPropagation 필수.
+function KanaSpeakerButton({
+  onClick,
+  className = "",
+}: {
+  onClick: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label="발음 듣기"
+      title="발음 듣기"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      className={`shrink-0 border-2 border-parchment-700/40 bg-parchment-100 px-2 py-1 font-pixel text-xs text-parchment-900 hover:bg-parchment-200 active:translate-y-[1px] ${className}`}
+    >
+      🔊
+    </button>
   );
 }
 

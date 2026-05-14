@@ -18,6 +18,12 @@ export interface Settings {
     card_shake: boolean;
     sound: boolean;
   };
+  // 일본어 음성 읽기(Web Speech API) 설정
+  tts: {
+    enabled: boolean; // 🔊 버튼 노출 여부
+    autoplay: boolean; // 카드가 새로 등장할 때 자동 재생
+    rate: number; // 발화 속도(0.5 ~ 1.5)
+  };
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -27,6 +33,7 @@ export const DEFAULT_SETTINGS: Settings = {
   review_mix_weight: 3,
   show_character: true,
   effects: { attack: true, card_shake: true, sound: false },
+  tts: { enabled: true, autoplay: false, rate: 0.95 },
 };
 
 export interface Profile {

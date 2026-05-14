@@ -4,6 +4,7 @@ import { useProfileStore } from "../store/profileStore";
 import { useProgressStore } from "../store/progressStore";
 import { isSupabaseEnabled, supabase } from "../lib/supabase";
 import { playPreview } from "../lib/sfx";
+import { hasJaVoice, isTtsAvailable, speakJa } from "../lib/tts";
 import Toggle from "../components/Toggle";
 import { showAlert, showConfirm } from "../store/modalStore";
 
@@ -136,6 +137,67 @@ export default function SettingsPage() {
         <p className="font-pixel text-[10px] leading-relaxed text-parchment-300">
           직업별 공격·처치 사운드와 보관함 토글, 해금 팡파레까지 모두 포함됩니다.
         </p>
+      </Section>
+
+      <Section title="음성 읽어주기">
+        {!isTtsAvailable() ? (
+          <p className="font-pixel text-[10px] leading-relaxed text-volcano-300">
+            ⚠ 이 브라우저는 음성 합성(SpeechSynthesis)을 지원하지 않습니다.
+          </p>
+        ) : (
+          <>
+            <Row label="🔊 음성 버튼 표시">
+              <Toggle
+                on={settings.tts.enabled}
+                onChange={(v) =>
+                  updateSettings({ tts: { ...settings.tts, enabled: v } })
+                }
+              />
+            </Row>
+            <Row label="새 카드에서 자동 재생">
+              <Toggle
+                on={settings.tts.autoplay}
+                onChange={(v) =>
+                  updateSettings({ tts: { ...settings.tts, autoplay: v } })
+                }
+              />
+            </Row>
+            <Slider
+              label="발음 속도"
+              min={5}
+              max={15}
+              value={Math.round(settings.tts.rate * 10)}
+              onChange={(v) =>
+                updateSettings({ tts: { ...settings.tts, rate: v / 10 } })
+              }
+              suffix={`× (${settings.tts.rate.toFixed(1)})`}
+            />
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() =>
+                  speakJa("勉強しましょう。", { rate: settings.tts.rate })
+                }
+                disabled={!settings.tts.enabled}
+                className="border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-[10px] text-parchment-100 hover:bg-dungeon-100 disabled:opacity-50"
+                aria-label="음성 미리듣기"
+                title="勉強しましょう。 (공부합시다)"
+              >
+                ▶ 듣기 「勉強しましょう。」
+              </button>
+              <span className="font-pixel text-[10px] text-parchment-300">
+                {hasJaVoice()
+                  ? "✅ 일본어 음성 사용 가능"
+                  : "⚠ 일본어 음성 미설치 — 영어/시스템 보이스로 대체될 수 있어요."}
+              </span>
+            </div>
+            <p className="font-pixel text-[10px] leading-relaxed text-parchment-300">
+              브라우저 내장 음성 합성 사용 — 추가 비용/네트워크 없이 작동.
+              음성 품질은 OS(Mac · iOS · Android · Windows) 일본어 보이스에 따라
+              달라요.
+            </p>
+          </>
+        )}
       </Section>
 
       <Section title="프로필">

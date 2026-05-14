@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Word } from "../types";
+import { useProfileStore } from "../store/profileStore";
+import { isTtsAvailable, speakJa, stopTts } from "../lib/tts";
 
 interface Props {
   word: Word;
@@ -25,14 +27,32 @@ export default function WordCard({
   fillHeight = false,
 }: Props) {
   const [flipped, setFlipped] = useState(false);
+  const tts = useProfileStore((s) => s.settings.tts);
+  const ttsOn = tts.enabled && isTtsAvailable();
 
   useEffect(() => {
     setFlipped(false);
+    // 카드가 바뀌면 진행 중이던 발화는 중단(다른 단어가 끼어들지 않도록).
+    stopTts();
   }, [word.id]);
+
+  // 자동 재생: 새 단어가 등장할 때 앞면(읽기 또는 한자)을 읽어준다.
+  useEffect(() => {
+    if (!ttsOn || !tts.autoplay) return;
+    const text = word.reading || word.headword || "";
+    if (text) speakJa(text, { rate: tts.rate });
+    return () => stopTts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [word.id, ttsOn, tts.autoplay, tts.rate]);
 
   useEffect(() => {
     onFlipChange?.(flipped);
   }, [flipped, onFlipChange]);
+
+  const speak = (text: string | null | undefined) => {
+    if (!ttsOn || !text) return;
+    speakJa(text, { rate: tts.rate });
+  };
 
   const isHiraganaOnly = !word.headword;
 
@@ -65,6 +85,13 @@ export default function WordCard({
             "탭해서 뒤집기" 힌트는 카드 하단에 고정한다.
             (이전엔 힌트의 mt-auto 가 위쪽 공간을 흡수해 단어가 위로 붙어 보였음) */}
         <div className="flip-face panel-parchment scanline relative flex cursor-pointer flex-col p-4 sm:p-6">
+          {ttsOn && (
+            <SpeakerButton
+              ariaLabel="단어 발음 듣기"
+              onClick={() => speak(word.reading || word.headword)}
+              className="absolute right-2 top-2"
+            />
+          )}
           <div className="flex flex-1 flex-col items-center justify-center gap-2">
             {word.part_of_speech && (
               <span className="badge-pixel !bg-parchment-300 !text-parchment-900">
@@ -96,12 +123,20 @@ export default function WordCard({
         {/* BACK — 어원/예문이 가능하면 스크롤 없이 한 화면에 보이도록
             패딩과 섹션 간격을 최소화한다. */}
         <div className="flip-face flip-back panel-parchment scanline flex cursor-pointer flex-col gap-2 overflow-y-auto p-3 sm:p-4">
-          <div className="flex items-baseline justify-between">
+          <div className="flex items-baseline justify-between gap-2">
             <div className="pixel-text-jp text-xl font-bold text-parchment-900 sm:text-2xl">
               {word.headword ?? word.reading}
             </div>
-            <div className="pixel-text-jp text-sm text-parchment-700 sm:text-base">
-              {word.reading}
+            <div className="flex items-center gap-2">
+              <div className="pixel-text-jp text-sm text-parchment-700 sm:text-base">
+                {word.reading}
+              </div>
+              {ttsOn && (
+                <SpeakerButton
+                  ariaLabel="단어 발음 듣기"
+                  onClick={() => speak(word.reading || word.headword)}
+                />
+              )}
             </div>
           </div>
 
@@ -136,8 +171,17 @@ export default function WordCard({
                     key={ex.id}
                     className="rounded-none border-2 border-parchment-700/30 bg-parchment-50 px-2 py-1.5"
                   >
-                    <div className="pixel-text-jp text-sm leading-tight text-parchment-900 sm:text-base">
-                      {ex.jp_sentence}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="pixel-text-jp text-sm leading-tight text-parchment-900 sm:text-base">
+                        {ex.jp_sentence}
+                      </div>
+                      {ttsOn && (
+                        <SpeakerButton
+                          ariaLabel="예문 읽어주기"
+                          onClick={() => speak(ex.jp_sentence)}
+                          size="sm"
+                        />
+                      )}
                     </div>
                     <div className="text-[11px] leading-tight text-parchment-700 sm:text-xs">
                       {ex.kr_translation}
@@ -154,5 +198,37 @@ export default function WordCard({
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * 카드 안에서 쓰이는 🔊 버튼.
+ * 카드 자체에 onClick(=뒤집기) 가 걸려 있으므로 반드시 stopPropagation.
+ */
+function SpeakerButton({
+  ariaLabel,
+  onClick,
+  className = "",
+  size = "md",
+}: {
+  ariaLabel: string;
+  onClick: () => void;
+  className?: string;
+  size?: "sm" | "md";
+}) {
+  const pad = size === "sm" ? "px-1.5 py-0.5 text-[11px]" : "px-2 py-1 text-xs";
+  return (
+    <button
+      type="button"
+      aria-label={ariaLabel}
+      title={ariaLabel}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      className={`shrink-0 border-2 border-parchment-700/40 bg-parchment-100 font-pixel text-parchment-900 hover:bg-parchment-200 active:translate-y-[1px] ${pad} ${className}`}
+    >
+      🔊
+    </button>
   );
 }
