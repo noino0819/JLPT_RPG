@@ -13,6 +13,20 @@
     />
 
     <!--
+      일본어 픽셀/레트로 폰트 6종 (단어 카드/카나/설정 페이지에서 사용).
+      앱 부팅 시 한 번의 통합 요청으로 모두 prefetch 하여, 설정 페이지에
+      들어갔을 때 미리보기 카드들이 즉시 실제 폰트로 보이도록 한다.
+      (lazy-load 시 시스템 기본 일본어 폰트로 폴백되어 6개가 동일하게 보이는
+      문제를 방지)
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Stick&family=Reggae+One&family=Yusei+Magic&family=Hachi+Maru+Pop&display=swap"
+    />
+
+    <!--
       파비콘 & 앱 아이콘 (모두 PixelSword 디자인).
       ?v=2 는 브라우저 favicon 캐시 무효화용 - 디자인을 손볼 때마다 숫자를 올린다.
     -->

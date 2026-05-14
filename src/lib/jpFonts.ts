@@ -135,8 +135,8 @@ export function applyJpFont(id: JpFontId): void {
 }
 
 // 모든 옵션 폰트를 하나의 Google Fonts URL 로 묶어 가져오는 stylesheet href.
-// 설정 페이지의 미리보기 카드에서 모든 폰트가 한꺼번에 보여야 하므로
-// 카드 그리드를 그릴 때 한 번만 주입하면 1회 요청으로 6종 stylesheet 를 받는다.
+// index.html 에서 동일 href 의 <link> 를 미리 로드하지만, 안전망으로 동적 주입
+// 함수도 제공한다(테스트/스토리북/캐시 미스 등 대비).
 const ALL_JP_FONTS_HREF =
   "https://fonts.googleapis.com/css2" +
   "?family=DotGothic16" +
@@ -147,28 +147,45 @@ const ALL_JP_FONTS_HREF =
   "&family=Hachi+Maru+Pop" +
   "&display=swap";
 
-let allFontsLoaded = false;
-
 /**
- * 6종 일본어 폰트 stylesheet 를 한 번의 요청으로 모두 주입.
- * 설정 페이지처럼 모든 폰트 미리보기를 동시에 보여줘야 하는 화면에서 호출한다.
+ * 6종 일본어 폰트 stylesheet 가 DOM 에 없다면 주입한다.
+ * index.html 이 이미 같은 href 의 <link> 를 가지고 있으면 no-op.
  */
 export function ensureAllJpFontsLoaded(): void {
   if (typeof document === "undefined") return;
-  if (allFontsLoaded) return;
 
   const existing = document.querySelector<HTMLLinkElement>(
-    `link[rel="stylesheet"][data-jp-font-all="true"]`,
+    `link[rel="stylesheet"][href="${ALL_JP_FONTS_HREF}"]`,
   );
-  if (existing) {
-    allFontsLoaded = true;
-    return;
-  }
+  if (existing) return;
 
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.href = ALL_JP_FONTS_HREF;
   link.dataset.jpFontAll = "true";
   document.head.appendChild(link);
-  allFontsLoaded = true;
+}
+
+/**
+ * 6종 폰트의 미리보기 글리프(漢字/かんじ/가타카나 라벨)를 명시적으로 다운로드.
+ *
+ * Google Fonts 는 stylesheet CSS 만 받아오면 woff 파일은 실제로 텍스트가 그려질
+ * 때 lazy 다운로드한다. font-display: swap 으로 결국 swap 되긴 하지만, 사용자에게
+ * "지금 폰트가 적용된 게 맞는가?" 의 혼란을 줄이기 위해 woff 까지 명시적으로 받고
+ * 모두 끝나면 ready 를 알려준다.
+ */
+export async function loadAllJpFontsForPreview(): Promise<void> {
+  if (typeof document === "undefined" || !document.fonts) return;
+  const text = `${JP_FONT_PREVIEW.headword}${JP_FONT_PREVIEW.reading}`;
+  await Promise.all(
+    JP_FONT_OPTIONS.map((opt) => {
+      // family 스택 중 첫 번째 family 만 추출하여 명시적으로 로드.
+      // ex) `"Train One", "Noto Sans JP", monospace` → `"Train One"`
+      const primary = opt.family.split(",")[0]?.trim() ?? "";
+      if (!primary) return Promise.resolve([] as FontFace[]);
+      // 라벨(가타카나) + 미리보기(한자/가나) 모두 같은 woff subset 안에 있음.
+      const sample = `${text}${opt.jpLabel}`;
+      return document.fonts.load(`1em ${primary}`, sample).catch(() => []);
+    }),
+  );
 }

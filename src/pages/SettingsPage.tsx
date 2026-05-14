@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
@@ -13,6 +13,7 @@ import {
   JP_FONT_OPTIONS,
   JP_FONT_PREVIEW,
   ensureAllJpFontsLoaded,
+  loadAllJpFontsForPreview,
   type JpFontOption,
 } from "../lib/jpFonts";
 import type { JpFontId } from "../types";
@@ -32,10 +33,19 @@ export default function SettingsPage() {
   const resetProgress = useProgressStore((s) => s.reset);
   const resetProfile = useProfileStore((s) => s.reset);
 
-  // 설정 페이지 진입 시 6종 일본어 폰트 stylesheet 를 한 번의 요청으로 prefetch.
-  // 카드 미리보기들이 폴백 글꼴로 잠깐 보이는 시간을 최소화한다.
+  // 일본어 폰트 6종이 실제 woff 다운로드까지 완료되었는지 추적.
+  // - false: 폴백 글꼴(시스템 일본어)로 임시 표시 → 카드를 흐리게 + 안내 문구
+  // - true: 모든 폰트 woff 가 준비됨 → 카드를 또렷하게 표시
+  const [fontsReady, setFontsReady] = useState(false);
   useEffect(() => {
+    let mounted = true;
     ensureAllJpFontsLoaded();
+    loadAllJpFontsForPreview().then(() => {
+      if (mounted) setFontsReady(true);
+    });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const handleSignOut = async () => {
@@ -113,8 +123,15 @@ export default function SettingsPage() {
       <Section title="단어 폰트">
         <p className="font-pixel text-[10px] leading-relaxed text-parchment-300">
           단어 카드와 카나 수련장의 일본어 글꼴을 바꿉니다.
+          {!fontsReady && (
+            <span className="ml-1 text-rune-400">· 폰트 불러오는 중…</span>
+          )}
         </p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div
+          className={`grid grid-cols-2 gap-2 transition-opacity duration-300 sm:grid-cols-3 ${
+            fontsReady ? "opacity-100" : "opacity-50"
+          }`}
+        >
           {JP_FONT_OPTIONS.map((opt) => (
             <JpFontCard
               key={opt.id}
