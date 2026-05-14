@@ -4,7 +4,12 @@
 -- 실행 시 기존 N5 공식 덱의 단어/예문(CASCADE)을 모두 삭제 후 재삽입합니다.
 -- 사용자 진행도(word_progress)도 함께 삭제됩니다.
 -- 멱등성: 여러 번 실행해도 결과 동일.
--- 총 301단어 (301개는 의미·한자어원·예문 2개씩 / 0개는 PDF 추출 기본정보)
+-- 총 341단어 (모두 의미·한자어원·예문 2개씩 포함)
+--   #1~82   : 한자 읽기
+--   #83~98  : 한자 표기
+--   #99~248 : 문맥 규정
+--   #249~301: 유의어
+--   #302~341: 보강 단어 (PDF 유의어/문맥 섹션의 구성 단어 보완)
 -- ============================================================
 
 delete from public.words
@@ -1828,5 +1833,249 @@ begin
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'もうすぐ春です。', '이제 곧 봄이에요.', 1),
     (w, 'もうすぐ電車が来ます。', '곧 전철이 옵니다.', 2);
+
+  -- ============================================================
+  -- 보강 단어 (#302~341): PDF 유의어/문맥 섹션의 구성 단어 보완
+  -- ============================================================
+
+  -- 302. お風呂
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, 'お風呂', 'おふろ', '욕조, 목욕', 'お(御): 존칭 접두사\n風(바람 풍): 바람의 모양\n呂(음률 려): 두 사람이 마주 본 모양 → 따뜻한 물을 담아 몸을 씻는 곳', '명사', 302, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'おふろに入ります。', '목욕을 합니다.', 1),
+    (w, '毎日おふろに入る。', '매일 목욕한다.', 2);
+
+  -- 303. 引く
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '引く', 'ひく', '끌다, 당기다, (사전을) 찾다, (감기에) 걸리다', '引(끌 인): 弓(활) + ｜(끌어당기는 손) → 활을 당기는 모양', '동사', 303, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '風邪をひきました。', '감기에 걸렸습니다.', 1),
+    (w, '辞書をひいてください。', '사전을 찾아 주세요.', 2);
+
+  -- 304. シャワー
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, NULL, 'シャワー', '샤워', '영어 shower에서 온 외래어', '명사', 304, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'シャワーをあびます。', '샤워를 합니다.', 1),
+    (w, '朝シャワーをあびるのが好きです。', '아침에 샤워하는 것을 좋아합니다.', 2);
+
+  -- 305. 浴びる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '浴びる', 'あびる', '(샤워를) 하다, 끼얹다, (햇빛을) 쬐다', '浴(목욕할 욕): 氵(물) + 谷(골짜기) → 골짜기 물에 몸을 담그다', '동사', 305, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'シャワーを浴びる。', '샤워를 한다.', 1),
+    (w, '日の光をあびる。', '햇빛을 쬐다.', 2);
+
+  -- 306. 新聞
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '新聞', 'しんぶん', '신문', '新(새 신): 立(나무) + 斤(도끼) → 새로 자른 나무 → 새로움\n聞(들을 문): 門(문) + 耳(귀) → 새로운 소식을 듣는 종이=신문', '명사', 306, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '毎朝しんぶんを読む。', '매일 아침 신문을 읽는다.', 1),
+    (w, 'しんぶんでニュースを知る。', '신문으로 뉴스를 안다.', 2);
+
+  -- 307. どうぞ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, NULL, 'どうぞ', '부디, 자, 어서', 'どう(어떻게) + ぞ(강조) → 「부디, 어서」 (정중하게 권유·허락할 때 사용)', '부사', 307, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうぞ、よろしくおねがいします。', '잘 부탁드립니다.', 1),
+    (w, 'こちらへどうぞ。', '이쪽으로 오세요.', 2);
+
+  -- 308. 明るい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '明るい', 'あかるい', '밝다', '明(밝을 명): 日(해) + 月(달) → 해와 달이 함께 비춰 밝다', 'い형용사', 308, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '部屋を明るくしてください。', '방을 밝게 해 주세요.', 1),
+    (w, '明るい人がすきです。', '밝은 사람을 좋아합니다.', 2);
+
+  -- 309. 付ける
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '付ける', 'つける', '켜다, 붙이다', '付(부칠 부): 亻(사람) + 寸(손) → 손으로 사람에게 무언가를 건네 붙이다', '동사', 309, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '電気をつけてください。', '전기를 켜 주세요.', 1),
+    (w, '名前のシールをつけます。', '이름 스티커를 붙입니다.', 2);
+
+  -- 310. 寒い
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '寒い', 'さむい', '춥다', '寒(찰 한): 宀(집) + 茻(풀더미) + 冫(얼음) → 풀로 추위를 막은 집에 얼음이 어림 → 춥다', 'い형용사', 310, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今日はとてもさむいです。', '오늘은 매우 춥습니다.', 1),
+    (w, '冬はさむい。', '겨울은 춥다.', 2);
+
+  -- 311. 少し
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '少し', 'すこし', '조금', '少(적을 소): 小(작음) + 丿(빗금) → 작은 것에서 더 떼어낸 모양 → 적음', '부사', 311, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '少しさむいです。', '조금 춥습니다.', 1),
+    (w, '少し休みましょう。', '조금 쉽시다.', 2);
+
+  -- 312. 家
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '家', 'いえ', '집', '家(집 가): 宀(지붕) + 豕(돼지) → 지붕 아래에서 가축을 기르는 집', '명사', 312, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '家を出る。', '집을 나서다.', 1),
+    (w, '私の家は駅の近くです。', '우리 집은 역 근처입니다.', 2);
+
+  -- 313. ご飯
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, 'ご飯', 'ごはん', '밥, 식사', 'ご(御): 존칭 접두사\n飯(밥 반): 食(밥) + 反(되돌리다) → 먹어서 힘이 되는 밥', '명사', 313, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ごはんを食べました。', '밥을 먹었습니다.', 1),
+    (w, '朝ごはんは何でしたか。', '아침은 뭐였어요?', 2);
+
+  -- 314. お母さん
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, 'お母さん', 'おかあさん', '어머니', 'お(御): 존칭 접두사\n母(어미 모): 어머니가 아이에게 젖을 먹이는 모양\nさん: 존칭 접미사', '명사', 314, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'お母さんはやさしいです。', '어머니는 자상하십니다.', 1),
+    (w, 'お母さんに電話する。', '어머니께 전화한다.', 2);
+
+  -- 315. 妹
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '妹', 'いもうと', '여동생', '妹(누이 매): 女(여자) + 未(아직 어림) → 아직 어린 여자=여동생', '명사', 315, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '妹は5さいです。', '여동생은 5살입니다.', 1),
+    (w, '妹と公園に行く。', '여동생과 공원에 간다.', 2);
+
+  -- 316. 今
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '今', 'いま', '지금', '今(이제 금): 입(亼)을 벌려 무엇인가 머금은 모양 → 지금 막 가지고 있는 시간=지금', '명사', 316, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今から寝ます。', '지금부터 잡니다.', 1),
+    (w, '今何時ですか。', '지금 몇 시예요?', 2);
+
+  -- 317. 寝る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '寝る', 'ねる', '자다', '寝(잘 침): 宀(집) + 爿(침대) + 又(손) → 집 침대에서 손을 베고 자는 모양', '동사', 317, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '11時に寝ます。', '11시에 잡니다.', 1),
+    (w, '子どもがもう寝ています。', '아이가 벌써 자고 있습니다.', 2);
+
+  -- 318. トイレ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, NULL, 'トイレ', '화장실', '영어 toilet에서 온 외래어', '명사', 318, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'トイレはどこですか。', '화장실은 어디예요?', 1),
+    (w, 'トイレに行きたいです。', '화장실에 가고 싶어요.', 2);
+
+  -- 319. りんご
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, NULL, 'りんご', '사과', '林檎(りんご): 林(수풀)+檎(새 금) → 새가 모여드는 나무의 열매', '명사', 319, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'りんごを買いました。', '사과를 샀습니다.', 1),
+    (w, '赤いりんごがおいしい。', '빨간 사과가 맛있다.', 2);
+
+  -- 320. バナナ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, NULL, 'バナナ', '바나나', '영어 banana에서 온 외래어', '명사', 320, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'バナナを食べる。', '바나나를 먹는다.', 1),
+    (w, '黄色いバナナがほしいです。', '노란 바나나가 갖고 싶어요.', 2);
+
+  -- 321. みかん
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, NULL, 'みかん', '귤', '蜜柑(みかん): 蜜(꿀) + 柑(감귤) → 꿀처럼 단 감귤', '명사', 321, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '冬はみかんを食べる。', '겨울에는 귤을 먹는다.', 1),
+    (w, 'みかんはあまくておいしい。', '귤은 달고 맛있다.', 2);
+
+  -- 322. 散歩
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '散歩', 'さんぽ', '산책', '散(흩을 산): 풀과 살이 흩어지는 모양\n歩(걸음 보): 발자국 모양 → 발을 흩으며 천천히 걷다=산책', '명사', 322, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '公園を散歩します。', '공원을 산책합니다.', 1),
+    (w, '毎朝犬と散歩している。', '매일 아침 강아지와 산책하고 있다.', 2);
+
+  -- 323. 昼
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '昼', 'ひる', '점심, 낮', '昼(낮 주): 尺(자) + 日(해) → 해가 길게 비추는 시간=낮', '명사', 323, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '昼ごはんを食べました。', '점심을 먹었습니다.', 1),
+    (w, '朝から昼まで勉強した。', '아침부터 낮까지 공부했다.', 2);
+
+  -- 324. 夕方
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '夕方', 'ゆうがた', '저녁때', '夕(저녁 석): 달이 떠오르기 시작하는 모양\n方(모 방): 방향, 무렵 → 저녁 무렵', '명사', 324, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '夕方家に帰ります。', '저녁때 집에 갑니다.', 1),
+    (w, '朝から夕方まで仕事をする。', '아침부터 저녁까지 일을 한다.', 2);
+
+  -- 325. 頼む
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '頼む', 'たのむ', '부탁하다', '頼(의지할 뢰): 束(묶음) + 頁(머리) → 머리를 묶어 의지하다=부탁하다', '동사', 325, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コピーをたのみます。', '복사를 부탁합니다.', 1),
+    (w, '友だちに仕事をたのんだ。', '친구에게 일을 부탁했다.', 2);
+
+  -- 326. 言葉
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '言葉', 'ことば', '말, 단어', '言(말씀 언): 입에서 소리가 나가는 모양\n葉(잎 엽): 나뭇잎이 가지에 달린 모양 → 입에서 흘러나오는 잎(소리)=말', '명사', 326, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この言葉の意味が分かりません。', '이 말의 뜻을 모르겠어요.', 1),
+    (w, '日本語の言葉をおぼえる。', '일본어 단어를 외운다.', 2);
+
+  -- 327. 意味
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '意味', 'いみ', '의미, 뜻', '意(뜻 의): 音(소리) + 心(마음) → 마음의 소리=뜻\n味(맛 미): 口(입) + 未(아직) → 맛 → 「뜻과 맛」=의미', '명사', 327, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この言葉の意味は何ですか。', '이 말의 뜻은 무엇인가요?', 1),
+    (w, '意味が分かりました。', '의미를 알았습니다.', 2);
+
+  -- 328. 分かる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '分かる', 'わかる', '알다, 이해하다', '分(나눌 분): 八(가르다) + 刀(칼) → 칼로 나누어 명확히 하다 → 이해하다', '동사', 328, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '日本語が分かります。', '일본어를 알 수 있습니다.', 1),
+    (w, '意味が分かりません。', '의미를 모르겠습니다.', 2);
+
+  -- 329. 閉まる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '閉まる', 'しまる', '닫히다', '閉(닫을 폐): 門(문) + 才(나무 빗장) → 문을 빗장으로 잠가 닫다', '동사', 329, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '店が閉まっています。', '가게가 닫혀 있습니다.', 1),
+    (w, 'ドアが閉まらない。', '문이 닫히지 않는다.', 2);
+
+  -- 330. 部屋
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '部屋', 'へや', '방', '部(거느릴 부): 작은 구분, 영역\n屋(집 옥): 지붕 아래의 공간 → 집의 한 구분=방', '명사', 330, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '私の部屋はきれいです。', '내 방은 깨끗합니다.', 1),
+    (w, '部屋に入ってください。', '방에 들어와 주세요.', 2);
+
+  -- 331. 洋服
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '洋服', 'ようふく', '양복, 옷', '洋(큰바다 양): 큰 바다 → 서양\n服(옷 복): 옷 → 서양식 옷=양복', '명사', 331, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あたらしい洋服を買いました。', '새 옷을 샀습니다.', 1),
+    (w, '洋服をあらいます。', '옷을 빱니다.', 2);
+
+  -- 332. 作る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '作る', 'つくる', '만들다', '作(지을 작): 亻(사람) + 乍(잠시) → 사람이 손을 움직여 만들다', '동사', 332, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ごはんを作る。', '밥을 만든다.', 1),
+    (w, '紙でひこうきを作りました。', '종이로 비행기를 만들었습니다.', 2);
+
+  -- 333. 所
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '所', 'ところ', '곳, 장소', '所(바 소): 戶(문) + 斤(도끼) → 도끼로 일하던 자리 → 장소', '명사', 333, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'しずかな所がすきです。', '조용한 곳을 좋아합니다.', 1),
+    (w, '駅は人が多い所です。', '역은 사람이 많은 곳입니다.', 2);
+
+  -- 334. 働く
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '働く', 'はたらく', '일하다', '働(움직일 동): 亻(사람) + 動(움직임) → 사람이 몸을 움직여 일하다', '동사', 334, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '銀行で働いています。', '은행에서 일하고 있습니다.', 1),
+    (w, '父はあさからはたらく。', '아버지는 아침부터 일한다.', 2);
+
+  -- 335. 開く
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '開く', 'あく', '열리다', '開(열 개): 門(문) + 一(빗장) + 廾(두 손) → 두 손으로 빗장을 풀어 문을 열다', '동사', 335, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ドアがあいています。', '문이 열려 있습니다.', 1),
+    (w, '店は9時にあきます。', '가게는 9시에 엽니다.', 2);
+
+  -- 336. 売る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '売る', 'うる', '팔다', '売(팔 매): 士(선비) + 冖(덮개) + 儿(다리) → 가게에서 물건을 내놓아 팔다', '동사', 336, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '八百屋で野菜を売る。', '야채가게에서 야채를 판다.', 1),
+    (w, '切手をうっています。', '우표를 팔고 있습니다.', 2);
+
+  -- 337. 八百屋
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '八百屋', 'やおや', '야채가게', '八百(많음을 나타내는 표현) + 屋(가게) → 여러 종류의 야채를 파는 가게', '명사', 337, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '八百屋でりんごを買う。', '야채가게에서 사과를 산다.', 1),
+    (w, 'ここはやおやです。', '여기는 야채가게입니다.', 2);
+
+  -- 338. 昨日
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '昨日', 'きのう', '어제', '昨(어제 작): 日(해) + 乍(잠깐) → 잠시 전의 해=어제\n日(날 일): 해의 모양 → 날', '명사', 338, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'きのう友だちに会った。', '어제 친구를 만났다.', 1),
+    (w, 'きのうの夜はさむかったです。', '어젯밤은 추웠습니다.', 2);
+
+  -- 339. 夜
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '夜', 'よる', '밤', '夜(밤 야): 夕(저녁) + 亠(덮개) → 저녁이 깊어진 밤', '명사', 339, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'よるおそくまで勉強した。', '밤 늦게까지 공부했다.', 1),
+    (w, 'きのうの夜は雨でした。', '어젯밤은 비였습니다.', 2);
+
+  -- 340. 知る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '知る', 'しる', '알다', '知(알 지): 矢(화살) + 口(입) → 화살처럼 빠르게 말로 알다', '동사', 340, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'その人をしっていますか。', '그 사람을 알고 있습니까?', 1),
+    (w, '名前は知りません。', '이름은 모릅니다.', 2);
+
+  -- 341. 終わる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n5, '終わる', 'おわる', '끝나다', '終(마칠 종): 糸(실) + 冬(겨울) → 실을 다 풀어 한 해가 끝나다', '동사', 341, array[]::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '仕事がおわりました。', '일이 끝났습니다.', 1),
+    (w, 'もうすぐえいががおわる。', '곧 영화가 끝난다.', 2);
 
 end $$;
