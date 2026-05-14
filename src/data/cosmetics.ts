@@ -198,13 +198,13 @@ export const COSTUMES: CostumeItem[] = [
     },
   },
 
-  // ─── 소환사 ───
+  // ─── 소환사 (드루이드) ───
   {
     id: "summoner_default",
     kind: "costume",
     characterId: "summoner",
-    name: "어둠의 망토",
-    nameJp: "闇のマント",
+    name: "황금 잎의 가운",
+    nameJp: "黄金葉のローブ",
     condition: { kind: "rank", min: 0 },
     paletteOverride: {},
   },
@@ -224,6 +224,7 @@ export const COSTUMES: CostumeItem[] = [
       e: "#dffaff",
       G: "#dffaff",
       g: "#7be3ff",
+      L: "#7be3ff", // 수정 컨셉: 잎사귀를 청록 결정으로 대체
     },
   },
   {
@@ -242,6 +243,7 @@ export const COSTUMES: CostumeItem[] = [
       e: "#ff5a5a",
       g: "#ffb86b",
       G: "#ff8a8a",
+      L: "#a02029", // 혈맹 컨셉: 시든 핏빛 잎사귀
     },
   },
   {
@@ -260,6 +262,7 @@ export const COSTUMES: CostumeItem[] = [
       e: "#fff",
       G: "#fff",
       g: "#fff5c2",
+      L: "#e0d8ff", // 환령 컨셉: 창백한 환영 잎사귀
     },
   },
 ];
