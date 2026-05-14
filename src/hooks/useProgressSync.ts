@@ -15,6 +15,12 @@ import type { WordProgress } from "../types";
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+// 정리/동기화 진단 로그는 개발자용이므로 운영 환경에선 출력하지 않는다.
+// (사용자가 콘솔을 열었을 때 정상 동작에서 경고가 보이지 않도록.)
+const devLog = (...args: unknown[]) => {
+  if (import.meta.env.DEV) console.debug(...args);
+};
+
 /**
  * 진행 상태 ↔ Supabase 동기화.
  *
@@ -30,6 +36,9 @@ export function useProgressSync() {
 
   const lastSyncedRef = useRef<Record<string, WordProgress>>({});
   const initialLoadDoneRef = useRef(false);
+  // decks/progress 두 fetch 가 끝나는 순서가 매번 다르므로 어느 쪽이 먼저
+  // 끝나도 동일하게 stale 정리를 트리거하기 위해 effect 사이에 공유한다.
+  const cleanupRef = useRef<() => void>(() => {});
 
   /* 1. 초기 로드 */
   useEffect(() => {
@@ -77,6 +86,10 @@ export function useProgressSync() {
       useProgressStore.setState({ byWord });
       lastSyncedRef.current = { ...byWord };
       initialLoadDoneRef.current = true;
+      // decks 가 먼저 hydrate 된 경우 1-b effect 는 이미 한 번 cleanupOnce 를
+      // 시도했지만 initialLoadDoneRef=false 라서 skip 했을 수 있다.
+      // progress 가 늦게 끝난 경우엔 여기서 직접 한 번 더 트리거한다.
+      cleanupRef.current();
     })();
 
     return () => {
@@ -92,7 +105,10 @@ export function useProgressSync() {
    * 메시지가 깔끔하게 1회로 끝난다.
    */
   useEffect(() => {
-    if (!isSupabaseEnabled || !supabase || !signedIn || !userId) return;
+    if (!isSupabaseEnabled || !supabase || !signedIn || !userId) {
+      cleanupRef.current = () => {};
+      return;
+    }
 
     const cleanupOnce = () => {
       if (!initialLoadDoneRef.current) return;
@@ -105,7 +121,7 @@ export function useProgressSync() {
         (id) => !UUID_RE.test(id) || !known.has(id),
       );
       if (stale.length === 0) return;
-      console.warn(
+      devLog(
         `[supabase] word_progress: hydrate 후 stale word_id ${stale.length}개 자동 정리. ids=`,
         stale,
       );
@@ -113,12 +129,17 @@ export function useProgressSync() {
       for (const id of stale) delete lastSyncedRef.current[id];
     };
 
+    cleanupRef.current = cleanupOnce;
+
     // hydrate 가 이미 끝난 상태라면 즉시 한 번 실행.
     cleanupOnce();
 
     // 아직 안 끝났다면 decks 변경을 구독해 loaded=true 가 되는 순간 정리.
     const unsubscribe = useDecksStore.subscribe(() => cleanupOnce());
-    return () => unsubscribe();
+    return () => {
+      cleanupRef.current = () => {};
+      unsubscribe();
+    };
   }, [userId, signedIn]);
 
   /* 2. 변경 감지 → upsert */
@@ -152,7 +173,7 @@ export function useProgressSync() {
       const uuidOnly = changed.filter((p) => UUID_RE.test(p.word_id));
       const nonUuidCount = changed.length - uuidOnly.length;
       if (nonUuidCount > 0) {
-        console.warn(
+        devLog(
           `[supabase] word_progress 동기화에서 ${nonUuidCount}개의 비-UUID word_id 를 건너뜀 (로컬 시드 잔여 데이터로 추정).`,
         );
       }
@@ -177,7 +198,7 @@ export function useProgressSync() {
           else stale.push(p.word_id);
         }
         if (stale.length > 0) {
-          console.warn(
+          devLog(
             `[supabase] word_progress: DB 에 없는 word_id ${stale.length}개를 정리합니다 (이전 시드/삭제된 단어 잔여 데이터). ids=`,
             stale,
           );
@@ -216,7 +237,7 @@ export function useProgressSync() {
                   useProgressStore.getState().byWord,
                 ).filter((id) => !known.has(id));
                 if (drop.length > 0) {
-                  console.warn(
+                  devLog(
                     `[supabase] word_progress FK 위반 후 정리: ${drop.length}개의 죽은 word_id 제거.`,
                   );
                   useProgressStore.getState().removeWords(drop);
