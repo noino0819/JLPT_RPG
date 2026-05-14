@@ -160,7 +160,7 @@ begin
     (w, 'この単語の意味がわからない。', '이 단어의 뜻을 모르겠다.', 2);
 
   -- 20. 地球
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '地球', 'ちきゅう', '지구', '地(땅 지): 土(흙 토) + 也(이글 야) → 흙이 평평하게 깔린 곣
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '地球', 'ちきゅう', '지구', '地(땅 지): 土(흙 토) + 也(어조사 야) → 흙이 평평하게 펼쳐진 땅
 球(공 구): 玉(구슬 옥) + 求(구할 구) → 둥근 구슬 모양', '명사', 20, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '地球を守るためにゴミを出さない。', '지구를 지키기 위해 쓰레기를 버리지 않는다.', 1),
@@ -720,10 +720,10 @@ begin
     (w, '申し込みは明日までだ。', '신청은 내일까지다.', 2);
 
   -- 100. はかる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'はかる', '쟬다, 측정하다', '計る(値などを計算)·量る(重さを量る)·測る(長さを測う) 등의 표기
-소리가 같고 하나의 명사처럼 쓰이는 동사', '동사', 100, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'はかる', '재다, 측정하다', '計る(수치를 계산)·量る(무게를 잼)·測る(길이를 잼) 등의 표기
+소리가 같지만 대상에 따라 한자가 달라지는 동사', '동사', 100, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '体重をはかる。', '체중을 쟬다.', 1),
+    (w, '体重をはかる。', '체중을 잰다.', 1),
     (w, '長さをはかってみた。', '길이를 측정해 보았다.', 2);
 
   -- 101. 独立
@@ -819,17 +819,17 @@ begin
 
   -- 114. 下線
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '下線', 'かせん', '밑줄', '下(아래 하): 기준선 아래에 붙은 표시
-線(줄 선): 糸(실) + 泉(샘 천)→ 고고하게 이어진 줄', '명사', 114, array[]::text[]) returning id into w;
+線(줄 선): 糸(실) + 泉(샘 천) → 길게 이어진 줄', '명사', 114, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '重要な語に下線を引いた。', '중요한 단어에 밑줄을 그었다.', 1),
     (w, '下線部を読んでください。', '밑줄 부분을 읽어주세요.', 2);
 
   -- 115. 転ぶ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '転ぶ', 'ころぶ', '구르다, 넘어지다', '転(굴러 전): 車(수레) + 專(돌 전)→ 수레가 돌다
-자동사로 회전하면서 넘어짐', '동사', 115, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '転ぶ', 'ころぶ', '구르다, 넘어지다', '転(구를 전): 車(수레) + 専(오로지 전) → 수레가 구르듯 돌다
+자동사로 회전하며 쓰러짐', '동사', 115, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '道で転んでケガした。', '길에서 넘어져 다쳐다.', 1),
-    (w, '走ったら転ぶよ。', '뛰면 넘어진다.', 2);
+    (w, '道で転んでケガをした。', '길에서 넘어져 다쳤다.', 1),
+    (w, '走ったら転ぶよ。', '뛰면 넘어져.', 2);
 
   -- 116. 主要
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '主要', 'しゅよう', '주요', '主(주인 주): 灯(등잔)의 불꽃→ 중심을 차지하는 것
@@ -923,11 +923,11 @@ begin
     (w, '二階から降りる。', '2층에서 내려오다.', 2);
 
   -- 129. 身長
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '身長', 'しんちょう', '신장, 키', '身(몸 신): 임신한 여자의 즘 모양→ 사람의 몸
-長(길 장): 머리카락이 긴 노인의 모양→ 길다', '명사', 129, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '身長', 'しんちょう', '신장, 키', '身(몸 신): 임신한 여자의 모양 → 사람의 몸
+長(길 장): 머리카락이 긴 노인의 모양 → 길다', '명사', 129, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '彼は身長が高い。', '그는 키가 크다.', 1),
-    (w, '身長を測りました。', '키를 쟬었습니다.', 2);
+    (w, '身長を測りました。', '키를 쟀습니다.', 2);
 
   -- 130. 物語
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '物語', 'ものがたり', '이야기', '物(물건 물): 牛(소) + 勿(말 물)→ 여러가지 사물
@@ -1245,8 +1245,8 @@ begin
     (w, '若い人に人気がある。', '젊은 사람에게 인기가 있다.', 2);
 
   -- 175. 複数
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '複数', 'ふくすう', '복수, 여러 개', '複(걹 복): 걹겹으로→ 하나가 아닌 여러개
-数(셌 수): 수량', '명사', 175, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '複数', 'ふくすう', '복수, 여러 개', '複(겹칠 복): 衤(옷 의) + 复(돌아올 복) → 겹겹이 → 하나가 아닌 여러 개
+数(셈 수): 수량을 세다', '명사', 175, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '複数の意見がある。', '여러 개의 의견이 있다.', 1),
     (w, '複数回答可。', '복수 응답 가능.', 2);
@@ -1280,8 +1280,8 @@ begin
     (w, '両親と温泉旅行に行った。', '부모님과 온천여행을 갔다.', 2);
 
   -- 180. 雑誌
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '雑誌', 'ざっし', '잡지', '雑(섮일 잡): 여러가지가 섮임
-誌(기록할 지): 기록한 책', '명사', 180, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '雑誌', 'ざっし', '잡지', '雑(섞일 잡): 여러 가지가 섞임
+誌(기록할 지): 기록한 책 → 정기적으로 발간되는 책', '명사', 180, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '雑誌を読んだ。', '잡지를 읽었다.', 1),
     (w, 'ファッション雑誌を買った。', '패션 잡지를 샀다.', 2);
@@ -1504,7 +1504,7 @@ begin
     (w, '新しいカタログが出た。', '새로운 카탈로그가 나왔다.', 2);
 
   -- 212. 感じる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '感じる', 'かんじる', '느끼다', '感(느낀 감): 마음으로 느끌
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '感じる', 'かんじる', '느끼다', '感(느낄 감): 마음으로 느끼다
 타동사형 じる이 붙음', '동사', 212, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '寒さを感じる。', '추위를 느낀다.', 1),
@@ -1518,11 +1518,11 @@ begin
     (w, '毎月家賃を振り込む。', '매달 집세를 입금한다.', 2);
 
   -- 214. しまう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しまう', '치우다, 안에 넣다', '同じう(同じる·閃う)와 연관→ 결말짓다
-타동사로 정리해 넣음', '동사', 214, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しまう', '치우다, 안에 넣다', '仕舞う의 표기 → 정리하여 끝맺다·집어넣다
+타동사로 물건을 정리해 넣음', '동사', 214, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '電子レンジを引き出しにしまった。', '전자레인지를 서랍에 넣었다.', 1),
-    (w, '学生の本を手の上にしまった。', '학생의 책을 선반에 치웠다.', 2);
+    (w, '食器を棚にしまった。', '식기를 선반에 정리했다.', 1),
+    (w, '本を本棚にしまった。', '책을 책장에 정리해 넣었다.', 2);
 
   -- 215. 最新
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '最新', 'さいしん', '최신', '最(가장 최): 가장·제일
@@ -1532,10 +1532,10 @@ begin
     (w, '最新の技術を導入した。', '최신 기술을 도입했다.', 2);
 
   -- 216. しばる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しばる', '묶다', '縛る」(묶을 박)의 표기→ 줄·끈으로 돌려 묶다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しばる', '묶다', '縛る(묶을 박)의 표기 → 줄·끈으로 둘러 묶다
 타동사', '동사', 216, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '骪をリボンでしばる。', '머리를 리본으로 묶는다.', 1),
+    (w, '髪をリボンでしばる。', '머리를 리본으로 묶는다.', 1),
     (w, '荷物をしばって車に載せる。', '짐을 묶어서 차에 싣는다.', 2);
 
   -- 217. キャンセル
@@ -1543,7 +1543,7 @@ begin
 예약·계약을 취소하는 행위', '명사', 217, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '予約をキャンセルした。', '예약을 취소했다.', 1),
-    (w, 'キャンセル料がかかる。', '취소 수수료가 쟈어난다.', 2);
+    (w, 'キャンセル料がかかる。', '취소 수수료가 든다.', 2);
 
   -- 218. 向き
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '向き', 'むき', '향, 쪽', '向(향할 향): 집이 향한 쪽
@@ -1581,11 +1581,11 @@ begin
     (w, '早めに休むとよい。', '일찍 쉬는 게 좋다.', 2);
 
   -- 223. あわ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あわ', '거품', '공기를 포함한 거품 물질
-접미사 わ 포함', '명사', 223, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あわ', '거품', '泡(あわ): 거품을 가리키는 일본 고유어
+액체 표면에 생기는 작은 기포', '명사', 223, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ビールにあわがたっぷりある。', '맥주에 거품이 쟔르다.', 1),
-    (w, '石鸼のあわを見た。', '비누거품을 봤다.', 2);
+    (w, 'ビールにあわがたっぷりある。', '맥주에 거품이 가득하다.', 1),
+    (w, '石鹸のあわを見た。', '비누 거품을 봤다.', 2);
 
   -- 224. ノック
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ノック', '노크', '영어 knock의 외래어
@@ -1602,7 +1602,7 @@ begin
     (w, '半日休みをもらった。', '반나절 휴가를 받았다.', 2);
 
   -- 226. 扱う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '扱う', 'あつかう', '다루다, 취급하다', '扱(다룰 급): 손으로 잔일하게 취급함
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '扱う', 'あつかう', '다루다, 취급하다', '扱(다룰 급): 손으로 조심스럽게 다룸
 타동사로 일·물건을 취급', '동사', 226, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'この商品は丁寧に扱ってください。', '이 상품은 조심스레 다루세요.', 1),
@@ -1630,7 +1630,7 @@ begin
     (w, 'どちらにしようか迷う。', '어느 쪽으로 할지 망설인다.', 2);
 
   -- 230. しばらく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しばらく', '잠시, 한동안', '柴らくの漢字表記·久しくとも 쓰임
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しばらく', '잠시, 한동안', '暫くの漢字表記 → 잠깐, 짧지 않은 시간
 일정 시간 동안 이어지는 상태', '부사', 230, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'しばらくお待ちください。', '잠시 기다려주세요.', 1),
@@ -1651,18 +1651,18 @@ begin
     (w, 'ステージに上がってどきどきした。', '무대에 올라서 두근거렸다.', 2);
 
   -- 233. 不満
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '不満', 'ふまん', '불만', '不(아닐 부): 아닐
-満(차을 만): 채움', '명사', 233, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '不満', 'ふまん', '불만', '不(아닐 부): 부정
+満(찰 만): 채움 → 마음이 가득 차지 않음', '명사', 233, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '体手に不満がある。', '대우에 불만이 있다.', 1),
-    (w, '不満を口に出せない。', '불만을 입밖으로 낼 수 없다.', 2);
+    (w, '待遇に不満がある。', '대우에 불만이 있다.', 1),
+    (w, '不満を口に出せない。', '불만을 입 밖으로 낼 수 없다.', 2);
 
   -- 234. ぶらぶら
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぶらぶら', '어슬렁어슬렁', '의태어→ 천천히 걷는 모양
 목적없이 걷거나 대기', '부사', 234, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '公園をぶらぶら歩いた。', '공원을 어슬렁거렸다.', 1),
-    (w, '人は仕事もせずぶらぶらしている。', '그는 일도 안 하고 빈둥거린다.', 2);
+    (w, '公園をぶらぶら歩いた。', '공원을 어슬렁어슬렁 걸었다.', 1),
+    (w, '彼は仕事もせずぶらぶらしている。', '그는 일도 안 하고 빈둥거린다.', 2);
 
   -- 235. 申込書
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '申込書', 'もうしこみしょ', '신청서', '申込み(신청)→ 의사를 전달
@@ -1672,8 +1672,8 @@ begin
     (w, '申込書を記入してください。', '신청서를 작성해 주세요.', 2);
 
   -- 236. 複雑
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '複雑', 'ふくざつ', '복잡함', '複(걹 복): 걹겹·여러 개
-雑(섮일 잡): 섮임', 'な형용사', 236, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '複雑', 'ふくざつ', '복잡함', '複(겹칠 복): 겹겹·여러 개
+雑(섞일 잡): 뒤섞임', 'な형용사', 236, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'この問題は複雑だ。', '이 문제는 복잡하다.', 1),
     (w, '複雑な手続きが必要だ。', '복잡한 절차가 필요하다.', 2);
@@ -1683,14 +1683,14 @@ begin
 자동사형 れる이 붙음', '동사', 237, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '川の水が流れる。', '강의 물이 흐른다.', 1),
-    (w, '涙が流れてしまった。', '눈물이 흐러버렸다.', 2);
+    (w, '涙が流れてしまった。', '눈물이 흘러버렸다.', 2);
 
   -- 238. 産
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '産', 'さん', '산', '産(낳을 산): 자식을 낳음→ 생산되는 곳
 접미사로 생산지를 나타냄', '접미사', 238, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'これはアメリカ産のしんごだ。', '이것은 미국산 사과다.', 1),
-    (w, '国産の所を買う。', '국산 소고기를 산다.', 2);
+    (w, 'これはアメリカ産のりんごだ。', '이것은 미국산 사과다.', 1),
+    (w, '国産の牛肉を買う。', '국산 소고기를 산다.', 2);
 
   -- 239. インタビュー
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'インタビュー', '인터뷰', '영어 interview의 외래어
@@ -1717,22 +1717,22 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'からから', '바싹바싹', '의태어→ 수분이 없이 매우 건조한 상태
 목이 아주 마른 상태', '부사', 242, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'のどがからからだ。', '목이 바짝바짝하다.', 1),
-    (w, 'お皿がからからに乾いた。', '접시가 편짝 마르고 있다.', 2);
+    (w, 'のどがからからだ。', '목이 바싹바싹하다.', 1),
+    (w, 'お皿がからからに乾いた。', '접시가 바싹 말랐다.', 2);
 
   -- 243. ためる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ためる', '모으다, 담다', '溜めるの 표기→ 한 곣에 고이다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ためる', '모으다, 담다', '溜めるの 표기 → 한 곳에 고이게 하다
 타동사로 축적·저축', '동사', 243, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'お金をためている。', '돈을 모으고 있다.', 1),
     (w, 'ポイントをためて交換した。', '포인트를 모아 교환했다.', 2);
 
   -- 244. かかる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'かかる', '걸리다', '掛かる·掛かるの 교결·연속·필요 등 다양한 의미
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'かかる', '걸리다', '掛かるの 표기 → 매달리다·필요로 하다 등 다양한 의미
 자동사로 시간·비용·연결 등을 나타냄', '동사', 244, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '一時間かかる。', '한 시간 걸린다.', 1),
-    (w, 'この仕事にはお金がかかる。', '이 일에는 돈이 재어난다.', 2);
+    (w, 'この仕事にはお金がかかる。', '이 일에는 돈이 든다.', 2);
 
   -- 245. 清潔
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '清潔', 'せいけつ', '청결함', '清(맑을 청): 맑다→ 깨끗함
@@ -1749,25 +1749,25 @@ begin
     (w, '全員にあわせて会議を始める。', '전원에 맞춰서 회의를 시작한다.', 2);
 
   -- 247. 冗談
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '冗談', 'じょうだん', '농담', '冗(넘칠 잉): 남차는·잡다한
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '冗談', 'じょうだん', '농담', '冗(쓸데없을 용): 쓸데없는·잡다한
 談(말씀 담): 대화', '명사', 247, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '冗談だと思ってた。', '농담이라고 생각했다.', 1),
+    (w, '冗談だと思っていた。', '농담이라고 생각했다.', 1),
     (w, '彼は冗談が上手だ。', '그는 농담을 잘한다.', 2);
 
   -- 248. さっそく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'さっそく', '즉시, 곧', '早速の 표기→ 빠르고 손쉬롭게
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'さっそく', '즉시, 곧', '早速の 표기 → 早(빠를 조) + 速(빠를 속) → 곧바로
 부사로 주저함 없이', '부사', 248, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'さっそく試してみた。', '즉시 시도해 보았다.', 1),
     (w, '連絡を受けてさっそく出かけた。', '연락을 받고 곧 나갔다.', 2);
 
   -- 249. カーブ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'カーブ', '곱선, 커브', '영어 curve의 외래어
-김은 선·우회전·도로의 구비 구간', '명사', 249, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'カーブ', '곡선, 커브', '영어 curve의 외래어
+굽은 선·도로의 굽은 구간', '명사', 249, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'カーブを曲がった。', '커브를 돔았다.', 1),
-    (w, 'ボールがカーブしてストライクだ。', '공이 갈라서 스트라이크다.', 2);
+    (w, 'カーブを曲がった。', '커브를 돌았다.', 1),
+    (w, 'ボールがカーブしてストライクになった。', '공이 휘어서 스트라이크가 되었다.', 2);
 
   -- 250. 両替
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '両替', 'りょうがえ', '환전', '両(두 량): 두 개
@@ -1784,7 +1784,7 @@ begin
     (w, '前後を見て道を渡る。', '앞뒤를 보고 길을 건너다.', 2);
 
   -- 252. 影響
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '影響', 'えいきょう', '영향', '影(그림자 영): 그림자·흐적
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '影響', 'えいきょう', '영향', '影(그림자 영): 그림자·흔적
 響(울릴 향): 소리가 울림', '명사', 252, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '天気の影響で試合が中止だ。', '날씨의 영향으로 경기가 중지다.', 1),
@@ -1795,10 +1795,10 @@ begin
 부사로 단단하고 철저히', '부사', 253, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'しっかり勉強しなさい。', '제대로 공부해라.', 1),
-    (w, 'しっかりと手を握った。', '꿈° 손을 잡았다.', 2);
+    (w, 'しっかりと手を握った。', '단단히 손을 잡았다.', 2);
 
   -- 254. ながれ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ながれ', '흐름', '流れの 표기→ 물이나 색틀이 흐르는 모양
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ながれ', '흐름', '流れの 표기 → 물이나 시간이 흐르는 모양
 명사형', '명사', 254, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '川の流れが速い。', '강의 흐름이 빠르다.', 1),
@@ -1808,11 +1808,11 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '外食', 'がいしょく', '외식', '外(바깥 외): 집 밖
 食(밥 식): 식사', '명사', 255, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '今夕は外食にしよう。', '오늘 저녁은 외식하자.', 1),
-    (w, '外食が多いと太る。', '외식이 지장으면 살이 진다.', 2);
+    (w, '今夜は外食にしよう。', '오늘 저녁은 외식하자.', 1),
+    (w, '外食が多いと太る。', '외식이 잦으면 살이 찐다.', 2);
 
   -- 256. 差
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '差', 'さ', '차이, 안른함', '差(어긇날 차): 결이 고르지 않음→ 차이
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '差', 'さ', '차이, 다름', '差(어긋날 차): 가지런하지 않음 → 차이
 수량·정도의 차이', '명사', 256, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '年の差は三歳だ。', '나이 차이는 3세다.', 1),
@@ -1833,15 +1833,15 @@ begin
     (w, '意志が弱い。', '의지가 약하다.', 2);
 
   -- 259. 別れる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '別れる', 'わかれる', '헤어지다', '別(나눌 별): 다르게 나눌
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '別れる', 'わかれる', '헤어지다', '別(나눌 별): 따로 나누다
 자동사형 れる이 붙음', '동사', 259, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '恐人と別れた。', '사귀명과 헤어졌다.', 1),
+    (w, '恋人と別れた。', '애인과 헤어졌다.', 1),
     (w, '友達と駅で別れた。', '친구와 역에서 헤어졌다.', 2);
 
   -- 260. 起きる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '起きる', 'おきる', '일어나다, 발생하다', '起(일어날 기): 누워 있다 서면으로
-자동사로 취침·사건 발생', '동사', 260, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '起きる', 'おきる', '일어나다, 발생하다', '起(일어날 기): 누워 있다가 일어섬
+자동사로 기상·사건 발생', '동사', 260, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '朝七時に起きた。', '아침 7시에 일어났다.', 1),
     (w, '大事件が起きた。', '큰 사건이 발생했다.', 2);
@@ -1851,28 +1851,28 @@ begin
 援(도울 원): 도와줌', '명사', 261, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '応援してくれてありがとう。', '응원해줘서 고마워.', 1),
-    (w, 'チームを応援した。', '팁을 응원했다.', 2);
+    (w, 'チームを応援した。', '팀을 응원했다.', 2);
 
   -- 262. のばす
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'のばす', '연장하다, 연기하다', '延ばす·伸ばす의 표기→ 길게 하다·늦추다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'のばす', '연장하다, 연기하다', '延ばす·伸ばす의 표기 → 길게 하다·늦추다
 타동사', '동사', 262, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '期限を一週間のばした。', '기한을 일주일 연장했다.', 1),
-    (w, '骪をのばす。', '머리를 길게 기른다.', 2);
+    (w, '髪をのばす。', '머리를 길게 기른다.', 2);
 
   -- 263. ふる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ふる', '흔들다', '振る·震る의 표기→ 흔괴이고 움직임
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ふる', '흔들다', '振るの 표기 → 좌우로 흔들어 움직임
 타동사로 물건을 좌우로 흔들다', '동사', 263, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '手をふって振りかえた。', '손을 흔들어 돌아봤다.', 1),
-    (w, 'スカートをふってダンスを踊った。', '치마를 흔들며 춤을 춰다.', 2);
+    (w, '手をふって挨拶した。', '손을 흔들며 인사했다.', 1),
+    (w, '塩を少しふってください。', '소금을 조금 뿌려 주세요.', 2);
 
   -- 264. カバー
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'カバー', '커버, 덮개', '영어 cover의 외래어
-덮개·책자쯤·대신함', '명사', 264, array[]::text[]) returning id into w;
+덮개·책표지·대신 메움', '명사', 264, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '本にカバーをかけた。', '책에 커버를 썰워제결했다.', 1),
-    (w, '仄事をカバーしてもらった。', '일을 대신 해주었다.', 2);
+    (w, '本にカバーをかけた。', '책에 커버를 씌웠다.', 1),
+    (w, '彼の仕事をカバーしてあげた。', '그의 일을 대신해 주었다.', 2);
 
   -- 265. 想像
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '想像', 'そうぞう', '상상', '想(생각할 상): 마음에 그리다
@@ -1882,11 +1882,11 @@ begin
     (w, '想像もできない。', '상상도 할 수 없다.', 2);
 
   -- 266. むく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'むく', '벗기다', '剥くの 표기→ 껍질을 벗기다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'むく', '벗기다', '剥くの 표기 → 껍질을 벗기다
 타동사', '동사', 266, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'りんごの皮をむいた。', '사과 껍질을 벗겼다.', 1),
-    (w, '咳の皮をむく。', '귄의 껍질을 벗긴다.', 2);
+    (w, 'みかんの皮をむく。', '귤 껍질을 벗긴다.', 2);
 
   -- 267. かれる
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'かれる', '시들다', '枯れるの 표기→ 식물이 쓰러짐
@@ -1896,21 +1896,21 @@ begin
     (w, '水をやらないと植物はかれる。', '물을 주지 않으면 식물이 시들어.', 2);
 
   -- 268. がっかりする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'がっかりする', '낙심하다', 'だっかり·がっかり의 의성어 파생
-기대에 못미쳐 실망함', '동사', 268, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'がっかりする', '낙심하다, 실망하다', 'がっかり의 의태어에 する 결합
+기대에 못 미쳐 실망함', '동사', 268, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'でとうしてがっかりした。', '떨어져서 낙심했다.', 1),
-    (w, '負けてがっかりする。', '져서 실망한다.', 2);
+    (w, '試験に落ちてがっかりした。', '시험에 떨어져서 낙심했다.', 1),
+    (w, '試合に負けてがっかりする。', '시합에 져서 실망한다.', 2);
 
   -- 269. ヒント
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ヒント', '힌트', '영어 hint의 외래어
 암시·단서', '명사', 269, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ヒントをください。', '힌트를 주세요.', 1),
-    (w, 'もう一つヒントを出しよう。', '한 개 더 힌트를 줄껐.', 2);
+    (w, 'もう一つヒントを出そう。', '한 개 더 힌트를 주자.', 2);
 
   -- 270. なつかしい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なつかしい', '그립다', '懷かしいの 표기→ 과거가 그린 상태
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なつかしい', '그립다', '懐かしいの 표기 → 과거가 그리운 상태
 い형용사', 'い형용사', 270, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '子供の頃がなつかしい。', '어린 시절이 그립다.', 1),
@@ -1924,15 +1924,15 @@ begin
     (w, '代金引換えで買った。', '대금 상환으로 구입했다.', 2);
 
   -- 272. しつこい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しつこい', '끈질기다', '집요하고 질긴 일어→ 지박스럽게
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しつこい', '끈질기다, 집요하다', '執こい 어원 → 집요하고 끈덕짐
 い형용사', 'い형용사', 272, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'しつこい勧誘に困る。', '끈질긴 권유에 곤란하다.', 1),
-    (w, '咳がしつこい。', '기침이 지박스럽다.', 2);
+    (w, '咳がしつこくて治らない。', '기침이 끈질겨서 낫지 않는다.', 2);
 
   -- 273. 自動的
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '自動的', 'じどうてき', '자동적', '自動(자동): 스스로 움직임
-的(과녁 적): 구리 어미', 'な형용사', 273, array[]::text[]) returning id into w;
+的(과녁 적): ~다움을 나타내는 접미사', 'な형용사', 273, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'このドアは自動的に開く。', '이 문은 자동으로 열린다.', 1),
     (w, '自動的に更新される。', '자동적으로 갱신된다.', 2);
@@ -1969,12 +1969,12 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '急ぐ', 'いそぐ', '서두르다', '急(급할 급): 빠르고 급함
 자동사로 행동을 빨리 함', '동사', 278, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '高造に急ぐ。', '학교에 서두른다.', 1),
-    (w, '急がないと遅てしまう。', '서두르지 않으면 늦는다.', 2);
+    (w, '学校に急いだ。', '학교로 서둘러 갔다.', 1),
+    (w, '急がないと遅れてしまう。', '서두르지 않으면 늦어 버린다.', 2);
 
   -- 279. ガラス
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ガラス', '유리', '네덜란드어 glas의 외래어
-투명한 가끜운 소재', '명사', 279, array[]::text[]) returning id into w;
+투명하고 단단한 소재', '명사', 279, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ガラスのコップを使う。', '유리컵을 쓴다.', 1),
     (w, '窓のガラスが割れた。', '창문 유리가 깨졌다.', 2);
@@ -1990,28 +1990,28 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '比較', 'ひかく', '비교', '比(견주 비): 둘을 나란히 놓음
 較(견줄 교): 견줘봄', '명사', 281, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '他人と比較しないでいて。', '다른 사람과 비교하지 마.', 1),
-    (w, '价格を比較して買う。', '가격을 비교해서 사개°°며.', 2);
+    (w, '他人と比較しないで。', '다른 사람과 비교하지 마.', 1),
+    (w, '価格を比較して買う。', '가격을 비교해서 산다.', 2);
 
   -- 282. ぴったり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぴったり', '딱', '의태어→ 틈°더함 없이 맞는 상태
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぴったり', '딱, 꼭', '의태어 → 빈틈없이 맞는 상태
 완벽히 일치하는 모양', '부사', 282, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'この服はぴったりだ。', '이 옷은 딱 잊는다.', 1),
-    (w, '中起にぴったり間に合った。', '점심에 딱 맞춰서 도착했다.', 2);
+    (w, 'この服はぴったりだ。', '이 옷은 딱 맞는다.', 1),
+    (w, '昼食にぴったり間に合った。', '점심에 딱 맞춰 도착했다.', 2);
 
   -- 283. 必死
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '必死', 'ひっし', '필사적', '必(반드시 필): 반드시
 死(죽을 사): 죽음', 'な형용사', 283, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '必死で勉強した。', '필사적으로 공부했다.', 1),
-    (w, '必死に走って間に合った。', '필사적으로 달려서 간다.', 2);
+    (w, '必死に走って間に合った。', '필사적으로 달려서 시간에 맞췄다.', 2);
 
   -- 284. ぼんやり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぼんやり', '멍하게', '의태어→ 의식이 뜹한 상태
-주의력을 잏은 모양', '부사', 284, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぼんやり', '멍하니, 흐릿하게', '의태어 → 의식이나 시야가 흐릿한 상태
+주의력을 잃은 모양', '부사', 284, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ぼんやりして車を見した。', '멍하게 있다가 차를 놓쳤다.', 1),
+    (w, 'ぼんやりして電車を見送った。', '멍하니 있다가 전철을 놓쳤다.', 1),
     (w, 'ぼんやりした表情だった。', '멍한 표정이었다.', 2);
 
   -- 285. はかる
@@ -2033,25 +2033,25 @@ begin
 安(편안 안): 편안함', 'な형용사', 287, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '未来が不安だ。', '미래가 불안하다.', 1),
-    (w, '不安で眠れない。', '불안해서 잠을 못 움다.', 2);
+    (w, '不安で眠れない。', '불안해서 잠을 잘 수 없다.', 2);
 
   -- 288. 横
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '横', 'よこ', '옆, 가로', '横(가로 획): 옆으로 늈 모양
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '横', 'よこ', '옆, 가로', '横(가로 횡): 옆으로 누운 모양
 수평 방향', '명사', 288, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '横にずれている。', '옆으로 비껸젹 있다.', 1),
-    (w, '記横の中到に並んだ。', '자의 옆자리에 서있다.', 2);
+    (w, '横にずれている。', '옆으로 비스듬히 있다.', 1),
+    (w, '彼の横の席に座った。', '그의 옆자리에 앉았다.', 2);
 
   -- 289. 結ぶ
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '結ぶ', 'むすぶ', '묶다', '結(맺을 결): 끝을 한데 모음
 타동사', '동사', 289, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'リボンを結んだ。', '리본을 맳았다.', 1),
-    (w, 'ひもをしっかり結ぶ。', '끌을 단단히 맳는다.', 2);
+    (w, 'リボンを結んだ。', '리본을 맺었다.', 1),
+    (w, 'ひもをしっかり結ぶ。', '끈을 단단히 묶는다.', 2);
 
   -- 290. 数
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '数', 'かず', '수', '数(셌 수): 수을 셌
-의미 수의 양', '명사', 290, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '数', 'かず', '수', '数(셈 수): 수를 헤아림
+수량의 양', '명사', 290, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '数を数えてみた。', '수를 세어 봤다.', 1),
     (w, '参加者の数が多い。', '참가자 수가 많다.', 2);
@@ -2061,14 +2061,14 @@ begin
 예약·관계를 취소함', '명사', 291, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '予約をキャンセルした。', '예약을 취소했다.', 1),
-    (w, '静始記もキャンセルされた。', '공연도 취소되었다.', 2);
+    (w, '公演もキャンセルされた。', '공연도 취소되었다.', 2);
 
   -- 292. ハンドル
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ハンドル', '핸들', '영어 handle의 외래어
 자동차의 운전대', '명사', 292, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ハンドルを右に切った。', '핸들을 오른쪽으로 꾬롤다.', 1),
-    (w, 'ハンドルをしっかり採って。', '핸들을 단단히 잡아.', 2);
+    (w, 'ハンドルを右に切った。', '핸들을 오른쪽으로 꺾었다.', 1),
+    (w, 'ハンドルをしっかり握って。', '핸들을 단단히 잡아.', 2);
 
   -- 293. 集中
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '集中', 'しゅうちゅう', '집중', '集(모일 집): 한데 모임
@@ -2085,7 +2085,7 @@ begin
     (w, '送料も含まれている。', '배송비도 포함되어 있다.', 2);
 
   -- 295. 直接
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '直接', 'ちょくせつ', '직접', '直(곳을 직): 곷음
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '直接', 'ちょくせつ', '직접', '直(곧을 직): 곧음
 接(이을 접): 이음', '명사', 295, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '直接会って話したい。', '직접 만나서 이야기하고 싶다.', 1),
@@ -2096,7 +2096,7 @@ begin
 자동사', '동사', 296, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '電車に乗った。', '전철에 탔다.', 1),
-    (w, 'バスに乗り遅れた。', '버스를 놓쳐다.', 2);
+    (w, 'バスに乗り遅れた。', '버스를 놓쳤다.', 2);
 
   -- 297. 平均
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '平均', 'へいきん', '평균', '平(평평할 평): 평평함
@@ -2106,7 +2106,7 @@ begin
     (w, '一年間の平均気温を測る。', '일년간 평균 기온을 측정한다.', 2);
 
   -- 298. 違反
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '違反', 'いはん', '위반', '違(어김날 위): 않는 방향→ 어김
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '違反', 'いはん', '위반', '違(어긋날 위): 정해진 방향에서 벗어남
 反(돌이킬 반): 돌이키다', '명사', 298, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'スピード違反だ。', '속도 위반이다.', 1),
@@ -2117,7 +2117,7 @@ begin
 자동사', '동사', 299, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '試合に勝った。', '경기에서 이겼다.', 1),
-    (w, '試験にポイトのチームが勝った。', '경기에서 내가 움직이는 팁이 이겼다.', 2);
+    (w, '応援していたチームが勝った。', '응원하던 팀이 이겼다.', 2);
 
   -- 300. 反対
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '反対', 'はんたい', '반대', '反(돌이킬 반): 되돌림
@@ -2151,50 +2151,50 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '残念', 'ざんねん', '아쉬움, 유감', '残(남을 잔): 남아 있음
 念(생각 녁): 생각', 'な형용사', 304, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '試合に負けて残念だ。', '경기에 져서 아쉬움을 남겄다.', 1),
-    (w, '残念ながら欠席します。', '아쉬움겹지만 불참합니다.', 2);
+    (w, '試合に負けて残念だ。', '경기에 져서 아쉽다.', 1),
+    (w, '残念ながら欠席します。', '아쉽지만 불참합니다.', 2);
 
   -- 305. つもり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'つもり', '작정, 이도', '積もりの 표기→ 쌓아온 마음
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'つもり', '작정, 의도', '積もりの 표기 → 쌓아온 마음
 의도·예정을 나타냄', '명사', 305, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '明日行くつもりだ。', '내일 갈 작정이다.', 1),
-    (w, '買うつもりはない。', '살 이도는 없다.', 2);
+    (w, '買うつもりはない。', '살 의도는 없다.', 2);
 
   -- 306. なお
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なお', '또한, 여전히', '尚の 표기→ 아직도·더욱
 접속사·부사', '접속사', 306, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'なお、详しくはホームページをご覧ください。', '또한 자세한 내용은 홈페이지를 참고하세요.', 1),
+    (w, 'なお、詳しくはホームページをご覧ください。', '또한 자세한 내용은 홈페이지를 참고하세요.', 1),
     (w, '雨がなお降っている。', '비가 여전히 내리고 있다.', 2);
 
   -- 307. 順番
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '順番', 'じゅんばん', '순서', '順(순할 순): 순서대로
 番(차례 번): 차례', '명사', 307, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '順番を守って並んでください。', '순서를 지켜 서주세요.', 1),
-    (w, '順番が回ってきた。', '순서가 여기에 왔다.', 2);
+    (w, '順番を守って並んでください。', '순서를 지켜 서 주세요.', 1),
+    (w, '順番が回ってきた。', '순서가 돌아왔다.', 2);
 
   -- 308. 上下
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '上下', 'じょうげ', '상하', '上(윗 상): 위
 下(아래 하): 아래', '명사', 308, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '上下関係が厳しい。', '상하관계가 엄격하다.', 1),
-    (w, '上下を見てればわかる。', '위아래를 보면 이해한다.', 2);
+    (w, '上下をよく見ればわかる。', '위아래를 잘 보면 안다.', 2);
 
   -- 309. 加える
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '加える', 'くわえる', '더하다, 추가하다', '加(더할 가): 힘을 더함
 타동사', '동사', 309, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '砜糖を加えてください。', '설탕을 더해주세요.', 1),
+    (w, '砂糖を加えてください。', '설탕을 더해 주세요.', 1),
     (w, 'メンバーを一人加える。', '멤버를 한 사람 추가한다.', 2);
 
   -- 310. アナウンス
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'アナウンス', '안내방송', '영어 announce의 외래어
 공식 알림', '명사', 310, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '駅でアナウンスが聬こえた。', '역에서 안내방송이 들렸다.', 1),
-    (w, '出発アナウンスが出た。', '출발 안내방송이 나왔다.', 2);
+    (w, '駅でアナウンスが聞こえた。', '역에서 안내방송이 들렸다.', 1),
+    (w, '出発アナウンスが流れた。', '출발 안내방송이 흘러나왔다.', 2);
 
   -- 311. 取り消す
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '取り消す', 'とりけす', '취소하다', '取(가질 취): 가지다
@@ -2208,21 +2208,21 @@ begin
 性(성품 성): 성질', '명사', 312, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'それぞれに個性がある。', '제각각 개성이 있다.', 1),
-    (w, '個性を生かそう。', '개성을 살림하자.', 2);
+    (w, '個性を生かそう。', '개성을 살리자.', 2);
 
   -- 313. 演劇
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '演劇', 'えんげき', '연극', '演(폼 연): 느뜰게 펼치다
-劇(심할 극): 극적', '명사', 313, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '演劇', 'えんげき', '연극', '演(펼 연): 무대에서 펼쳐 보임
+劇(심할 극): 극적인 이야기', '명사', 313, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '演劇を見に行った。', '연극을 보러 갔다.', 1),
     (w, '演劇部に入った。', '연극부에 들어갔다.', 2);
 
   -- 314. ぜひ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぜひ', '꿆, 꼭', '是非の 표기→ 올움·그릅을 가림 없이
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ぜひ', '꼭, 부디', '是非の 표기 → 옳고 그름을 따지지 않고 반드시
 강조 부사', '부사', 314, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ぜひ遇びに来てください。', '꿆 높이러 와주세요.', 1),
-    (w, 'ぜひ酒合いたい。', '꼭 만나고 싶다.', 2);
+    (w, 'ぜひ遊びに来てください。', '꼭 놀러 와 주세요.', 1),
+    (w, 'ぜひ会いたい。', '꼭 만나고 싶다.', 2);
 
   -- 315. なくす
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なくす', '잃다', '無くす·亡くす의 표기→ 없애다·잃어버리다
@@ -2236,21 +2236,21 @@ begin
 要(요구할 요): 중한 것', 'な형용사', 316, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '重要な会議がある。', '중요한 회의가 있다.', 1),
-    (w, '重要な代言だ。', '중요한 안건이다.', 2);
+    (w, '重要な案件だ。', '중요한 안건이다.', 2);
 
   -- 317. 通る
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '通る', 'とおる', '지나가다', '通(통할 통): 관통해서 경과움
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '通る', 'とおる', '지나가다', '通(통할 통): 관통해 지나감
 자동사', '동사', 317, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '車が道を通る。', '차가 길을 지나간다.', 1),
     (w, '試験に通った。', '시험에 합격했다.', 2);
 
   -- 318. けが
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'けが', '부상', '怪我の 표기→ 이상하게 당함→ 상처
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'けが', '부상, 상처', '怪我の 표기 → 이상하게 당함 → 상처
 명사', '명사', 318, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '高造でけがをした。', '학교에서 다쳐다.', 1),
-    (w, '転んでけがをした。', '넘어져서 다쳐다.', 2);
+    (w, '学校でけがをした。', '학교에서 다쳤다.', 1),
+    (w, '転んでけがをした。', '넘어져서 다쳤다.', 2);
 
   -- 319. なぐさめる
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なぐさめる', '위로하다', '慰めるの 표기→ 마음을 편안하게 함
@@ -2275,7 +2275,7 @@ begin
 
   -- 322. ホテル
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ホテル', '호텔', '영어 hotel의 외래어
-숨박 시설', '명사', 322, array[]::text[]) returning id into w;
+숙박 시설', '명사', 322, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ホテルに泊まる。', '호텔에서 잔다.', 1),
     (w, 'ホテルを予約した。', '호텔을 예약했다.', 2);
@@ -2302,7 +2302,7 @@ begin
     (w, '三回ノックしても返事がない。', '세 번 노크해도 대답이 없다.', 2);
 
   -- 326. 命
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '命', 'いのち', '생명, 목숨', '命(목숨 명): 입으로 명을 내림→ 숨을 쓠
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '命', 'いのち', '생명, 목숨', '命(목숨 명): 입으로 명을 내림 → 숨을 쉬며 살아있음
 살아있게 하는 원천', '명사', 326, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '命は一つしかない。', '생명은 하나뿐이다.', 1),
@@ -2313,17 +2313,17 @@ begin
 자동사', '동사', 327, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '広場に人が集まった。', '광장에 사람이 모였다.', 1),
-    (w, '銖隃の前に集まってください。', '조상 앞에 모여 주세요.', 2);
+    (w, '神社の前に集まってください。', '신사 앞으로 모여 주세요.', 2);
 
   -- 328. 授業
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '授業', 'じゅぎょう', '수업', '授(줄 수): 가르침
 業(일 업): 일·학업', '명사', 328, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '授業を受ける。', '수업을 받는다.', 1),
-    (w, '授業中は集中してよう。', '수업 중에는 집중하자.', 2);
+    (w, '授業中は集中しよう。', '수업 중에는 집중하자.', 2);
 
   -- 329. 違う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '違う', 'ちがう', '다르다, 틀리다', '違(어김날 위): 쟈못 갈→ 다름
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '違う', 'ちがう', '다르다, 틀리다', '違(어긋날 위): 잘못 감 → 일치하지 않음
 자동사', '동사', 329, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '考えが違う。', '생각이 다르다.', 1),
@@ -2333,14 +2333,14 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'アクセサリー', '액세서리', '영어 accessory의 외래어
 장식품·부속품', '명사', 330, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '可愛いアクセサリーを買った。', '귀엽은 액세서리를 샀다.', 1),
+    (w, '可愛いアクセサリーを買った。', '귀여운 액세서리를 샀다.', 1),
     (w, 'アクセサリーをつけている。', '액세서리를 착용하고 있다.', 2);
 
   -- 331. 数字
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '数字', 'すうじ', '숫자', '数(셌 수): 수
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '数字', 'すうじ', '숫자', '数(셈 수): 수
 字(글자 자): 글자', '명사', 331, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '数字を読み達えた。', '숫자를 잘못 읽었다.', 1),
+    (w, '数字を読み違えた。', '숫자를 잘못 읽었다.', 1),
     (w, '数字を入力してください。', '숫자를 입력해 주세요.', 2);
 
   -- 332. 国内
@@ -2355,13 +2355,13 @@ begin
 気(기운 기): 기운', '명사', 333, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'この歌手は人気がある。', '이 가수는 인기가 있다.', 1),
-    (w, '人気メニューを頫んだ。', '인기 메뉴를 주문했다.', 2);
+    (w, '人気メニューを頼んだ。', '인기 메뉴를 주문했다.', 2);
 
   -- 334. でかける
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'でかける', '외출하다, 나가다', '出掛けるの 표기→ 밖으로 나가다
 자동사', '동사', 334, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '朝早く出かけた。', '아침 일직 나갔다.', 1),
+    (w, '朝早く出かけた。', '아침 일찍 나갔다.', 1),
     (w, '買い物に出かける。', '장을 보러 나간다.', 2);
 
   -- 335. 単語
@@ -2372,14 +2372,14 @@ begin
     (w, 'この単語の意味を調べる。', '이 단어의 뜻을 찾아본다.', 2);
 
   -- 336. もったいない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'もったいない', '아깝다', '勿体ないの 표기→ 그 본얰의 가치가 없어짐
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'もったいない', '아깝다', '勿体ないの 표기 → 본래의 가치가 없어짐
 い형용사', 'い형용사', 336, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '捨てるのはもったいない。', '버리기에는 아깝다.', 1),
     (w, '時間がもったいない。', '시간이 아깝다.', 2);
 
   -- 337. 計画
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '計画', 'けいかく', '계획', '計(셌 계): 소도를 셌
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '計画', 'けいかく', '계획', '計(셈 계): 수를 헤아림
 画(그을 획): 그림·계획', '명사', 337, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '旅行の計画を立てた。', '여행 계획을 세웠다.', 1),
@@ -2397,46 +2397,46 @@ begin
 집에서 기르는 동물', '명사', 339, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '犬をペットとして飼っている。', '개를 애완동물로 키우고 있다.', 1),
-    (w, 'ペット勄も可だ。', '애완동물 출입 가능이다.', 2);
+    (w, 'ペットも入場可能だ。', '애완동물도 입장 가능이다.', 2);
 
   -- 340. 急に
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '急に', 'きゅうに', '갑자기', '急(급할 급): 활마처럼 홝·대단히
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '急に', 'きゅうに', '갑자기', '急(급할 급): 빠르고 다급함
 부사·형용사처럼 쓰임', '부사', 340, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '急に雨が降り始めた。', '갑자기 비가 내리기 시작했다.', 1),
     (w, '急に思い出した。', '갑자기 생각났다.', 2);
 
   -- 341. 機会
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '機会', 'きかい', '기회', '機(틀 기): 이접해 종조이
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '機会', 'きかい', '기회', '機(틀 기): 적절한 시기·계기
 会(모일 회): 만남', '명사', 341, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'いい機会だ。', '좋은 기회다.', 1),
     (w, '機会を逃すと勿体ない。', '기회를 놓치면 아깝다.', 2);
 
   -- 342. ふだん
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ふだん', '평소', '普段の 표기→ 한 단계·평범함→ 평소
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ふだん', '평소', '普段の 표기 → 일상적·평범한 때
 부사', '부사', 342, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ふだん、電車で出勤している。', '평소에 전철로 출근한다.', 1),
-    (w, 'ふだんの仕事は多しい。', '평소 업무는 바쁘다.', 2);
+    (w, 'ふだんの仕事は忙しい。', '평소 업무는 바쁘다.', 2);
 
   -- 343. 教育
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '教育', 'きょういく', '교육', '教(가르칠 교): 가르침
 育(기를 육): 기름', '명사', 343, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '子供の教育に熟心だ。', '자녀 교육에 열심이다.', 1),
+    (w, '子供の教育に熱心だ。', '자녀 교육에 열심이다.', 1),
     (w, '教育を受ける権利がある。', '교육받을 권리가 있다.', 2);
 
   -- 344. ふえる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ふえる', '늘다, 쿨이게하다', '増えるの 다른 표기→ 아이가 늘게 함
-自えるの 가능형 れる', '동사', 344, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ふえる', '늘다, 증가하다', '増えるの 표기 → 수량이 늘어남
+자동사', '동사', 344, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '孫が三人にふえた。', '손자가 세 명으로 늘었다.', 1),
     (w, '体重がふえて困っている。', '체중이 늘어 고민이다.', 2);
 
   -- 345. 訪問
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '訪問', 'ほうもん', '방문', '訪(찾을 방): 찾아감
-問(물을 문): 물으며 봤음', '명사', 345, array[]::text[]) returning id into w;
+問(물을 문): 물어봄', '명사', 345, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '友達を訪問した。', '친구를 방문했다.', 1),
     (w, '企業訪問の予定だ。', '기업 방문 예정이다.', 2);
@@ -2452,22 +2452,22 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '過去', 'かこ', '과거', '過(지날 과): 지나감
 去(갈 거): 감', '명사', 347, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '過去を慵わない。', '과거를 뜨례안는다.', 1),
+    (w, '過去を悔やまない。', '과거를 후회하지 않는다.', 1),
     (w, '過去に学ぶものがある。', '과거에서 배우는 것이 있다.', 2);
 
   -- 348. たとえば
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'たとえば', '예를 들면', '例えばの 표기→ 예를 들면
 접속사', '접속사', 348, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'たとえば、こんな感じだ。', '예를 들어 이런 식이다.', 1),
-    (w, 'たとえば梨やりんごも仃だ。', '예를 들면 배나 사과도 재밌다.', 2);
+    (w, 'たとえば、こんな感じだ。', '예를 들면 이런 느낌이다.', 1),
+    (w, 'たとえば梨やりんごも好きだ。', '예를 들면 배나 사과도 좋아한다.', 2);
 
   -- 349. テクニック
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'テクニック', '테크닉', '영어 technique의 외래어
 기술·방법', '명사', 349, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'このテクニックは高い。', '이 기술은 높다.', 1),
-    (w, 'テクニックを身につける。', '기술을 못이다.', 2);
+    (w, 'このテクニックは難しい。', '이 테크닉은 어렵다.', 1),
+    (w, 'テクニックを身につける。', '기술을 익힌다.', 2);
 
   -- 350. 注目
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '注目', 'ちゅうもく', '주목', '注(부을 주): 담아넣음→ 집중
@@ -2495,17 +2495,17 @@ begin
 자동사', '동사', 353, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '期限が過ぎた。', '기한이 지났다.', 1),
-    (w, 'もう三時を過ぎた。', '벌써 3시를 넘겨다.', 2);
+    (w, 'もう三時を過ぎた。', '벌써 3시를 넘겼다.', 2);
 
   -- 354. 知り合い
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '知り合い', 'しりあい', '아는 사람', '知(알 지): 알다
-合う(마눌 합): 어울림', '명사', 354, array[]::text[]) returning id into w;
+合う(합할 합): 서로 만나 어울림', '명사', 354, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '会社で知り合いになった。', '회사에서 아는 사이가 되었다.', 1),
-    (w, '他人でも知り合いは多い。', '그도 아는 사람이 많다.', 2);
+    (w, '彼は知り合いが多い。', '그는 아는 사람이 많다.', 2);
 
   -- 355. 確実
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '確実', 'かくじつ', '확실', '確(굳을 확): 틄틄함
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '確実', 'かくじつ', '확실', '確(굳을 확): 단단함·확고함
 実(열매 실): 열매·진실', 'な형용사', 355, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '確実な証拠がある。', '확실한 증거가 있다.', 1),
@@ -2547,10 +2547,10 @@ begin
     (w, 'ケーキが一つ残った。', '케이크가 하나 남았다.', 2);
 
   -- 361. 努力
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '努力', 'どりょく', '노력', '努(힘쓸 노): 힘수 이용·애쓰다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '努力', 'どりょく', '노력', '努(힘쓸 노): 힘을 다해 애쓰다
 力(힘 력): 힘', '명사', 361, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'スタイルを努力している。', '주이도록 노력하고 있다.', 1),
+    (w, '毎日努力を続けている。', '매일 노력을 계속하고 있다.', 1),
     (w, '努力は裏切らない。', '노력은 배신하지 않는다.', 2);
 
   -- 362. ストレス
@@ -2575,11 +2575,11 @@ begin
     (w, '電気がついた。', '전기가 켜졌다.', 2);
 
   -- 365. うっかり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'うっかり', '깜빡', '의태어→ 주의가 흔트러진 상태
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'うっかり', '깜빡', '의태어 → 주의가 흐트러진 상태
 부주의한 모양', '부사', 365, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'うっかり忘れてしまった。', '깜빡 잊어버렸다.', 1),
-    (w, 'うっかり見逃してしまった。', '깜빡 있다가 놓쳤다.', 2);
+    (w, 'うっかり見逃してしまった。', '깜빡하다가 놓치고 말았다.', 2);
 
   -- 366. 修理
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '修理', 'しゅうり', '수리', '修(닦을 수): 고치다
@@ -2589,31 +2589,31 @@ begin
     (w, '修理代が高い。', '수리비가 비싸다.', 2);
 
   -- 367. はずす
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'はずす', '떼다, 볼기다', '外すの 표기→ 밖으로 낙운다·벗겨내다
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'はずす', '떼다, 풀다', '外すの 표기 → 밖으로 빼다·벗겨내다
 타동사', '동사', 367, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '眼鏡をはずした。', '안경을 볼겨냈다.', 1),
-    (w, 'ボタンをはずす。', '단추를 푹다.', 2);
+    (w, '眼鏡をはずした。', '안경을 벗었다.', 1),
+    (w, 'ボタンをはずす。', '단추를 푼다.', 2);
 
   -- 368. 苦労
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '苦労', 'くろう', '고생', '苦(쓸 고): 고고틀함
-労(일할 로): 일함', '명사', 368, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '苦労', 'くろう', '고생', '苦(쓸 고): 괴로움
+労(일할 로): 힘써 일함', '명사', 368, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ご苦労さまでした。', '고생 많으셨습니다.', 1),
     (w, '苦労して育てた。', '고생해서 키웠다.', 2);
 
   -- 369. つらい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'つらい', '괴롭다', '辛いの 표기→ 마음·몸이 괴로움
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'つらい', '괴롭다, 힘들다', '辛いの 표기 → 마음·몸이 괴로움
 い형용사', 'い형용사', 369, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '頭がつらい。', '머리가 아프다.', 1),
+    (w, '別れがつらい。', '이별이 괴롭다.', 1),
     (w, 'つらい思い出だ。', '괴로운 기억이다.', 2);
 
   -- 370. ガイド
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ガイド', '가이드', '영어 guide의 외래어
 안내자·안내서', '명사', 370, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '観光ガイドを願う。', '관광 가이드를 부탁한다.', 1),
+    (w, '観光ガイドをお願いする。', '관광 가이드를 부탁한다.', 1),
     (w, 'ガイドブックを読んだ。', '가이드북을 읽었다.', 2);
 
   -- 371. 説明
@@ -2624,11 +2624,11 @@ begin
     (w, '使い方を説明した。', '사용법을 설명했다.', 2);
 
   -- 372. 偶然
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '偶然', 'ぐうぜん', '우연', '偶(짝 우): 짝을 이롌
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '偶然', 'ぐうぜん', '우연', '偶(짝 우): 짝·우연히 만남
 然(그럴 연): 그러함', '명사', 372, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '偶然友達に会った。', '우연히 친구를 만났다.', 1),
-    (w, '偶然にも陣席があった。', '우연히도 자리가 남아 있었다.', 2);
+    (w, '偶然にも空席があった。', '우연히도 빈자리가 있었다.', 2);
 
   -- 373. 必要
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '必要', 'ひつよう', '필요', '必(반드시 필): 반드시·꼭
@@ -2638,18 +2638,18 @@ begin
     (w, 'もう何も必要ない。', '이제 아무것도 필요없다.', 2);
 
   -- 374. 真っ赤
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '真っ赤', 'まっか', '새빨강', '真(참 진): 완전한
-赤(붉을 적): 붉은 색', 'な형용사', 374, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '真っ赤', 'まっか', '새빨갛다', '真(참 진): 완전한
+赤(붉을 적): 붉은색', 'な형용사', 374, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '真っ赤なリンゴだ。', '새빨강 사과다.', 1),
-    (w, '息て顔が真っ赤だ。', '화가나서 얼굴이 새빨강이다.', 2);
+    (w, '真っ赤なりんごだ。', '새빨간 사과다.', 1),
+    (w, '怒って顔が真っ赤だ。', '화가 나서 얼굴이 새빨갛다.', 2);
 
   -- 375. ようやく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ようやく', '결국, 마침내', 'やうやく·要やくの 표기→ 어제서야·곳
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ようやく', '결국, 마침내', '漸くの 표기 → 시간이 지나 비로소
 부사', '부사', 375, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ようやく完成した。', '마침내 완성했다.', 1),
-    (w, 'ようやく雨が止んだ。', '결국 비가 닝결다.', 2);
+    (w, 'ようやく雨が止んだ。', '결국 비가 그쳤다.', 2);
 
   -- 376. 役立つ
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '役立つ', 'やくだつ', '도움이 되다', '役(부릴 역): 쓰임·역할
@@ -2663,7 +2663,7 @@ begin
 동호·회원제 모임', '명사', 377, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'テニスクラブに入った。', '테니스 동아리에 들어갔다.', 1),
-    (w, 'クラブでダンスを踊った。', '클럽에서 춤을 춰다.', 2);
+    (w, 'クラブでダンスを踊った。', '클럽에서 춤을 췄다.', 2);
 
   -- 378. 検査
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '検査', 'けんさ', '검사', '検(검사할 검): 검사함
@@ -3061,7 +3061,7 @@ begin
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '短い', 'みじかい', '짧다', '短(짧을 단): 길이가 짧음
 い형용사', 'い형용사', 434, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '骪を短くした。', '머리를 짧게 잘랐다.', 1),
+    (w, '髪を短くした。', '머리를 짧게 잘랐다.', 1),
     (w, '短い休暇をもらった。', '짧은 휴가를 받았다.', 2);
 
   -- 435. 火事
