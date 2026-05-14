@@ -35,13 +35,16 @@ begin
     (w, 'いろいろな経験を積みたい。', '다양한 경험을 쌓고 싶다.', 2);
 
   -- 2. 間違える
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '間違える', 'まちがえる', '틀리다, 잘못 알다', '間(사이 간): 문(門) 사이로 햇빛(日)이 들어옴\n違(어긋날 위): 어긋나서 다름\n+ える(타동사화)', '동사', 2, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '間違える', 'まちがえる', '틀리다, 잘못 알다', '間(사이 간): 문(門) 사이로 햇빛(日)이 들어옴
+違(어긋날 위): 어긋나서 다름
++ える(타동사화)', '동사', 2, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '名前を間違えてしまいました。', '이름을 잘못 알았습니다.', 1),
     (w, '答えを間違えた。', '답을 틀렸다.', 2);
 
   -- 3. 簡単
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '簡単', 'かんたん', '간단함', '簡(대쪽 간): 대나무(竹)에 적은 글, 간략함\n単(홑 단): 하나뿐임', 'な형용사', 3, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '簡単', 'かんたん', '간단함', '簡(대쪽 간): 대나무(竹)에 적은 글, 간략함
+単(홑 단): 하나뿐임', 'な형용사', 3, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'この問題は簡単です。', '이 문제는 간단합니다.', 1),
     (w, '簡単な日本語で話してください。', '간단한 일본어로 말해 주세요.', 2);
