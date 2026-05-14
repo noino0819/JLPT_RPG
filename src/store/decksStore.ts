@@ -1,6 +1,18 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Deck, Example, Word } from "../types";
+import {
+  MAX_DECK_DESCRIPTION_LEN,
+  MAX_DECK_NAME_LEN,
+  MAX_ETYMOLOGY_LEN,
+  MAX_HEADWORD_LEN,
+  MAX_IMPORT_ROWS,
+  MAX_MEANING_LEN,
+  MAX_POS_LEN,
+  MAX_READING_LEN,
+  sanitizeSingleLine,
+  sanitizeText,
+} from "../lib/validation";
 
 /**
  * 통합 데이터 스토어.
@@ -75,13 +87,19 @@ export const useDecksStore = create<DecksState>()(
         get().words.filter((w) => w.deck_id === deckId),
 
       createDeck: (name, description, ownerId) => {
+        // 외부에서 호출하더라도 절대 신뢰하지 않고 sanitize 한다.
+        const safeName =
+          sanitizeSingleLine(name, MAX_DECK_NAME_LEN) || "이름 없는 단어장";
+        const safeDescription = description
+          ? sanitizeText(description, MAX_DECK_DESCRIPTION_LEN)
+          : undefined;
         const deck: Deck = {
           id: uuid(),
           owner_id: ownerId ?? "local",
-          name,
+          name: safeName,
           jlpt_level: "custom",
           is_official: false,
-          description,
+          description: safeDescription || undefined,
         };
         set((s) => ({ decks: [...s.decks, deck] }));
         return deck;
@@ -93,23 +111,45 @@ export const useDecksStore = create<DecksState>()(
           words: s.words.filter((w) => w.deck_id !== deckId),
         })),
 
-      renameDeck: (deckId, name) =>
+      renameDeck: (deckId, name) => {
+        const safeName =
+          sanitizeSingleLine(name, MAX_DECK_NAME_LEN) || "이름 없는 단어장";
         set((s) => ({
           decks: s.decks.map((d) =>
-            d.id === deckId ? { ...d, name } : d,
+            d.id === deckId ? { ...d, name: safeName } : d,
           ),
-        })),
+        }));
+      },
 
       addWord: (deckId, w) => {
+        const reading = sanitizeText(w.reading, MAX_READING_LEN);
+        const meaning = sanitizeText(w.meaning, MAX_MEANING_LEN);
+        if (!reading || !meaning) {
+          // 빈 단어는 추가하지 않음. 그래도 호출부의 타입 만족을 위해 빈 word 반환.
+          return {
+            id: uuid(),
+            deck_id: deckId,
+            headword: null,
+            reading: "",
+            meaning: "",
+            order_index: 0,
+            tags: [],
+            examples: [],
+          };
+        }
+        const headword = w.headword ? sanitizeText(w.headword, MAX_HEADWORD_LEN) : "";
+        const etymology = w.etymology ? sanitizeText(w.etymology, MAX_ETYMOLOGY_LEN) : "";
+        const pos = w.part_of_speech ? sanitizeText(w.part_of_speech, MAX_POS_LEN) : "";
+
         const existing = get().wordsByDeck(deckId).length;
         const word: Word = {
           id: uuid(),
           deck_id: deckId,
-          headword: w.headword,
-          reading: w.reading,
-          meaning: w.meaning,
-          etymology: w.etymology,
-          part_of_speech: w.part_of_speech,
+          headword: headword || null,
+          reading,
+          meaning,
+          etymology: etymology || undefined,
+          part_of_speech: pos || undefined,
           order_index: existing + 1,
           tags: [],
           examples: w.examples ?? [],
@@ -120,18 +160,35 @@ export const useDecksStore = create<DecksState>()(
 
       bulkAddWords: (deckId, items) => {
         const start = get().wordsByDeck(deckId).length;
-        const created: Word[] = items.map((it, i) => ({
-          id: uuid(),
-          deck_id: deckId,
-          headword: it.headword,
-          reading: it.reading,
-          meaning: it.meaning,
-          etymology: it.etymology,
-          part_of_speech: it.part_of_speech,
-          order_index: start + i + 1,
-          tags: [],
-          examples: [],
-        }));
+        const limited = items.slice(0, MAX_IMPORT_ROWS);
+        const created: Word[] = [];
+        for (let i = 0; i < limited.length; i++) {
+          const it = limited[i];
+          const reading = sanitizeText(it.reading, MAX_READING_LEN);
+          const meaning = sanitizeText(it.meaning, MAX_MEANING_LEN);
+          if (!reading || !meaning) continue;
+          const headword = it.headword
+            ? sanitizeText(it.headword, MAX_HEADWORD_LEN)
+            : "";
+          const etymology = it.etymology
+            ? sanitizeText(it.etymology, MAX_ETYMOLOGY_LEN)
+            : "";
+          const pos = it.part_of_speech
+            ? sanitizeText(it.part_of_speech, MAX_POS_LEN)
+            : "";
+          created.push({
+            id: uuid(),
+            deck_id: deckId,
+            headword: headword || null,
+            reading,
+            meaning,
+            etymology: etymology || undefined,
+            part_of_speech: pos || undefined,
+            order_index: start + created.length + 1,
+            tags: [],
+            examples: [],
+          });
+        }
         set((s) => ({ words: [...s.words, ...created] }));
         return created.length;
       },

@@ -8,6 +8,7 @@ import {
   type Settings,
 } from "../types";
 import { MAX_EQUIPPED_BADGES } from "../data/badges";
+import { MAX_NICKNAME_LEN, sanitizeSingleLine } from "../lib/validation";
 
 interface ProfileState {
   nickname: string;
@@ -33,7 +34,11 @@ export const useProfileStore = create<ProfileState>()(
       selected_character: "warrior",
       settings: DEFAULT_SETTINGS,
       equipped: DEFAULT_EQUIPPED,
-      setNickname: (nickname) => set({ nickname }),
+      setNickname: (nickname) => {
+        // 제어문자 제거 + 30자 제한. 빈 값으로 들어오면 기존 값을 유지.
+        const safe = sanitizeSingleLine(nickname, MAX_NICKNAME_LEN);
+        set((s) => ({ nickname: safe || s.nickname }));
+      },
       setCharacter: (id) => set({ selected_character: id }),
       updateSettings: (patch) =>
         set((s) => ({ settings: { ...s.settings, ...patch } })),

@@ -4,6 +4,13 @@ import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { isSupabaseEnabled, supabase } from "../lib/supabase";
 import PixelSword from "../components/PixelSword";
+import {
+  MAX_PASSWORD_LEN,
+  MIN_PASSWORD_LEN,
+  checkPasswordStrength,
+  isValidEmail,
+  normalizeEmail,
+} from "../lib/validation";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -32,19 +39,43 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) return;
     setError(null);
     setInfo(null);
+
+    const normalizedEmail = normalizeEmail(email);
+    if (!isValidEmail(normalizedEmail)) {
+      setError("이메일 형식이 올바르지 않습니다.");
+      return;
+    }
+    if (!password) {
+      setError("비밀번호를 입력해 주세요.");
+      return;
+    }
+    // 회원가입에서만 강도 검사. 로그인은 기존 비밀번호로도 들어와야 하므로 길이만.
+    if (mode === "signup") {
+      const strength = checkPasswordStrength(password);
+      if (!strength.ok) {
+        setError(strength.message ?? "비밀번호 정책을 확인해 주세요.");
+        return;
+      }
+    } else if (
+      password.length < MIN_PASSWORD_LEN ||
+      password.length > MAX_PASSWORD_LEN
+    ) {
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      return;
+    }
+
     setBusy(true);
 
     try {
       if (isSupabaseEnabled && supabase) {
         if (mode === "signup") {
           const { data, error } = await supabase.auth.signUp({
-            email,
+            email: normalizedEmail,
             password,
             options: {
-              data: { nickname: email.split("@")[0] },
+              data: { nickname: normalizedEmail.split("@")[0] },
             },
           });
           if (error) throw error;
@@ -61,20 +92,28 @@ export default function LoginPage() {
           navigate("/wardrobe");
         } else {
           const { error } = await supabase.auth.signInWithPassword({
-            email,
+            email: normalizedEmail,
             password,
           });
-          if (error) throw error;
+          if (error) {
+            // 사용자 열거(User enumeration) 방지: 일반화된 메시지로 응답
+            setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+            return;
+          }
           // onAuthStateChange 가 라우트 전환을 담당
         }
       } else {
         // 로컬 데모 모드
-        setLocalSession(email);
-        if (mode === "signup") setNickname(email.split("@")[0]);
+        setLocalSession(normalizedEmail);
+        if (mode === "signup") setNickname(normalizedEmail.split("@")[0]);
         navigate("/wardrobe");
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "오류가 발생했습니다";
+      // 외부에서 받은 메시지는 그대로 보여주되, 너무 길거나 제어문자가 들어오지 않도록 자른다.
+      const message =
+        (err instanceof Error ? err.message : "오류가 발생했습니다")
+          .replace(/[\x00-\x1F\x7F]/g, "")
+          .slice(0, 200) || "오류가 발생했습니다";
       setError(message);
     } finally {
       setBusy(false);
@@ -139,6 +178,8 @@ export default function LoginPage() {
             <input
               type="email"
               required
+              autoComplete="email"
+              maxLength={254}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 w-full border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
@@ -153,12 +194,19 @@ export default function LoginPage() {
             <input
               type="password"
               required
-              minLength={6}
+              minLength={MIN_PASSWORD_LEN}
+              maxLength={MAX_PASSWORD_LEN}
+              autoComplete={mode === "signup" ? "new-password" : "current-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
               placeholder="••••••••"
             />
+            {mode === "signup" && (
+              <span className="mt-1 block font-pixel text-[10px] text-parchment-300">
+                {MIN_PASSWORD_LEN}자 이상, 영문 + 숫자 포함
+              </span>
+            )}
           </label>
 
           {error && (

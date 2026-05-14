@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
+import { rejectIfMethodNotAllowed } from "../../_lib/security";
 
 /**
  * 네이버 "연결 끊기" 콜백.
@@ -16,37 +17,38 @@ import { createClient } from "@supabase/supabase-js";
  *    - user_id      : 네이버 회원 고유 식별값
  *    - service_id   : 본 앱의 Client ID
  *
- * 응답:
- *  - 네이버는 HTTP 200 OK 만 확인합니다. 본문 형식은 자유.
+ * ─────────────────────────────────────────────────────────────
+ * ⚠ 보안 위협 & 보강 포인트
+ * ─────────────────────────────────────────────────────────────
+ * 콜백 URL 만 알면 누구나 임의의 service_id/user_id 로 POST 를 던질 수 있고,
+ * 그 경우 우리는 매칭되는 Supabase 계정을 삭제하게 된다. 즉, 콜백 URL 노출 +
+ * 피해자의 naver_id 유추만으로 계정 탈취/삭제가 가능했다.
  *
- * 처리 정책:
- *  1) service_id 가 우리 NAVER_CLIENT_ID 와 일치하는지 확인 (위변조 1차 차단)
- *  2) user_metadata.naver_id == user_id 인 Supabase 사용자를 admin API 로 조회
- *  3) 일치 사용자가 있으면 admin.deleteUser 로 계정 삭제
- *     (회원 탈퇴 / 연결 해제 모두 같은 처리. 우리 서비스에서 별도 회원가입을
- *      따로 받지 않고 네이버 로그인만 사용하므로 안전하게 삭제합니다.)
- *  4) 어떤 결과든 200 OK 로 응답해 네이버 측 재시도 큐를 비웁니다.
+ * 보강:
+ *  1) access_token 을 네이버 API(/v1/nid/me) 로 검증한다. 토큰이 유효하고,
+ *     그 토큰의 소유자가 user_id 와 동일할 때만 삭제를 진행한다.
+ *     - 만료 토큰은 401 을 반환하므로 access_token 검증 실패 시 reject.
+ *  2) (보조) service_id 가 우리 NAVER_CLIENT_ID 와 일치하는지 확인.
+ *  3) NAVER_UNLINK_REQUIRE_TOKEN 환경변수가 "false" 일 때만 토큰 검증을 끌 수 있다.
+ *     (네이버 정책 변경/문서와 실제 동작이 안 맞는 경우의 비상 스위치)
  *
  * 환경변수:
  *  - NAVER_CLIENT_ID
  *  - SUPABASE_URL              (또는 VITE_SUPABASE_URL fallback)
  *  - SUPABASE_SERVICE_ROLE_KEY
+ *  - NAVER_UNLINK_REQUIRE_TOKEN  (선택, 기본 "true")
  */
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    res.status(405).json({ result: "method_not_allowed" });
-    return;
-  }
+  if (rejectIfMethodNotAllowed(req, res, ["POST"])) return;
 
   try {
     const params = parseBody(req);
-    const userId = params["user_id"];
-    const serviceId = params["service_id"];
-    const accessToken = params["access_token"];
+    const userId = sanitizeId(params["user_id"]);
+    const serviceId = sanitizeId(params["service_id"]);
+    const accessToken = sanitizeToken(params["access_token"]);
 
     console.log("[naver/unlink] received", {
       hasUserId: Boolean(userId),
@@ -58,6 +60,9 @@ export default async function handler(
     const SUPABASE_URL =
       process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
     const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const REQUIRE_TOKEN =
+      (process.env.NAVER_UNLINK_REQUIRE_TOKEN ?? "true").toLowerCase() !==
+      "false";
 
     if (!NAVER_CLIENT_ID || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
       console.error("[naver/unlink] 서버 환경변수 누락");
@@ -65,6 +70,7 @@ export default async function handler(
       return;
     }
 
+    // 1차 가드: service_id 일치
     if (!serviceId || serviceId !== NAVER_CLIENT_ID) {
       console.warn("[naver/unlink] service_id 불일치 또는 누락", { serviceId });
       res.status(200).json({ result: "invalid_service_id" });
@@ -75,6 +81,32 @@ export default async function handler(
       console.warn("[naver/unlink] user_id 누락");
       res.status(200).json({ result: "missing_user_id" });
       return;
+    }
+
+    // 2차 가드 (핵심): access_token 을 네이버 API 로 검증
+    // 토큰의 실제 소유자가 user_id 와 같을 때만 삭제 진행.
+    if (REQUIRE_TOKEN) {
+      if (!accessToken) {
+        console.warn("[naver/unlink] access_token 누락 - 거부");
+        res.status(200).json({ result: "missing_access_token" });
+        return;
+      }
+      const verified = await verifyNaverToken(accessToken);
+      if (!verified) {
+        console.warn("[naver/unlink] access_token 검증 실패 - 거부", {
+          user_id: userId,
+        });
+        res.status(200).json({ result: "invalid_token" });
+        return;
+      }
+      if (verified.id !== userId) {
+        console.warn("[naver/unlink] 토큰의 user_id 와 요청 user_id 불일치", {
+          tokenUserId: verified.id,
+          requestedUserId: userId,
+        });
+        res.status(200).json({ result: "user_id_mismatch" });
+        return;
+      }
     }
 
     const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
@@ -91,24 +123,46 @@ export default async function handler(
     const { error: delErr } = await admin.auth.admin.deleteUser(target.id);
     if (delErr) {
       console.error("[naver/unlink] deleteUser 실패:", delErr);
-      res.status(200).json({ result: "delete_failed", error: delErr.message });
+      res.status(200).json({ result: "delete_failed" });
       return;
     }
 
     console.log("[naver/unlink] 사용자 삭제 완료", {
       supabase_user_id: target.id,
-      email: target.email,
       naver_id: userId,
     });
 
     res.status(200).json({ result: "ok" });
   } catch (e) {
     console.error("[naver/unlink] fatal:", e);
-    res.status(200).json({
-      result: "error",
-      message: e instanceof Error ? e.message : "unknown",
-    });
+    res.status(200).json({ result: "error" });
   }
+}
+
+/**
+ * 외부 입력 sanitize.
+ * - 네이버 user_id / service_id 는 영숫자(_-) 조합. 60자 이내.
+ */
+function sanitizeId(raw: unknown): string | undefined {
+  if (typeof raw !== "string") return undefined;
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.length > 64) return undefined;
+  if (!/^[A-Za-z0-9_-]+$/.test(trimmed)) return undefined;
+  return trimmed;
+}
+
+/**
+ * access_token sanitize.
+ * - 네이버 access_token 은 영숫자 + 일부 기호. 300자 이내로 제한.
+ */
+function sanitizeToken(raw: unknown): string | undefined {
+  if (typeof raw !== "string") return undefined;
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.length > 512) return undefined;
+  if (!/^[A-Za-z0-9_.\-+/=]+$/.test(trimmed)) return undefined;
+  return trimmed;
 }
 
 /**
@@ -141,6 +195,41 @@ function parseBody(req: VercelRequest): Record<string, string> {
     }
   }
   return out;
+}
+
+/**
+ * 네이버 access_token 으로 /v1/nid/me 호출 → 토큰 유효성과 소유자 id 확인.
+ * - 토큰이 유효하지 않으면 resultcode 가 "00" 이 아니거나 HTTP 401.
+ * - 만료 토큰이면 검증 실패로 간주(=공격자/지연 재시도 방지).
+ */
+async function verifyNaverToken(
+  accessToken: string,
+): Promise<{ id: string } | null> {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8_000);
+    let response: Response;
+    try {
+      response = await fetch("https://openapi.naver.com/v1/nid/me", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        signal: ctrl.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+    if (!response.ok) return null;
+    const json = (await response.json()) as {
+      resultcode?: string;
+      response?: { id?: string };
+    };
+    if (json.resultcode !== "00") return null;
+    const id = json.response?.id;
+    if (!id || typeof id !== "string") return null;
+    return { id };
+  } catch (e) {
+    console.error("[naver/unlink] verifyNaverToken error:", e);
+    return null;
+  }
 }
 
 interface MinimalAdminUser {

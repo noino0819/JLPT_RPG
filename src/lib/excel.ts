@@ -1,6 +1,7 @@
 import { readSheet } from "read-excel-file/browser";
 import writeXlsxFile from "write-excel-file/browser";
 import type { CsvWord } from "./csv";
+import { MAX_IMPORT_ROWS, sanitizeImportedRow } from "./validation";
 
 /**
  * 엑셀(.xlsx) 단어장 파싱/템플릿 생성 유틸.
@@ -8,6 +9,10 @@ import type { CsvWord } from "./csv";
  * 컬럼 순서: 한자, 읽기, 뜻, 어원, 품사
  * - 첫 줄에 헤더("한자" / "kanji" / "headword" 등)가 있으면 헤더로 간주하고 건너뜀
  * - 한자(headword)가 비어있으면 히라가나-only 단어로 처리 (headword = null)
+ *
+ * 보안:
+ *  - 행 수 MAX_IMPORT_ROWS 로 제한 (Excel Zip Bomb / DoS 방지)
+ *  - 각 셀은 sanitizeImportedRow 로 정규화 (제어문자/길이 제한)
  */
 
 const HEADER_KEYWORDS = ["한자", "kanji", "headword", "단어", "word"];
@@ -30,20 +35,20 @@ export async function parseExcel(file: File | Blob): Promise<CsvWord[]> {
 
   const words: CsvWord[] = [];
   for (const row of dataRows) {
+    if (words.length >= MAX_IMPORT_ROWS) break;
     const cells = row.map((v: unknown) =>
-      v == null ? "" : String(v).trim(),
+      v == null ? "" : String(v),
     );
     const [a, b, c, d, e] = cells;
-    const reading = b ?? "";
-    const meaning = c ?? "";
-    if (!reading || !meaning) continue;
-    words.push({
-      headword: a || null,
-      reading,
-      meaning,
-      etymology: d || undefined,
-      part_of_speech: e || undefined,
+    const sanitized = sanitizeImportedRow({
+      headword: a,
+      reading: b,
+      meaning: c,
+      etymology: d,
+      part_of_speech: e,
     });
+    if (!sanitized) continue;
+    words.push(sanitized);
   }
   return words;
 }

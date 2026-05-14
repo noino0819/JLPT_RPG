@@ -6,6 +6,19 @@ import { useProfileStore } from "../store/profileStore";
 import { parseCsv } from "../lib/csv";
 import { playEnter } from "../lib/sfx";
 import { showAlert, showConfirm } from "../store/modalStore";
+import {
+  MAX_DECK_NAME_LEN,
+  MAX_ETYMOLOGY_LEN,
+  MAX_HEADWORD_LEN,
+  MAX_IMPORT_ROWS,
+  MAX_MEANING_LEN,
+  MAX_POS_LEN,
+  MAX_READING_LEN,
+  describeImportError,
+  sanitizeSingleLine,
+  sanitizeText,
+  validateImportFile,
+} from "../lib/validation";
 
 export default function MyDeckPage() {
   const userId = useAuthStore((s) => s.userId);
@@ -35,9 +48,18 @@ export default function MyDeckPage() {
   );
   const [newDeckName, setNewDeckName] = useState("");
 
-  const handleCreate = () => {
-    if (!newDeckName.trim()) return;
-    const deck = createDeck(newDeckName.trim(), undefined, userId ?? undefined);
+  const handleCreate = async () => {
+    const name = sanitizeSingleLine(newDeckName, MAX_DECK_NAME_LEN);
+    if (!name) {
+      await showAlert({
+        title: "단어장 이름이 비어있어요",
+        eyebrow: "デッキ名必須",
+        message: "단어장 이름을 입력해 주세요.",
+        tone: "warning",
+      });
+      return;
+    }
+    const deck = createDeck(name, undefined, userId ?? undefined);
     setActiveDeckId(deck.id);
     setNewDeckName("");
   };
@@ -64,6 +86,7 @@ export default function MyDeckPage() {
           <input
             value={newDeckName}
             onChange={(e) => setNewDeckName(e.target.value)}
+            maxLength={MAX_DECK_NAME_LEN}
             placeholder="예: 회사에서 자주 쓰는 단어"
             className="flex-1 border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
           />
@@ -167,15 +190,28 @@ function DeckEditor(props: DeckEditorProps) {
     part_of_speech: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.reading || !form.meaning) return;
+    const reading = sanitizeText(form.reading, MAX_READING_LEN);
+    const meaning = sanitizeText(form.meaning, MAX_MEANING_LEN);
+    if (!reading || !meaning) {
+      await showAlert({
+        title: "필수 항목이 비어있어요",
+        eyebrow: "入力エラー",
+        message: "읽기와 뜻은 반드시 입력해야 합니다.",
+        tone: "warning",
+      });
+      return;
+    }
+    const headword = sanitizeText(form.headword, MAX_HEADWORD_LEN);
+    const etymology = sanitizeText(form.etymology, MAX_ETYMOLOGY_LEN);
+    const pos = sanitizeText(form.part_of_speech, MAX_POS_LEN);
     props.onAddWord({
-      headword: form.headword || null,
-      reading: form.reading,
-      meaning: form.meaning,
-      etymology: form.etymology || undefined,
-      part_of_speech: form.part_of_speech || undefined,
+      headword: headword || null,
+      reading,
+      meaning,
+      etymology: etymology || undefined,
+      part_of_speech: pos || undefined,
     });
     setForm({ headword: "", reading: "", meaning: "", etymology: "", part_of_speech: "" });
   };
@@ -183,6 +219,20 @@ function DeckEditor(props: DeckEditorProps) {
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // 1차 가드: 파일 크기/형식
+    const fileError = validateImportFile(file);
+    if (fileError) {
+      await showAlert({
+        title: "파일을 가져올 수 없어요",
+        eyebrow: "ファイル拒否",
+        message: describeImportError(fileError),
+        tone: "danger",
+      });
+      if (fileRef.current) fileRef.current.value = "";
+      return;
+    }
+
     setImporting(true);
     try {
       const name = file.name.toLowerCase();
@@ -204,11 +254,14 @@ function DeckEditor(props: DeckEditorProps) {
         });
         return;
       }
+      const truncated = rows.length >= MAX_IMPORT_ROWS;
       const added = props.onBulkAdd(rows);
       await showAlert({
         title: "불러오기 완료",
         eyebrow: "インポート完了",
-        message: `${added}개의 단어를 가져왔습니다.`,
+        message: truncated
+          ? `${added}개의 단어를 가져왔습니다.\n(한 번에 최대 ${MAX_IMPORT_ROWS}개까지만 가져올 수 있어 일부가 잘렸을 수 있어요.)`
+          : `${added}개의 단어를 가져왔습니다.`,
         tone: "success",
       });
     } catch (err) {
@@ -316,6 +369,7 @@ function DeckEditor(props: DeckEditorProps) {
             value={form.headword}
             onChange={(v) => setForm({ ...form, headword: v })}
             placeholder="首都"
+            maxLength={MAX_HEADWORD_LEN}
           />
           <Input
             label="읽기 *"
@@ -323,6 +377,7 @@ function DeckEditor(props: DeckEditorProps) {
             onChange={(v) => setForm({ ...form, reading: v })}
             placeholder="しゅと"
             required
+            maxLength={MAX_READING_LEN}
           />
           <Input
             label="뜻 *"
@@ -330,12 +385,14 @@ function DeckEditor(props: DeckEditorProps) {
             onChange={(v) => setForm({ ...form, meaning: v })}
             placeholder="수도"
             required
+            maxLength={MAX_MEANING_LEN}
           />
           <Input
             label="품사"
             value={form.part_of_speech}
             onChange={(v) => setForm({ ...form, part_of_speech: v })}
             placeholder="명사"
+            maxLength={MAX_POS_LEN}
           />
         </div>
         <label className="block">
@@ -345,6 +402,7 @@ function DeckEditor(props: DeckEditorProps) {
           <textarea
             value={form.etymology}
             onChange={(e) => setForm({ ...form, etymology: e.target.value })}
+            maxLength={MAX_ETYMOLOGY_LEN}
             className="mt-1 w-full border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
             rows={2}
             placeholder="首(머리 수): ... / 都(도읍 도): ..."
@@ -395,12 +453,14 @@ function Input({
   onChange,
   placeholder,
   required,
+  maxLength,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   required?: boolean;
+  maxLength?: number;
 }) {
   return (
     <label className="block">
@@ -412,6 +472,7 @@ function Input({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
+        maxLength={maxLength}
         className="mt-1 w-full border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
       />
     </label>

@@ -7,6 +7,7 @@ import { playPreview } from "../lib/sfx";
 import { hasJaVoice, isTtsAvailable, speakJa } from "../lib/tts";
 import Toggle from "../components/Toggle";
 import { showAlert, showConfirm } from "../store/modalStore";
+import { MAX_NICKNAME_LEN } from "../lib/validation";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -208,6 +209,7 @@ export default function SettingsPage() {
           <input
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
+            maxLength={MAX_NICKNAME_LEN}
             className="mt-1 w-full border-2 border-black bg-dungeon-50 px-3 py-2 text-parchment-100 outline-none focus:border-rune-500"
           />
         </label>
