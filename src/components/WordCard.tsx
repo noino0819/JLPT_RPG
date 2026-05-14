@@ -148,7 +148,7 @@ export default function WordCard({
             </div>
           )}
 
-          <div className="mt-auto pt-1 text-right font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
+          <div className="mt-auto shrink-0 pt-3 text-center font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
             ▼ 탭해서 앞으로
           </div>
         </div>
