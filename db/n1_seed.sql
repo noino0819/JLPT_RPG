@@ -9861,3 +9861,398 @@ begin
     (w, '子供だって意見はある。', '아이라도 의견은 있다.', 2);
 
 end $$;
+
+-- ============================================================
+-- N1 어휘 174개 어원 보강 + 손상 데이터 정정 패치
+-- (PDF 추출 시 일부 한자/한국어가 깨졌던 항목을 정정하고,
+--  외래어/의태어/한자어에 대한 어원 풀이를 일괄 추가)
+-- ============================================================
+
+-- ============================================================
+-- N1 어휘 어원 보강 + 손상 데이터 정정 (Chunk 1: order 171~329, 50개)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 171 キャリア (career)
+  update public.words set etymology='영어 career(경력). 「직업·경력·진로」로 사용' where deck_id=d_n1 and order_index=171;
+  -- 175 フォローする (follow)
+  update public.words set etymology='영어 follow(따르다)+する. 「지원하다·뒤따르다·보조하다」' where deck_id=d_n1 and order_index=175;
+  -- 179 やんわり (의태어)
+  update public.words set etymology='やわらか(부드러움)의 음성 변형. 「부드럽게·완곡하게」' where deck_id=d_n1 and order_index=179;
+  -- 184 ストック (stock)
+  update public.words set etymology='영어 stock(재고). 「재고·저장·축적」' where deck_id=d_n1 and order_index=184;
+  -- 186 ニュアンス (nuance)
+  update public.words set etymology='프랑스어 nuance(색조). 「미묘한 차이·뉘앙스」' where deck_id=d_n1 and order_index=186;
+  -- 200 ハードル (hurdle)
+  update public.words set etymology='영어 hurdle(장애물). 「허들·장애·난관」' where deck_id=d_n1 and order_index=200;
+  -- 205 リストアップ (list-up, 일본식 영어)
+  update public.words set etymology='영어 list+up. 「목록화하기·열거하기」 일본식 조어' where deck_id=d_n1 and order_index=205;
+  -- 210 じめじめ
+  update public.words set etymology='습기 어린 끈적임을 나타내는 의태어. 「축축·눅눅」' where deck_id=d_n1 and order_index=210;
+  -- 211 そわそわ (손상 정정)
+  update public.words set meaning='안절부절못함, 들떠 어쩔 줄 모르는 모양', etymology='안정되지 못한 모양의 의태어. 「안절부절·들썩들썩」' where deck_id=d_n1 and order_index=211;
+  -- 213 ためらう
+  update public.words set etymology='溜(머무를 류)める의 자동사화. 「행동을 멈추다」→ 망설이다' where deck_id=d_n1 and order_index=213;
+  -- 220 ウエイト (weight)
+  update public.words set etymology='영어 weight(무게). 「무게·비중·중요도」' where deck_id=d_n1 and order_index=220;
+  -- 221 甚だしい (손상 정정: 太だしい→甚だしい, しばしい→はなはだしい)
+  update public.words set headword='甚だしい', reading='はなはだしい', meaning='엄청나다, (정도가) 심하다', etymology='甚(심할 심)+だしい. 「정도가 매우 심함」' where deck_id=d_n1 and order_index=221;
+  -- 228 たどる
+  update public.words set etymology='手繰(たぐ)る와 동근. 「실마리를 따라가다」→ 더듬다·따라가다' where deck_id=d_n1 and order_index=228;
+  -- 229 てきぱき
+  update public.words set etymology='시원시원하고 능률적인 모양의 의태어. 「척척·시원시원」' where deck_id=d_n1 and order_index=229;
+  -- 230 ノルマ (norma)
+  update public.words set etymology='러시아어 норма(노르마/할당량). 「의무 할당량」' where deck_id=d_n1 and order_index=230;
+  -- 233 おおらかな (손상 정정)
+  update public.words set meaning='너그러운, 대범한, 느긋한', etymology='大(おお, 클 대)+らか(상태 접미사). 「큰 마음씨」→ 너그러움' where deck_id=d_n1 and order_index=233;
+  -- 238 くよくよ (손상 정정)
+  update public.words set meaning='끙끙, 사소한 일을 끊임없이 고민하는 모양', etymology='작은 일을 곱씹는 모양의 의태어. 「끙끙·자꾸자꾸」' where deck_id=d_n1 and order_index=238;
+  -- 240 しいて
+  update public.words set etymology='強(し)いる(강요하다)의 て형. 「굳이·억지로」' where deck_id=d_n1 and order_index=240;
+  -- 241 すさまじい
+  update public.words set etymology='凄(처량할 처)まじい. 「섬뜩할 정도로 대단하다」' where deck_id=d_n1 and order_index=241;
+  -- 246 メディア (media)
+  update public.words set etymology='영어 media(매체). 「매체·미디어」' where deck_id=d_n1 and order_index=246;
+  -- 253 すんなり (손상 정정)
+  update public.words set meaning='순조롭게, 쉽게, 매끈하게', etymology='막힘없이 매끄러운 모양의 의태어. 「쑥·술술」' where deck_id=d_n1 and order_index=253;
+  -- 254 センス (sense)
+  update public.words set etymology='영어 sense(감각). 「감각·센스·취향」' where deck_id=d_n1 and order_index=254;
+  -- 256 ノウハウ (know-how)
+  update public.words set etymology='영어 know-how. 「실무 지식·요령」' where deck_id=d_n1 and order_index=256;
+  -- 258 へとへと (손상 정정)
+  update public.words set meaning='녹초가 된 모양, 기진맥진한 상태', etymology='완전히 지친 모양의 의태어. 「녹초·기진맥진」' where deck_id=d_n1 and order_index=258;
+  -- 262 コンスタントに (constant)
+  update public.words set etymology='영어 constant(일정한)+に. 「일정하게·꾸준히」' where deck_id=d_n1 and order_index=262;
+  -- 265 もっぱら (손상 정정)
+  update public.words set meaning='오로지, 한결같이, 전적으로', etymology='専(오로지 전)ら. 「오로지 그것만」' where deck_id=d_n1 and order_index=265;
+  -- 266 よみがえる
+  update public.words set etymology='黄泉(よみ, 저승)+帰(かえ)る. 「저승에서 돌아오다」→ 소생하다' where deck_id=d_n1 and order_index=266;
+  -- 271 いとも
+  update public.words set etymology='고어 副 いと(매우)+も. 「실로·매우·아주」 문어체' where deck_id=d_n1 and order_index=271;
+  -- 272 まちまち
+  update public.words set etymology='区(まち)々. 「제각각 구역마다 다름」→ 각양각색' where deck_id=d_n1 and order_index=272;
+  -- 274 リスク (risk)
+  update public.words set etymology='영어 risk(위험). 「위험·리스크」' where deck_id=d_n1 and order_index=274;
+  -- 277 がらりと (손상 정정)
+  update public.words set meaning='확, 완전히 바뀌는 모양', etymology='문을 활짝 열거나 상황이 급변하는 의태어. 「확·홀딱」' where deck_id=d_n1 and order_index=277;
+  -- 278 なだめる
+  update public.words set etymology='和(なご)む(누그러지다)와 동근. 「화를 가라앉히다」→ 달래다' where deck_id=d_n1 and order_index=278;
+  -- 281 レイアウト (layout)
+  update public.words set etymology='영어 layout(배치). 「배치·구성·레이아웃」' where deck_id=d_n1 and order_index=281;
+  -- 286 せかせかと (손상 정정)
+  update public.words set meaning='허둥지둥, 서두르며 부산스러운 모양', etymology='急(せ)く(서두르다)의 반복형. 「허둥허둥·부산스럽게」' where deck_id=d_n1 and order_index=286;
+  -- 287 センサー (sensor)
+  update public.words set etymology='영어 sensor(감지기). 「감지 장치·센서」' where deck_id=d_n1 and order_index=287;
+  -- 289 ここちよく (손상 정정)
+  update public.words set meaning='기분 좋게, 상쾌하게', etymology='心地(ここち)+よく. 「마음의 상태가 좋게」→ 상쾌하게' where deck_id=d_n1 and order_index=289;
+  -- 291 にじむ (손상 정정)
+  update public.words set meaning='번지다, 스며 나오다', etymology='滲(스밀 삼)む. 「액체가 천천히 퍼지다」' where deck_id=d_n1 and order_index=291;
+  -- 293 ひしひしと (손상 정정)
+  update public.words set meaning='강렬하게, 절실히, 뼈저리게', etymology='조여드는 듯한 압박감의 의태어. 「뼈저리게·절실히」' where deck_id=d_n1 and order_index=293;
+  -- 299 ずっしりと (손상 정정)
+  update public.words set meaning='묵직하게, 손에 무겁게', etymology='무게가 가득 실린 모양의 의태어. 「묵직·묵직」' where deck_id=d_n1 and order_index=299;
+  -- 301 クレーム (claim)
+  update public.words set etymology='영어 claim(불평·청구). 「불만 제기·항의」 일본식 의미' where deck_id=d_n1 and order_index=301;
+  -- 303 みっちり (손상 정정)
+  update public.words set meaning='꼼꼼히, 철저하게', etymology='틈없이 꽉 채워진 모양의 의태어. 「빈틈없이·철저히」' where deck_id=d_n1 and order_index=303;
+  -- 305 うずうず (손상 정정)
+  update public.words set meaning='근질근질, 안달이 나서 못 견디는 모양', etymology='몸이 근질거리는 의태어. 「안달·근질근질」' where deck_id=d_n1 and order_index=305;
+  -- 311 ぎくしゃくする (손상 정정)
+  update public.words set meaning='어색하다, 삐걱거리다', etymology='움직임이 부자연스러운 의태어 ぎくしゃく+する. 「삐걱삐걱」' where deck_id=d_n1 and order_index=311;
+  -- 315 もどかしい
+  update public.words set etymology='고어 もどく(반대로 하다)+しい. 「뜻대로 안 되어 답답함」' where deck_id=d_n1 and order_index=315;
+  -- 318 めきめき (손상 정정)
+  update public.words set meaning='눈에 띄게, 부쩍부쩍 성장·발전하는 모양', etymology='드러나게 진보하는 모양의 의태어. 「부쩍부쩍·쑥쑥」' where deck_id=d_n1 and order_index=318;
+  -- 320 サイクル (cycle)
+  update public.words set etymology='영어 cycle(주기). 「순환·주기·자전거」' where deck_id=d_n1 and order_index=320;
+  -- 322 しわざ (손상 정정)
+  update public.words set meaning='소행, 짓, 행적', etymology='仕(し)+業(わざ). 「(좋지 않은) 행위·짓」' where deck_id=d_n1 and order_index=322;
+  -- 324 すべすべ
+  update public.words set etymology='滑(すべ)る(미끄러지다)의 반복. 「매끈매끈한 촉감」' where deck_id=d_n1 and order_index=324;
+  -- 328 すくう (손상 정정)
+  update public.words set meaning='떠올리다, 건져내다, 퍼올리다', etymology='掬(움킬 국)う. 「손바닥으로 떠내다」' where deck_id=d_n1 and order_index=328;
+  -- 329 ピント (네덜란드어 brandpunt)
+  update public.words set etymology='네덜란드어 brandpunt(초점)에서 차용. 「렌즈의 초점」' where deck_id=d_n1 and order_index=329;
+end $$;
+-- ============================================================
+-- N1 어휘 어원 보강 + 손상 데이터 정정 (Chunk 2: order 331~454, 50개)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 331 てっきり
+  update public.words set etymology='꼭 그렇다고 단정짓는 어감의 의태어. 「틀림없이·꼭」' where deck_id=d_n1 and order_index=331;
+  -- 334 どんより (손상 정정)
+  update public.words set meaning='날씨가 흐릿한 모양, 잿빛으로 가라앉은 모양', etymology='무겁고 흐릿한 분위기를 나타내는 의태어. 「잿빛·우중충」' where deck_id=d_n1 and order_index=334;
+  -- 335 ネック (neck)
+  update public.words set meaning='병목, 애로사항', etymology='영어 neck(목)의 비유. 「병목·관건이 되는 부분」' where deck_id=d_n1 and order_index=335;
+  -- 343 つくづく (손상 정정)
+  update public.words set meaning='절실히, 곰곰이, 정말로', etymology='속을 깊이 들여다보는 모양의 의태어. 「절실히·곰곰이」' where deck_id=d_n1 and order_index=343;
+  -- 350 がやがや (손상 정정)
+  update public.words set meaning='왁자지껄, 시끄럽게 떠드는 모양', etymology='여러 사람이 동시에 떠드는 의성어. 「왁자지껄」' where deck_id=d_n1 and order_index=350;
+  -- 356 とっさに (손상 정정)
+  update public.words set meaning='순간적으로, 즉시', etymology='咄嗟(とっさ, 한순간)+に. 「눈 깜짝할 사이에」' where deck_id=d_n1 and order_index=356;
+  -- 357 いやみ (손상 정정)
+  update public.words set meaning='빈정거림, 비꼬는 말, 꼴사나움', etymology='嫌(いや, 싫음)+味. 「싫은 맛」→ 빈정거림' where deck_id=d_n1 and order_index=357;
+  -- 359 なじむ
+  update public.words set etymology='馴(친할 순)染(물들 염)む. 「점차 익숙해지고 물들다」' where deck_id=d_n1 and order_index=359;
+  -- 360 はかどる (손상 정정)
+  update public.words set meaning='일이 진척되다, 순조롭게 나아가다', etymology='捗(척)る. 「작업이 빠르게 나아감」' where deck_id=d_n1 and order_index=360;
+  -- 362 まばらだ
+  update public.words set etymology='疎(まば)ら+だ. 「듬성듬성하다·드물다」' where deck_id=d_n1 and order_index=362;
+  -- 364 やむをえず
+  update public.words set etymology='止(や)む+を+得(え)+ず. 「그만둘 수밖에 없어서」→ 부득이' where deck_id=d_n1 and order_index=364;
+  -- 365 ルーズな (손상 정정: 늨슬한, 고수적이지 못한)
+  update public.words set meaning='헐렁한, 야무지지 못한, 칠칠치 못한', etymology='영어 loose(느슨한)+な. 「(태도가) 헐렁한·칠칠치 못한」' where deck_id=d_n1 and order_index=365;
+  -- 367 わずらわしい
+  update public.words set etymology='煩(번거로울 번)わしい. 「귀찮을 정도로 번잡함」' where deck_id=d_n1 and order_index=367;
+  -- 368 あっけない
+  update public.words set etymology='呆気(あっけ, 어이없음)+ない. 「어이가 없다·허무하다」' where deck_id=d_n1 and order_index=368;
+  -- 369 ありきたりの
+  update public.words set etymology='有(あ)り+来(きた)り+の. 「예전부터 있어 온」→ 흔한·진부한' where deck_id=d_n1 and order_index=369;
+  -- 372 コントラスト (contrast)
+  update public.words set etymology='영어 contrast(대비). 「대조·대비·콘트라스트」' where deck_id=d_n1 and order_index=372;
+  -- 373 シビアな (severe)
+  update public.words set etymology='영어 severe(엄격한)+な. 「가혹한·냉정한·엄격한」' where deck_id=d_n1 and order_index=373;
+  -- 376 にわかには (손상 정정)
+  update public.words set meaning='갑자기는, 당장은', etymology='俄(にわか, 갑자기)+には. 「급히는·당장은」 부정 호응' where deck_id=d_n1 and order_index=376;
+  -- 377 もくろむ (손상 정정)
+  update public.words set meaning='계획하다, 꾸미다, 의도하다', etymology='目論(もくろ)む. 「머릿속으로 그려보다」→ 계획하다' where deck_id=d_n1 and order_index=377;
+  -- 379 おっくうだ
+  update public.words set etymology='億劫(おっくう, 매우 긴 시간)+だ. 「엄두가 안 날 정도로 귀찮음」' where deck_id=d_n1 and order_index=379;
+  -- 380 おのずと
+  update public.words set etymology='自(おの)ずと. 「스스로·자연스럽게」 문어체 부사' where deck_id=d_n1 and order_index=380;
+  -- 382 けなされる (손상 정정)
+  update public.words set meaning='헐뜯기다, 깎아내림을 당하다', etymology='貶(けな)す의 수동형. 「(나쁘게) 평가받다」' where deck_id=d_n1 and order_index=382;
+  -- 383 しきりに
+  update public.words set etymology='頻(しき)りに. 「잇따라·끊임없이」' where deck_id=d_n1 and order_index=383;
+  -- 385 すがすがしい (손상 정정)
+  update public.words set meaning='상쾌하다, 산뜻하다', etymology='清(すが)+清(すが)+しい. 「청량함이 거듭됨」' where deck_id=d_n1 and order_index=385;
+  -- 386 スケール (scale)
+  update public.words set etymology='영어 scale(눈금·규모). 「규모·크기·스케일」' where deck_id=d_n1 and order_index=386;
+  -- 391 あらかじめ
+  update public.words set etymology='予(あらかじ)め. 「미리·사전에」 문어체' where deck_id=d_n1 and order_index=391;
+  -- 393 おおむね (손상 정정)
+  update public.words set meaning='대략, 대체로, 대강', etymology='概(おおむね, 대략 개). 「큰 줄거리·대략」' where deck_id=d_n1 and order_index=393;
+  -- 395 ことごとく
+  update public.words set etymology='悉(다할 실)く. 「하나도 빠짐없이·모조리」' where deck_id=d_n1 and order_index=395;
+  -- 398 すべ
+  update public.words set etymology='術(꾀 술). 「방법·수단」 문어체' where deck_id=d_n1 and order_index=398;
+  -- 399 せかす
+  update public.words set etymology='急(せ)かす. 「서두르게 하다」→ 재촉하다' where deck_id=d_n1 and order_index=399;
+  -- 400 バックアップ (backup)
+  update public.words set etymology='영어 backup(지원·예비). 「지원·백업·후원」' where deck_id=d_n1 and order_index=400;
+  -- 402 メカニズム (mechanism)
+  update public.words set etymology='영어 mechanism(메커니즘). 「구조·원리·작동 방식」' where deck_id=d_n1 and order_index=402;
+  -- 404 いたって
+  update public.words set etymology='至(いた)って. 「지극히 ~에 이르러」→ 매우·아주' where deck_id=d_n1 and order_index=404;
+  -- 406 お手上げだ
+  update public.words set etymology='お+手+上(あ)げ+だ. 「두 손을 든 상태」→ 속수무책' where deck_id=d_n1 and order_index=406;
+  -- 409 ストレートに (손상 정정)
+  update public.words set meaning='솔직히, 직접적으로, 곧바로', etymology='영어 straight(곧은)+に. 「똑바로·직설적으로」' where deck_id=d_n1 and order_index=409;
+  -- 414 ありふれる
+  update public.words set etymology='有(あ)り+触(ふ)れる. 「도처에 널려 있다」→ 흔하다' where deck_id=d_n1 and order_index=414;
+  -- 416 うろたえる
+  update public.words set etymology='狼狽(うろた)える. 「어찌할 바를 모르다」→ 당황하다' where deck_id=d_n1 and order_index=416;
+  -- 428 おびえる (손상 정정)
+  update public.words set meaning='겁에 질리다, 무서워하다', etymology='怯(겁낼 겁)える. 「공포로 위축되다」' where deck_id=d_n1 and order_index=428;
+  -- 429 かねがね
+  update public.words set etymology='兼(かね)+ね. 「이전부터·예전부터」 문어체' where deck_id=d_n1 and order_index=429;
+  -- 430 かろうじて (손상 정정)
+  update public.words set meaning='간신히, 가까스로, 겨우', etymology='辛(から)うじて. 「간신히·고생 끝에」' where deck_id=d_n1 and order_index=430;
+  -- 432 ささいな
+  update public.words set etymology='些細(ささい, 적을 사+가늘 세)+な. 「하찮은·사소한」' where deck_id=d_n1 and order_index=432;
+  -- 437 うすうす (손상 정정)
+  update public.words set meaning='희미하게, 어렴풋이', etymology='薄(うす)い의 반복. 「엷게·어렴풋이」' where deck_id=d_n1 and order_index=437;
+  -- 442 むっとする (손상 정정)
+  update public.words set meaning='발끈하다, 못마땅한 얼굴을 하다', etymology='むっ(불쾌함의 의태어)+とする. 「불쾌해서 표정이 굳다」' where deck_id=d_n1 and order_index=442;
+  -- 444 ゆとり
+  update public.words set etymology='ゆる(느슨)+り. 「공간·시간의 여유」' where deck_id=d_n1 and order_index=444;
+  -- 448 かたくなな
+  update public.words set etymology='頑(かたく)な+な. 「완고하게 고집하는」' where deck_id=d_n1 and order_index=448;
+  -- 449 すみやかに
+  update public.words set etymology='速(すみ)やかに. 「빠른 모양으로」→ 신속히' where deck_id=d_n1 and order_index=449;
+  -- 450 ぼんやり (손상 정정)
+  update public.words set meaning='멍하니, 흐릿하게', etymology='몽롱한 상태를 나타내는 의태어. 「멍하니·흐릿」' where deck_id=d_n1 and order_index=450;
+  -- 452 エレガントな (elegant)
+  update public.words set etymology='영어 elegant(우아한)+な. 「우아한·고상한」' where deck_id=d_n1 and order_index=452;
+  -- 453 つかの間の
+  update public.words set etymology='束(つか)の+間+の. 「한 줌만큼의 짧은 시간」' where deck_id=d_n1 and order_index=453;
+  -- 454 しくじる
+  update public.words set etymology='動詞 しくじる. 「(일을) 잘못 처리하다」→ 실수하다' where deck_id=d_n1 and order_index=454;
+end $$;
+-- ============================================================
+-- N1 어휘 어원 보강 + 손상 데이터 정정 (Chunk 3: order 455~580, 50개)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 455 スライスする (slice)
+  update public.words set meaning='얇게 자르다, 슬라이스하다', etymology='영어 slice(얇게 자르기)+する. 「얇게 저미다」' where deck_id=d_n1 and order_index=455;
+  -- 456 めいめいに
+  update public.words set etymology='銘々(めいめい, 새길 명)+に. 「제각기·각자」' where deck_id=d_n1 and order_index=456;
+  -- 458 ありありと (손상 정정)
+  update public.words set meaning='생생히, 또렷이', etymology='有(あ)り+有(あ)り+と. 「확실히 존재하듯」→ 생생히' where deck_id=d_n1 and order_index=458;
+  -- 459 返事をしぶる
+  update public.words set meaning='대답을 망설이다, 답을 꺼리다', etymology='返事+を+渋(しぶ)る. 「대답하기를 주저하다」' where deck_id=d_n1 and order_index=459;
+  -- 460 コンパクトな (compact)
+  update public.words set etymology='영어 compact(작고 조밀한)+な. 「작고 알찬·콤팩트」' where deck_id=d_n1 and order_index=460;
+  -- 461 つぶやく (손상 정정)
+  update public.words set meaning='중얼거리다, 혼잣말하다', etymology='呟(つぶや)く. 「작은 소리로 말하다」' where deck_id=d_n1 and order_index=461;
+  -- 463 ばてる
+  update public.words set etymology='動詞 ばてる. 「체력이 다해 녹초가 되다」' where deck_id=d_n1 and order_index=463;
+  -- 464 まっとうする
+  update public.words set etymology='全(まっと)うする. 「온전히 다하다」→ 완수하다' where deck_id=d_n1 and order_index=464;
+  -- 467 つぶさに
+  update public.words set etymology='具(つぶさ, 갖출 구)+に. 「세세히 모두」→ 자세히' where deck_id=d_n1 and order_index=467;
+  -- 470 エキスパート (expert)
+  update public.words set etymology='영어 expert(전문가). 「전문가·숙련자」' where deck_id=d_n1 and order_index=470;
+  -- 473 ぼやく (손상 정정)
+  update public.words set meaning='투덜대다, 푸념하다', etymology='動詞 ぼやく. 「불만을 작게 흘리다」' where deck_id=d_n1 and order_index=473;
+  -- 477 ろくに
+  update public.words set etymology='碌(녹록할 록)に. 「제대로·충분히」 부정 호응' where deck_id=d_n1 and order_index=477;
+  -- 480 くつろぐ
+  update public.words set etymology='寛(너그러울 관)ぐ. 「긴장을 풀고 편하게 있다」' where deck_id=d_n1 and order_index=480;
+  -- 481 うやむやに
+  update public.words set etymology='有耶無耶(うやむや, 있는 듯 없는 듯)+に. 「흐지부지」' where deck_id=d_n1 and order_index=481;
+  -- 487 スポット (spot)
+  update public.words set meaning='장소, 명소, 스폿', etymology='영어 spot(지점·자리). 「특정 장소·명소」' where deck_id=d_n1 and order_index=487;
+  -- 490 あどけない
+  update public.words set etymology='動詞 あどける(천진하다)+ない. 「때 묻지 않은·천진난만한」' where deck_id=d_n1 and order_index=490;
+  -- 492 やつれる (손상 정정)
+  update public.words set meaning='수척해지다, 초췌해지다', etymology='窶(やつ)れる. 「(피로·고생으로) 야위어 마르다」' where deck_id=d_n1 and order_index=492;
+  -- 499 しきたり
+  update public.words set etymology='為(し)+来(きた)り. 「예로부터 해 온 것」→ 관습' where deck_id=d_n1 and order_index=499;
+  -- 503 ぞんざいな (손상 정정)
+  update public.words set meaning='무성의한, 거친, 함부로 하는', etymology='存(ぞん)在(ざい)에서 유래한 의태어적 형용. 「대충대충」' where deck_id=d_n1 and order_index=503;
+  -- 504 うなだれる (손상 정정)
+  update public.words set meaning='고개를 떨구다, 풀이 죽다', etymology='項(うな)+垂(た)れる. 「목덜미가 늘어지다」→ 고개를 숙이다' where deck_id=d_n1 and order_index=504;
+  -- 507 ロスする (loss)
+  update public.words set meaning='손실하다, 잃다', etymology='영어 loss(손실)+する. 「(시간·자원을) 낭비하다」' where deck_id=d_n1 and order_index=507;
+  -- 508 おろそかに
+  update public.words set etymology='疎(おろ)か+に. 「관심을 두지 않고 소홀히」' where deck_id=d_n1 and order_index=508;
+  -- 515 ひとまず
+  update public.words set etymology='一(ひと)+先(ま)ず. 「우선 한번」→ 일단·우선' where deck_id=d_n1 and order_index=515;
+  -- 521 とっくに
+  update public.words set meaning='이미, 벌써, 이미 오래 전에', etymology='疾(と)っく(빠름)+に. 「이미 한참 전에」' where deck_id=d_n1 and order_index=521;
+  -- 525 ほどける (손상 정정)
+  update public.words set meaning='풀리다, (매듭이) 풀어지다', etymology='解(ほど)ける. 「엉킨 것이 풀리다」' where deck_id=d_n1 and order_index=525;
+  -- 533 ブランク (blank)
+  update public.words set meaning='공백, 블랭크', etymology='영어 blank(빈 곳). 「공백 기간·빈자리」' where deck_id=d_n1 and order_index=533;
+  -- 541 かばう
+  update public.words set etymology='庇(かば)う. 「몸으로 가려 지키다」→ 감싸다' where deck_id=d_n1 and order_index=541;
+  -- 554 しがみつく
+  update public.words set etymology='動詞 しがみ+付(つ)く. 「꽉 붙들고 놓지 않다」' where deck_id=d_n1 and order_index=554;
+  -- 566 くまなく
+  update public.words set etymology='隈(くま, 모퉁이 구석)+なく. 「구석에 빠진 곳 없이」' where deck_id=d_n1 and order_index=566;
+  -- 569 はなはだしい
+  update public.words set etymology='甚(はなはだ)しい. 「정도가 매우 심함」' where deck_id=d_n1 and order_index=569;
+  -- 571 もはや
+  update public.words set etymology='最(も)+早(はや). 「이미 그 단계가 지나」→ 이제는·이미' where deck_id=d_n1 and order_index=571;
+  -- 580 たやすい
+  update public.words set meaning='쉽다, 손쉽다', etymology='容易(たやす)い. 「힘들이지 않고 할 수 있는」' where deck_id=d_n1 and order_index=580;
+end $$;
+-- ============================================================
+-- N1 어휘 어원 보강 + 손상 데이터 정정 (Chunk 4: order 597~803, 42개 최종)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 597 かさばる (손상 정정)
+  update public.words set meaning='부피가 커서 거추장스럽다', etymology='嵩(かさ, 부피)+張(ば)る. 「부피가 커지다」' where deck_id=d_n1 and order_index=597;
+  -- 599 しぶとい (손상 정정)
+  update public.words set meaning='끈질기다, 강인하다', etymology='動詞 しぶる(주저하다)+とい. 「쉽게 물러서지 않는」' where deck_id=d_n1 and order_index=599;
+  -- 603 ほほえましい (손상 정정)
+  update public.words set meaning='보기에 흐뭇하다, 미소가 절로 나다', etymology='微笑(ほほえ)ましい. 「저절로 미소가 나오는」' where deck_id=d_n1 and order_index=603;
+  -- 608 くじける (손상 정정)
+  update public.words set meaning='꺾이다, 좌절하다', etymology='挫(꺾을 좌)ける. 「기세나 의지가 꺾이다」' where deck_id=d_n1 and order_index=608;
+  -- 609 ひたむき (손상 정정)
+  update public.words set meaning='한결같음, 외골수, 일편단심', etymology='直(ひた)+向(む)き. 「한 방향만 향한」→ 한결같음' where deck_id=d_n1 and order_index=609;
+  -- 616 なつく
+  update public.words set etymology='懐(품을 회)く. 「(특히 동물·아이가) 정을 들이다」→ 따르다' where deck_id=d_n1 and order_index=616;
+  -- 618 リタイア (retire)
+  update public.words set etymology='영어 retire(은퇴하다). 「은퇴·중도 포기」' where deck_id=d_n1 and order_index=618;
+  -- 623 そそる
+  update public.words set meaning='(식욕·흥미를) 돋우다, 자극하다', etymology='動詞 そそる. 「자극을 가해 일으키다」' where deck_id=d_n1 and order_index=623;
+  -- 625 ぎこちない
+  update public.words set etymology='動詞 ぎこつ(투박함)+ない. 「부자연스럽고 어색한」' where deck_id=d_n1 and order_index=625;
+  -- 632 さえる (손상 정정)
+  update public.words set meaning='맑아지다, (정신·소리가) 또렷해지다', etymology='冴(さ)える. 「추위로 사물이 또렷해지다」→ 맑다' where deck_id=d_n1 and order_index=632;
+  -- 634 もろい (손상 정정)
+  update public.words set meaning='부서지기 쉽다, 약하다', etymology='脆(약할 취)い. 「쉽게 무너지는」' where deck_id=d_n1 and order_index=634;
+  -- 640 デマ (Demagogie)
+  update public.words set meaning='유언비어, 헛소문', etymology='독일어 Demagogie(선동)에서 차용. 「근거 없는 소문」' where deck_id=d_n1 and order_index=640;
+  -- 642 もたらす
+  update public.words set etymology='持(も)+た+らす. 「가지고 와서 결과를 두다」→ 초래하다' where deck_id=d_n1 and order_index=642;
+  -- 644 ずばり (손상 정정)
+  update public.words set meaning='단도직입적으로, 정확하게, 정곡으로', etymology='날카롭게 베어내는 의태어. 「딱·정곡으로」' where deck_id=d_n1 and order_index=644;
+  -- 657 その他
+  update public.words set meaning='그 외, 기타', etymology='その+他(た, 다른 타). 「그것 외의 나머지」' where deck_id=d_n1 and order_index=657;
+  -- 664 손상 항목: とんだ・あらためて (재정정: 두 단어가 잘못 묶임 → 'あらためて'를 표제어로)
+  update public.words set headword='改めて', reading='あらためて', meaning='다시, 새삼스럽게, 새로이', etymology='改(고칠 개)めて. 「새로 한 번 더」 부사', part_of_speech='부사' where deck_id=d_n1 and order_index=664;
+  -- 668 ヒットする (hit)
+  update public.words set meaning='히트하다, 큰 성공을 거두다', etymology='영어 hit(맞다·성공)+する. 「대중적 성공」' where deck_id=d_n1 and order_index=668;
+  -- 671 よしに (손상 정정: よしんば가 옳음)
+  update public.words set headword='よしんば', reading='よしんば', meaning='설령, 만약', etymology='고어 よし(좋다)+ん+ば. 「설령 ~한다고 해도」 가정' where deck_id=d_n1 and order_index=671;
+  -- 682 スケジュール (schedule)
+  update public.words set etymology='영어 schedule(일정). 「일정·예정표」' where deck_id=d_n1 and order_index=682;
+  -- 695 スポーツ (sports)
+  update public.words set etymology='영어 sports(스포츠). 「운동 경기·체육」' where deck_id=d_n1 and order_index=695;
+  -- 706 テレビ (television 약어)
+  update public.words set etymology='영어 television의 일본식 약어. 「텔레비전」' where deck_id=d_n1 and order_index=706;
+  -- 717 ダイエット (diet)
+  update public.words set etymology='영어 diet(식이요법). 「체중 감량·식단 조절」' where deck_id=d_n1 and order_index=717;
+  -- 727 サービス (service)
+  update public.words set etymology='영어 service(봉사·서비스). 「서비스·접대」' where deck_id=d_n1 and order_index=727;
+  -- 743 ポケット (pocket)
+  update public.words set etymology='영어 pocket(주머니). 「의복의 작은 주머니」' where deck_id=d_n1 and order_index=743;
+  -- 746 ケーキ (cake)
+  update public.words set etymology='영어 cake(케이크). 「서양식 단 빵·과자」' where deck_id=d_n1 and order_index=746;
+  -- 751 チーム (team)
+  update public.words set etymology='영어 team(팀). 「공동의 목적을 가진 집단」' where deck_id=d_n1 and order_index=751;
+  -- 753 ステレオ (stereo)
+  update public.words set etymology='영어 stereo(입체 음향). 「스테레오 음향 장치」' where deck_id=d_n1 and order_index=753;
+  -- 756 セール (sale)
+  update public.words set etymology='영어 sale(판매·할인). 「할인 판매」' where deck_id=d_n1 and order_index=756;
+  -- 761 チップ (tip)
+  update public.words set etymology='영어 tip(팁). 「봉사료·심부름값」' where deck_id=d_n1 and order_index=761;
+  -- 763 それぞれ
+  update public.words set headword=NULL, reading='それぞれ', meaning='제각각, 각각', etymology='連体詞·副詞 それ(그것)+ぞれ. 「각각·따로따로」' where deck_id=d_n1 and order_index=763;
+  -- 764 どこ (손상 정정: どけち → どこ)
+  update public.words set headword=NULL, reading='どこ', meaning='어디, 어느 곳', etymology='疑問代名詞 ど(의문)+こ(장소). 「장소를 묻는 말」', part_of_speech='대명사' where deck_id=d_n1 and order_index=764;
+  -- 769 しよう (仕様/しょうがない 어원)
+  update public.words set headword='仕様', reading='しよう', meaning='방법, 수단; (없음과 함께) 어쩔 도리', etymology='仕(섬길 사)+様(모양 양). 「하는 방식」→ 방법' where deck_id=d_n1 and order_index=769;
+  -- 774 ビジネス (business)
+  update public.words set etymology='영어 business(사업). 「업무·사업·비즈니스」' where deck_id=d_n1 and order_index=774;
+  -- 775 コツ
+  update public.words set etymology='骨(こつ, 뼈 골). 「핵심·뼈대」→ 요령·비결' where deck_id=d_n1 and order_index=775;
+  -- 777 プラス (plus)
+  update public.words set etymology='영어 plus(더하기). 「양·득·플러스」' where deck_id=d_n1 and order_index=777;
+  -- 778 コスト (cost)
+  update public.words set etymology='영어 cost(비용). 「원가·경비·코스트」' where deck_id=d_n1 and order_index=778;
+  -- 780 オープン (open)
+  update public.words set etymology='영어 open(열린)+な. 「개방적·공개적·오픈」' where deck_id=d_n1 and order_index=780;
+  -- 785 スクリーン (screen)
+  update public.words set etymology='영어 screen(스크린). 「영사막·화면」' where deck_id=d_n1 and order_index=785;
+  -- 791 デザイン (design)
+  update public.words set etymology='영어 design(디자인). 「의장·설계·도안」' where deck_id=d_n1 and order_index=791;
+  -- 792 ストレス (stress)
+  update public.words set etymology='영어 stress(스트레스). 「정신적·신체적 압박」' where deck_id=d_n1 and order_index=792;
+  -- 801 チャンス (chance)
+  update public.words set etymology='영어 chance(기회). 「기회·찬스」' where deck_id=d_n1 and order_index=801;
+  -- 803 とても
+  update public.words set etymology='副詞 とても. 「매우」(긍정)/「도저히」(부정 호응)' where deck_id=d_n1 and order_index=803;
+end $$;
