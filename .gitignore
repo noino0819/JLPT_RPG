@@ -1,4 +1,4 @@
-# Logs
+# 로그
 logs
 *.log
 npm-debug.log*
@@ -7,16 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# 의존성 / 빌드 산출물
 node_modules
 dist
 dist-ssr
 *.local
 *.tsbuildinfo
 
-# Supabase CLI 로컬 캐시 (project ref 등)
-supabase/
+# 환경변수
+.env
+.env.local
+.env.*.local
 
-# Editor directories and files
+# 에디터 / OS
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -27,13 +30,6 @@ supabase/
 *.sln
 *.sw?
 
-# Env
-.env
-.env.local
-.env.*.local
-
-# Supabase CLI 로컬 캐시
+# CLI 로컬 캐시
 supabase/
-
-# Vercel CLI 로컬 캐시
 .vercel

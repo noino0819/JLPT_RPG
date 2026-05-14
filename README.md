@@ -40,7 +40,7 @@
 | 🟡 **숲속** | N4 | **285** | 한자 어원 + 예문 2개씩 |
 | 🟠 **던전** | N3 | **450** | 의미 2개 · 한자 어원 2개 · 예문 2개씩 |
 | 🔴 **화산** | N2 | **1,356** | 한자 어원 + 예문 2개씩 |
-| ⚫ **마왕성** | N1 | *준비 중* | — |
+| ⚫ **마왕성** | N1 | **시드 추가됨** | — |
 
 > 💡 모든 단어에는 *한자 어원 풀이* 와 *실전 예문* 이 포함되어 있어 시험 + 실사용 둘 다 노립니다.
 
@@ -105,8 +105,8 @@
 **📑 데이터**
 - read-excel-file / write-excel-file
 - papaparse
-- `db/*.sql` PDF 어휘 시드
-- `scripts/` 파이썬 PDF → SQL 변환기
+- `db/schema.sql` 스키마·RLS·공식 덱
+- `db/n5~n1_seed.sql` PDF 어휘 시드
 
 </td>
 </tr>
@@ -165,12 +165,11 @@ JLPTRPG/
 │   └── App.tsx · main.tsx · types.ts
 │
 ├── 📂 api/auth/naver/      # Vercel 서버리스 함수 (네이버 OAuth 콜백)
-├── 📂 db/                  # N5 / N4 / N3 단어 시드 SQL
-├── 📂 scripts/             # PDF → SQL 변환 파이썬 스크립트 (n2_seed 등)
+├── 📂 db/                  # schema.sql + n5~n1_seed.sql (Supabase SQL Editor에 순서대로 실행)
 ├── 📂 docs/                # Supabase / 네이버 OAuth / 이메일 템플릿 가이드
 │   └── 📂 email-templates/ # 픽셀 RPG 양피지 메일 4종
 ├── 📂 public/              # 픽셀 favicon · apple-touch-icon · OG 이미지 · manifest
-└── supabase_schema.sql · vercel.json · tailwind.config.js ...
+└── vercel.json · tailwind.config.js · vite.config.ts ...
 ```
 
 <br/>
