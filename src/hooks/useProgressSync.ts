@@ -6,6 +6,7 @@ import {
   type DbWordProgress,
 } from "../lib/supabase";
 import { useAuthStore } from "../store/authStore";
+import { useDecksStore } from "../store/decksStore";
 import { useProgressStore } from "../store/progressStore";
 import type { WordProgress } from "../types";
 
@@ -109,15 +110,45 @@ export function useProgressSync() {
 
       if (changed.length === 0) return;
 
-      // UUID 가 아닌 word_id (예: 로컬 시드 `local-w-X`) 는 DB 에 존재할 수
-      // 없으므로 FK 위반을 막기 위해 업서트 대상에서 제외한다.
-      const validChanged = changed.filter((p) => UUID_RE.test(p.word_id));
-      const skipped = changed.length - validChanged.length;
-      if (skipped > 0) {
+      // 1차 필터: UUID 가 아닌 word_id (예: 로컬 시드 `local-w-X`) 는 DB 에
+      // 존재할 수 없으므로 업서트 대상에서 제외한다.
+      const uuidOnly = changed.filter((p) => UUID_RE.test(p.word_id));
+      const nonUuidCount = changed.length - uuidOnly.length;
+      if (nonUuidCount > 0) {
         console.warn(
-          `[supabase] word_progress 동기화에서 ${skipped}개의 비-UUID word_id 를 건너뜀 (로컬 시드 잔여 데이터로 추정).`,
+          `[supabase] word_progress 동기화에서 ${nonUuidCount}개의 비-UUID word_id 를 건너뜀 (로컬 시드 잔여 데이터로 추정).`,
         );
       }
+
+      // 2차 필터: 현재 hydrate 된 단어 집합과 대조해 죽은 참조를 차단.
+      // 시드 재실행이나 단어 삭제로 인해 progressStore 에 stale 한 UUID 가
+      // 남아 있으면 FK 제약 23503 이 발생하므로, 사전에 거르고 로컬에서도
+      // 제거해 같은 에러가 매 변경마다 반복되지 않게 한다.
+      // (decks 가 아직 hydrate 되지 않은 동안에는 false positive 방지를 위해
+      //  정리를 건너뛴다.)
+      const decksLoaded = useDecksStore.getState().loaded;
+      const knownWordIds = decksLoaded
+        ? new Set(useDecksStore.getState().words.map((w) => w.id))
+        : null;
+
+      let validChanged = uuidOnly;
+      if (knownWordIds) {
+        const stale: string[] = [];
+        const fresh: WordProgress[] = [];
+        for (const p of uuidOnly) {
+          if (knownWordIds.has(p.word_id)) fresh.push(p);
+          else stale.push(p.word_id);
+        }
+        if (stale.length > 0) {
+          console.warn(
+            `[supabase] word_progress: DB 에 없는 word_id ${stale.length}개를 정리합니다 (이전 시드/삭제된 단어 잔여 데이터).`,
+          );
+          useProgressStore.getState().removeWords(stale);
+          for (const id of stale) delete lastSyncedRef.current[id];
+        }
+        validChanged = fresh;
+      }
+
       if (validChanged.length === 0) return;
 
       const rows: DbWordProgress[] = validChanged.map((p) => ({
@@ -134,6 +165,28 @@ export function useProgressSync() {
         .upsert(rows, { onConflict: "user_id,word_id" })
         .then(({ error }) => {
           if (error) {
+            // 23503 (FK 위반): 사전 필터링을 통과했지만 다른 디바이스에서
+            // 단어가 삭제되었거나 시드 재실행과 겹친 race condition.
+            // 현재 hydrate 된 단어 집합으로 byWord 전체를 다시 동기화하여
+            // 죽은 참조를 모두 제거한다.
+            if (error.code === "23503") {
+              const known = new Set(
+                useDecksStore.getState().words.map((w) => w.id),
+              );
+              if (known.size > 0) {
+                const drop = Object.keys(
+                  useProgressStore.getState().byWord,
+                ).filter((id) => !known.has(id));
+                if (drop.length > 0) {
+                  console.warn(
+                    `[supabase] word_progress FK 위반 후 정리: ${drop.length}개의 죽은 word_id 제거.`,
+                  );
+                  useProgressStore.getState().removeWords(drop);
+                  for (const id of drop) delete lastSyncedRef.current[id];
+                  return;
+                }
+              }
+            }
             console.error("[supabase] upsert word_progress failed:", error);
           } else {
             for (const p of validChanged) {
