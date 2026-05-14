@@ -101,11 +101,25 @@ export default function WordCard({
             />
           )}
           <div className="flex flex-1 flex-col items-center justify-center gap-2">
-            {word.part_of_speech && (
-              <span className="badge-pixel !bg-parchment-300 !text-parchment-900">
-                {word.part_of_speech}
-              </span>
-            )}
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              {word.part_of_speech && (
+                <span className="badge-pixel !bg-parchment-300 !text-parchment-900">
+                  {word.part_of_speech}
+                </span>
+              )}
+              {/* 짝 단어가 있을 때 카드 앞면에 「≒ 페어」 배지로 사실만 노출.
+                  실제 짝 단어는 스포일러가 되므로 뒷면에서 공개. */}
+              {word.related?.some((r) => r.relation_type === "synonym") && (
+                <span className="badge-pixel !bg-parchment-200 !text-parchment-800">
+                  ≒ 페어
+                </span>
+              )}
+              {word.related?.some((r) => r.relation_type === "antonym") && (
+                <span className="badge-pixel !bg-parchment-200 !text-parchment-800">
+                  ↔ 반의
+                </span>
+              )}
+            </div>
 
             {isHiraganaOnly ? (
               <div className="pixel-text-jp text-6xl font-bold text-parchment-900 sm:text-7xl">
@@ -148,6 +162,12 @@ export default function WordCard({
             </div>
           </div>
 
+          {/* 페어 표현 한 줄 강조 — 단어 헤드 바로 아래에 짝 단어를 즉시 보여줘
+              「이 표현은 어떤 표현과 ≒ 인지」 카드를 뒤집자마자 한눈에 인식. */}
+          {word.related && word.related.length > 0 && (
+            <PairHeadline related={word.related} ttsOn={ttsOn} onSpeak={speak} />
+          )}
+
           <div className="border-y-2 border-parchment-700/30 py-1.5">
             <div className="font-pixel text-[10px] uppercase tracking-widest text-parchment-700">
               뜻
@@ -155,6 +175,25 @@ export default function WordCard({
             <div className="text-xl font-bold leading-tight text-parchment-900 sm:text-2xl">
               {word.meaning}
             </div>
+            {/* 페어 뜻도 같이 노출 — 의미 페어 인식을 즉각화 */}
+            {word.related && word.related.length > 0 && (
+              <ul className="mt-1 space-y-0.5">
+                {word.related.map((r) => {
+                  const meta = RELATION_LABELS[r.relation_type];
+                  return (
+                    <li
+                      key={r.word.id}
+                      className="text-[13px] leading-snug text-parchment-700 sm:text-sm"
+                    >
+                      <span className="font-pixel text-parchment-700">
+                        {meta.symbol}
+                      </span>{" "}
+                      {r.word.meaning}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
 
           {word.etymology && (
@@ -214,6 +253,55 @@ export default function WordCard({
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * 단어 헤드 바로 아래에 짝 표현을 한 줄로 강조 표시.
+ * 「明るくしてください ≒ 電気をつけてください」 식으로 페어 관계를 즉시 인식 가능.
+ * 여러 관계가 있으면 줄 단위로 나열.
+ */
+function PairHeadline({
+  related,
+  ttsOn,
+  onSpeak,
+}: {
+  related: RelatedWord[];
+  ttsOn: boolean;
+  onSpeak: (t: string | null | undefined) => void;
+}) {
+  return (
+    <ul className="-mt-0.5 space-y-1">
+      {related.map((r) => {
+        const meta = RELATION_LABELS[r.relation_type];
+        const rw = r.word;
+        const jp = rw.headword ?? rw.reading;
+        return (
+          <li key={rw.id} className="flex items-baseline justify-between gap-2">
+            <div className="flex flex-wrap items-baseline gap-x-1.5">
+              <span className="font-pixel text-base text-parchment-700">
+                {meta.symbol}
+              </span>
+              <span className="pixel-text-jp text-lg font-bold leading-tight text-parchment-900 sm:text-xl">
+                {jp}
+              </span>
+              {rw.headword && (
+                <span className="pixel-text-jp text-xs text-parchment-700 sm:text-sm">
+                  {rw.reading}
+                </span>
+              )}
+            </div>
+            {ttsOn && (
+              <SpeakerButton
+                ariaLabel="짝 표현 읽어주기"
+                onClick={() => onSpeak(rw.reading || rw.headword)}
+                size="sm"
+              />
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
