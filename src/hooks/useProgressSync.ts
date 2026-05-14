@@ -84,6 +84,43 @@ export function useProgressSync() {
     };
   }, [userId, signedIn, ready]);
 
+  /* 1-b. decks hydrate 완료 시점에 stale 진행도 자동 정리.
+   *
+   * 첫 동기화 트리거를 학습 클릭에만 의존하면, 사용자가 아무 단어도
+   * 학습하지 않아도 매 부팅마다 "DB 에 없는 word_id N개를 정리합니다"
+   * 경고가 반복될 수 있다. decks 가 hydrate 되는 즉시 한 번 청소해 두면
+   * 메시지가 깔끔하게 1회로 끝난다.
+   */
+  useEffect(() => {
+    if (!isSupabaseEnabled || !supabase || !signedIn || !userId) return;
+
+    const cleanupOnce = () => {
+      if (!initialLoadDoneRef.current) return;
+      const decksState = useDecksStore.getState();
+      if (!decksState.loaded) return;
+      const known = new Set(decksState.words.map((w) => w.id));
+      if (known.size === 0) return;
+      const byWord = useProgressStore.getState().byWord;
+      const stale = Object.keys(byWord).filter(
+        (id) => !UUID_RE.test(id) || !known.has(id),
+      );
+      if (stale.length === 0) return;
+      console.warn(
+        `[supabase] word_progress: hydrate 후 stale word_id ${stale.length}개 자동 정리. ids=`,
+        stale,
+      );
+      useProgressStore.getState().removeWords(stale);
+      for (const id of stale) delete lastSyncedRef.current[id];
+    };
+
+    // hydrate 가 이미 끝난 상태라면 즉시 한 번 실행.
+    cleanupOnce();
+
+    // 아직 안 끝났다면 decks 변경을 구독해 loaded=true 가 되는 순간 정리.
+    const unsubscribe = useDecksStore.subscribe(() => cleanupOnce());
+    return () => unsubscribe();
+  }, [userId, signedIn]);
+
   /* 2. 변경 감지 → upsert */
   useEffect(() => {
     if (!isSupabaseEnabled || !supabase || !signedIn || !userId) return;
@@ -141,7 +178,8 @@ export function useProgressSync() {
         }
         if (stale.length > 0) {
           console.warn(
-            `[supabase] word_progress: DB 에 없는 word_id ${stale.length}개를 정리합니다 (이전 시드/삭제된 단어 잔여 데이터).`,
+            `[supabase] word_progress: DB 에 없는 word_id ${stale.length}개를 정리합니다 (이전 시드/삭제된 단어 잔여 데이터). ids=`,
+            stale,
           );
           useProgressStore.getState().removeWords(stale);
           for (const id of stale) delete lastSyncedRef.current[id];
