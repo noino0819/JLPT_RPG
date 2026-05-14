@@ -4,7 +4,7 @@
 -- 실행 시 기존 N3 공식 덱의 단어/예문(CASCADE)을 모두 삭제 후 재삽입합니다.
 -- 사용자 진행도(word_progress)도 함께 삭제됩니다.
 -- 멱등성: 여러 번 실행해도 결과 동일.
--- 총 672단어 (450개는 의미·한자어원·예문 2개씩 / 222개는 PDF 추출 기본정보)
+-- 총 672단어 (672개는 의미·한자어원·예문 2개씩 / 0개는 PDF 추출 기본정보)
 -- ============================================================
 
 delete from public.words
@@ -3174,669 +3174,1335 @@ begin
     (w, '完成はまだ遠い。', '완성은 아직 멀다.', 2);
 
   -- 451. ～ように
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ように', '~ 하도록', NULL, '문법', 451, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ように', '~ 하도록', '동사 사전형/ない형 + ように\n목적·명령·희망을 나타내는 표현', '문법', 451, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見えるように大きく書いて。', '보이도록 크게 써 주세요.', 1),
+    (w, '遅れないように出発した。', '늦지 않도록 출발했다.', 2);
 
   -- 452. ～ようになる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ようになる', '~ 하게 되다 <변화>', NULL, '문법', 452, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ようになる', '~ 하게 되다 <변화>', '동사 사전형 + ようになる\n능력·상황의 변화를 나타내는 표현', '문법', 452, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '日本語が話せるようになった。', '일본어를 말할 수 있게 되었다.', 1),
+    (w, '早起きするようになった。', '일직 일어나게 되었다.', 2);
 
   -- 453. ～ばいい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ばいい', '~ 하면 된다', NULL, '문법', 453, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ばいい', '~ 하면 된다', '동사 가정형(ば) + いい\n해결책 제안·충고 표현', '문법', 453, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もっと勉強すればいいよ。', '더 공부하면 돼.', 1),
+    (w, 'そう言えばいい。', '그렇게 말하면 된다.', 2);
 
   -- 454. とうとう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'とうとう', '드디어', NULL, '문법', 454, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'とうとう', '드디어', '한자 項項에서 온 부사\n마침내·드디어 결정적인 순간 강조', '문법', 454, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'とうとう試験の日が来た。', '드디어 시험 날이 왔다.', 1),
+    (w, 'とうとう完成した。', '드디어 완성했다.', 2);
 
   -- 455. ～てほしい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てほしい', '~ 했으면 좋겠다', NULL, '문법', 455, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てほしい', '~ 했으면 좋겠다', '동사 て형 + ほしい\n상대에게 바라는 요구·희망 표현', '문법', 455, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手伝ってほしい。', '도와줬으면 좋겠다.', 1),
+    (w, 'そばにいてほしい。', '옆에 있어 줬으면 좋겠다.', 2);
 
   -- 456. ～にする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にする', '~ 으로 하다 <결정>', NULL, '문법', 456, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にする', '~ 으로 하다 <결정>', '명사 + にする\n선택·결정을 나타낼', '문법', 456, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コーヒーにする。', '커피로 하겠다.', 1),
+    (w, '今日は休みにした。', '오늘은 쉬기로 했다.', 2);
 
   -- 457. ～(さ)せないでください
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せないでください', '~ 하게 하지 마세요', NULL, '문법', 457, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せないでください', '~ 하게 하지 마세요', '사역형 + ないでください\n상대가 점 · 대상을 시키도록 막는 부탁', '문법', 457, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供に無理をさせないでください。', '아이에게 무리하게 하지 마세요.', 1),
+    (w, '心配させないでください。', '걱정시키지 마세요.', 2);
 
   -- 458. お～いたす
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'お～いたす', '~ 하다 <겸손>', NULL, '문법', 458, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'お～いたす', '~ 하다 <겸손>', 'お + 동사マス형 + いたす\n겸양 표현(겸양어)', '문법', 458, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'お伝えいたします。', '전해 드립니다.', 1),
+    (w, 'お振り込みいたしました。', '입금 드린 결제를 마쳄습니다.', 2);
 
   -- 459. ～させるつもりだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～させるつもりだ', '~ 시킬 작정이다', NULL, '문법', 459, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～させるつもりだ', '~ 시킬 작정이다', '사역형 + つもりだ\n타인에게　행동을 시킬 의도 표현', '문법', 459, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供に手伝わせるつもりだ。', '아이에게 돕게 할 작정이다.', 1),
+    (w, '彼に説明させるつもりだ。', '그에게 설명시킬 작정이다.', 2);
 
   -- 460. いつのまにか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いつのまにか', '어느새', NULL, '문법', 460, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いつのまにか', '어느새', 'いつ(언제) + のまにか\n느끼지 못하는 사이에 변화가 일어난 상황', '문법', 460, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'いつのまにか夜になっていた。', '어느새 밤이 되어 있었다.', 1),
+    (w, 'いつのまにか雨が上がっていた。', '어느새 비가 그쳐 있었다.', 2);
 
   -- 461. ～ために
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ために', '~ 때문에 <원인>', NULL, '문법', 461, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ために', '~ 때문에 <원인>', '동사 사전형/명사+の + ために\n목적·원인·이유 표현', '문법', 461, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '健康のために運動する。', '건강을 위해 운동한다.', 1),
+    (w, '雨のために試合が中止になった。', '비 때문에 시합이 중지되었다.', 2);
 
   -- 462. ～ないうちに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ないうちに', '~ 하기 전에', NULL, '문법', 462, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ないうちに', '~ 하기 전에', '동사·い형용사 ない형 + うちに\n···하기 전에/···되지 않은 상태일 때 끍내다', '문법', 462, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降らないうちに帰ろう。', '비가 오기 전에 돌아가자.', 1),
+    (w, '忘れないうちにメモした。', '잊기 전에 메모했다.', 2);
 
   -- 463. ～だろうけど
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だろうけど', '~ 하겠지만', NULL, '문법', 463, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だろうけど', '~ 하겠지만', 'だろう(추측) + けど(대립)\n···하겠지만···　이라는 의미', '문법', 463, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '忙しいだろうけど手伝って。', '바쁜겠지만 도와줘.', 1),
+    (w, '雨だろうけど出かける。', '비가 올 것 같지만 외출한다.', 2);
 
   -- 464. ～たびに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たびに', '~ 할 때마다', NULL, '문법', 464, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たびに', '~ 할 때마다', '동사·명사+の + たびに\n···할 때마다 구조, 반복·동시성 표현', '문법', 464, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会うたびに話しかける。', '만날 때마다 말을 건다.', 1),
+    (w, '試合のたびに緊張する。', '시합 때마다 긴장한다.', 2);
 
   -- 465. あいだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あいだ', '~ 하는 동안', NULL, '문법', 465, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あいだ', '~ 하는 동안', '間(あいだ): 사이·기간\n···하는 동안의 시간대 표현', '문법', 465, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '学生のあいだはよく勉強した。', '학생인 동안은 열심히 공부했다.', 1),
+    (w, '寝ているあいだに電話が鳴った。', '자는 동안 전화가 울렸다.', 2);
 
   -- 466. いまにも～そうだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いまにも～そうだ', '금세라도 ~할 것 같다', NULL, '문법', 466, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いまにも～そうだ', '금세라도 ~할 것 같다', '今にも(금세라도) + そうだ(양태/상태 추측)\n일어날 개연성이 높은 상황을 나타냄', '문법', 466, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今にも雨が降りそうだ。', '금세라도 비가 올 것 같다.', 1),
+    (w, '今にも泣きだそうだ。', '금세라도 울 것 같다.', 2);
 
   -- 467. ～てあげる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てあげる', '~ 해 주다', NULL, '문법', 467, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てあげる', '~ 해 주다', '동사 て형 + あげる\n타인을 위해 행동해 주는 표현(은혜 제공)', '문법', 467, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '弟に本を読んであげた。', '동생에게 책을 읽어 줬다.', 1),
+    (w, '薬を買ってあげる。', '약을 사 준다.', 2);
 
   -- 468. いつか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いつか', '언젠가', NULL, '문법', 468, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いつか', '언젠가', 'いつ(언제) + か(불확정)\n언제인지 모르는 미래의 어느 시점', '문법', 468, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'いつか日本へ行きたい。', '언제가 일본에 가고 싶다.', 1),
+    (w, 'いつか会う日を楽しみに。', '언젠가 만날 날을 기대한다.', 2);
 
   -- 469. ～たらどうでしょう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たらどうでしょう', '~ 하면 어떨까요?', NULL, '문법', 469, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たらどうでしょう', '~ 하면 어떨까요?', '동사た라 + どうでしょう\n제안·권유 표현', '문법', 469, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '休んだらどうでしょう。', '쉬면 어떻겠습니까?', 1),
+    (w, '医者に見せたらどうでしょう。', '의사에게 보이면 어떨까요?', 2);
 
   -- 470. ～そうだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～そうだ', '~ 할 것 같다', NULL, '문법', 470, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～そうだ', '~ 할 것 같다', '동사マス형/いud615용사　語幹 + そうだ\n외관·상황을 보고 추측하는 표현', '문법', 470, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降りそうだ。', '비가 올 것 같다.', 1),
+    (w, 'このケーキ、おいしそうだ。', '이 케이크, 맛있어 보인다.', 2);
 
   -- 471. ～なら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なら', '~ 라면', NULL, '문법', 471, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なら', '~ 라면', '명사·동사·형용사 기본형 + なら\n가정·주제화 표현(···라면···에 관해서는)', '문법', 471, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今日なら会える。', '오늘이라면 만날 수 있다.', 1),
+    (w, '電車で行くなら騅しい。', '전철로 간다면 편리하다.', 2);
 
   -- 472. ～な
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～な', '~ 하지 마', NULL, '문법', 472, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～な', '~ 하지 마', '동사 기본형 + な\n강한 금지·명령 표현', '문법', 472, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'うるさくするな！', '시끄럽게 하지 마!', 1),
+    (w, 'さわるな。', '만지지 마.', 2);
 
   -- 473. お目にかかる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'お目にかかる', 'めにかかる', '만나뵙다 <겸손>', NULL, '문법', 473, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'お目にかかる', 'おめにかかる', '만나뵙다 <겸손>', 'お目 + にかかる\n会う(만나다)의 겸양어', '문법', 473, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '初めてお目にかかります。', '처음 만나붙겠습니다.', 1),
+    (w, '社長にお目にかかった。', '사장님을 만나봬어요.', 2);
 
   -- 474. うかがう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'うかがう', '찾아뵙다 <겸손>', NULL, '문법', 474, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'うかがう', '찾아뵙다 <겸손>', '伺う: 자리를 먹심 찾아감\n訪る(찾아가다)·聞く(듣다)의 겸양어', '문법', 474, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何時にお宅へうかがいましょうか。', '몇 시에 댓으로 찾아봅을까용?', 1),
+    (w, 'よろしければ明日うかがいます。', '괜찮으시면 내일 찾아뷸겠습니다.', 2);
 
   -- 475. ～ようなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ようなら', '~ 할 것 같으면', NULL, '문법', 475, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ようなら', '~ 할 것 같으면', '동사·명사 よう형 + なら\n···할 것 같으면···의 경우에는', '문법', 475, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降りそうなら中止だ。', '비가 올 것 같으면 중지다.', 1),
+    (w, '遅れるようなら連絡して。', '늦을 것 같으면 연락해.', 2);
 
   -- 476. ～など
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～など', '~ 등 <나열>', NULL, '문법', 476, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～など', '~ 등 <나열>', '명사·구 뒤 + など\n예시·열거·축소 표현', '문법', 476, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コーヒーや紅茶など。', '커피나 홍차 등.', 1),
+    (w, 'テニスや野球などスポーツをした。', '테니스나 야구 등 스포츠를 했다.', 2);
 
   -- 477. ～させてください
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～させてください', '~ 하게 해 주세요', NULL, '문법', 477, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～させてください', '~ 하게 해 주세요', '사역형 + てください\n겸양적으로 허가를 구하는 표현', '문법', 477, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '説明させてください。', '설명하게 해 주세요.', 1),
+    (w, '休みをとらせてください。', '휴가를 내게 해 주세요.', 2);
 
   -- 478. ～だけでよければ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけでよければ', '~ 만으로 좋다면', NULL, '문법', 478, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけでよければ', '~ 만으로 좋다면', '명사/동사+だけ + よければ\n···만으로 충분하다면···', '문법', 478, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '話を聞くだけでよければ、伝えます。', '이야기 듣기만 하면 되시면 전해드릴게요.', 1),
+    (w, '見るだけでよければ手伝うよ。', '보는 것만으로 괜찮으시면 돕을게요.', 2);
 
   -- 479. ～のことで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のことで', '~ 에 관한 일로', NULL, '문법', 479, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のことで', '~ 에 관한 일로', '명사 + のことで\n···에 관한 건으로···　일로', '문법', 479, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今度の会議のことでお話したい。', '이번 회의에 관한 건으로 이야기하고 싶다.', 1),
+    (w, '学費のことで相談したい。', '학비 건으로 상의하고 싶다.', 2);
 
   -- 480. ～ほしがる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ほしがる', '~ 을 원하다', NULL, '문법', 480, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ほしがる', '~ 을 원하다', 'い형용사 語幹+がる 구조\n···하고 싶어하다(타인의 희망 표현)', '문법', 480, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '妹が人形をほしがっている。', '여동생이 인형을 갖고 싶어한다.', 1),
+    (w, '子供がお菓子をほしがっている。', '아이가 과자를 원하고 있다.', 2);
 
   -- 481. ～までには
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～までには', '~ 까지는', NULL, '문법', 481, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～までには', '~ 까지는', '명사·동사 기본형 + までには\n···까지의 기한·최대 시점', '문법', 481, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '金要日までには提出してください。', '금요일까지는 제출해 주세요.', 1),
+    (w, '帰るまでには連絡するよ。', '돌아올 때까지는 연락할게.', 2);
 
   -- 482. ～形をしている
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～形をしている', 'かたちをしている', '~ 모습을 하다', NULL, '문법', 482, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～形をしている', 'かたちをしている', '~ 모습을 하다', '形(かたち) + をしている\n외형·모양을 먹심 나타내는 표현', '문법', 482, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '丸い形をしている。', '둥근 모양을 하고 있다.', 1),
+    (w, 'ハートの形をしたケーキだ。', '하트 모양을 한 케이크다.', 2);
 
   -- 483. ～たところだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たところだ', '막 ~한 참이다', NULL, '문법', 483, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たところだ', '막 ~한 참이다', '동사 た형 + ところだ\n막 ···한 참이다(완료 직후)', '문법', 483, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今帰ってきたところだ。', '지금 막 돌아온 참이다.', 1),
+    (w, 'コーヒーを飲んだところだ。', '커피를 막 마신 참이다.', 2);
 
   -- 484. ～ような
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ような', '~ 와 같은', NULL, '문법', 484, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ような', '~ 와 같은', '명사·동사·형용사 + ような\n···와 같은(비유·예시)', '문법', 484, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '太陽のような人だ。', '태양과 같은 사람이다.', 1),
+    (w, '夢のような体験だった。', '꿈과 같은 체험이었다.', 2);
 
   -- 485. ～なんか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なんか', '~ 같은 것', NULL, '문법', 485, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なんか', '~ 같은 것', 'などか의 구어·쪾은·겸원·겸양 표현\n···이나/견 소멸·머싅쥎·의외의의 난이　강조', '문법', 485, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'スポーツなんか興味がない。', '스포츠 같은 건 관심이 없다.', 1),
+    (w, '私なんか、どうせ騄口しよ。', '저 같은 사람은 어차피 서투르죠.', 2);
 
   -- 486. ～だけで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけで', '~ 만으로', NULL, '문법', 486, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけで', '~ 만으로', '명사·동사 기본형 + だけで\n···만으로···만 해도 됨', '문법', 486, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見るだけで、やりたくない。', '보는 것만으로 하고 싶지 않다.', 1),
+    (w, '話を聞くだけで伝わってくる。', '이야기 듣는 것만으로 전해온다.', 2);
 
   -- 487. ～として
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～として', '~ 로서', NULL, '문법', 487, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～として', '~ 로서', '명사 + として\n···로서···(자격·입장)', '문법', 487, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '代表として出席した。', '대표로서 참석했다.', 1),
+    (w, '学生としての本分だ。', '학생으로서의 본분이다.', 2);
 
   -- 488. ～にくらべて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にくらべて', '~ 과 비교해서', NULL, '문법', 488, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にくらべて', '~ 과 비교해서', '명사 + にくらべて\n···와 비교해서···', '문법', 488, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '去年にくらべて雨が多い。', '작년에 비해 비가 많다.', 1),
+    (w, '束京にくらべてソウルは多い。', '도쿄에 비해 서울은 싸다.', 2);
 
-  -- 489. さしあげる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'さしあげる', '드리다 <겸손>', NULL, '문법', 489, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 489. 差し上げる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '差し上げる', 'さしあげる', '드리다 <겸손>', '差し出す(내밀다) + 上げる(올리다)\n与える(주다)의 겸양어', '문법', 489, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生にお取りを差し上げた。', '선생님께 이는돈을 드렸다.', 1),
+    (w, '貴重な意見を差し上げます。', '귀중한 의견을 드립니다.', 2);
 
   -- 490. ～にとって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にとって', '~ 에게 있어서', NULL, '문법', 490, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にとって', '~ 에게 있어서', '명사 + にとって\n···에게 있어서(입장)', '문법', 490, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供にとって親はすべてだ。', '아이에게 있어서 부모는 전부다.', 1),
+    (w, '私にとって大切な人だ。', '나에게 있어서 소중한 사람이다.', 2);
 
   -- 491. こんなに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'こんなに', '이렇게', NULL, '문법', 491, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'こんなに', '이렇게', 'こう(이　)+ンな(종류)+に\n정도·상태를 강조하는 부사···이렇게···', '문법', 491, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こんなによい人はいない。', '이렇게 좋은 사람은 없다.', 0),
+    (w, 'こんなに雨が降るとは。', '이렇게 비가 올 줄이야용.', 0);
 
   -- 492. ～するところだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～するところだ', '~ 하려는 참이다', NULL, '문법', 492, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～するところだ', '~ 하려는 참이다', '동사 사전형+ところだ\n···하려는 참이다(직전)', '문법', 492, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今出かけるところだ。', '지금 출발하려는 참이다.', 0),
+    (w, '電話しようとするところだった。', '전화하려던 참이었다.', 0);
 
   -- 493. どうしたらいいのか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どうしたらいいのか', '어떻게 하면 좋을지', NULL, '문법', 493, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どうしたらいいのか', '어떻게 하면 좋을지', 'どうしたら(어떻게 하면)+いいのか(좋은가)\n해결책을 고민하는 표현', '문법', 493, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうしたらいいのかわからない。', '어떻게 해야 할지 모르겠다.', 0),
+    (w, 'この問題、どうしたらいいのか。', '이 문제, 어떻게 해야 좋을지?', 0);
 
   -- 494. ご覧になる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'ご覧になる', 'らんになる', '보시다 <존경>', NULL, '문법', 494, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'ご覧になる', 'ごらんになる', '보시다 <존경>', 'ご + 覧(볼 람) + になる\n見る(보다)의 존경어', '문법', 494, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '画面をご覧になる。', '화면을 보시세요.', 0),
+    (w, 'この資料をご覧になる。', '이 자료를 보시도록 하시다.', 0);
 
   -- 495. ～かもしれない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～かもしれない', '~ 할 지도 모른다', NULL, '문법', 495, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～かもしれない', '~ 할 지도 모른다', '동사·명사 기본형+かもしれない\n추측·가능성 표현', '문법', 495, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降るかもしれない。', '비가 올지도 모른다.', 0),
+    (w, '彼はもう帰るかもしれない。', '그는 이미 돌아갔을지도 모른다.', 0);
 
   -- 496. ～としても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～としても', '~ 라고 할지라도', NULL, '문법', 496, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～としても', '~ 라고 할지라도', '동사·명사 기본형+としても\n···라 고 가정해도(역접)', '문법', 496, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降るとしても行く。', '비가 온다고 해도 간다.', 0),
+    (w, '仕事だとしても選べる。', '일이라고 하더라도 고를 수 있다.', 0);
 
   -- 497. ～なくて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なくて', '~ 하지 않아서 <원인>', NULL, '문법', 497, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なくて', '~ 하지 않아서 <원인>', '동사·いud615용사 ない형+て\n원인·이유의 부정···하지 않아서···', '문법', 497, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そばにいなくて寂しい。', '옆에 없어서 쓸쓸하다.', 0),
+    (w, '電話が連絡されなくて仕事不便だ。', '전화가 연락되지 않아서 일을 못 한다.', 0);
 
   -- 498. ～前に
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～前に', 'まえに', '~ 하기 전에', NULL, '문법', 498, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～前に', 'まえに', '~ 하기 전에', '前(まえ)의 부사 용법\n···하기 전에(시간적 앞)', '문법', 498, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '出かけるまえに電話した。', '나가기 전에 전화했다.', 0),
+    (w, '寝るまえに歯を磨く。', '자기 전에 이를 닦는다.', 0);
 
   -- 499. ～ていただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ていただく', '~ 해 받다 <겸손>', NULL, '문법', 499, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ていただく', '~ 해 받다 <겸손>', '동사 て형 + いただく\n···해 받다(겸양·은혜 받기)', '문법', 499, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見ていただいてよろしいでしょうか。', '봐 주시면 괜찮으시겠습니죒?', 0),
+    (w, '読んでいただきたい。', '읽어 주셨으면 합니다.', 0);
 
   -- 500. ～てもらえませんか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもらえませんか', '~ 해 주시겠습니까?', NULL, '문법', 500, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもらえませんか', '~ 해 주시겠습니까?', '동사 てud615 + もらえませんか\n···해 주시겠습니까욨(정중한 부탁)', '문법', 500, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手伝ってもらえませんか。', '도와주시겠습니꺴욨?', 0),
+    (w, '詳しく説明してもらえませんか。', '자세히 설명해 주시겠습니꺴욨?', 0);
 
-  -- 501. ～だろうと思う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～だろうと思う', 'おもう', '~ 할 것이라 생각하다', NULL, '문법', 501, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 501. 思う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '思う', 'おもう', '~ 할 것이라 생각하다', '思う(생각하다)+···\n동사·형용사 기본형+と思う 구조로 ···할 것으로 생각한다', '문법', 501, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '明日は雨が降ると思う。', '내일은 비가 올 것이라 생각한다.', 0),
+    (w, '彼は来ると思うよ。', '그는 올 거라고 생각해.', 0);
 
   -- 502. ～ば～ほど
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ば～ほど', '~ 하면 할수록', NULL, '문법', 502, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ば～ほど', '~ 하면 할수록', '동사·いud615용사 가정형(ば)+동사·いud615용사 기본형+ほど\n정도가 더해질수록 표현', '문법', 502, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '考えれば考えるほどわからない。', '생각하면 생각할수록 모르겠다.', 0),
+    (w, '読めば読むほど面白い。', '읽으면 읽을수록 재미있다.', 0);
 
   -- 503. たしかに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'たしかに', '분명히, 확실하게', NULL, '문법', 503, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'たしかに', '분명히, 확실하게', '確かに: 確かな(분명한)의 부사형\n확실·동의 표현', '문법', 503, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'たしかに自分がやった。', '확실하게 자신이 했다.', 0),
+    (w, 'たしかにそうだと思う。', '분명 그렇다고 생각한다.', 0);
 
   -- 504. ～だけ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけ', '~ 뿐', NULL, '문법', 504, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけ', '~ 뿐', '명사·동사+だけ\n···만(한계·국한)', '문법', 504, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今だけだよ。', '지금 뿐이야.', 0),
+    (w, '今日だけ、休む。', '오늘만 쉬겠다.', 0);
 
   -- 505. ～ためにも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ためにも', '~ 하기 위해서도', NULL, '문법', 505, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ためにも', '~ 하기 위해서도', '명사/동사+ためにも\n목적의 강조 표현(···하기 위해서도)', '문법', 505, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供のためにも靠金する。', '아이를 위해서도 저금한다.', 0),
+    (w, '健康のためにも運動しよう。', '건강을 위해서도 운동하자.', 0);
 
   -- 506. ～でも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～でも', '~ 라도 <예시>', NULL, '문법', 506, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～でも', '~ 라도 <예시>', '명사+でも\n···이라도(예시)', '문법', 506, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そばでも食べよう。', '메박이라도 먹자.', 0),
+    (w, 'コーヒーでも飲もうか。', '커피라도 마실까욨?', 0);
 
   -- 507. ～にまで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にまで', '~ 에까지', NULL, '문법', 507, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にまで', '~ 에까지', '명사+にまで\n···에에까지(계속·공가소·아렋고 한계)', '문법', 507, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '同僚にまで話がそれた。', '동료에게차 이야기가 새어 나갔다.', 0),
+    (w, '今は世界中にまでされている。', '지금은 전 세계에까지 퍼져 있다.', 0);
 
-  -- 508. ～を中心に
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～を中心に', 'ちゅうしんに', '~ 을 중심으로', NULL, '문법', 508, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 508. 中心に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '中心に', 'ちゅうしんに', '~ 을 중심으로', '中心 + に\n···을 중심으로···　에 의해 운영됨', '문법', 508, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '代表を中心に議論が進んだ。', '대표를 중심으로 논의가 진행되었다.', 0),
+    (w, '青年を中心に人気だ。', '청년을 중심으로 인기다.', 0);
 
   -- 509. ～たばかりだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たばかりだ', '막 ~한 참이다', NULL, '문법', 509, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たばかりだ', '막 ~한 참이다', '동사 た형+ばかりだ\n···한　지 얼마 안 됨(완료 직후)', '문법', 509, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今起きたばかりだ。', '지금 막 일어난 참이다.', 0),
+    (w, '連休が始まったばかりだ。', '연휴가 막 시작되었다.', 0);
 
   -- 510. ～はずだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～はずだ', '( 틀림없이) ~할 것이다', NULL, '문법', 510, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～はずだ', '( 틀림없이) ~할 것이다', '동사·형용사 기본형+はずだ\n틀림없이·의심 없이 ···할 것이다(확신적 추측)', '문법', 510, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '明日は来るはずだ。', '내일은 올 것이다.', 0),
+    (w, 'それはうまくいくはずだ。', '그건 잘 될 것이다.', 0);
 
   -- 511. ～という
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～という', '~ 라는 <인용, 설명>', NULL, '문법', 511, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～という', '~ 라는 <인용, 설명>', 'と+言う 구조\n인용·명칭·설명 표현(···라는)', '문법', 511, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今雨が降ったというよ。', '방금 비가 왔대.', 0),
+    (w, 'ススキというドラマだ。', '스스키라는 드라마다.', 0);
 
   -- 512. ～のだから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだから', '~ 한 것이니까', NULL, '문법', 512, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだから', '~ 한 것이니까', 'のだ+から\n이유·근거를 강조하는 원인 표현', '문법', 512, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会ったのだから話せる。', '만난건 만나니까 말할 수 있다.', 0),
+    (w, '見たのだから間違いない。', '봤으니까 틀림없다.', 0);
 
   -- 513. 近くに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '近くに', 'ちかくに', '근처에, 가까이에', NULL, '문법', 513, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '近くに', 'ちかくに', '근처에, 가까이에', '近い(가깝다)+に\n공간·거리의 근접을 나타냄', '문법', 513, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '学校の近くに公園がある。', '학교 근처에 공원이 있다.', 0),
+    (w, 'もっと近くに来て。', '좀 더 가까이에 와.', 0);
 
   -- 514. ～てもいいんじゃない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもいいんじゃない', '~ 해도 좋지 않을까?', NULL, '문법', 514, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもいいんじゃない', '~ 해도 좋지 않을까?', 'てもいい+んじゃない\n···해도 괜찮을테　장권유(제안)', '문법', 514, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '帰ってもいいんじゃない。', '돌아가도 괜찮지 않을지?', 0),
+    (w, 'もう休んでもいいんじゃない。', '이제 쉬어도 되지 않을지?', 0);
 
   -- 515. ～たら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たら', '~ 했더니 <발견>', NULL, '문법', 515, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たら', '~ 했더니 <발견>', 'たりだと・・・\n　た형 + ら　구조, 우연한 발견 표현', '문법', 515, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見たら出ていた。', '보았더니 나와 있었다.', 0),
+    (w, 'ドアを開けたら誰もいなかった。', '문을 열었더니 아무도 없었다.', 0);
 
   -- 516. ～てもおかしくない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもおかしくない', '~ 해도 이상하지 않다', NULL, '문법', 516, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもおかしくない', '~ 해도 이상하지 않다', 'ても+おかしくない\n···　해도 이상하지 않다(타당성)', '문법', 516, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勝ってもおかしくない。', '이겨도 이상하지 않다.', 0),
+    (w, '泣いてもおかしくないよ。', '울어도 이상하지 않아.', 0);
 
-  -- 517. ～と比べて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～と比べて', 'くらべて', '~ 과 비교해서', NULL, '문법', 517, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 517. 比べて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '比べて', 'くらべて', '~ 과 비교해서', '比べる(비교하다)+て\n···과 비교해서···', '문법', 517, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '去年に比べて火染が多い。', '작년에 비해 온화하다.', 0),
+    (w, '兄に比べて背が高い。', '형에 비해 키가 크다.', 0);
 
   -- 518. ～がる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～がる', '~ 해 하다', NULL, '문법', 518, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～がる', '~ 해 하다', 'いud615용사 語幹+がる\n···한 느낌·감정을 나타낼(제3자)', '문법', 518, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '妹が参加したがっている。', '여동생이 참석하고 싶어한다.', 0),
+    (w, '子供が寒がっている。', '아이가 추워한다.', 0);
 
   -- 519. ～には
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～には', '~ 하려면 <목적>', NULL, '문법', 519, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～には', '~ 하려면 <목적>', '동사　사전형+には\n목적 표현(···하기 위해서는)', '문법', 519, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '行くには鉄道が一番だ。', '가려면 철도가 최고다.', 0),
+    (w, '勝つには努力が必要だ。', '이기려면 노력이 필요하다.', 0);
 
   -- 520. ～(さ)せてあげる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せてあげる', '~ 하게 해 주다', NULL, '문법', 520, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せてあげる', '~ 하게 해 주다', '사역형+てあげる\n타인이　···하게 해주다(은혜)', '문법', 520, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供に選ばせてあげる。', '아이에게 고르게 해 준다.', 0),
+    (w, '弟にゲームをさせてあげた。', '동생에게 게임을 하게 해 줬다.', 0);
 
   -- 521. ～にくい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にくい', '~ 하기 어렵다', NULL, '문법', 521, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～にくい', '~ 하기 어렵다', '동사 マud615+にくい\n···하기 어렵다(난이도)', '문법', 521, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見わかりにくい話だ。', '이해하기 어려운 이야기다.', 0),
+    (w, 'このペンは書きにくい。', '이 펀은 쓰기 어렵다.', 0);
 
   -- 522. ～への
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～への', '~ 로의', NULL, '문법', 522, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～への', '~ 로의', 'へ+の\n방향·대상을 수식하는 조사···　로의', '문법', 522, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '将来への不安がある。', '장래에 대한 불안이 있다.', 0),
+    (w, '友達への手紙を書く。', '친구에게 보내는 편지를 쓴다.', 0);
 
   -- 523. あんなに～のに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あんなに～のに', '그렇게나 ~데도', NULL, '문법', 523, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あんなに～のに', '그렇게나 ~데도', 'あんなに(그렇게)+のに\n예상·기대와 차이 난다는 표현', '문법', 523, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あんなに亲切にしたのに。', '그렇게나 친절했는데.', 0),
+    (w, 'あんなに勉強したのに不合格だった。', '그렇게나 공부했는데 도 불합격이었다.', 0);
 
   -- 524. ～を
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～を', '~ 을, ~를', NULL, '문법', 524, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～を', '~ 을, ~를', '명사+を\n목적격 조사', '문법', 524, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コーヒーを飲む。', '커피를 마신다.', 0),
+    (w, '本を読む。', '책을 읽는다.', 0);
 
   -- 525. どこからでも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どこからでも', '어디서든', NULL, '문법', 525, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どこからでも', '어디서든', 'どこ(어디)+から(···부터)+でも(···라도)\n장소·조건에 상관 없이　엀디서든', '문법', 525, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この仕事はどこからでもできる。', '이 일은 어디서든 할 수 있다.', 0),
+    (w, 'どこからでも説明してよ。', '어디서든 설명해도 괜찮아.', 0);
 
   -- 526. ～らしい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～らしい', '~ 답다', NULL, '문법', 526, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～らしい', '~ 답다', '명사+らしい\n그답게·····의 특징을 잘 나타내는', '문법', 526, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '学生らしい服装だ。', '학생답은 복장이다.', 0),
+    (w, '男らしい態度を見せる。', '남자다운 태도를 보인다.', 0);
 
   -- 527. ～ためなら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ためなら', '~ 을 위해서라면', NULL, '문법', 527, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ためなら', '~ 을 위해서라면', '명사/동사+ためなら\n결의 강조 표현(···　을 위해서라면)', '문법', 527, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '家族のためなら何でもしよう。', '가족을 위해서라면 뭐든 해니하겠다.', 0),
+    (w, '幼い妹のためなら。', '어린 여동생을 위해서라면.', 0);
 
   -- 528. ～ないように
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ないように', '~ 하지 않도록', NULL, '문법', 528, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ないように', '~ 하지 않도록', '동사 ないud615+ように\n그　　행위가 일어나지 않도록 하는　주의', '문법', 528, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '忘れないようにメモした。', '잊지 않도록 메모했다.', 0),
+    (w, '起きないように静かにして。', '일어나지 않도록 조용히 해.', 0);
 
   -- 529. ああ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ああ', '저렇게', NULL, '문법', 529, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ああ', '저렇게', 'ああ: 　지시 부사 　자·타자가 서로 멐···와 관련\n　　몋····그　　세 대상이 몀···그렇게 한 번···', '문법', 529, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ああやったらよかったのに。', '저렇게 했으면 좋았을 테데.', 0),
+    (w, 'ああ言う人もいるんだ。', '저러게 말하는 사람도 있을 테　　명　명.', 0);
 
   -- 530. ～ろ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ろ', '~ 해 <명령>', NULL, '문법', 530, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ろ', '~ 해 <명령>', '동사 명령형 어미 ろ\n강한 명령·부탁', '문법', 530, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'さっさと走れ！', '빨리 뛰어!', 0),
+    (w, 'もっと読め。', '더 읽어.', 0);
 
   -- 531. ご～いたす
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ご～いたす', '~ 합니다 <겸손>', NULL, '문법', 531, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ご～いたす', '~ 합니다 <겸손>', 'ご + 동사マス형 + いたす\n겸양 표현(겸양어 패턴)', '문법', 531, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ご招待いたします。', '압대해 드립니다.', 0),
+    (w, 'ご連絡いたします。', '연락 드리겠습니다.', 0);
 
   -- 532. ～でなくてもよければ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～でなくてもよければ', '~ 아니라도 좋다면', NULL, '문법', 532, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～でなくてもよければ', '~ 아니라도 좋다면', 'でない+ても+よければ\n　···　이 아니어도 되셔주면', '문법', 532, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '新品でなくてよければこれもあるよ。', '신품이 아니어도 되시면 이것도 있어요.', 0),
+    (w, '古いテッダでなくてよければ、これもうんだよ。', '온실도 아니니며 아니어도 괜찮으시면 이것도 있죠.', 0);
 
-  -- 533. ご存じだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'ご存じだ', 'ぞんじだ', '아시다, 알고 계시다 <존경>', NULL, '문법', 533, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 533. 存じだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '存じだ', 'ぞんじだ', '아시다, 알고 계시다 <존경>', '存じる(知っている)의 존경형 · ご存じだ\n알고 계신다(존경어)', '문법', 533, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この人をご存じだですか。', '이 사람을 알고 계시게 있어요?', 0),
+    (w, 'その件はご存じだと思います。', '그 건은 알고 계시리라 생각합니다.', 0);
 
   -- 534. ～か
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～か', '~ 할지', NULL, '문법', 534, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～か', '~ 할지', '　···+か(의문)\n···할지(간접의문)', '문법', 534, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何を買うか考えている。', '뭐를 살지 생각하고 있다.', 0),
+    (w, '今送るかわからない。', '지금 보낼지 모르겠다.', 0);
 
   -- 535. ～たりする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たりする', '~ 하기도 한다', NULL, '문법', 535, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たりする', '~ 하기도 한다', 'たり+する\n수의 행위　중 하나 큅···하기도 하고 ···하기도 한다', '문법', 535, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '歌ったり踊ったりした。', '노래도 부르고 춤도 췄다.', 0),
+    (w, '休日は本を読んだり映画を見たりする。', '···일에는 책···　도 읽고 영화···도 본다.', 0);
 
-  -- 536. ～に比べて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～に比べて', 'くらべて', '~ 과 비교해서', NULL, '문법', 536, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 536. 比べて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '比べて', 'くらべて', '~ 과 비교해서', '比べる(비교하다)+て\n···과 비교해서', '문법', 536, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '以前に比べてよくなった。', '이전에 비해 좋아졌다.', 0),
+    (w, '去年に比べて人口が減った。', '작년에 비해 인구가 줄었다.', 0);
 
   -- 537. ～んじゃなくて
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～んじゃなくて', '~ 한 것이 아니라', NULL, '문법', 537, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～んじゃなくて', '~ 한 것이 아니라', 'んだ+んじゃなくて\n···한 것이 아니라(설명)', '문법', 537, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見たんじゃなくて言っただけだ。', '본 것이 아니라 말한 것뿐이다.', 0),
+    (w, 'ちがうんじゃなくて似ているだけだ。', '다른 것이 아니라 닮은 것뿐이다.', 0);
 
   -- 538. ～でも何でも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～でも何でも', 'なんでも', '~ 이든 무엇이든', NULL, '문법', 538, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～でも何でも', 'なんでも', '~ 이든 무엇이든', '何でも(뭐든)\n종류·대상을 가리지 않고', '문법', 538, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'なんでも伝えてよ。', '뭐든 말해도 돼.', 0),
+    (w, 'なんでも使える道具だ。', '머든 쓸 수 있는 도구다.', 0);
 
   -- 539. もう～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'もう～ない', '이미 ~하지 않는다', NULL, '문법', 539, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'もう～ない', '이미 ~하지 않는다', 'もう+···+ない\n이제　이상 ···하지　않는다', '문법', 539, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もう泺かない。', '이제 울지 않는다.', 0),
+    (w, 'もう酒は飲まない。', '이제 술은 마시지 않는다.', 0);
 
   -- 540. ～ぐらい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ぐらい', '~ 정도', NULL, '문법', 540, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ぐらい', '~ 정도', '명사+ぐらい\n···　정도(쪾·굼·)', '문법', 540, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コーヒーぐらい飲もうよ。', '커피 정도 마시자.', 0),
+    (w, '三十分ぐらいかかる。', '30분 정도 걸린다.', 0);
 
   -- 541. 次第に
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '次第に', 'しだいに', '점차, 점점', NULL, '문법', 541, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '次第に', 'しだいに', '점차, 점점', '次第(순서)+に\n조금식 조금식 진행되는 양상', '문법', 541, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '次第に暖かくなる。', '점차 따뜻해진다.', 0),
+    (w, '次第に慎れてきた。', '점점 익숙해졌다.', 0);
 
   -- 542. ～(よ)うとする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(よ)うとする', '~ 하려고 하다', NULL, '문법', 542, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(よ)うとする', '~ 하려고 하다', '동사 意志ud615+とする\n···하려고 하다(의도·시도)', '문법', 542, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '出かけようとした時、雨が降った。', '나가려고 했을 때 비가 왔다.', 0),
+    (w, '話そうとしたが見めた。', '말하려 했지만 그만둡다.', 0);
 
   -- 543. ～になら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～になら', '~ 에게라면', NULL, '문법', 543, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～になら', '~ 에게라면', '명사+に+なら\n···에게라면(대상 한정)', '문법', 543, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼になら任せる。', '그에게라면 맡길 수 있다.', 0),
+    (w, '先生になら許してもらえる。', '선생님에게라면 허락받을 수 있다.', 0);
 
   -- 544. ～たまま
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たまま', '~ 한 채', NULL, '문법', 544, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たまま', '~ 한 채', '동사 たud615 + まま\n···한 상태 그대로···', '문법', 544, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'テレビをつけたまま寝てしまった。', 'TV를 켜둔 채 잠들어 버렸다.', 0),
+    (w, '窓を開けたまま出かけた。', '창문을 열어둔 채 나갔다.', 0);
 
   -- 545. ～せいで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～せいで', '~ 탓에', NULL, '문법', 545, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～せいで', '~ 탓에', 'せい(탓)+で\n···　탓에(부정적 원인)', '문법', 545, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨のせいで試合が中止になった。', '비 탓에 경기가 중단되었다.', 0),
+    (w, '遅れたせいで上司に叱られた。', '늦은 탓에 상사에게 혼났다.', 0);
 
   -- 546. ～つもりだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～つもりだ', '~ 할 작정이다', NULL, '문법', 546, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～つもりだ', '~ 할 작정이다', '동사 사전형+つもりだ\n···　할 작정이다(의도)', '문법', 546, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '明日詰出すつもりだ。', '내일 제출할 작정이다.', 0),
+    (w, '帰るつもりだ。', '돌아갈 작정이다.', 0);
 
   -- 547. ～うちに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～うちに', '~ 하는 사이에', NULL, '문법', 547, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～うちに', '~ 하는 사이에', '동사 사전형+うちに\n···하는 동안에　(기간)', '문법', 547, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '若いうちに勉強しよう。', '점을 때 공부하자.', 0),
+    (w, '歌を聞いているうちに眠くなった。', '노래를 들는 사이에 졸리게 되었다.', 0);
 
   -- 548. いらっしゃる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いらっしゃる', '계시다 <존경>', NULL, '문법', 548, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いらっしゃる', '계시다 <존경>', '居る(있다)·行く(가다)·来る(오다)의 존경어\nいらっしゃる', '문법', 548, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ようこそいらっしゃいました。', '잘 오셨습니다.', 0),
+    (w, '先生はどちらにいらっしゃいますか。', '선생님은 어디에 계세요?', 0);
 
   -- 549. どれだけ～か
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どれだけ～か', '얼마나 ~한지', NULL, '문법', 549, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どれだけ～か', '얼마나 ~한지', 'どれ+だけ+か\n　···　만괴 그 정도는　일어난　명 　명　명아', '문법', 549, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どれだけ公許されたか。', '얼마나 사랑받았는지.', 0),
+    (w, 'どれだけ心配したかわかる？', '얼마나 걱정했는지 알아?', 0);
 
   -- 550. 誰からも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '誰からも', 'だれからも', '누구로부터든', NULL, '문법', 550, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '誰からも', 'だれからも', '누구로부터든', '誰(누구)+から(···로부터)+も\n궜자를 가리지 않고 전···로부터도', '문법', 550, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '誰からも愛される人だ。', '누구에게서도 사랑받는 사람이다.', 0),
+    (w, '誰からも信頼されている。', '누구에게서도 신뢰받아 잇다.', 0);
 
   -- 551. ～により
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～により', '~ 에 의해서 <원인>', NULL, '문법', 551, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～により', '~ 에 의해서 <원인>', '명사+に+より\n···에 의해(원인·수단)', '문법', 551, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨により試合中止。', '비로 인해 경기 중단.', 0),
+    (w, '事故により遡延した。', '사고로 인해 지연되었다.', 0);
 
   -- 552. ～(さ)せてください
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せてください', '~ 하게 해 주세요', NULL, '문법', 552, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せてください', '~ 하게 해 주세요', '사역형+てください\n···하게　 해 주세요(니　　허　가 구함)', '문법', 552, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '少し休ませてください。', '잠시 쉬게 해 주세요.', 0),
+    (w, '説明させてください。', '설명하게 해 주세요.', 0);
 
   -- 553. ～のか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のか', '~ 인 것인지', NULL, '문법', 553, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のか', '~ 인 것인지', '···+のか\n강조적 의문(···　는 것인지)', '문법', 553, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どこで会うのかわからない。', '어디서 만나는 것인지 모르겠다.', 0),
+    (w, 'どうして遅れたのか説明して。', '왜 늦은 것인지 설명해.', 0);
 
   -- 554. ～はじめる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～はじめる', '~ 하기 시작하다', NULL, '문법', 554, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～はじめる', '~ 하기 시작하다', '동사マud615+始める\n···하기　　 시작하다(개시)', '문법', 554, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '本を読み始めた。', '책을 읽기 시작했다.', 0),
+    (w, '雨が降り始めた。', '비가 내리기 시작했다.', 0);
 
   -- 555. ～になるまで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～になるまで', '~ 가 될 때까지', NULL, '문법', 555, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～になるまで', '~ 가 될 때까지', '···+に+なる+まで\n···　　이 될 때까지(종점)', '문법', 555, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '夜になるまで待とう。', '밤이 될 때까지 기다리자.', 0),
+    (w, '上手になるまで練習しよう。', '능숙해질 때까지 연습하자.', 0);
 
   -- 556. ついに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ついに', '끝내, 마침내', NULL, '문법', 556, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ついに', '끝내, 마침내', '遡に: 마침내·드디어(결과 강조)', '문법', 556, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ついに多めを見た。', '마침내 꿈을 봤다.', 0),
+    (w, 'ついに完成した。', '마침내 완성했다.', 0);
 
   -- 557. ～てくれ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくれ', '~ 해 줘', NULL, '문법', 557, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくれ', '~ 해 줘', '동사 て형+くれ\n···　해　줘(명령　)', '문법', 557, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手伝ってくれ。', '도와줘.', 0),
+    (w, 'ちょっと見てくれ。', '잠깐 봐줘.', 0);
 
   -- 558. ～ほかに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ほかに', '~ 외에', NULL, '문법', 558, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ほかに', '~ 외에', '他(ほか)+に\n　···　이외에···　더해(추가)', '문법', 558, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '他にも何か買おう。', '그 외에도 뭐라도 사자.', 0),
+    (w, '他にうんかわせる人はいない。', '다른 자와 이야기할 사람은 없다.', 0);
 
   -- 559. ～のだったら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだったら', '~ 하는 것이라면', NULL, '문법', 559, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだったら', '~ 하는 것이라면', 'のだ+ったら\n···한　것이라면(근거 조건)', '문법', 559, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '使わないのだったら捨てよう。', '쓰지 않는 것이라면 버리자.', 0),
+    (w, '行かないのだったら伝えて。', '안 가는 것이라면 앞으로 알려주.', 0);
 
   -- 560. ～しか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～しか', '~ 밖에', NULL, '문법', 560, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～しか', '~ 밖에', '···+しか\n···　밖에(한정·부정)', '문법', 560, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今千円しかない。', '지금 천엔밖에 없다.', 0),
+    (w, 'これしかない。', '이것밖에 없다.', 0);
 
   -- 561. ～てくれる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくれる', '~ 해 주다', NULL, '문법', 561, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくれる', '~ 해 주다', 'てud615+くれる\n···　해 주다(은혜)', '문법', 561, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '友達が手伝ってくれた。', '친구가 도와줬다.', 0),
+    (w, '傅がお菓子を送ってくれた。', '그가 과자를 보내 줬다.', 0);
 
   -- 562. ～だけだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけだ', '~ 뿐이다', NULL, '문법', 562, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけだ', '~ 뿐이다', 'だけ+だ\n···　 뿐이다(한정)', '문법', 562, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何も説明しないだけだ。', '아무 설명도 하지 않을 뿐이다.', 0),
+    (w, 'もうそれだけだ。', '이제 그것 뿐이다.', 0);
 
   -- 563. そう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そう', '그렇게', NULL, '문법', 563, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そう', '그렇게', 'そう: 대실 이는 지시 부사 　그 양상', '문법', 563, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そう見えるよ。', '그렇게 보이네.', 0),
+    (w, 'そう思うよ。', '그렇게 생각해.', 0);
 
   -- 564. ～(さ)せていただきます
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せていただきます', '~ 하겠습니다 <겸손>', NULL, '문법', 564, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せていただきます', '~ 하겠습니다 <겸손>', '사역형+ていただきます\n겸양(···해 받겠습니다)', '문법', 564, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '休ませていただきます。', '쉬겠습니다.', 0),
+    (w, '拝見させていただきます。', '삼겁게 봐 더린겠습니다.', 0);
 
   -- 565. ～やすい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～やすい', '~ 하기 쉽다', NULL, '문법', 565, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～やすい', '~ 하기 쉽다', '　동사マスud615+やすい\n···　하기 쉬다(난이도)', '문법', 565, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この本は読みやすい。', '이 책은 읽기 쉬운　책이다.', 0),
+    (w, 'ワードは使いやすい。', 'Word는 쓰기 쉬다.', 0);
 
   -- 566. 申す
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '申す', 'もうす', '말하다 <겸손>', NULL, '문법', 566, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '申す', 'もうす', '말하다 <겸손>', '言う(말하다)의 겸양·서미을 먹심 겸양···말씀', '문법', 566, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'やめておくと申しておく。', '그만두겠다고 말씀해 둡니다.', 0),
+    (w, '私は鈴木と申します。', '저는 스즈키라고 합니다.', 0);
 
   -- 567. ～ておく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ておく', '~ 해 두다', NULL, '문법', 567, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ておく', '~ 해 두다', 'てud615+おく\n···　 해 두다(준비·유지)', '문법', 567, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '明日のために買っておく。', '내일을 위해 사 둔다.', 0),
+    (w, '記録しておく。', '기록해 둔다.', 0);
 
   -- 568. 少しも～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '少しも～ない', 'すこしも～ない', '조금도 ~않는다', NULL, '문법', 568, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '少しも～ない', 'すこしも～ない', '조금도 ~않는다', '少しも(조금도)+···+ない\n···조금도 ···하지 않는다(전면 부정)', '문법', 568, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '少しも反省していない。', '조금도 반성하고 있지 않다.', 0),
+    (w, '少しも態度が変わらない。', '조금도 태도가 변하지 않는다.', 0);
 
   -- 569. おっしゃる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'おっしゃる', '말씀하시다 <존경>', NULL, '문법', 569, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'おっしゃる', '말씀하시다 <존경>', '言う(말하다)의 존경어\n仰しゃる·言われる···이 되어···', '문법', 569, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何とおっしゃいましたか。', '뭐라고 말씀하셨습니김¸용?', 0),
+    (w, '先生がそうおっしゃった。', '선생님이 그렇게 말씀하셨다.', 0);
 
   -- 570. ～ば
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ば', '~ 하면', NULL, '문법', 570, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ば', '~ 하면', '동사·いない　형용사 가정형 ば\n가정·명렌 표현(···하면)', '문법', 570, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '安ければ買う。', '싸면 사겠다.', 0),
+    (w, '必ず勝てるよ。', '다면 꼭 이길 수 있으면 해.', 0);
 
   -- 571. ～としたら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～としたら', '~ 한다고 하면', NULL, '문법', 571, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～としたら', '~ 한다고 하면', 'としたら: 가정을 나타냄. ···한다고 하면', '문법', 571, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '行くとしたら何時。', '간다고 하면 몇 시?', 0),
+    (w, '選べるとしたら、こちらだ。', '고른다고 하면 이쪽이다.', 0);
 
   -- 572. お～ください
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'お～ください', '~ 해 주십시오 <존경>', NULL, '문법', 572, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'お～ください', '~ 해 주십시오 <존경>', 'お + 동사マud615 + ください. 존경 명령', '문법', 572, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'しばらくお待ちください。', '잠시 기다려 주십시오.', 0),
+    (w, 'こちらへお乗りください。', '이쪽으로 타 주십시오.', 0);
 
   -- 573. ～たくても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たくても', '~ 하고 싶어도', NULL, '문법', 573, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たくても', '~ 하고 싶어도', '　동사たud615+ても. 강한 희망에도 조건 제약', '문법', 573, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '買いたくても金がない。', '사고 싶어도 돈이 없다.', 0),
+    (w, '行きたくても行けない。', '가고 싶어도 갈 수 없다.', 0);
 
-  -- 574. ～ても不思議ではない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～ても不思議ではない', 'ふしぎではない', '~ 해도 이상하지 않다', NULL, '문법', 574, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 574. 不思議ではない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '不思議ではない', 'ふしぎではない', '~ 해도 이상하지 않다', '不思議(신기·이상함)+ではない. ···　해도 이상하지 않다(타당성)', '문법', 574, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勝てるのも不思議ではない。', '이겼어도 이상하지 않다.', 0),
+    (w, '態度が悚り夫るも不思議ではない。', '화가 나도 이상하지 않다.', 0);
 
   -- 575. ～ないと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ないと', '~ 하지 않으면', NULL, '문법', 575, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ないと', '~ 하지 않으면', '　동사·い　형용사 ないud615+と. 조건·의무(···하지 않으면)', '문법', 575, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '学勉しないと不合格だよ。', '공부하지 않으면 불합격이야.', 0),
+    (w, '急がないと遅れるよ。', '서두르지 않으면 늦을　면 늦게·명·명·　.', 0);
 
   -- 576. ～ましょうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ましょうか', '~ 할까요?', NULL, '문법', 576, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ましょうか', '~ 할까요?', '동사 マしud615+んか。 제안·의향을 물음', '문법', 576, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '一緒に行きましょうか。', '같이 갈까욨?', 0),
+    (w, '小し休みましょうか。', '잠시 쉬쉜금욨?', 0);
 
-  -- 577. ～に従って
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～に従って', 'ともなって', '~ 에 따라', NULL, '문법', 577, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 577. 伴う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '伴う', 'ともなう', '~ 에 따라', '伴う(동반하다)+て. ···에 따라 같이 일어난···', '문법', 577, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '老齢に伴って記憶が衰える。', '노화에 따라 기억력이 쇠해는　.', 0),
+    (w, '収入に伴って支出も増えた。', '수입에 따라 지출도 늘었다.', 0);
 
   -- 578. ～たがる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たがる', '~ 하고 싶어 하다', NULL, '문법', 578, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～たがる', '~ 하고 싶어 하다', '동사 たいud615 の た+がる. 제3자가 ···　하고 싶어함', '문법', 578, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供が手伝いたがっている。', '아이가 돕고 싶어한다.', 0),
+    (w, '弟がゲームをしたがっている。', '동생이 게임을 하고 싶어한다.', 0);
 
   -- 579. ～だけでも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけでも', '~ 만이라도', NULL, '문법', 579, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけでも', '~ 만이라도', 'だけ+で+も. ···　만이라도(최소 한계)', '문법', 579, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見るだけでも多鎖いよ。', '보는 것만이라도 난 좋아.', 0),
+    (w, '一言だけでもよいよ。', '한마디만이라도 괜찮아.', 0);
 
   -- 580. ～てから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てから', '~ 하고 나서', NULL, '문법', 580, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てから', '~ 하고 나서', '동사てud615+から. ···　 하고 나서(순서)', '문법', 580, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手を洗ってから食べよう。', '손을 씀고　 먹자.', 0),
+    (w, 'コーヒーを飲んでから出かけた。', '커피를 마시고 나서 나갔다.', 0);
 
   -- 581. ～てしまいたい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てしまいたい', '~ 해 버리고 싶다', NULL, '문법', 581, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てしまいたい', '~ 해 버리고 싶다', 'てud615+しまう+たい. ···　　 완전히　···하고 싶다(완료 희망)', '문법', 581, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今日中にやってしまいたい。', '오늘 안으로 다 해　버리고 싶다.', 0),
+    (w, '忘れてしまいたい。', '잊어버리고 싶다.', 0);
 
   -- 582. ～てしまう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てしまう', '~ 해 버리다', NULL, '문법', 582, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てしまう', '~ 해 버리다', 'てud615+しまう. 완료·유감·떨떨함', '문법', 582, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '完したダジェットを読んでしまった。', '소설을 다 읽어 버렸다.', 0),
+    (w, '走って軽てしまった。', '뛰어가　넘어져　버렸다.', 0);
 
   -- 583. なんて～だろう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なんて～だろう', '얼마나 ~란 말인가', NULL, '문법', 583, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なんて～だろう', '얼마나 ~란 말인가', 'なんて+···+だろう. 감탄·강조 표현', '문법', 583, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'なんて難しい質問だろう。', '얼마나 어려운 질문인가.', 0),
+    (w, 'なんて領身だろう。', '얼마나 먋진가.', 0);
 
   -- 584. ～ため
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ため', '~ 때문에', NULL, '문법', 584, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ため', '~ 때문에', 'ため(원인·이유). ···　 때문에', '문법', 584, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨のため中止になった。', '비 때문에 중지되었다.', 0),
+    (w, '事故のため遡延になった。', '사고 때문에 지연되었다.', 0);
 
   -- 585. あと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あと', '＋ 시간 표현 앞으로', NULL, '문법', 585, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あと', '＋ 시간 표현 앞으로', '　後(あと)+수자·시간. 앞으로 ···　　몇 ···　몇 ···', '문법', 585, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あと3分で出発だ。', '앞으로 3분 후 출발이다.', 0),
+    (w, 'あと十年で退職だ。', '앞으로 10년이면 퇴직이다.', 0);
 
   -- 586. ～てみる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てみる', '~ 해 보다', NULL, '문법', 586, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てみる', '~ 해 보다', 'てud615+見る. ···　 해 보다(시도)', '문법', 586, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'このケーキを食べて見て。', '이 케이크 먹어봐.', 0),
+    (w, 'その錦を読んで見たい。', '그 책을 읽어 보고 싶다.', 0);
 
   -- 587. いただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いただく', '받다 <겸손>', NULL, '문법', 587, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'いただく', '받다 <겸손>', 'もらう(받다)의 겸양어. 머리에 소중한 것을 올린다는 뜿', '문법', 587, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '貴重なプレゼントをいただきました。', '귀중한 선물을 받았습니다.', 0),
+    (w, 'よろしくいただきます。', '잘 부탁해 받겠습니다.', 0);
 
   -- 588. ～しか～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～しか～ない', '~ 밖에 ~않는다', NULL, '문법', 588, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～しか～ない', '~ 밖에 ~않는다', 'しか+···+ない. ···밖에 없다(제한·부정)', '문법', 588, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今一人しかいない。', '지금 한 명밖에 없다.', 0),
+    (w, '今千円しか持っていない。', '지금 천원밖에 안 가지고 있다.', 0);
 
   -- 589. ～ても
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ても', '~ 해도 <역접>', NULL, '문법', 589, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ても', '~ 해도 <역접>', '　동사てud615+も. 역접(···　하　　도)', '문법', 589, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降っても出かける。', '비가 와도 나간다.', 0),
+    (w, '面接しても不合格だった。', '면접을 봐도 불합격이었다.', 0);
 
   -- 590. ～というような
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～というような', '~ 라는 것 같은', NULL, '문법', 590, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～というような', '~ 라는 것 같은', 'という+ような. ···　이라고 할 것 같은(설명)', '문법', 590, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'やめるというような例だ。', '···　 그만둔다라는··· 예이다.', 0),
+    (w, 'よいというような評価だ。', '좋다는 정을 든 의견이다.', 0);
 
   -- 591. ～ことで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ことで', '~ 것 때문에 <원인>', NULL, '문법', 591, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ことで', '~ 것 때문에 <원인>', '　명사·동사 사전형+こと+で. ···　한 것　　 때문에', '문법', 591, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '遅れたことで叱られた。', '늦은 것 때문에 혼났다.', 0),
+    (w, '見たことで思い出した。', '본 것 때문에 떠올랐다.', 0);
 
   -- 592. ～てもらう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもらう', '~ 해 받다(상대로부터 받다)', NULL, '문법', 592, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てもらう', '~ 해 받다(상대로부터 받다)', 'てud615+もらう. ···　 해 받다(석외 행위)', '문법', 592, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '友達に手伝ってもらった。', '친구에게 도움을 받았다.', 0),
+    (w, '見てもらう。', '보게 해 부탁한다.', 0);
 
   -- 593. ～だって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だって', '~ 라도 <회화체>', NULL, '문법', 593, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だって', '~ 라도 <회화체>', 'だ+って. 어떻 구어체(···　이라도)', '문법', 593, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コーヒーだって飲めるよ。', '커피라도 마실 수 있어.', 0),
+    (w, '妹だって会いたいよ。', '여동생이도 만나고 싶어.', 0);
 
   -- 594. ちっとも～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ちっとも～ない', '조금도 ~않는다', NULL, '문법', 594, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ちっとも～ない', '조금도 ~않는다', 'ちっとも+···+ない. 조금도 ···　 않는다(강한 부정)', '문법', 594, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ちっとも反省していない。', '조금도 반성하고 있지 않다.', 0),
+    (w, 'ちっとも態度が変わらない。', '조금도 태도가 변하지 않는다.', 0);
 
   -- 595. どんなに～ことか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どんなに～ことか', '얼마나 ~한 일인지', NULL, '문법', 595, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どんなに～ことか', '얼마나 ~한 일인지', '　どんなに+···용·+ことか. ···　 얼마나···　한 일인지(감탄)', '문법', 595, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どんなにうれしいことか。', '얼마나 기쁜 일인가.', 0),
+    (w, 'どんなに靠シいことか。', '얼마나 힘든 일인가.', 0);
 
   -- 596. やらせてやる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'やらせてやる', '시켜 주다', NULL, '문법', 596, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'やらせてやる', 'やらせてやる', '시켜 주다', '　사역형+て+やる. ···　 시켜 주다(석외와 허광)', '문법', 596, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供に一人でやらせてやろう。', '아이에게 혼자 하게 시켜 주자.', 0),
+    (w, '妹にやりたいようにやらせてやった。', '여동생이 하고 싶어 하는 대로 시켜 줬다.', 0);
 
   -- 597. ～ほど～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ほど～ない', '~ 만큼 ~않는다', NULL, '문법', 597, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ほど～ない', '~ 만큼 ~않는다', '　···　의·　+ほど+···+ない. ···　　···　 정도는 아니다(비교)', '문법', 597, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '思うほど恋しくはない。', '생각한 만큼 무서운지는 않다.', 0),
+    (w, '恋げるほど重くない。', '들 정도로 무겁지　 않다.', 0);
 
   -- 598. ～おかげだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～おかげだ', '~ 덕분이다', NULL, '문법', 598, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～おかげだ', '~ 덕분이다', '···+おかげ+だ. ···　 덕분이다(긍정적 원인)', '문법', 598, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あなたのおかげだよ。', '당신 덕분이에요.', 0),
+    (w, '見たおかげで勝てた。', '보며 도와 덕에　 이겼다.', 0);
 
   -- 599. 多分
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '多分', 'たぶん', '아마', NULL, '문법', 599, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '多分', 'たぶん', '아마', '多分(아마도)의 한자 어원. 추측·가능성', '문법', 599, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'たぶん彼は来るよ。', '아마 그는 올 거야.', 0),
+    (w, 'たぶん雨が降るだろう。', '아마 비가 올 것이다.', 0);
 
   -- 600. ～するまで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～するまで', '~ 할 때까지', NULL, '문법', 600, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～するまで', '~ 할 때까지', '···+する+まで. ···　 할 때까지(종점)', '문법', 600, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '成功するまで頗張る。', '성공할 때까지 힘내자.', 0),
+    (w, '完成するまで休めない。', '완성될 때까지 쉬지 않겠다.', 0);
 
-  -- 601. ～方がいい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～方がいい', 'ほうがいい', '~ 하는 편이 좋다', NULL, '문법', 601, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 601. 方がいい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '方がいい', 'ほうがいい', '~ 하는 편이 좋다', '方(쪽·방향)+が+いい. 조언·추천　(···하는 편이 좋다)', '문법', 601, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '医者に見せた方がいい。', '의사에게 보이는 편이 좋다.', 0),
+    (w, '早めに休んだ方がいいよ。', '일짐 쉬는 편이 좋아.', 0);
 
   -- 602. ～だけでなく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけでなく', '~ 뿐만 아니라', NULL, '문법', 602, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけでなく', '~ 뿐만 아니라', 'だけ+で+なく. ···　뿐만 아니라(추가)', '문법', 602, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見るだけでなく読むもした。', '보기만 아니라 읽기도 했다.', 0),
+    (w, '友達だけでなく家族も来た。', '친구뿐만 아니라 가족도 왔다.', 0);
 
-  -- 603. ～の一つに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～の一つに', 'ひとつに', '~ 중의 하나로', NULL, '문법', 603, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 603. 一つに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '一つに', 'ひとつに', '~ 중의 하나로', '一つ(하나)+に. ···　 중의 하나로', '문법', 603, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '高職生の悩みの一つに進路がある。', '고등학생의 고민 중 하나로 진로가 있다.', 0),
+    (w, '趣味の一つに読書だ。', '취미 중 하나로 독서다.', 0);
 
   -- 604. 言われると
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '言われると', 'いわれると', '말을 들으면 <수동>', NULL, '문법', 604, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '言われると', 'いわれると', '말을 들으면 <수동>', '言われる(말해지다)+と. ···이라고 들으면', '문법', 604, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '古いと言われると反証したくなる。', '대다　하다고 들으면 반박하고 싶어진다.', 0),
+    (w, 'だめだと言われると衰しい。', '안 된다고 들으면 슬프다.', 0);
 
   -- 605. ～まで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～まで', '~ 까지', NULL, '문법', 605, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～まで', '~ 까지', '···+まで. ···　까지(범위·한계)', '문법', 605, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '学校まで走った。', '학교까지 뛰었다.', 0),
+    (w, '昨日まで雨だった。', '어제까지 비였다.', 0);
 
   -- 606. お～になる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'お～になる', '~ 하시다 <존경>', NULL, '문법', 606, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'お～になる', '~ 하시다 <존경>', 'お+동사マud615+になる. 존경 표현', '문법', 606, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生がお許しになる。', '선생님께서 웃으시다.', 0),
+    (w, 'どちらをお選びになりますか。', '어느 것을 고르시겠습니까?', 0);
 
   -- 607. ～よりも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～よりも', '~ 보다도', NULL, '문법', 607, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～よりも', '~ 보다도', '　より+も. ···　보다도(강조)', '문법', 607, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今年は去年よりも暑い。', '올해는 작년보다도 더운　.', 0),
+    (w, '見るよりも読む方がいい。', '보는 것보다도 읽는 편이 좋다.', 0);
 
   -- 608. 最も
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '最も', 'もっとも', '가장, 제일', NULL, '문법', 608, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '最も', 'もっとも', '가장, 제일', '最も(もっとも): 제일·가장(최상급)', '문법', 608, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もっともうれしいだった。', '가장 기쯤다.', 0),
+    (w, 'クラスでもっとも背が高い。', '클래스에서 제일 키가 크다.', 0);
 
   -- 609. ～だけは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけは', '~ 만은', NULL, '문법', 609, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～だけは', '~ 만은', 'だけ+は. ···만은(제한·강조)', '문법', 609, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'それだけはしないよ。', '그것만은 하지 않아.', 0),
+    (w, 'これだけは許して。', '이것만은 용서해 줘.', 0);
 
   -- 610. ～てやる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てやる', '~ 해 주다', NULL, '문법', 610, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てやる', '~ 해 주다', 'てud615+やる. ···　 해 주다(몽쓰게 일곳 대상)', '문법', 610, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供に本を読んでやる。', '아이에게 책을 읽어 준다.', 0),
+    (w, '犬にエサをやる。', '개에게 먹이를 준다.', 0);
 
   -- 611. ～と
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～と', '~ 하면', NULL, '문법', 611, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～と', '~ 하면', '　と. ···　하면(자　·조건·자연적 결과)', '문법', 611, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ボタンを押すとドアが開く。', '버튼을 누르면 문이 열린다.', 0),
+    (w, '春になると花が咲く。', '봄이 되면 꽃이 핌다.', 0);
 
   -- 612. ～で
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～で', '~ 중에서 <범위의 한정>', NULL, '문법', 612, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～で', '~ 중에서 <범위의 한정>', '···+で. 장소·도구·범위　의 한정', '문법', 612, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'クラスで一番うれしい。', '클래스에서 제일 기쯤다.', 0),
+    (w, '日本で一番高い山だ。', '일본에서 제일 높은 산이다.', 0);
 
   -- 613. 音がする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '音がする', 'おとがする', '소리가 나다', NULL, '문법', 613, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '音がする', 'おとがする', '소리가 나다', '音(소리)+がする. 소리가 나다(공감각)', '문법', 613, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '外で何か音がする。', '밖에서 뭐가 소리가 난다.', 0),
+    (w, '太鼓の音がする。', '북 소리가 난다.', 0);
 
   -- 614. ～のに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のに', '~ 인데도', NULL, '문법', 614, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のに', '~ 인데도', '　···+のに. ···인데도(역접)', '문법', 614, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勉強したのに不合格だった。', '공부했는데도 불합격이었다.', 0),
+    (w, '雨なのに出かけた。', '비가 오는데도 나갔다.', 0);
 
   -- 615. ～の
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～の', '연체수식절의 の', NULL, '문법', 615, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～の', '연체수식절의 の', '　···+の. 연체수식절의 주격 표지', '문법', 615, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼の作ったケーキだ。', '그가 만들어 챌 케이크다.', 0),
+    (w, '私の読んだ本だ。', '내가 읽은 책이다.', 0);
 
   -- 616. だれも～ない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'だれも～ない', '아무도 ~않는다', NULL, '문법', 616, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'だれも～ない', '아무도 ~않는다', '誰+も+···+ない. 아무도 ···　 않는다(전면 부정)', '문법', 616, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '誰も会議に来ない。', '아무도 회의에 오지 않는다.', 0),
+    (w, '誰もわからない。', '아무도 모른다.', 0);
 
   -- 617. ～ながら
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ながら', '~ 하면서', NULL, '문법', 617, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ながら', '~ 하면서', '동사マud615+ながら. 동시성(···하면서)', '문법', 617, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '歩きながら話した。', '걷으면서 이야기했다.', 0),
+    (w, '音楽を聞きながら勉強する。', '음악을 들으면서 공부한다.', 0);
 
   -- 618. ～ことから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ことから', '~ 것으로부터', NULL, '문법', 618, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ことから', '~ 것으로부터', 'こと+から. ···　　근거·원인(···이므로)', '문법', 618, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '安いことからに人気だ。', '슼다는 것으로적　 원인으로 인기다.', 0),
+    (w, '広いことからとても使いやすい。', '넓다는 점으로 쓰기 편하다.', 0);
 
   -- 619. あまりに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あまりに', '너무나', NULL, '문법', 619, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'あまりに', '너무나', '余り(あまり)+に. 도가 지나치게, 너무나(국장)', '문법', 619, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あまりにわたしい話だ。', '너무나 소쓘한 이야기다.', 0),
+    (w, 'あまりにも咲くてコケてしまった。', '너무 달려서 몽하고 말았다.', 0);
 
   -- 620. どうしてかというと～からだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どうしてかというと～からだ', '어째서인가 하면 ~때문이다', NULL, '문법', 620, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'どうしてかというと～からだ', '어째서인가 하면 ~때문이다', 'どうしてかと+言う+と+···+からだ. 원인　·이유 설명', '문법', 620, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'どうしてかというと忙しいからだ。', '왜냐하면 바쁜 때문이다.', 0),
+    (w, 'どうしてかというと雨が降ったからだ。', '왜냐하면 비가 왔기 때문이다.', 0);
 
   -- 621. これまでに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'これまでに', '지금까지', NULL, '문법', 621, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'これまでに', '지금까지', 'これ+まで+に. 지금까지·지금에 이르기까지', '문법', 621, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'これまでに太とも見た。', '지금까지 많이 봤다.', 0),
+    (w, 'これまでに關ポしておいた。', '지금까지에 끝내 둔 것이다.', 0);
 
   -- 622. ～のを
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のを', '~ 것을', NULL, '문법', 622, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のを', '~ 것을', '···+の+を. 명사·명사···　 명사 회의　 표지', '문법', 622, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '学ぶのをやめた。', '배우는 것을 그만뛰었다.', 0),
+    (w, '完したのを見た。', '끝난 것을 봤다.', 0);
 
   -- 623. ～までで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～までで', '~ 까지면, ~까지라도', NULL, '문법', 623, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～までで', '~ 까지면, ~까지라도', '···+まで+で. ···까지로···까지면', '문법', 623, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ここまでで休みましょう。', '여기까지에 쉬자.', 0),
+    (w, '明日までで提出。', '내일까지면 제출.', 0);
 
   -- 624. ～てくれない
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくれない', '~ 해 주지 않는다', NULL, '문법', 624, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくれない', '~ 해 주지 않는다', 'てud615+くれる+ない. ···　　　 해 주지 않는다', '문법', 624, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '誡も手伝ってくれない。', '아무도 도와주지 않는다.', 0),
+    (w, '見てくれない。', '봐 주지 않는다.', 0);
 
   -- 625. さらに
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'さらに', '게다가, 더욱이', NULL, '문법', 625, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'さらに', '게다가, 더욱이', '更に(さらに): 그 위에 더, 더욱', '문법', 625, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'さらに、買い足した。', '게다가 더 구입했다.', 0),
+    (w, 'さらによい話がある。', '더욱 좋은 이야기가 있다.', 0);
 
   -- 626. ～というわけだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～というわけだ', '~ 인 것이다', NULL, '문법', 626, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～というわけだ', '~ 인 것이다', 'という+わけ+だ. ···　 그러마 이　　(설명·결론)', '문법', 626, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'つまり、出てこないというわけだ。', '즉, 나오지 않은 것이다.', 0),
+    (w, '雨のせいで中止になったというわけだ。', '비 탓에 중지되었다는 것이다.', 0);
 
   -- 627. それには
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それには', '그렇게 하기 위해서는', NULL, '문법', 627, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それには', '그렇게 하기 위해서는', 'それ+に+は. 그게 따르자면', '문법', 627, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勝ちたい。それには努力が必要だ。', '이기고 싶다. 이게 되려면 노력이 필요하다.', 0),
+    (w, '会いたい。それには出かけるよ。', '만나고 싶다. 그러면 나가자.', 0);
 
   -- 628. ところが～のだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ところが～のだ', '그렇지만 ~것이다', NULL, '문법', 628, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ところが～のだ', '그렇지만 ~것이다', 'ところが+···+のだ. ···　 그렇지만 　그　···이다(결론)', '문법', 628, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'テストできたと思った。ところが、不合格だったのだ。', '시험··· 잘 보았다 생각했다. 그러자 불합격이었던 것이다.', 0),
+    (w, '勝てると見えた。ところが負けたのだ。', '이길 것으로 보였다. 그렇지만 진 것이다.', 0);
 
   -- 629. つまり
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'つまり', '즉, 결국', NULL, '문법', 629, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'つまり', '즉, 결국', 'つまり: 즉, 결국, 한마디로 요약', '문법', 629, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'つまり、不可能だ。', '즉, 불가능하다.', 0),
+    (w, 'つまり、よくやるということだ。', '결국, 잘 한다는 것이다.', 0);
 
   -- 630. ですから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ですから', '그러므로', NULL, '문법', 630, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ですから', '그러므로', 'です+から: 그러므로, 조은한 경우의···', '문법', 630, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨です。ですから中止です。', '비입니다. 그러므로 중지입니다.', 0),
+    (w, '長いです。ですから叩いています。', '깁니다. 그러므로 피곤합니다.', 0);
 
   -- 631. ～のだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだ', '~ 인 것이다', NULL, '문법', 631, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだ', '~ 인 것이다', 'のだ　(···　이다)의 설명·강조·원인', '문법', 631, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '見たのだよ。', '봤던 것이다.', 0),
+    (w, '雨だから中止なのだ。', '비기 때문에 중지인 것이다.', 0);
 
   -- 632. ～というのは
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～というのは', '~ 라는 것은', NULL, '문법', 632, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～というのは', '~ 라는 것은', 'という+の+は. ···　　이라는 것은(정의)', '문법', 632, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '恋というのは難しい。', '사랑이라는 것은 어렵다.', 0),
+    (w, '勉強というのは面白い。', '공부라는 것은 재미있다.', 0);
 
   -- 633. ～ようにする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ようにする', '~ 하도록 하다', NULL, '문법', 633, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～ようにする', '~ 하도록 하다', 'ように+する. 의식적으로···　　　하도록 하다(습관·노력)', '문법', 633, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '遅れないようにしてください。', '늦지 않도록 해 주세요.', 0),
+    (w, '毎日運動するようにしている。', '매일 운동하도록 하고 있다.', 0);
 
   -- 634. ～てくる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくる', '~ 하기 시작하다', NULL, '문법', 634, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくる', '~ 하기 시작하다', 'てud615+くる. 이전 상태에서 이　　 다가오는 다가온·수안　 변화', '문법', 634, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '寒くなってきた。', '추워지기 시작했다.', 0),
+    (w, '雨が降ってきた。', '비가 오기 시작했다.', 0);
 
   -- 635. ～なるのでしょうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なるのでしょうか', '~ 인 걸까요?', NULL, '문법', 635, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～なるのでしょうか', '~ 인 걸까요?', '····+になる+の+でしょうか. 정중한 추측 의문', '문법', 635, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'いつ長さになるのでしょうか。', '언제기·명 있　···며···　　　 길이가··· 되는 것을명?', 0),
+    (w, '折りたたみになるのでしょうか。', '접는 형태가 되는 것일까요?', 0);
 
   -- 636. なぜなのか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なぜなのか', '왜 그런지', NULL, '문법', 636, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'なぜなのか', '왜 그런지', '何故(なぜ)+なのか. 정챌 궁금　　 풍기는 의문', '문법', 636, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'なぜなのか説明しよ。', '왜 그런지 설명해.', 0),
+    (w, 'なぜなのかわからない。', '왜 그런지 모르겠다.', 0);
 
   -- 637. 同じ～
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '同じ～', 'おなじ～', '같은~', NULL, '문법', 637, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '同じ～', 'おなじ～', '같은~', '同じ+명사. 동일·일치함', '문법', 637, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '同じクラスだ。', '같은 클래스다.', 0),
+    (w, '同じケーキを買った。', '같은 케이크를 사제　.', 0);
 
   -- 638. こういう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'こういう', '이러한', NULL, '문법', 638, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'こういう', '이러한', 'こ+ういう. 이런 종류의···　　이러한', '문법', 638, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こういう話はよく聴く。', '이런 이야기는 자주 든다.', 0),
+    (w, 'こういう人は誰も思い、···　　　　　ともとりやい。', '이런 사람은 누구도 좋아한다.', 0);
 
   -- 639. ～からだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～からだ', '~ 때문이다', NULL, '문법', 639, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～からだ', '~ 때문이다', '···+から+だ. ···　　　 때문이다(이유)', '문법', 639, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '遅れたのは雨が降ったからだ。', '늦은 것은 비가 왔기 때문이다.', 0),
+    (w, '見ないのはもう興味がないからだ。', '보지 않는 것은 이제 관심이 없기 때문이다.', 0);
 
   -- 640. それから
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それから', '그리고', NULL, '문법', 640, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それから', '그리고', 'それ+から. 그다음으로　(순서·추가)', '문법', 640, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '起きて、それから朝ごはんを食べる。', '일어나서, 그다음 아침을 먹는다.', 0),
+    (w, 'それから中で見た。', '그다음 한면 쪽에서 봤다.', 0);
 
   -- 641. そこで
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そこで', '그래서', NULL, '문법', 641, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そこで', '그래서', 'そこ+で. 그래서　　그러므로(동기·원인)', '문법', 641, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'よくとれない。そこで、休めた。', '잠을 잘 자지 못한다. 그래서 쉬었다.', 0),
+    (w, '連休だ。そこで邊りに付かうとした。', '연휴이다. 그래서 여행을 가기로 했다.', 0);
 
-  -- 642. ～のだと思う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～のだと思う', 'おもう', '~ 한 것이라고 생각한다', NULL, '문법', 642, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 642. 思う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '思う', 'おもう', '~ 한 것이라고 생각한다', '思う+···. ···　 고 생각하다', '문법', 642, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そうだと思う。', '그렇다고 생각한다.', 0),
+    (w, 'うまくいくと思う。', '잘 될　 거라고 생각한다.', 0);
 
   -- 643. それとも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それとも', '그렇지 않으면', NULL, '문법', 643, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それとも', '그렇지 않으면', 'それ+とも. 그렇지 않으면(둘 중 하나 선택)', '문법', 643, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'コーヒー、それとも紅茶。', '커피, 아니면 홍차?', 0),
+    (w, '行くの、それともやめるの。', '갈건가, 그렇지 않으면 그만둘 거야?', 0);
 
   -- 644. 知りました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '知りました', 'しりました', '알았습니다', NULL, '문법', 644, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '知りました', 'しりました', '알았습니다', '知る(알다)의 과거형 정중체. 이해·수락　　　　　　의사', '문법', 644, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'はい、知りました。', '네, 알겠습니다.', 0),
+    (w, 'これから気をつけます。知りました。', '앞으로 주의하겠습니다. 알겠습니다.', 0);
 
   -- 645. しかし
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しかし', '그러나', NULL, '문법', 645, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'しかし', '그러나', 'しかし: 그러나·하지만(역접 접속)', '문법', 645, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨だ。しかし中止しない。', '비다. 그러나 중지하지 않는다.', 0),
+    (w, '態れている。しかし、順調だ。', '피곤하다. 그러나 순조롭다.', 0);
 
   -- 646. その～
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'その～', '그~', NULL, '문법', 646, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'その～', '그~', 'その+명사. 이미 언급한 그　　　　　　　', '문법', 646, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'その人は誰だろう。', '그 사람은 누구일까?', 0),
+    (w, 'その件はもう代わった。', '그 건은 이제 끝났다.', 0);
 
   -- 647. ～のだそうだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだそうだ', '~ 인 것이라고 한다', NULL, '문법', 647, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～のだそうだ', '~ 인 것이라고 한다', 'の+だ+そう+だ. ···　　이라고 한다(전언 의한 설명)', '문법', 647, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降ったのだそうだ。', '비가 왔다고 한다.', 0),
+    (w, '今連休なのだそうだ。', '지금 연휴이라고 한다.', 0);
 
-  -- 648. 気がつく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '気がつく', 'きがつく', '알아차리다, 깨닫다', NULL, '문법', 648, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 648. 気が付く
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '気が付く', 'きがつく', '알아차리다, 깨닫다', '気(い)+が+付く. 알아차리다·깨닫다', '문법', 648, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '間違いに気が付いた。', '실수를 알아차렸다.', 0),
+    (w, '見ても気が付かなかった。', '봐도 알아차리지 못했다.', 0);
 
   -- 649. ～と言われる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～と言われる', 'いわれる', '~ 라는 말을 듣다', NULL, '문법', 649, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～と言われる', 'いわれる', '~ 라는 말을 듣다', '言われる: 言う(말하다)의 수동형. ···　라는 말을 듣다', '문법', 649, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そう言われても難しい。', '그렇게 말을 들어도 어렵다.', 0),
+    (w, '上司に叱られてやると言われた。', '상사에게 해보라고 하는 말을 들었다.', 0);
 
   -- 650. それ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それ', '그것', NULL, '문법', 650, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それ', '그것', 'それ: 그것(이미 언급한 사물)', '문법', 650, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'それを下さい。', '그것을 주세요.', 0),
+    (w, 'それは何だ。', '그것은 무엇인가?', 0);
 
   -- 651. ～てくださる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくださる', '~ 해 주시다', NULL, '문법', 651, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくださる', '~ 해 주시다', 'てud615+下さる. ···　　해 주시다(존경 은혜)', '문법', 651, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生が説明して下さった。', '선생님께서 설명해 주셨다.', 0),
+    (w, '送りもたして下さいました。', '마중도 해 주셨습니다.', 0);
 
   -- 652. ～てあげたい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てあげたい', '~ 해 주고 싶다', NULL, '문법', 652, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てあげたい', '~ 해 주고 싶다', 'てud615+あげ+たい. ···　 해 주고 싶다', '문법', 652, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供に本を読んであげたい。', '아이에게 책을 읽어 주고 싶다.', 0),
+    (w, '広めてあげたい。', '칭찬해 주고 싶다.', 0);
 
   -- 653. そういう
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そういう', '그러한', NULL, '문법', 653, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そういう', '그러한', 'そう+いう. 그런 종류·그렇게···', '문법', 653, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そういう人もいるよ。', '그런 사람도 있어.', 0),
+    (w, 'そういうことはしないように。', '그런 일은 하지 않도록.', 0);
 
   -- 654. でも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'でも', '그렇지만 <접속사>', NULL, '문법', 654, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'でも', '그렇지만 <접속사>', 'で+も. ···이더라도(접속·역접)', '문법', 654, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '難しい。でも、頗張る。', '어렵다. 그렇지만 노력하겠다.', 0),
+    (w, '犬だ。でも、表現が快い。', '개다. 하지만 영리하다.', 0);
 
   -- 655. ところが
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ところが', '그렇지만', NULL, '문법', 655, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'ところが', '그렇지만', 'ところ+が. 그러나···　　···의외의　　······일이 난　(강한 역접)', '문법', 655, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今起かしいと思った。ところが、面白い。', '재미없을 줄 생각했다. 하지만 재미있었다.', 0),
+    (w, '必ず勝てる。ところが負けた。', '반드시 이긴다. 그러나 졌다.', 0);
 
-  -- 656. お世話になりました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, 'お世話になりました', 'せわになりました', '신세 많이 졌습니다', NULL, '문법', 656, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  -- 656. 世話になりました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '世話になりました', 'せわになりました', '신세 많이 졌습니다', '世話(돌봄)+になる의 과거형. 신세 많이 졌습니다', '문법', 656, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今日はお世話になりました。', '오늘은 신세 많이 졌습니다.', 0),
+    (w, '在職中はお世話になりました。', '재직 중에 신세　 많이 졌습니다.', 0);
 
   -- 657. ～てくださいませんか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくださいませんか', '~ 해 주시지 않겠습니까?', NULL, '문법', 657, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～てくださいませんか', '~ 해 주시지 않겠습니까?', 'てud615+ください+ませんか. 겸양적 요청', '문법', 657, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手伝ってくださいませんか。', '도와주시겠습니까?', 0),
+    (w, '見せてくださいませんか。', '보여주시겠습니까?', 0);
 
   -- 658. ～でした
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～でした', '~ 이었습니다', NULL, '문법', 658, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～でした', '~ 이었습니다', 'でした: です　의 과거형', '문법', 658, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '楽しい一日でした。', '즐거운 하루였습니다.', 0),
+    (w, '雨でした。', '비였습니다.', 0);
 
   -- 659. ～みたいだ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～みたいだ', '~ 한 것 같다', NULL, '문법', 659, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～みたいだ', '~ 한 것 같다', '명사·동사·형용사+みたいだ. ···　　 같다(회화체 추측)', '문법', 659, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降るみたいだ。', '비가 올 것 같다.', 0),
+    (w, '子供みたいに笑う。', '아이체럼 웃는다.', 0);
 
   -- 660. すると
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'すると', '그러자, 그랬더니', NULL, '문법', 660, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'すると', '그러자, 그랬더니', 'する+と. 그러자·그렇게 하니꺴(결과 표현)', '문법', 660, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ボタンを押した。するとドアが開いた。', '버튼을 눌렀다. 그런 그러자 문이 열렸다.', 0),
+    (w, '彼を呬んだ。すると振り返った。', '그를 불렀다. 그러자 돌아봤다.', 0);
 
   -- 661. そのころ
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そのころ', '그 무렵', NULL, '문법', 661, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'そのころ', '그 무렵', 'その+頃(ころ). 그 무렵(과거 시점)', '문법', 661, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'その頃は幸せだった。', '그 무렇 행복했다.', 0),
+    (w, 'その頃は長魯がわそうだった。', '그 무렇 마을이 분주했다.', 0);
 
   -- 662. ～も
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～も', '~ 도', NULL, '문법', 662, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～も', '~ 도', 'も: ···도(포함·첨가)', '문법', 662, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '私も行く。', '나도 간다.', 0),
+    (w, 'コーヒーもパンもよい。', '커피도 빵도 다 좋다.', 0);
 
   -- 663. 気がする
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '気がする', 'きがする', '느낌이 들다', NULL, '문법', 663, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '気がする', 'きがする', '느낌이 들다', '気(い)+が+する. 그런 능낑·느낌이 든다', '문법', 663, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨が降るような気がする。', '비가 올 것 같은 느낌이 든다.', 0),
+    (w, 'どこかで会った気がする。', '어디서 만난 것 같은 느낌이 든다.', 0);
 
   -- 664. こんなこと
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'こんなこと', '이런 것', NULL, '문법', 664, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'こんなこと', '이런 것', 'こ+んな+こと. 이런 경우·행보', '문법', 664, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こんなこともあるんだね。', '이런 일도 있는구나.', 0),
+    (w, 'こんなことは初めてだ。', '이런 일은 처음이다.', 0);
 
   -- 665. 言いました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '言いました', 'いいました', '말했습니다', NULL, '문법', 665, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '言いました', 'いいました', '말했습니다', '言う(말하다)의 과거マス　형', '문법', 665, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'クラスで言いましたか。', '클래스에서 말했습니꺴?', 0),
+    (w, 'そう言いました。', '그렇게 말했습니다.', 0);
 
   -- 666. ～の方が
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～の方が', 'ほうが', '~ 쪽이', NULL, '문법', 666, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '～の方が', 'ほうが', '~ 쪽이', '方(ほう)+が. ···　이 좀 더···', '문법', 666, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こちらの方が靓しい。', '이적 이쪽이 더 시원하다.', 0),
+    (w, '走る方が早い。', '뛰는 편이 빠르다.', 0);
 
   -- 667. けれども
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'けれども', '그렇지만', NULL, '문법', 667, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'けれども', '그렇지만', 'けれども: 그러지만(역접 접속·겸양체)', '문법', 667, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '高価だ。けれどもクオリティーがいい。', '비싸다. 하지만 품질이 좋다.', 0),
+    (w, '雨だ。けれども出かける。', '비가 온다. 그러어도 나간다.', 0);
 
   -- 668. 広がって
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '広がって', 'ひろがって', '넓어져서', NULL, '문법', 668, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '広がって', 'ひろがって', '넓어져서', '広がる(넓어지다)+て. 넓어져서·퍼져서', '문법', 668, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '話が広がってしまった。', '이야기가 퍼지고 말았다.', 0),
+    (w, '人気が広がってやゃもるよになった。', '인기가 넓어져 유명해졌다.', 0);
 
   -- 669. ～かどうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～かどうか', '~ 인지 어떤지', NULL, '문법', 669, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～かどうか', '~ 인지 어떤지', '···+か+どう+か. ···　 인지 어떤지(이면 의문)', '문법', 669, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '成功するかどうかわからない。', '성공하는지 모르겠다.', 0),
+    (w, '選ぶかどうか考えている。', '고를지 어떨지 고민 중.', 0);
 
   -- 670. ～(さ)せる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せる', '~ 시키다, ~하게 하다', NULL, '문법', 670, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, '～(さ)せる', '~ 시키다, ~하게 하다', '사역　ud615 させる. ···을 시키다·강제 한다', '문법', 670, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '弟に金を付けさせた。', '동생에게　　 이를 닦쿦　　고　 돈을 붙이게 했다.', 0),
+    (w, '子供に勉強させる。', '아이에게 공부를 시킨다.', 0);
 
   -- 671. それでも
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それでも', '그렇지만', NULL, '문법', 671, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, NULL, 'それでも', '그렇지만', 'それ+で+も. ···　 그래도(역접·그도 불구)', '문법', 671, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '反対された。それでも、進める。', '반대받았다. 그래도 추진한다.', 0),
+    (w, '難しい。それでもやる。', '어렵다. 그래도 하겠다.', 0);
 
   -- 672. 行ってみることにしました
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '行ってみることにしました', 'いってみることにしました', '가 보기로 했습니다', NULL, '문법', 672, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n3, '行ってみることにしました', 'いってみることにしました', '가 보기로 했습니다', '行ってみる(가 보다)+ことにする(하기로 하다)+ました. 결정 표현', '문법', 672, array['pdf_extracted','no_etymology','no_examples']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'その店に行ってみることにしました。', '그 가게에 가 보기로 했습니다.', 0),
+    (w, '明日行ってみることにしました。', '내일 가 보기로 했습니다.', 0);
 
 end $$;
