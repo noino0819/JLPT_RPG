@@ -32,7 +32,7 @@ export const DEFAULT_SETTINGS: Settings = {
   probably_repeat_every: 8,
   review_mix_weight: 3,
   show_character: true,
-  effects: { attack: true, card_shake: true, sound: false },
+  effects: { attack: true, card_shake: true, sound: true },
   tts: { enabled: true, autoplay: false, rate: 0.95 },
 };
 
