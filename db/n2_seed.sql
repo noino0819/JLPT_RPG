@@ -8160,43 +8160,50 @@ begin
     (w, 'やってみて分かることもある。', '해 봐야 알 수 있는 것도 있다.', 2);
 
   -- 1357. ２対１
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '２対１', 'にたいいち', '2 대 1 (비율 표기)', '対(대할 대): 서로 마주보다\n숫자、対、숫자 형태로 비율·점수를 표현', '명사', 1357, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '２対１', 'にたいいち', '2 대 1 (비율 표기)', '対(대할 대): 서로 마주보다
+숫자、対、숫자 형태로 비율·점수를 표현', '명사', 1357, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '試合は２対１で勝った。', '시합은 2 대 1로 이겼다.', 1),
     (w, 'スコアは３対０だ。', '스코어는 3 대 0이다.', 2);
 
   -- 1358. お越しいただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しいただく', 'おこしいただく', '(손님이) 와 주시다 <겸양>', 'お (접두 경어): 넓은 범위에 따르는 존경 표현\n越す(넘고 가다)·頂く(받다)의 겸양형 결합', '문법', 1358, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しいただく', 'おこしいただく', '(손님이) 와 주시다 <겸양>', 'お (접두 경어): 넓은 범위에 따르는 존경 표현
+越す(넘고 가다)·頂く(받다)의 겸양형 결합', '문법', 1358, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '本日はお越しいただき、ありがとうございます。', '오늘 와 주셔서 감사합니다.', 1),
     (w, '遠方よりお越しいただき恌謝です。', '멀리서 와 주시니 감사합니다.', 2);
 
   -- 1359. 申し上げる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '申し上げる', 'もうしあげる', '말씀 드리다 <겸양>', '申(아륐 신): 말하다·아뢨다의 겸양 표현\n上げる(올리다): 아랫사람이 윗사람에게 올리는 의미', '문법', 1359, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, '申し上げる', 'もうしあげる', '말씀 드리다 <겸양>', '申(아륐 신): 말하다·아뢨다의 겸양 표현
+上げる(올리다): 아랫사람이 윗사람에게 올리는 의미', '문법', 1359, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '心からお詫び申し上げます。', '진심으로 사과 드립니다.', 1),
     (w, 'ごあいさつ申し上げます。', '인사 드립니다.', 2);
 
   -- 1360. お/ご〜です
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お/ご〜です', 'お/ご〜です', '~ 하시다 <존경>', 'お/ご + 명사/동사얰용형 + です 구조\n일본어 대표적인 존경 패턴', '문법', 1360, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お/ご〜です', 'お/ご〜です', '~ 하시다 <존경>', 'お/ご + 명사/동사얰용형 + です 구조
+일본어 대표적인 존경 패턴', '문법', 1360, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '先生はお元気ですか。', '선생님은 건강하시거임용　?', 1),
     (w, 'それはご本人です。', '이분이 본인이세요.', 2);
 
   -- 1361. お越しくださる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しくださる', 'おこしくださる', '(손님이) 오시다 <존경>', 'お (접두 경어)\n越す(넘고 가다)·下さる(주시다)의 존경형', '문법', 1361, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'お越しくださる', 'おこしくださる', '(손님이) 오시다 <존경>', 'お (접두 경어)
+越す(넘고 가다)·下さる(주시다)의 존경형', '문법', 1361, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ようこそお越しくださいました。', '잘 오셨습니다.', 1),
     (w, 'どうぞお越しください。', '부디 오세요.', 2);
 
   -- 1362. ご覧いただく
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご覧いただく', 'ごらんいただく', '봐 주시다, 보시도록 하다 <겸양>', 'ご (접두 경어)\n覧(볼 람)+頂く(받다)의 겸양 표현', '문법', 1362, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご覧いただく', 'ごらんいただく', '봐 주시다, 보시도록 하다 <겸양>', 'ご (접두 경어)
+覧(볼 람)+頂く(받다)의 겸양 표현', '문법', 1362, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '資料をご覧いただきたいのですが。', '자료를 보셔 주셨으면 합니다만.', 1),
     (w, 'メールをご覧いただけますか。', '메일을 확인해 주시겠습니까욨　?', 2);
 
   -- 1363. ご存じだろうか
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご存じだろうか', 'ごぞんじだろうか', '알고 계실까? <존경>', 'ご (접두 경어)\n存じる(知っている의 겸양)　+ 의문 표현', '문법', 1363, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n2, 'ご存じだろうか', 'ごぞんじだろうか', '알고 계실까? <존경>', 'ご (접두 경어)
+存じる(知っている의 겸양)　+ 의문 표현', '문법', 1363, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '田中さんをご存じだろうか。', '다나카씨를 알고 계실가요?', 1),
     (w, 'このニュースをご存じだろうか。', '이 뉴스를 알고 계실까용　?', 2);
