@@ -4,7 +4,7 @@
 -- 실행 시 기존 N4 공식 덱의 단어/예문(CASCADE)을 모두 삭제 후 재삽입합니다.
 -- 사용자 진행도(word_progress)도 함께 삭제됩니다.
 -- 멱등성: 여러 번 실행해도 결과 동일.
--- 총 288단어 (288개는 의미·한자어원·예문 2개씩 / 0개는 PDF 추출 기본정보)
+-- 총 337단어/표현 (288개 어휘 + 유의어 페어 49쌍 / 의미·한자어원·예문 2개씩)
 -- ============================================================
 
 delete from public.words
@@ -1873,5 +1873,303 @@ begin
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'お湯を沸かしてお茶をいれる。', '물을 끓여 차를 우린다.', 1),
     (w, 'やかんでお湯を沸かす。', '주전자로 물을 끓인다.', 2);
+
+  -- ============================================================
+  -- 유의어 섹션 (49쌍): PDF에 ≒ 형태로 제시된 표현 페어를 그대로 암기 단위로 저장
+  -- ============================================================
+
+  -- 1286. あいさつしました ≒「おはようございます。」と言いました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'あいさつしました', 'あいさつしました', '인사를 했습니다 ≒「おはようございます。」と言いました("안녕하세요."라고 말했습니다)', '≒「おはようございます。」と言いました\n인사를 한다는 행위는 곧 인사말을 말로 표현한 것', '유의 표현', 1286, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生にあいさつしました。', '선생님께 인사를 했습니다.', 1),
+    (w, '「おはようございます。」と言いました。', '"안녕하세요."라고 말했습니다.', 2);
+
+  -- 1287. あしたはちょっと…… ≒ あしたはだめです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'あしたはちょっと……', 'あしたはちょっと', '내일은 좀…… ≒ あしたはだめです(내일은 안 됩니다)', '≒ あしたはだめです\n「ちょっと……」은 일본어 우회적 거절 표현으로 「だめ(안 됨)」과 동일', '유의 표현', 1287, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '明日はちょっと……。', '내일은 좀…….', 1),
+    (w, '明日はだめです。', '내일은 안 됩니다.', 2);
+
+  -- 1288. あの店はいつもすいています ≒ あの店はいつもお客が少ないです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'あの店はいつもすいています', 'あのみせはいつもすいています', '저 가게는 언제나 비어 있습니다 ≒ あの店はいつもお客が少ないです(저 가게는 늘 손님이 적습니다)', '≒ あの店はいつもお客が少ないです\nすいている(비어 있다)=客が少ない(손님이 적다)', '유의 표현', 1288, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あの店はいつもすいています。', '저 가게는 언제나 비어 있습니다.', 1),
+    (w, 'あの店はいつもお客が少ないです。', '저 가게는 늘 손님이 적습니다.', 2);
+
+  -- 1289. 謝りました ≒「ごめんなさい。」と言いました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '謝りました', 'あやまりました', '사과했습니다 ≒「ごめんなさい。」と言いました("미안합니다."라고 말했습니다)', '≒「ごめんなさい。」と言いました\n사과하는 행위는 곧 「미안합니다」 말을 한 것', '유의 표현', 1289, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '友だちにあやまりました。', '친구에게 사과했습니다.', 1),
+    (w, '「ごめんなさい。」と言いました。', '"미안합니다."라고 말했습니다.', 2);
+
+  -- 1290. 一生懸命 ≒ 熱心に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '一生懸命', 'いっしょうけんめい', '열심히 ≒ 熱心に(열심히)', '≒ 熱心に\nいっしょうけんめい(목숨 걸고)=ねっしんに(열심히) - 강도 높은 노력을 나타냄', '유의 표현', 1290, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '一生懸命勉強しました。', '열심히 공부했습니다.', 1),
+    (w, '熱心に働いています。', '열심히 일하고 있습니다.', 2);
+
+  -- 1291. うそです ≒ ほんとうではありません
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'うそです', 'うそです', '거짓말입니다 ≒ ほんとうではありません(사실이 아닙니다)', '≒ ほんとうではありません\nうそ(거짓)=ほんとうではない(사실이 아님)', '유의 표현', 1291, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'その話はうそです。', '그 이야기는 거짓말입니다.', 1),
+    (w, 'それはほんとうではありません。', '그것은 사실이 아닙니다.', 2);
+
+  -- 1292. お父さんに叱られました ≒ お父さんに怒られました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'お父さんに叱られました', 'おとうさんにしかられました', '아버지에게 야단맞았습니다 ≒ お父さんに怒られました(아버지에게 혼났습니다)', '≒ お父さんに怒られました\n叱る(꾸짖다)=怒る(화내다) - 둘 다 윗사람이 야단치는 행위', '유의 표현', 1292, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'お父さんに叱られました。', '아버지에게 야단맞았습니다.', 1),
+    (w, 'お父さんに怒られました。', '아버지에게 혼났습니다.', 2);
+
+  -- 1293. お礼を言いました ≒「ありがとうございます。」と言いました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'お礼を言いました', 'おれいをいいました', '감사 인사를 했습니다 ≒「ありがとうございます。」と言いました("고맙습니다."라고 말했습니다)', '≒「ありがとうございます。」と言いました\nお礼(감사 인사)을 한다는 것=「ありがとうございます」 말을 한 것', '유의 표현', 1293, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生にお礼を言いました。', '선생님께 감사 인사를 했습니다.', 1),
+    (w, '「ありがとうございます。」と言いました。', '"고맙습니다."라고 말했습니다.', 2);
+
+  -- 1294. 買い物に誘いました ≒「いっしょに買い物に行きませんか」と言いました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '買い物に誘いました', 'かいものにさそいました', '쇼핑하자고 권했습니다 ≒「いっしょに買い物に行きませんか」と言いました("같이 쇼핑 가지 않을래요?"라고 말했습니다)', '≒「いっしょに買い物に行きませんか」と言いました\n誘う(권하다)=「いっしょに〜ませんか」(같이 ~할래요?) 말로 권유', '유의 표현', 1294, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '友だちを買い物に誘いました。', '친구를 쇼핑하자고 권했습니다.', 1),
+    (w, '「いっしょに買い物に行きませんか」と言いました。', '"같이 쇼핑 가지 않을래요?"라고 말했습니다.', 2);
+
+  -- 1295. かならず来ると思います ≒ きっと来ると思います
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'かならず来ると思います', 'かならずくるとおもいます', '꼭 올 거라고 생각합니다 ≒ きっと来ると思います(반드시 올 거라고 생각합니다)', '≒ きっと来ると思います\nかならず(꼭)=きっと(반드시) - 둘 다 강한 확신을 나타냄', '유의 표현', 1295, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'かならず来ると思います。', '꼭 올 거라고 생각합니다.', 1),
+    (w, 'きっと来ると思います。', '반드시 올 거라고 생각합니다.', 2);
+
+  -- 1296. 危険です ≒ あぶないです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '危険です', 'きけんです', '위험합니다 ≒ あぶないです(위험합니다)', '≒ あぶないです\n危険(きけん, 한자어)=あぶない(고유어) - 한자어/고유어 페어', '유의 표현', 1296, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ここは危険です。', '이곳은 위험합니다.', 1),
+    (w, '道があぶないです。', '길이 위험합니다.', 2);
+
+  -- 1297. きびしい時代はもう過ぎました ≒ 大変な時代でした
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'きびしい時代はもう過ぎました', 'きびしいじだいはもうすぎました', '힘든 시대는 이제 지나갔습니다 ≒ 大変な時代でした(어려운 시대였습니다)', '≒ 大変な時代でした\nきびしい(엄혹한)=たいへんな(힘든) - 둘 다 어려운 시기 표현', '유의 표현', 1297, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'きびしい時代はもう過ぎました。', '힘든 시대는 이제 지나갔습니다.', 1),
+    (w, '大変な時代でした。', '어려운 시대였습니다.', 2);
+
+  -- 1298. 景色のいいところ ≒ きれいな山や森が見える公園
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '景色のいいところ', 'けしきのいいところ', '경치가 좋은 곳 ≒ きれいな山や森が見える公園(멋진 산이나 숲이 보이는 공원)', '≒ きれいな山や森が見える公園\n景色がいい(경치가 좋다)=きれいな自然(자연)が見える', '유의 표현', 1298, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'けしきのいいところに行きたい。', '경치 좋은 곳에 가고 싶다.', 1),
+    (w, 'きれいな山や森が見える公園。', '멋진 산이나 숲이 보이는 공원.', 2);
+
+  -- 1299. 講義に出席します ≒ 大学で先生の話を聞きます
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '講義に出席します', 'こうぎにしゅっせきします', '강의에 출석합니다 ≒ 大学で先生の話を聞きます(대학에서 선생님의 이야기를 듣습니다)', '≒ 大学で先生の話を聞きます\n강의에 출석=대학에서 선생님 강의를 듣는 행위', '유의 표현', 1299, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '講義に出席します。', '강의에 출석합니다.', 1),
+    (w, '大学で先生の話を聞きます。', '대학에서 선생님의 이야기를 듣습니다.', 2);
+
+  -- 1300. 交通が便利です ≒ バスや地下鉄がたくさん走っています
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '交通が便利です', 'こうつうがべんりです', '교통이 편리합니다 ≒ バスや地下鉄がたくさん走っています(버스나 지하철이 많이 달리고 있습니다)', '≒ バスや地下鉄がたくさん走っています\n교통이 편리함=대중교통이 풍부하게 운행되는 상태', '유의 표현', 1300, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この町は交通が便利です。', '이 동네는 교통이 편리합니다.', 1),
+    (w, 'バスや地下鉄がたくさん走っています。', '버스나 지하철이 많이 달리고 있습니다.', 2);
+
+  -- 1301. ここは滑りやすいのです ≒ ここは歩きにくいです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'ここは滑りやすいのです', 'ここはすべりやすいのです', '이곳은 미끄러지기 쉽습니다 ≒ ここは歩きにくいです(이곳은 걷기 불편합니다)', '≒ ここは歩きにくいです\n滑りやすい(미끄러지기 쉬움)=歩きにくい(걷기 어려움)', '유의 표현', 1301, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ここはすべりやすいのです。', '이곳은 미끄러지기 쉽습니다.', 1),
+    (w, 'ここはあるきにくいです。', '이곳은 걷기 불편합니다.', 2);
+
+  -- 1302. このワインはヨーロッパ製です ≒ このワインはヨーロッパで作られています
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'このワインはヨーロッパ製です', 'このワインはヨーロッパせいです', '이 와인은 유럽제입니다 ≒ このワインはヨーロッパで作られています(이 와인은 유럽에서 만들어지고 있습니다)', '≒ このワインはヨーロッパで作られています\n~製=~で作られた(~에서 만들어진)', '유의 표현', 1302, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'このワインはヨーロッパ製です。', '이 와인은 유럽제입니다.', 1),
+    (w, 'このワインはヨーロッパで作られています。', '이 와인은 유럽에서 만들어지고 있습니다.', 2);
+
+  -- 1303. 財布を盗まれました ≒ 財布を取られました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '財布を盗まれました', 'さいふをぬすまれました', '지갑을 도둑맞았습니다 ≒ 財布を取られました(지갑을 날치기당했습니다)', '≒ 財布を取られました\n盗まれる(도둑맞다)=取られる(빼앗기다) - 둘 다 수동 형태', '유의 표현', 1303, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '財布をぬすまれました。', '지갑을 도둑맞았습니다.', 1),
+    (w, '財布をとられました。', '지갑을 날치기당했습니다.', 2);
+
+  -- 1304. サッカーが盛んになりました ≒ サッカーをする人が増えました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'サッカーが盛んになりました', 'サッカーがさかんになりました', '축구가 왕성해졌습니다 ≒ サッカーをする人が増えました(축구를 하는 사람이 늘었습니다)', '≒ サッカーをする人が増えました\n盛んになる(왕성해지다)=その活動をする人が増える', '유의 표현', 1304, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'サッカーがさかんになりました。', '축구가 왕성해졌습니다.', 1),
+    (w, 'サッカーをする人がふえました。', '축구를 하는 사람이 늘었습니다.', 2);
+
+  -- 1305. 騒がないでください ≒ うるさくしないでください
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '騒がないでください', 'さわがないでください', '떠들지 말아 주세요 ≒ うるさくしないでください(시끄럽게 하지 말아 주세요)', '≒ うるさくしないでください\n騒ぐ(떠들다)=うるさい(시끄러운) 상태로 만들다', '유의 표현', 1305, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'さわがないでください。', '떠들지 말아 주세요.', 1),
+    (w, 'うるさくしないでください。', '시끄럽게 하지 말아 주세요.', 2);
+
+  -- 1306. 宿題は簡単でした ≒ 宿題はやさしかったです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '宿題は簡単でした', 'しゅくだいはかんたんでした', '숙제는 간단했습니다 ≒ 宿題はやさしかったです(숙제는 쉬웠습니다)', '≒ 宿題はやさしかったです\n簡単(かんたん, 한자어)=やさしい(고유어) - 둘 다 「쉬움」 표현', '유의 표현', 1306, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '宿題はかんたんでした。', '숙제는 간단했습니다.', 1),
+    (w, '宿題はやさしかったです。', '숙제는 쉬웠습니다.', 2);
+
+  -- 1307. 将来の計画 ≒ これからの計画
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '将来の計画', 'しょうらいのけいかく', '장래 계획 ≒ これからの計画(앞으로의 계획)', '≒ これからの計画\n将来(しょうらい, 미래)=これから(앞으로) - 시점 표현', '유의 표현', 1307, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'しょうらいの計画を立てる。', '장래 계획을 세운다.', 1),
+    (w, 'これからの計画を話す。', '앞으로의 계획을 이야기한다.', 2);
+
+  -- 1308. 食事にしましょう ≒ ご飯を食べましょう
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '食事にしましょう', 'しょくじにしましょう', '식사를 합시다 ≒ ご飯を食べましょう(밥을 먹읍시다)', '≒ ご飯を食べましょう\n食事(식사)を取る=ご飯を食べる(밥을 먹다)', '유의 표현', 1308, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'そろそろ食事にしましょう。', '슬슬 식사를 합시다.', 1),
+    (w, '一緒にご飯を食べましょう。', '같이 밥을 먹읍시다.', 2);
+
+  -- 1309. 字をていねいに書きなさい ≒ きれいに字を書きなさい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '字をていねいに書きなさい', 'じをていねいにかきなさい', '글씨를 정성스럽게 쓰세요 ≒ きれいに字を書きなさい(깨끗하게 글씨를 쓰세요)', '≒ きれいに字を書きなさい\nていねいに(정성스럽게)=きれいに(깨끗하게)', '유의 표현', 1309, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '字をていねいに書きなさい。', '글씨를 정성스럽게 쓰세요.', 1),
+    (w, 'きれいに字を書きなさい。', '깨끗하게 글씨를 쓰세요.', 2);
+
+  -- 1310. 先生のお宅にうかがいます ≒ 先生のお宅にまいります
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '先生のお宅にうかがいます', 'せんせいのおたくにうかがいます', '선생님 댁을 찾아뵙습니다 ≒ 先生のお宅にまいります(선생님 댁에 갑니다)', '≒ 先生のお宅にまいります\nうかがう(訪う의 겸양)=まいる(行く의 겸양) - 둘 다 겸양 표현', '유의 표현', 1310, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生のおたくにうかがいます。', '선생님 댁을 찾아뵙습니다.', 1),
+    (w, '先生のおたくにまいります。', '선생님 댁에 갑니다.', 2);
+
+  -- 1311. 退院する ≒ 病院から帰ってくる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '退院する', 'たいいんする', '퇴원하다 ≒ 病院から帰ってくる(병원에서 돌아오다)', '≒ 病院から帰ってくる\n退院=병원에서 나와 집으로 돌아오는 행위', '유의 표현', 1311, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '来週たいいんします。', '다음 주 퇴원합니다.', 1),
+    (w, '病院からかえってきます。', '병원에서 돌아옵니다.', 2);
+
+  -- 1312. 田中さん以外は来ました ≒ 田中さんは来ませんでしたが、ほかの人は来ました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '田中さん以外は来ました', 'たなかさんいがいはきました', '다나카 씨 외에는 왔습니다 ≒ 田中さんは来ませんでしたが、ほかの人は来ました(다나카 씨는 오지 않았지만, 다른 사람은 왔습니다)', '≒ 田中さんは来ませんでしたが、ほかの人は来ました\n「~以外は来た」=「~は来ない+他は来た」 분리 표현', '유의 표현', 1312, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '田中さん以外は来ました。', '다나카 씨 외에는 왔습니다.', 1),
+    (w, '田中さんは来ませんでしたが、ほかの人は来ました。', '다나카 씨는 오지 않았지만, 다른 사람은 왔습니다.', 2);
+
+  -- 1313. 田中さんの代わりに私がパーティーに出ました ≒ 田中さんはパーティーに出ませんでした
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '田中さんの代わりに私がパーティーに出ました', 'たなかさんのかわりにわたしがパーティーにでました', '다나카 씨 대신에 제가 파티에 나갔습니다 ≒ 田中さんはパーティーに出ませんでした(다나카 씨는 파티에 나오지 않았습니다)', '≒ 田中さんはパーティーに出ませんでした\nAの代わりにBが行く=Aは行かない+Bが行く', '유의 표현', 1313, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '田中さんのかわりに私がパーティーに出ました。', '다나카 씨 대신에 제가 파티에 나갔습니다.', 1),
+    (w, '田中さんはパーティーに出ませんでした。', '다나카 씨는 파티에 나오지 않았습니다.', 2);
+
+  -- 1314. 田中さんは留守です ≒ 田中さんは出かけています
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '田中さんは留守です', 'たなかさんはるすです', '다나카 씨는 부재중입니다 ≒ 田中さんは出かけています(다나카 씨는 외출해 있습니다)', '≒ 田中さんは出かけています\n留守(るす, 부재중)=出かけている(외출 중)', '유의 표현', 1314, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '田中さんは留守です。', '다나카 씨는 부재중입니다.', 1),
+    (w, '田中さんは出かけています。', '다나카 씨는 외출해 있습니다.', 2);
+
+  -- 1315. 田中さんを訪ねました ≒ 田中さんの家に行きました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '田中さんを訪ねました', 'たなかさんをたずねました', '다나카 씨를 방문했습니다 ≒ 田中さんの家に行きました(다나카 씨 집에 갔습니다)', '≒ 田中さんの家に行きました\n訪ねる(찾아뵙다)=その人の家に行く(그 사람의 집에 가다)', '유의 표현', 1315, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '田中さんをたずねました。', '다나카 씨를 방문했습니다.', 1),
+    (w, '田中さんの家に行きました。', '다나카 씨 집에 갔습니다.', 2);
+
+  -- 1316. チェックしてください ≒ 調べてください
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'チェックしてください', 'チェックしてください', '체크해 주세요 ≒ 調べてください(확인해 주세요)', '≒ 調べてください\nチェック(check, 외래어)=調べる(고유 일본어 동사)', '유의 표현', 1316, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もう一度チェックしてください。', '한 번 더 체크해 주세요.', 1),
+    (w, 'もう一度しらべてください。', '한 번 더 확인해 주세요.', 2);
+
+  -- 1317. 手が汚れています ≒ 手が汚いです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '手が汚れています', 'てがよごれています', '손이 더러워져 있습니다 ≒ 手が汚いです(손이 지저분합니다)', '≒ 手が汚いです\n汚れている(자동사 결과 상태)=汚い(い형용사 상태)', '유의 표현', 1317, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手がよごれています。', '손이 더러워져 있습니다.', 1),
+    (w, '手がきたないです。', '손이 지저분합니다.', 2);
+
+  -- 1318. 電車の中は混んでいます ≒ 電車の中には人がたくさんいます
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '電車の中は混んでいます', 'でんしゃのなかはこんでいます', '전철 안은 붐빕니다 ≒ 電車の中には人がたくさんいます(전철 안에는 사람이 많이 있습니다)', '≒ 電車の中には人がたくさんいます\n混む(붐비다)=人がたくさんいる(사람이 많다)', '유의 표현', 1318, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '朝の電車の中はこんでいます。', '아침 전철 안은 붐빕니다.', 1),
+    (w, '電車の中には人がたくさんいます。', '전철 안에는 사람이 많이 있습니다.', 2);
+
+  -- 1319. 動物をいじめてはいけません ≒ 動物を大切にしてください
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '動物をいじめてはいけません', 'どうぶつをいじめてはいけません', '동물을 괴롭혀서는 안 됩니다 ≒ 動物を大切にしてください(동물을 소중히 해 주세요)', '≒ 動物を大切にしてください\nいじめてはいけない(괴롭히면 안 됨)=大切にすべき(소중히 해야 함) - 반대 측면의 같은 의도', '유의 표현', 1319, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '動物をいじめてはいけません。', '동물을 괴롭혀서는 안 됩니다.', 1),
+    (w, '動物をたいせつにしてください。', '동물을 소중히 해 주세요.', 2);
+
+  -- 1320. 乗り物が大好きです ≒ 飛行機や船が大好きです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '乗り物が大好きです', 'のりものがだいすきです', '탈것을 아주 좋아합니다 ≒ 飛行機や船が大好きです(비행기나 배를 아주 좋아합니다)', '≒ 飛行機や船が大好きです\n乗り物(상위 개념)=飛行機・船(구체적 예) - 일반↔구체 페어', '유의 표현', 1320, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '乗り物がだいすきです。', '탈것을 아주 좋아합니다.', 1),
+    (w, '飛行機やふねがだいすきです。', '비행기나 배를 아주 좋아합니다.', 2);
+
+  -- 1321. 日が暮れました ≒ 空が暗くなりました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '日が暮れました', 'ひがくれました', '해가 졌습니다 ≒ 空が暗くなりました(하늘이 어두워졌습니다)', '≒ 空が暗くなりました\n日が暮れる(해가 지다)=空が暗くなる(하늘이 어두워지다)', '유의 표현', 1321, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '日がくれました。', '해가 졌습니다.', 1),
+    (w, '空がくらくなりました。', '하늘이 어두워졌습니다.', 2);
+
+  -- 1322. ひさしぶりに田中さんに会いました ≒ 長い間田中さんに会っていませんでした
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'ひさしぶりに田中さんに会いました', 'ひさしぶりにたなかさんにあいました', '오랜만에 다나카 씨를 만났습니다 ≒ 長い間田中さんに会っていませんでした(오랫동안 다나카 씨를 만나지 않았습니다)', '≒ 長い間田中さんに会っていませんでした\nひさしぶりに会う=長い間会っていない 끝에 만남', '유의 표현', 1322, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ひさしぶりに田中さんに会いました。', '오랜만에 다나카 씨를 만났습니다.', 1),
+    (w, '長いあいだ田中さんに会っていませんでした。', '오랫동안 다나카 씨를 만나지 않았습니다.', 2);
+
+  -- 1323. びっくりしました ≒ 驚きました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'びっくりしました', 'びっくりしました', '깜짝 놀랐습니다 ≒ 驚きました(놀랐습니다)', '≒ 驚きました\nびっくりする(의성어 기원, 놀라다)=驚く(한자어 기원, 놀라다)', '유의 표현', 1323, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ニュースを聞いてびっくりしました。', '뉴스를 듣고 깜짝 놀랐습니다.', 1),
+    (w, 'とてもおどろきました。', '매우 놀랐습니다.', 2);
+
+  -- 1324. 病院に行きました ≒ 薬を取りに行きました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '病院に行きました', 'びょういんにいきました', '병원에 갔습니다 ≒ 薬を取りに行きました(약을 받으러 갔습니다)', '≒ 薬を取りに行きました\n병원에 가는 목적 중 하나=약을 받기 위함', '유의 표현', 1324, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '昨日病院に行きました。', '어제 병원에 갔습니다.', 1),
+    (w, '薬を取りに行きました。', '약을 받으러 갔습니다.', 2);
+
+  -- 1325. まずこの仕事をしてください ≒ はじめにこの仕事をしてください
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'まずこの仕事をしてください', 'まずこのしごとをしてください', '우선 이 일을 해 주세요 ≒ はじめにこの仕事をしてください(먼저 이 일을 해 주세요)', '≒ はじめにこの仕事をしてください\nまず(우선)=はじめに(먼저) - 순서 표현', '유의 표현', 1325, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'まずこの仕事をしてください。', '우선 이 일을 해 주세요.', 1),
+    (w, 'はじめにこの仕事をしてください。', '먼저 이 일을 해 주세요.', 2);
+
+  -- 1326. 間違えやすい ≒ 間違える人が多い
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '間違えやすい', 'まちがえやすい', '틀리기 쉽다 ≒ 間違える人が多い(틀리는 사람이 많다)', '≒ 間違える人が多い\n~やすい(쉬움)=その行為をする人が多い(그 행위를 하는 사람이 많음)', '유의 표현', 1326, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この漢字はまちがえやすい。', '이 한자는 틀리기 쉽다.', 1),
+    (w, 'まちがえる人が多い。', '틀리는 사람이 많다.', 2);
+
+  -- 1327. 娘の入学式がありました ≒ 娘が大学生になりました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '娘の入学式がありました', 'むすめのにゅうがくしきがありました', '딸의 입학식이 있었습니다 ≒ 娘が大学生になりました(딸이 대학생이 되었습니다)', '≒ 娘が大学生になりました\n대학 입학식=대학생이 되는 시점', '유의 표현', 1327, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '娘のにゅうがくしきがありました。', '딸의 입학식이 있었습니다.', 1),
+    (w, '娘が大学生になりました。', '딸이 대학생이 되었습니다.', 2);
+
+  -- 1328. やせましたね ≒ 細くなりました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, 'やせましたね', 'やせましたね', '살이 빠졌네요 ≒ 細くなりました(야위었네요)', '≒ 細くなりました\nやせる(살이 빠지다)=細くなる(가늘어지다)', '유의 표현', 1328, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'やせましたね。', '살이 빠졌네요.', 1),
+    (w, 'ほそくなりました。', '야위었네요.', 2);
+
+  -- 1329. 山本さんの字は細かいです ≒ 山本さんの字は小さいです
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '山本さんの字は細かいです', 'やまもとさんのじはこまかいです', '야마모토 씨의 글씨는 자잘합니다 ≒ 山本さんの字は小さいです(야마모토 씨의 글씨는 작습니다)', '≒ 山本さんの字は小さいです\n細かい(자잘함)=小さい(작음) - 글씨의 크기 표현', '유의 표현', 1329, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '山本さんの字はこまかいです。', '야마모토 씨의 글씨는 자잘합니다.', 1),
+    (w, '山本さんの字はちいさいです。', '야마모토 씨의 글씨는 작습니다.', 2);
+
+  -- 1330. 留学の経験があります ≒ 留学をしたことがあります
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '留学の経験があります', 'りゅうがくのけいけんがあります', '유학 경험이 있습니다 ≒ 留学をしたことがあります(유학을 한 적이 있습니다)', '≒ 留学をしたことがあります\n~の経験がある(~의 경험이 있다)=~したことがある(~한 적이 있다)', '유의 표현', 1330, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'りゅうがくの経験があります。', '유학 경험이 있습니다.', 1),
+    (w, 'りゅうがくをしたことがあります。', '유학을 한 적이 있습니다.', 2);
+
+  -- 1331. 私は課長の代わりに会議に行きました ≒ 課長は行きませんでした
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '私は課長の代わりに会議に行きました', 'わたしはかちょうのかわりにかいぎにいきました', '나는 과장 대신에 회의에 갔습니다 ≒ 課長は行きませんでした(과장은 가지 않았습니다)', '≒ 課長は行きませんでした\n~の代わりに私が=本人(その人)は行かなかった', '유의 표현', 1331, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '私は課長のかわりに会議に行きました。', '저는 과장 대신에 회의에 갔습니다.', 1),
+    (w, '課長は行きませんでした。', '과장은 가지 않았습니다.', 2);
+
+  -- 1332. 1番の部屋、または2番の部屋 ≒ 1番の部屋か2番の部屋
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '1番の部屋、または2番の部屋', 'いちばんのへや、またはにばんのへや', '1번 방 또는 2번 방 ≒ 1番の部屋か2番の部屋(1번 방이나 2번 방)', '≒ 1番の部屋か2番の部屋\nまたは(또는, 격식체)=~か~(~이나, 구어체) - 선택 표현', '유의 표현', 1332, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '1番の部屋、または2番の部屋を使ってください。', '1번 방 또는 2번 방을 사용해 주세요.', 1),
+    (w, '1番の部屋か2番の部屋を選んでください。', '1번 방이나 2번 방을 선택해 주세요.', 2);
+
+  -- 1333. 来るのは無理です ≒ 来られません
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '来るのは無理です', 'くるのはむりです', '오는 것은 무리입니다 ≒ 来られません(올 수 없습니다)', '≒ 来られません\n無理(불가능)=可能形의 부정(~られない) - 가능 불능 표현', '유의 표현', 1333, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '来るのはむりです。', '오는 것은 무리입니다.', 1),
+    (w, '来られません。', '올 수 없습니다.', 2);
+
+  -- 1334. 時間に間に合いませんでした ≒ 時間に遅れました
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n4, '時間に間に合いませんでした', 'じかんにまにあいませんでした', '시간에 맞추지 못했습니다 ≒ 時間に遅れました(시간에 늦었습니다)', '≒ 時間に遅れました\n間に合わない(맞추지 못함)=遅れる(늦다)', '유의 표현', 1334, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '時間にまにあいませんでした。', '시간에 맞추지 못했습니다.', 1),
+    (w, '時間におくれました。', '시간에 늦었습니다.', 2);
 
 end $$;
