@@ -104,7 +104,11 @@ export function useDecksSync() {
             examplesRes.error ||
             relationsRes.error,
         );
-        useDecksStore.getState().setLoaded(true);
+        // fetch 실패 시 persist 로 복원된 stale 단어를 그대로 노출하면
+        // 사용자가 죽은 word_id 를 학습해 word_progress FK 위반(23503) 이
+        // 발생한다. 빈 상태로 hydrate 해서 StudyPage 등이 "단어 없음" 화면을
+        // 보이도록 한다 (재시도는 다음 라우팅/새로고침에서).
+        useDecksStore.getState().hydrate([], []);
         return;
       }
 
