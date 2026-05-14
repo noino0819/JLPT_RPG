@@ -2640,28 +2640,28 @@ begin
 
   -- 385. ～か (불특정)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～か (불특정)', '~인가 (누군가/무언가, 불특정 대상)', '의문 조사 「か」. 의문사+か 형태로 「확실히 정해지지 않은 것/사람」을 가리킴.', '문법-빈출', 385, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～か', '~인가 (누군가/무언가, 불특정 대상)', '의문 조사 「か」. 의문사+か 형태로 「확실히 정해지지 않은 것/사람」을 가리킴.', '문법-빈출', 385, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'だれかいますか。', '누군가 있습니까?', 1),
     (w, 'なにかたべたい。', '뭔가 먹고 싶다.', 2);
 
   -- 386. ～か (불확정 선택)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～か～ (불확정)', '~이나 ~ (둘 중 하나)', '명사1+か+명사2 형태. 두 선택지 중 「불확실한 하나」를 나타냄.', '문법-빈출', 386, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～か～', '~이나 ~ (둘 중 하나)', '명사1+か+명사2 형태. 두 선택지 중 「불확실한 하나」를 나타냄.', '문법-빈출', 386, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '今日か明日、行きます。', '오늘이나 내일 갑니다.', 1),
     (w, 'コーヒーか紅茶を飲みます。', '커피나 홍차를 마십니다.', 2);
 
   -- 387. ～が (주격)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～が (주격)', '~이, ~가 (주격 조사)', '주격 조사. 동작/상태의 주체를 가리킴. 새로운 정보를 도입할 때 자주 사용.', '문법-빈출', 387, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～が', '~이, ~가 (주격 조사)', '주격 조사. 동작/상태의 주체를 가리킴. 새로운 정보를 도입할 때 자주 사용.', '문법-빈출', 387, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '田中さんがしました。', '다나카 씨가 했습니다.', 1),
     (w, '雨が降っています。', '비가 내리고 있습니다.', 2);
 
   -- 388. ～が (역접)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～が (역접)', '~지만, ~인데 (역접 접속 조사)', '문과 문을 잇는 접속 조사. 앞 절과 반대되거나 예상 외의 내용을 잇는다.', '문법-빈출', 388, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～が', '~지만, ~인데 (역접 접속 조사)', '문과 문을 잇는 접속 조사. 앞 절과 반대되거나 예상 외의 내용을 잇는다.', '문법-빈출', 388, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '待ったが、来なかった。', '기다렸지만 오지 않았다.', 1),
     (w, '高いが、おいしい。', '비싸지만 맛있다.', 2);
@@ -2689,21 +2689,21 @@ begin
 
   -- 392. ～から (이유)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～から (이유)', '~이기 때문에, ~하므로', '접속 조사. 주관적 이유/근거를 나타냄. 문말의 「ので」보다 회화적·강한 단정.', '문법-빈출', 392, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～から', '~이기 때문에, ~하므로', '접속 조사. 주관적 이유/근거를 나타냄. 문말의 「ので」보다 회화적·강한 단정.', '문법-빈출', 392, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ひまだから映画を見ます。', '한가하니까 영화를 봅니다.', 1),
     (w, '寒いから、コートを着ます。', '추우니까 코트를 입습니다.', 2);
 
   -- 393. ～から (기점)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～から (기점)', '~에서, ~로부터 (출발 기점)', '격조사. 시간/공간의 시작점을 나타냄. 「まで」와 짝을 이뤄 「~에서 ~까지」.', '문법-빈출', 393, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～から', '~에서, ~로부터 (출발 기점)', '격조사. 시간/공간의 시작점을 나타냄. 「まで」와 짝을 이뤄 「~에서 ~까지」.', '문법-빈출', 393, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'いえから学校までは10分です。', '집에서 학교까지는 10분입니다.', 1),
     (w, '9時から仕事が始まる。', '9시부터 일이 시작된다.', 2);
 
   -- 394. ～から (출처)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～から (출처)', '~에게서, ~한테서 (받음의 출처)', '격조사. 사람으로부터 무엇을 받을 때, 受ける/もらう 등과 함께 사용.', '문법-빈출', 394, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～から', '~에게서, ~한테서 (받음의 출처)', '격조사. 사람으로부터 무엇을 받을 때, 受ける/もらう 등과 함께 사용.', '문법-빈출', 394, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '母からプレゼントをもらった。', '엄마에게서 선물을 받았다.', 1),
     (w, '友達から手紙が来た。', '친구로부터 편지가 왔다.', 2);
@@ -2808,42 +2808,42 @@ begin
 
   -- 409. ～で (계기)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～で (계기)', '~으로, ~을 계기로', '격조사 「で」. 어떤 일/계기로 행위가 이루어졌음을 나타냄.', '문법-빈출', 409, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～で', '~으로, ~을 계기로', '격조사 「で」. 어떤 일/계기로 행위가 이루어졌음을 나타냄.', '문법-빈출', 409, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '仕事で京都に行く。', '일 때문에 교토에 간다.', 1),
     (w, '旅行で京都へ来た。', '여행으로 교토에 왔다.', 2);
 
   -- 410. ～で (원인)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～で (원인)', '~때문에, ~로 인해', '격조사 「で」. 사건/상태의 원인을 나타냄.', '문법-빈출', 410, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～で', '~때문에, ~로 인해', '격조사 「で」. 사건/상태의 원인을 나타냄.', '문법-빈출', 410, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'びょうきで会社を休みました。', '병으로 회사를 쉬었습니다.', 1),
     (w, '雨で試合が中止になった。', '비로 시합이 중지되었다.', 2);
 
   -- 411. ～で (수단)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～で (수단·도구)', '~으로 (도구/수단)', '격조사 「で」. 어떤 도구/수단을 사용함을 나타냄.', '문법-빈출', 411, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～で', '~으로 (도구/수단)', '격조사 「で」. 어떤 도구/수단을 사용함을 나타냄.', '문법-빈출', 411, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ナイフで切る。', '칼로 자른다.', 1),
     (w, 'バスで学校へ行く。', '버스로 학교에 간다.', 2);
 
   -- 412. ～で (장소)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～で (장소)', '~에서 (행위의 장소)', '격조사 「で」. 동작이 이루어지는 장소를 나타냄 (に는 존재 장소).', '문법-빈출', 412, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～で', '~에서 (행위의 장소)', '격조사 「で」. 동작이 이루어지는 장소를 나타냄 (に는 존재 장소).', '문법-빈출', 412, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'いえで勉強する。', '집에서 공부한다.', 1),
     (w, '公園で遊びました。', '공원에서 놀았습니다.', 2);
 
   -- 413. ～で (수량)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～で (수량)', '~에 (수량/단위)', '격조사 「で」. 「몇 개에 얼마」와 같이 수량 단위를 나타냄.', '문법-빈출', 413, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～で', '~에 (수량/단위)', '격조사 「で」. 「몇 개에 얼마」와 같이 수량 단위를 나타냄.', '문법-빈출', 413, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '一つで100円です。', '한 개에 100엔입니다.', 1),
     (w, '3つで500円。', '3개에 500엔.', 2);
 
   -- 414. ～で (열거)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～で (열거)', '~이고 (명사 열거)', '명사/형용동사 어간 + で. 「A는 ~이고, B는 ~」 형태로 두 문장을 잇는 중지법.', '문법-빈출', 414, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～で', '~이고 (명사 열거)', '명사/형용동사 어간 + で. 「A는 ~이고, B는 ~」 형태로 두 문장을 잇는 중지법.', '문법-빈출', 414, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'Aは19さいで、Bは20さいです。', 'A는 19살이고, B는 20살입니다.', 1),
     (w, '彼は学生で、私は会社員です。', '그는 학생이고, 저는 회사원입니다.', 2);
@@ -2871,7 +2871,7 @@ begin
 
   -- 418. ～と (와/과)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～と (동반)', '~와, ~과 (함께)', '격조사. 동작을 함께 하는 상대나 비교 대상.', '문법-빈출', 418, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～と', '~와, ~과 (함께)', '격조사. 동작을 함께 하는 상대나 비교 대상.', '문법-빈출', 418, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '友だちと食事をする。', '친구와 식사를 한다.', 1),
     (w, '兄と一緒に行きました。', '형/오빠와 함께 갔습니다.', 2);
@@ -2927,49 +2927,49 @@ begin
 
   -- 426. ～に (위치)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に (위치)', '~에 (존재하는 위치)', '격조사. 사물/사람이 존재하는 위치를 나타냄 (ある/いる와 호응).', '문법-빈출', 426, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に', '~에 (존재하는 위치)', '격조사. 사물/사람이 존재하는 위치를 나타냄 (ある/いる와 호응).', '문법-빈출', 426, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'うしろに田中さんがいる。', '뒤에 다나카 씨가 있다.', 1),
     (w, 'つくえの上に本があります。', '책상 위에 책이 있습니다.', 2);
 
   -- 427. ～に (시간)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に (시점)', '~에 (시점)', '격조사. 시각·연월일 등 「정확한 시점」 표시.', '문법-빈출', 427, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に', '~에 (시점)', '격조사. 시각·연월일 등 「정확한 시점」 표시.', '문법-빈출', 427, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '9時に学校へ行きます。', '9시에 학교에 갑니다.', 1),
     (w, '日曜日に映画を見ました。', '일요일에 영화를 봤습니다.', 2);
 
   -- 428. ～に (기간 범위)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に (기간 범위)', '~에 (시간/기간의 범위)', '격조사. 「~기간에 ~번」 처럼 빈도의 분모로 사용.', '문법-빈출', 428, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に', '~에 (시간/기간의 범위)', '격조사. 「~기간에 ~번」 처럼 빈도의 분모로 사용.', '문법-빈출', 428, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '1週間に1回行きます。', '1주일에 1번 갑니다.', 1),
     (w, '1日に3回ご飯を食べる。', '하루에 3번 밥을 먹는다.', 2);
 
   -- 429. ～に (대상)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に (대상)', '~에게 (행위의 대상)', '격조사. 사람·동물에게 어떤 행위가 향함을 나타냄.', '문법-빈출', 429, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に', '~에게 (행위의 대상)', '격조사. 사람·동물에게 어떤 행위가 향함을 나타냄.', '문법-빈출', 429, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '友だちに手紙を書きました。', '친구에게 편지를 썼습니다.', 1),
     (w, '先生に質問する。', '선생님에게 질문한다.', 2);
 
   -- 430. ～に (목적)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に (목적)', '~하러 (이동의 목적)', '동사 ます형 + に. 「~하기 위해 가다/오다」 라는 이동 동사의 목적.', '문법-빈출', 430, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に', '~하러 (이동의 목적)', '동사 ます형 + に. 「~하기 위해 가다/오다」 라는 이동 동사의 목적.', '문법-빈출', 430, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '買い物に行きます。', '쇼핑하러 갑니다.', 1),
     (w, 'デパートへ友だちに会いに行く。', '백화점에 친구를 만나러 간다.', 2);
 
   -- 431. ～に する (な형용사 활용)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に する (な형용사)', '~하게 하다 (な형용사 활용)', 'な형용사 어간 + に + する. 어떤 상태로 만드는 변화 표현.', '문법-빈출', 431, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に する', '~하게 하다 (な형용사 활용)', 'な형용사 어간 + に + する. 어떤 상태로 만드는 변화 표현.', '문법-빈출', 431, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'しずかにしてください。', '조용히 해 주세요.', 1),
     (w, '部屋をきれいにする。', '방을 깨끗이 한다.', 2);
 
   -- 432. ～に する (선택)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～に する (선택)', '~로 하다 (선택·결정)', '명사 + にする. 메뉴/선택 등에서 무엇으로 정함.', '문법-빈출', 432, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～に する', '~로 하다 (선택·결정)', '명사 + にする. 메뉴/선택 등에서 무엇으로 정함.', '문법-빈출', 432, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '半分にする。', '반으로 한다(나눈다).', 1),
     (w, 'コーヒーにします。', '커피로 하겠습니다.', 2);
@@ -3004,28 +3004,28 @@ begin
 
   -- 437. ～の (것)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～の (것)', '~것 (사물 대명사)', '연체조사 の가 형식명사화. 「것/물건」을 의미.', '문법-빈출', 437, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～の', '~것 (사물 대명사)', '연체조사 の가 형식명사화. 「것/물건」을 의미.', '문법-빈출', 437, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '安いのをください。', '싼 것을 주세요.', 1),
     (w, '赤いのが好きです。', '빨간 것을 좋아합니다.', 2);
 
   -- 438. ～の (의 것, 소유)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～の (소유)', '~의 것 (소유 대명사)', '의 + 형식명사 화. 「~의 것」 으로 소유주 + 것을 동시에.', '문법-빈출', 438, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～の', '~의 것 (소유 대명사)', '의 + 형식명사 화. 「~의 것」 으로 소유주 + 것을 동시에.', '문법-빈출', 438, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'これは私のです。', '이것은 제 것입니다.', 1),
     (w, 'そのかさは田中さんのです。', '그 우산은 다나카 씨 것입니다.', 2);
 
   -- 439. ～の (수식)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～の (수식)', '~의 (소속/수식)', '연체조사. 명사+の+명사 형태로 소속/소유/속성 등을 잇는다.', '문법-빈출', 439, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～の', '~의 (소속/수식)', '연체조사. 명사+の+명사 형태로 소속/소유/속성 등을 잇는다.', '문법-빈출', 439, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'へやの電気を消す。', '방의 전기를 끈다.', 1),
     (w, '日本の食べ物が好きだ。', '일본 음식을 좋아한다.', 2);
 
   -- 440. ～は
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～は (주제)', '~은, ~는 (주제 조사)', '부조사. 주제를 제시하여 「~에 대해 말하자면」 의 의미를 부여.', '문법-빈출', 440, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～は', '~은, ~는 (주제 조사)', '부조사. 주제를 제시하여 「~에 대해 말하자면」 의 의미를 부여.', '문법-빈출', 440, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'このりんごはおいしい。', '이 사과는 맛있다.', 1),
     (w, '私は学生です。', '저는 학생입니다.', 2);
@@ -3074,7 +3074,7 @@ begin
 
   -- 447. ～も (이나, 강조)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～も (수량 강조)', '~이나 (예상보다 큰 수량)', '부조사. 수량을 강조해 「많다고 느낌」을 나타냄.', '문법-빈출', 447, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～も', '~이나 (예상보다 큰 수량)', '부조사. 수량을 강조해 「많다고 느낌」을 나타냄.', '문법-빈출', 447, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '3時間も歩いた。', '3시간이나 걸었다.', 1),
     (w, '5回も電話した。', '5번이나 전화했다.', 2);
@@ -3095,14 +3095,14 @@ begin
 
   -- 450. ～を (목적)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～を (목적)', '~을, ~를 (목적격 조사)', '격조사. 타동사의 직접 목적어를 표시.', '문법-빈출', 450, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～を', '~을, ~를 (목적격 조사)', '격조사. 타동사의 직접 목적어를 표시.', '문법-빈출', 450, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'りんごを買う。', '사과를 산다.', 1),
     (w, '本を読みます。', '책을 읽습니다.', 2);
 
   -- 451. ～を (기준점/통과)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n5, NULL, '～を (통과/이탈점)', '~을, ~를 (통과·이탈 기준점)', '격조사. 자동사 동작이 거치는/떠나는 「장소」를 표시 (まがる/出る/渡る 등).', '문법-빈출', 451, array['grammar','jlpt_n5']::text[]) returning id into w;
+    (d_n5, NULL, '～を', '~을, ~를 (통과·이탈 기준점)', '격조사. 자동사 동작이 거치는/떠나는 「장소」를 표시 (まがる/出る/渡る 등).', '문법-빈출', 451, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '信号を右にまがる。', '신호를 우회전한다.', 1),
     (w, '橋を渡る。', '다리를 건넌다.', 2);
