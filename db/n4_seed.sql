@@ -2636,7 +2636,7 @@ begin
 
   -- 388. ～か (불확실)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～か (불확실)', '~인지, ~한지', '의문 조사 か. 의문문을 명사절로 만들어 「~인지」 형태로 다른 동사의 목적어로 사용.', '문법-빈출', 388, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～か', '~인지, ~한지', '의문 조사 か. 의문문을 명사절로 만들어 「~인지」 형태로 다른 동사의 목적어로 사용.', '문법-빈출', 388, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'どこで買ったか、おぼえている？', '어디서 샀는지 기억해?', 1),
     (w, '何時に来るかわからない。', '몇 시에 올지 모른다.', 2);
@@ -2664,7 +2664,7 @@ begin
 
   -- 392. ～から (재료)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～から (재료)', '~으로 (재료)', '격조사 から. 원료/재료를 나타냄 (「で」 보다 변환 정도가 큰 경우).', '문법-빈출', 392, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～から', '~으로 (재료)', '격조사 から. 원료/재료를 나타냄 (「で」 보다 변환 정도가 큰 경우).', '문법-빈출', 392, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'チーズは牛乳から作られる。', '치즈는 우유로 만들어진다.', 1),
     (w, 'ワインはぶどうから作る。', '와인은 포도로 만든다.', 2);
@@ -2713,14 +2713,14 @@ begin
 
   -- 399. ～そうだ (양태)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～そうだ (양태)', '~할 것 같다 (외관 판단)', '동사 ます형/형용사 어간 + そうだ. 외관/직감으로 추측.', '문법-빈출', 399, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～そうだ', '~할 것 같다 (외관 판단)', '동사 ます형/형용사 어간 + そうだ. 외관/직감으로 추측.', '문법-빈출', 399, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'むずかしそうな本だ。', '어려워 보이는 책이다.', 1),
     (w, '雨が降りそうだ。', '비가 올 것 같다.', 2);
 
   -- 400. ～そうだ (전문)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～そうだ (전문)', '~라고 한다 (전해 들음)', '보통형 + そうだ. 「누군가에게 들은 정보」를 그대로 전달.', '문법-빈출', 400, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～そうだ', '~라고 한다 (전해 들음)', '보통형 + そうだ. 「누군가에게 들은 정보」를 그대로 전달.', '문법-빈출', 400, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '父は元気だそうだ。', '아버지는 건강하다고 한다.', 1),
     (w, '彼は明日来るそうです。', '그는 내일 온다고 합니다.', 2);
@@ -2769,14 +2769,14 @@ begin
 
   -- 407. ～ために (원인)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～ために (원인)', '~때문에 (원인)', '명사の+ために / 동사 た형+ために. 부정적 결과의 원인.', '문법-빈출', 407, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～ために', '~때문에 (원인)', '명사の+ために / 동사 た형+ために. 부정적 결과의 원인.', '문법-빈출', 407, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'けいたいをわすれたために連絡できなかった。', '휴대폰을 잊어서 연락하지 못했다.', 1),
     (w, '事故のために電車が遅れた。', '사고 때문에 전철이 늦었다.', 2);
 
   -- 408. ～ために (목적)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～ために (목적)', '~하기 위해 (목적)', '동사 사전형 + ために. 의지·목적을 나타냄.', '문법-빈출', 408, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～ために', '~하기 위해 (목적)', '동사 사전형 + ために. 의지·목적을 나타냄.', '문법-빈출', 408, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '日本で働くために勉強する。', '일본에서 일하기 위해 공부한다.', 1),
     (w, '家を買うためにお金をためる。', '집을 사기 위해 돈을 모은다.', 2);
@@ -2804,21 +2804,21 @@ begin
 
   -- 412. ～で (원인)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～で (원인)', '~으로, ~때문에', '격조사 で. 비자발적 사건/상태의 원인.', '문법-빈출', 412, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～で', '~으로, ~때문에', '격조사 で. 비자발적 사건/상태의 원인.', '문법-빈출', 412, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'じしんでビルがたおれた。', '지진으로 빌딩이 무너졌다.', 1),
     (w, 'かぜで学校を休んだ。', '감기로 학교를 쉬었다.', 2);
 
   -- 413. ～で (시간 한정)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～で (시간 한정)', '~만에, ~이면', '격조사 で. 「얼마의 시간 안에 다 끝남」 이라는 시간의 한도.', '문법-빈출', 413, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～で', '~만에, ~이면', '격조사 で. 「얼마의 시간 안에 다 끝남」 이라는 시간의 한도.', '문법-빈출', 413, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '料理は5分でできる。', '요리는 5분이면 다 된다.', 1),
     (w, '駅まで10分で行ける。', '역까지 10분이면 갈 수 있다.', 2);
 
   -- 414. ～で (수량 단위)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～で (수량 단위)', '~에 (수량 단위)', '격조사 で. 「몇 개에 얼마」 처럼 가격/수량 단위.', '문법-빈출', 414, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～で', '~에 (수량 단위)', '격조사 で. 「몇 개에 얼마」 처럼 가격/수량 단위.', '문법-빈출', 414, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '5つで3千円です。', '5개에 3천 엔입니다.', 1),
     (w, 'みかんは10個で500円。', '귤은 10개에 500엔.', 2);
@@ -2839,7 +2839,7 @@ begin
 
   -- 417. ～でも
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～でも (예시)', '~라도 (가벼운 제안)', '격조사 で + 부조사 も. 「~같은 거라도」 가벼운 예시 제안.', '문법-빈출', 417, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～でも', '~라도 (가벼운 제안)', '격조사 で + 부조사 も. 「~같은 거라도」 가벼운 예시 제안.', '문법-빈출', 417, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'コーヒーでも飲もう。', '커피라도 마시자.', 1),
     (w, '映画でも見に行きませんか。', '영화라도 보러 가지 않겠습니까?', 2);
@@ -2895,14 +2895,14 @@ begin
 
   -- 425. ～な (금지)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～な (금지)', '~(하지) 마라 (직접 금지)', '동사 사전형 + な. 매우 강한 금지 명령. 표지판/엄한 지시에서 사용.', '문법-빈출', 425, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～な', '~(하지) 마라 (직접 금지)', '동사 사전형 + な. 매우 강한 금지 명령. 표지판/엄한 지시에서 사용.', '문법-빈출', 425, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ごみをすてるな。', '쓰레기 버리지 마라.', 1),
     (w, 'ここに入るな。', '여기 들어오지 마라.', 2);
 
   -- 426. ～ないで
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～ないで (요청)', '~(하지) 말아', '동사 ない형 + で. 부드러운 부정 요청.', '문법-빈출', 426, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～ないで', '~(하지) 말아', '동사 ない형 + で. 부드러운 부정 요청.', '문법-빈출', 426, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'タバコをすわないでください。', '담배를 피우지 말아 주세요.', 1),
     (w, '心配しないで。', '걱정하지 마.', 2);
@@ -2916,21 +2916,21 @@ begin
 
   -- 428. ～なら (이라면)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～なら (이라면)', '~(이)라면 (선택의 전제)', '명사/형용사/동사 + なら. 화자가 어떤 주제에 대해 화답하는 조건.', '문법-빈출', 428, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～なら', '~(이)라면 (선택의 전제)', '명사/형용사/동사 + なら. 화자가 어떤 주제에 대해 화답하는 조건.', '문법-빈출', 428, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'これなら買います。', '이것이라면 사겠습니다.', 1),
     (w, 'お酒なら日本酒がいい。', '술이라면 일본주가 좋다.', 2);
 
   -- 429. ～なら (한다면)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～なら (한다면)', '~한다면 (가정 응답)', '동사 사전형 + なら. 상대방의 발언을 받아 「그렇다면」의 가정.', '문법-빈출', 429, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～なら', '~한다면 (가정 응답)', '동사 사전형 + なら. 상대방의 발언을 받아 「그렇다면」의 가정.', '문법-빈출', 429, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'あなたが行くなら、私も行く。', '당신이 간다면, 저도 갈게요.', 1),
     (w, '雨が降るなら、家にいる。', '비가 온다면 집에 있겠다.', 2);
 
   -- 430. ～に (수동의 주체)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～に (수동 주체)', '~로부터, ~에게 (수동의 주체)', '격조사 に. 수동문에서 동작의 주체를 표시.', '문법-빈출', 430, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～に', '~로부터, ~에게 (수동의 주체)', '격조사 に. 수동문에서 동작의 주체를 표시.', '문법-빈출', 430, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '外国人に聞かれる。', '외국인에게 질문을 받는다.', 1),
     (w, '先生にほめられた。', '선생님에게 칭찬받았다.', 2);
@@ -2944,7 +2944,7 @@ begin
 
   -- 432. ～にする (결정)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～にする (결정)', '~로 하다 (선택·결정)', '명사 + にする. 메뉴/선물 등 「무엇으로 결정한다」.', '문법-빈출', 432, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～にする', '~로 하다 (선택·결정)', '명사 + にする. 메뉴/선물 등 「무엇으로 결정한다」.', '문법-빈출', 432, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'プレゼントはセーターにしました。', '선물은 스웨터로 했습니다.', 1),
     (w, '私はコーヒーにします。', '저는 커피로 하겠습니다.', 2);
@@ -2965,7 +2965,7 @@ begin
 
   -- 435. ～の (의 것)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～の (의 것)', '~의 것', '연체조사 の 의 형식명사화. 소유주+「것」.', '문법-빈출', 435, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～の', '~의 것', '연체조사 の 의 형식명사화. 소유주+「것」.', '문법-빈출', 435, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'どれがあなたのですか。', '어느 것이 당신 것입니까?', 1),
     (w, 'これは田中さんのだ。', '이것은 다나카 씨 것이다.', 2);
@@ -3014,7 +3014,7 @@ begin
 
   -- 442. ～まで (반복)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～まで (지속)', '~까지 (계속 반복)', '격조사 まで. 동작이 그 시점까지 계속됨.', '문법-빈출', 442, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～まで', '~까지 (계속 반복)', '격조사 まで. 동작이 그 시점까지 계속됨.', '문법-빈출', 442, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '来月まで薬を飲む。', '다음 달까지 약을 먹는다.', 1),
     (w, '5時まで仕事をしました。', '5시까지 일을 했습니다.', 2);
@@ -3028,7 +3028,7 @@ begin
 
   -- 444. ～も
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～も (수량 강조)', '~이나 (예상보다 많은 수량)', '부조사. 수량을 강조해 「많다고 느낌」.', '문법-빈출', 444, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～も', '~이나 (예상보다 많은 수량)', '부조사. 수량을 강조해 「많다고 느낌」.', '문법-빈출', 444, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '5回も読んだ。', '5번이나 읽었다.', 1),
     (w, '3時間も歩いた。', '3시간이나 걸었다.', 2);
@@ -3070,14 +3070,14 @@ begin
 
   -- 450. ～らしい (추측)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～らしい (추측)', '~할 것 같다, ~한 듯하다', '명사/동사 + らしい. 들은 정보나 외관 근거로 한 객관적 추측.', '문법-빈출', 450, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～らしい', '~할 것 같다, ~한 듯하다', '명사/동사 + らしい. 들은 정보나 외관 근거로 한 객관적 추측.', '문법-빈출', 450, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ふたりは結婚するらしい。', '두 사람은 결혼할 것 같다.', 1),
     (w, '今日は休みらしいです。', '오늘은 휴일인 듯합니다.', 2);
 
   -- 451. ～らしい (답다)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n4, NULL, '～らしい (답다)', '~답다, ~다운', '명사 + らしい. 그 카테고리의 「전형적인 특징을 갖춤」.', '문법-빈출', 451, array['grammar','jlpt_n4']::text[]) returning id into w;
+    (d_n4, NULL, '～らしい', '~답다, ~다운', '명사 + らしい. 그 카테고리의 「전형적인 특징을 갖춤」.', '문법-빈출', 451, array['grammar','jlpt_n4']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '学生らしい服装。', '학생다운 복장.', 1),
     (w, '彼は男らしい人だ。', '그는 남자다운 사람이다.', 2);
