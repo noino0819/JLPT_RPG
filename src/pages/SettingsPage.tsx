@@ -101,6 +101,13 @@ export default function SettingsPage() {
           />
         </Row>
 
+        <Row label="후리가나(한자 아래 발음)">
+          <Toggle
+            on={settings.show_furigana}
+            onChange={(v) => updateSettings({ show_furigana: v })}
+          />
+        </Row>
+
         <Slider
           label={`"외운 것 같아요" 재등장 주기 (1~20)`}
           min={1}

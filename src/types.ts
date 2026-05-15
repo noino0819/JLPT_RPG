@@ -24,6 +24,10 @@ export interface Settings {
   probably_repeat_every: number; // every N words include 1 probably
   review_mix_weight: number; // weight multiplier for flagged words
   show_character: boolean; // 학습 화면 캐릭터 표시 여부
+  // 한자 글자 바로 아래에 히라가나 후리가나(振り仮名)를 깔지 여부.
+  // OFF 면 한자만 큼지막하게 보여주고 별행 발음도 숨겨, 학습자가 발음을
+  // 떠올린 뒤 카드를 뒤집어 정답을 확인하도록 한다 (셀프 테스트 모드).
+  show_furigana: boolean;
   // 일본어 단어/카나 표시에 사용할 픽셀 폰트
   jp_font: JpFontId;
   effects: {
@@ -45,6 +49,7 @@ export const DEFAULT_SETTINGS: Settings = {
   probably_repeat_every: 8,
   review_mix_weight: 3,
   show_character: true,
+  show_furigana: true,
   jp_font: "dotgothic16",
   effects: { attack: true, card_shake: true, sound: true },
   tts: { enabled: true, autoplay: false, rate: 0.95 },

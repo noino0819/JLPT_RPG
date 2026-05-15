@@ -38,6 +38,8 @@ export default function WordCard({
   const [flipped, setFlipped] = useState(false);
   const tts = useProfileStore((s) => s.settings.tts);
   const ttsOn = tts.enabled && isTtsAvailable();
+  // 후리가나(한자 아래 히라가나) 표시 여부 — 셀프 테스트 시 OFF.
+  const showFurigana = useProfileStore((s) => s.settings.show_furigana);
 
   useEffect(() => {
     setFlipped(false);
@@ -130,6 +132,7 @@ export default function WordCard({
               <HeadwordWithFurigana
                 headword={word.headword as string}
                 reading={word.reading}
+                showFurigana={showFurigana}
               />
             )}
           </div>
@@ -260,18 +263,22 @@ export default function WordCard({
  * 예: 「会う / あう」 → 会 아래에만 「あ」 표기, う 는 그대로 노출.
  *     「学校に行く / がっこうにいく」 → 学校↓がっこう, 行↓い.
  *
+ * showFurigana=false 면 한자 본문만 그대로 보여주고 발음을 일체 숨겨,
+ * 학습자가 발음을 떠올려보도록 한다 (셀프 테스트 모드). 카드를 뒤집으면
+ * 뒷면 상단 「headword + reading」 영역에서 정답 발음을 확인할 수 있다.
+ *
  * 매칭에 실패하면(드물게 reading 이 어긋나면) 기존처럼 한자 + 발음 별행 표시로
  * 폴백한다.
  */
 function HeadwordWithFurigana({
   headword,
   reading,
+  showFurigana,
 }: {
   headword: string;
   reading: string;
+  showFurigana: boolean;
 }) {
-  const segments = buildFurigana(headword, reading);
-
   // 한자가 없는 표현(가타카나 단독 등) → 그냥 크게만 표기.
   if (!hasKanji(headword)) {
     return (
@@ -280,6 +287,17 @@ function HeadwordWithFurigana({
       </div>
     );
   }
+
+  // 후리가나 OFF — 한자/원문만 노출 (셀프 테스트). 별행 발음도 숨긴다.
+  if (!showFurigana) {
+    return (
+      <div className="pixel-text-jp text-6xl font-bold leading-none text-parchment-900 sm:text-8xl">
+        {headword}
+      </div>
+    );
+  }
+
+  const segments = buildFurigana(headword, reading);
 
   // 매칭 실패 → 기존 「한자 + 별행 발음」 폴백.
   if (!segments) {
