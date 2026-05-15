@@ -7065,7 +7065,7 @@ begin
     (w, '判断しかねます。', '판단하기 어렵습니다.', 1),
     (w, '分かりかねます。', '알기 어렵습니다.', 2);
 
-  -- 1135. ～そうだ(양태2)
+  -- 1135. ～そうだ (~할 것 같다 <양태>)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
     (d_n2, NULL, '～そうだ', '~할 것 같다 <양태>', '양태 そうだ 재활용', '문법-형식판단', 1135, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
@@ -9519,7 +9519,7 @@ begin
     (w, '実は知っていた。', '실은 알고 있었다.', 1),
     (w, '実は彼が来ていた。', '실은 그가 와 있었다.', 2);
 
-  -- 1485. (부담을)주는 경우도 있습니다
+  -- 1485. (負担を)与える場合もあります
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
     (d_n2, '(負担を)与える場合もあります', 'あたえるばあいもあります', '(부담을) 주는 경우도 있습니다', '与える(주다)+場合もあります. 가능 사례', '문법-문맥이해', 1485, array['grammar','jlpt_n2']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values

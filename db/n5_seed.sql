@@ -2778,7 +2778,7 @@ begin
     (w, '1年じゅう忙しい。', '1년 내내 바쁘다.', 1),
     (w, '一日じゅう雨が降った。', '하루 종일 비가 내렸다.', 2);
 
-  -- 405. (동사 과거)～た あとで
+  -- 405. ～た あとで
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
     (d_n5, NULL, '～た あとで', '~한 후에', '동사의 た형 + 後(あと, 뒤)+ で. 「~을 마친 후에」 라는 시간 순서.', '문법-빈출', 405, array['grammar','jlpt_n5']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
