@@ -22,6 +22,13 @@
   body,
   #root {
     height: 100%;
+    /*
+      PWA(특히 모바일)에서 화면 끝에서 손가락을 더 당겼을 때
+      - Android Chrome: pull-to-refresh 가 트리거되어 앱이 새로고침되며 진행 상태가 날아감
+      - iOS Safari/PWA: <body> 가 rubber-band 로 늘어나며 헤더/하단 NAV UI 가 깨져 보임
+      두 동작 모두 overscroll-behavior 로 차단한다.
+    */
+    overscroll-behavior: none;
   }
 
   html {
@@ -30,6 +37,15 @@
 
   body {
     @apply bg-dungeon-300 text-parchment-100 antialiased;
+    /*
+      Layout 이 h-dvh + overflow-hidden 으로 자체 스크롤을 관리하지만,
+      안전망으로 <body> 자체의 스크롤을 추가로 잠근다. (PWA standalone 에서
+      <body> 가 살짝이라도 움직이면 새로고침 제스처가 살아나는 케이스가 있음)
+    */
+    overflow: hidden;
+    overscroll-behavior: none;
+    /* iOS 의 모멘텀 스크롤로 인한 흔들림 추가 방지 */
+    -webkit-overflow-scrolling: auto;
     font-family:
       "DungGeunMo",
       "Noto Sans KR",
