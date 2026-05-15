@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { RelatedWord, Word, WordRelationType } from "../types";
 import { useProfileStore } from "../store/profileStore";
 import { isTtsAvailable, speakJa, stopTts } from "../lib/tts";
+import { buildFurigana, hasKanji } from "../lib/furigana";
 
 // 관계 타입별 표시 라벨/기호 (UI 상수)
 const RELATION_LABELS: Record<WordRelationType, { label: string; symbol: string }> = {
@@ -126,14 +127,10 @@ export default function WordCard({
                 {word.reading}
               </div>
             ) : (
-              <>
-                <div className="pixel-text-jp text-6xl font-bold leading-none text-parchment-900 sm:text-8xl">
-                  {word.headword}
-                </div>
-                <div className="pixel-text-jp mt-2 text-2xl text-parchment-700 sm:text-3xl">
-                  {word.reading}
-                </div>
-              </>
+              <HeadwordWithFurigana
+                headword={word.headword as string}
+                reading={word.reading}
+              />
             )}
           </div>
 
@@ -252,6 +249,64 @@ export default function WordCard({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * 카드 앞면용 — headword(한자/히라가나 혼합)에서 한자 글자 바로 아래에
+ * 그 한자만큼의 발음(히라가나) 을 후리가나로 깔아 표시한다.
+ *
+ * 예: 「会う / あう」 → 会 아래에만 「あ」 표기, う 는 그대로 노출.
+ *     「学校に行く / がっこうにいく」 → 学校↓がっこう, 行↓い.
+ *
+ * 매칭에 실패하면(드물게 reading 이 어긋나면) 기존처럼 한자 + 발음 별행 표시로
+ * 폴백한다.
+ */
+function HeadwordWithFurigana({
+  headword,
+  reading,
+}: {
+  headword: string;
+  reading: string;
+}) {
+  const segments = buildFurigana(headword, reading);
+
+  // 한자가 없는 표현(가타카나 단독 등) → 그냥 크게만 표기.
+  if (!hasKanji(headword)) {
+    return (
+      <div className="pixel-text-jp text-6xl font-bold leading-none text-parchment-900 sm:text-8xl">
+        {headword}
+      </div>
+    );
+  }
+
+  // 매칭 실패 → 기존 「한자 + 별행 발음」 폴백.
+  if (!segments) {
+    return (
+      <>
+        <div className="pixel-text-jp text-6xl font-bold leading-none text-parchment-900 sm:text-8xl">
+          {headword}
+        </div>
+        <div className="pixel-text-jp mt-2 text-2xl text-parchment-700 sm:text-3xl">
+          {reading}
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <div className="furigana pixel-text-jp text-6xl font-bold leading-[1.15] text-parchment-900 sm:text-8xl">
+      {segments.map((seg, i) =>
+        seg.ruby ? (
+          <ruby key={i}>
+            {seg.text}
+            <rt>{seg.ruby}</rt>
+          </ruby>
+        ) : (
+          <span key={i}>{seg.text}</span>
+        ),
+      )}
     </div>
   );
 }

@@ -142,6 +142,28 @@
     font-family: var(--jp-font-family, "DotGothic16", "Noto Sans JP", monospace);
   }
 
+  /*
+    후리가나(振り仮名) 표시 — 한자 바로 "아래"에 작은 히라가나 발음을 붙인다.
+    <ruby><rt> 의 표준 ruby-position 을 under 로 두어 위가 아닌 아래로 깔리게 한다.
+    rt 폰트 크기는 부모 대비 작게(약 0.34em) 잡아 텍스트가 압도되지 않게 한다.
+  */
+  .furigana ruby {
+    ruby-position: under;
+    /* WebKit/Safari 호환 */
+    -webkit-ruby-position: after;
+  }
+  .furigana rt {
+    font-size: 0.36em;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+    /* 한자와 너무 붙지 않도록 살짝 여백 */
+    padding-top: 0.18em;
+    /* 발음은 본문보다 한 톤 옅게 */
+    color: rgb(122 76 36 / 0.85);
+  }
+
   .badge-pixel {
     @apply inline-flex items-center gap-1 rounded-none border-2 border-black bg-dungeon-50 px-2 py-1 font-pixel text-[10px] uppercase tracking-wider text-parchment-100;
     box-shadow:
