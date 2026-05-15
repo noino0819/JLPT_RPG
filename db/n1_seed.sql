@@ -4,7 +4,8 @@
 -- 실행 시 기존 N1 공식 덱의 단어/예문(CASCADE)을 모두 삭제 후 재삽입합니다.
 -- 사용자 진행도(word_progress)도 함께 삭제됩니다.
 -- 멱등성: 여러 번 실행해도 결과 동일.
--- 총 1438단어 (PDF 어휘 844 + 「파이널 문법 체크북」 594 (형식판단 266 + 문장완성 205 + 문맥이해 123))
+-- 총 1583단어 (PDF 어휘 989 + 「파이널 문법 체크북」 594 (형식판단 266 + 문장완성 205 + 문맥이해 123))
+-- 유의어: 어휘 페어 154쌍 (PDF p.14~23) + 문법 페어 6쌍 (PDF p.40·47·48·50·51 ＝ 표시) = 양방향 320건
 -- ============================================================
 
 delete from public.words
@@ -10255,4 +10256,2517 @@ begin
   update public.words set etymology='영어 chance(기회). 「기회·찬스」' where deck_id=d_n1 and order_index=801;
   -- 803 とても
   update public.words set etymology='副詞 とても. 「매우」(긍정)/「도저히」(부정 호응)' where deck_id=d_n1 and order_index=803;
+end $$;
+
+
+-- ============================================================
+-- N1 유의어 페어 보강 패치 (PDF p.14~23 유의어 박스 + p.40·47·48·50·51 문법 ＝ 표시)
+-- 누락 단어 145개 추가 (order 1439~1583) + word_relations 양방향 320건
+-- ============================================================
+-- ============================================================
+-- N1 유의어 페어 누락 단어 Chunk 1 (40개, order 1439~1478)
+-- PDF p.14~23 유의어 박스 전용 표현 (본문에는 없는 풀어 쓴 동의 표현 등)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+  w   uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 1439. あいまいに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'あいまいに', '애매하게', '曖昧(애매)+に. 「뚜렷하지 않게」', '부사', 1439, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あいまいに答える。', '애매하게 대답한다.', 1),
+    (w, '責任をあいまいにする。', '책임을 애매하게 한다.', 2);
+
+  -- 1440. あきらめずに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'あきらめずに', '포기하지 않고', '諦(체)める+ず+に. 「포기하지 않은 채」 부사구', '부사', 1440, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'あきらめずに挑戦する。', '포기하지 않고 도전한다.', 1),
+    (w, '最後まであきらめずに頑張る。', '끝까지 포기하지 않고 노력한다.', 2);
+
+  -- 1441. いくつか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'いくつか', '몇 개쯤, 조금', '幾(이)+つ+か. 「몇 개 정도」', '부사', 1441, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '質問がいくつかある。', '질문이 몇 개 있다.', 1),
+    (w, 'いくつかの方法を試した。', '몇 가지 방법을 시도했다.', 2);
+
+  -- 1442. うれしい知らせ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'うれしい知らせ', 'うれしいしらせ', '기쁜 소식', '嬉(うれ)しい+知らせ. 「기쁘게 하는 통지」', '명사', 1442, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '合格のうれしい知らせが届いた。', '합격이라는 기쁜 소식이 도착했다.', 1),
+    (w, '友人からうれしい知らせを聞いた。', '친구에게서 기쁜 소식을 들었다.', 2);
+
+  -- 1443. おだやかな
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'おだやかな', '온화한, 평온한', '穏(편안할 온)やか+な. 「조용하고 부드러운」', 'な형용사', 1443, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'おだやかな性格。', '온화한 성격.', 1),
+    (w, 'おだやかな天気だ。', '평온한 날씨다.', 2);
+
+  -- 1444. がっかりする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'がっかりする', '낙담하다, 실망하다', '의태어 がっかり+する. 「기대가 무너져 풀이 죽다」', '동사', 1444, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '結果を聞いてがっかりした。', '결과를 듣고 낙담했다.', 1),
+    (w, '試合に負けてがっかりする。', '시합에 져서 실망한다.', 2);
+
+  -- 1445. こっそり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'こっそり', '살짝, 몰래', '몰래 행동하는 모양의 의태어. 「살그머니」', '부사', 1445, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'こっそり部屋を出た。', '살짝 방을 나왔다.', 1),
+    (w, 'こっそりプレゼントを置いた。', '몰래 선물을 두었다.', 2);
+
+  -- 1446. これまでの
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'これまでの', '지금까지의', 'これ+まで+の. 「현재까지의」 연체수식', '연체·수식어', 1446, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'これまでの努力を無駄にしない。', '지금까지의 노력을 헛되게 하지 않는다.', 1),
+    (w, 'これまでの経験を活かす。', '지금까지의 경험을 살린다.', 2);
+
+  -- 1447. さわやかだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'さわやかだ', '상쾌하다, 산뜻하다', '爽(상쾌할 상)やか+だ. 「청량하고 시원함」', 'な형용사', 1447, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'さわやかな朝だ。', '상쾌한 아침이다.', 1),
+    (w, '彼の笑顔はさわやかだ。', '그의 미소는 산뜻하다.', 2);
+
+  -- 1448. しかたなく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'しかたなく', '어쩔 수 없이', '仕方(しかた, 방법)+なく. 「방법이 없어」', '부사', 1448, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'しかたなく承諾した。', '어쩔 수 없이 승낙했다.', 1),
+    (w, '雨でしかたなく帰った。', '비 때문에 어쩔 수 없이 돌아왔다.', 2);
+
+  -- 1449. しばらく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'しばらく', '잠시, 당분간', '暫(잠시 잠)く. 「짧지 않은 시간 동안」', '부사', 1449, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'しばらくお待ちください。', '잠시 기다려 주세요.', 1),
+    (w, 'しばらく会っていない。', '한동안 만나지 않았다.', 2);
+
+  -- 1450. じっくりと
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'じっくりと', '정성껏, 곰곰이', '느긋이 시간을 들여 하는 의태어 じっくり+と. 「차분히」', '부사', 1450, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'じっくりと考える。', '곰곰이 생각한다.', 1),
+    (w, 'じっくりと話を聞く。', '차분히 이야기를 듣는다.', 2);
+
+  -- 1451. じっと見る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'じっと見る', 'じっとみる', '가만히 보다, 응시하다', '의태어 じっと+見る. 「움직이지 않고 보다」', '동사', 1451, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼の目をじっと見る。', '그의 눈을 가만히 본다.', 1),
+    (w, 'じっと見られて困った。', '가만히 보여서 곤란했다.', 2);
+
+  -- 1452. じゃまする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'じゃまする', '방해하다, 훼방 놓다', '邪魔(じゃま)+する. 「방해 행위를 하다」', '동사', 1452, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '勉強をじゃまする。', '공부를 방해한다.', 1),
+    (w, 'じゃましないでください。', '방해하지 마세요.', 2);
+
+  -- 1453. すぐには
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'すぐには', '바로는, 당장에는', '直(곧 직)ぐ+に+は. 「당장에는 ~안 됨」 부정 호응', '부사', 1453, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'すぐには答えられない。', '당장에는 답할 수 없다.', 1),
+    (w, 'すぐには信じがたい。', '바로는 믿기 어렵다.', 2);
+
+  -- 1454. すべて
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'すべて', '전부, 모두', '全(온전할 전)て. 「전부」 부사·명사', '부사', 1454, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'すべてを話した。', '전부를 이야기했다.', 1),
+    (w, 'すべての人が賛成した。', '모든 사람이 찬성했다.', 2);
+
+  -- 1455. だらしない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'だらしない', '단정하지 못한, 절도가 없는', '의태어 だらだら(질질)+しい. 「야무지지 못한」', 'い형용사', 1455, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'だらしない格好。', '단정치 못한 모습.', 1),
+    (w, '時間にだらしない人。', '시간 관념이 야무지지 못한 사람.', 2);
+
+  -- 1456. つながり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'つながり', '연계, 관계, 연결', '繋(이을 계)がる의 명사형. 「이어진 관계」', '명사', 1456, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '人とのつながりを大切にする。', '사람과의 관계를 소중히 한다.', 1),
+    (w, '事件とのつながりを調べる。', '사건과의 연관을 조사한다.', 2);
+
+  -- 1457. てきぱきと
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'てきぱきと', '척척, 솜씨 좋게', '시원시원하고 능률적인 모양의 의태어 てきぱき+と', '부사', 1457, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'てきぱきと仕事を片付ける。', '척척 일을 처리한다.', 1),
+    (w, '質問にてきぱきと答える。', '질문에 시원시원하게 답한다.', 2);
+
+  -- 1458. できるだけ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'できるだけ', '가능한 한, 할 수 있는 한', '出来(でき)る+だけ. 「가능한 범위에서」', '부사', 1458, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'できるだけ早く来てください。', '가능한 한 빨리 와 주세요.', 1),
+    (w, 'できるだけの努力をする。', '할 수 있는 한 노력을 한다.', 2);
+
+  -- 1459. できるだけ早く
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'できるだけ早く', 'できるだけはやく', '가능한 한 빨리', 'できるだけ+早く. 「최대한 빠르게」', '부사', 1459, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'できるだけ早く連絡します。', '가능한 한 빨리 연락드립니다.', 1),
+    (w, 'できるだけ早く帰宅した。', '가능한 한 빨리 귀가했다.', 2);
+
+  -- 1460. とても驚く
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'とても驚く', 'とてもおどろく', '매우 놀라다', 'とても(매우)+驚(놀랄 경)く. 「깊이 놀라다」', '동사', 1460, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼の話にとても驚いた。', '그의 이야기에 매우 놀랐다.', 1),
+    (w, '突然の知らせにとても驚く。', '갑작스런 소식에 매우 놀란다.', 2);
+
+  -- 1461. どうしようもない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'どうしようもない', '어쩔 방법이 없다, 도리가 없다', 'どう+しよう+も+ない. 「어떻게도 할 수 없다」', 'い형용사', 1461, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'もうどうしようもない状況だ。', '이제 어쩔 도리가 없는 상황이다.', 1),
+    (w, '一人ではどうしようもない。', '혼자서는 어찌할 도리가 없다.', 2);
+
+  -- 1462. どんよりした天気だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'どんよりした天気だ', 'どんよりしたてんきだ', '우중충한 날씨다', '의태어 どんより+した+天気+だ. 「잿빛 흐린 날씨」', 'な형용사', 1462, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今日はどんよりした天気だ。', '오늘은 우중충한 날씨다.', 1),
+    (w, '雨が降りそうなどんよりした天気だ。', '비가 올 듯한 우중충한 날씨다.', 2);
+
+  -- 1463. なかなか返事をしようとしない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'なかなか返事をしようとしない', 'なかなかへんじをしようとしない', '좀처럼 대답하려고 하지 않다', 'なかなか(좀처럼)+返事+を+する+ようとしない. 부정 의지', '동사', 1463, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '質問してもなかなか返事をしようとしない。', '질문해도 좀처럼 대답하려고 하지 않는다.', 1),
+    (w, '彼はなかなか返事をしようとしない。', '그는 좀처럼 대답하려고 하지 않는다.', 2);
+
+  -- 1464. なんとなく
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'なんとなく', '왠지 모르게, 어쩐지', '何(なに)+と+なく. 「딱히 이유 없이」', '부사', 1464, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'なんとなく不安だ。', '왠지 불안하다.', 1),
+    (w, 'なんとなく彼が来そうだ。', '어쩐지 그가 올 것 같다.', 2);
+
+  -- 1465. はっきり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'はっきり', '확실히, 분명히', '명확함을 나타내는 의태어. 「분명하게」', '부사', 1465, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'はっきり言ってください。', '분명히 말해 주세요.', 1),
+    (w, 'はっきり覚えている。', '확실히 기억하고 있다.', 2);
+
+  -- 1466. はっきりしている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'はっきりしている', '분명하다, 또렷하다', 'はっきり+している. 「뚜렷한 상태」', '동사', 1466, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '答えがはっきりしている。', '답이 분명하다.', 1),
+    (w, '違いがはっきりしている。', '차이가 또렷하다.', 2);
+
+  -- 1467. ほっとする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'ほっとする', '안심하다, 한숨 돌리다', '의태어 ほっ+とする. 「긴장이 풀린 상태」', '동사', 1467, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '無事の知らせにほっとした。', '무사하다는 소식에 안심했다.', 1),
+    (w, '試験が終わってほっとする。', '시험이 끝나 한숨 돌린다.', 2);
+
+  -- 1468. ぼんやりしている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'ぼんやりしている', '분명하지 않다, 멍하다', 'ぼんやり(흐릿)+している. 「흐릿한 상태」', '동사', 1468, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '記憶がぼんやりしている。', '기억이 흐릿하다.', 1),
+    (w, '彼は朝からぼんやりしている。', '그는 아침부터 멍하다.', 2);
+
+  -- 1469. やせ衰える
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, 'やせ衰える', 'やせおとろえる', '야위어 쇠약해지다', '痩(やせ)+衰(쇠할 쇠)える. 「살이 빠지고 쇠약해지다」', '동사', 1469, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '病でやせ衰える。', '병으로 야위어 쇠약해지다.', 1),
+    (w, '老人がやせ衰えていく。', '노인이 야위어 쇠약해져 간다.', 2);
+
+  -- 1470. やはり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'やはり', '역시', '副詞 やはり(矢張り). 「예상대로·역시」', '부사', 1470, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'やはり彼が一番だ。', '역시 그가 최고다.', 1),
+    (w, 'やはり来なかった。', '역시 안 왔다.', 2);
+
+  -- 1471. ゆっくりする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'ゆっくりする', '편하게 쉬다, 느긋이 보내다', 'ゆっくり(천천히)+する. 「느긋한 시간을 보내다」', '동사', 1471, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '休日は家でゆっくりする。', '휴일에는 집에서 편하게 쉰다.', 1),
+    (w, '温泉でゆっくりした。', '온천에서 느긋이 보냈다.', 2);
+
+  -- 1472. ろくに(～ない)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'ろくに(～ない)', '제대로, 변변히(~않다)', '碌(녹록할 록)に. 부정 호응. 「제대로 ~안 하다」', '부사', 1472, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'ろくに眠れなかった。', '제대로 잠들지 못했다.', 1),
+    (w, 'ろくに食事もしない。', '변변히 식사도 안 한다.', 2);
+
+  -- 1473. わざと
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'わざと', '일부러, 고의로', '副詞 わざと. 「의도적으로」', '부사', 1473, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'わざと負けた。', '일부러 졌다.', 1),
+    (w, 'わざと無視する。', '고의로 무시한다.', 2);
+
+  -- 1474. わずかに
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'わずかに', '아주 조금, 근소하게', '僅(겨우 근)か+に. 「아주 약간」', '부사', 1474, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'わずかに残っている。', '아주 조금 남아 있다.', 1),
+    (w, 'わずかに動いた。', '근소하게 움직였다.', 2);
+
+  -- 1475. アドバイス
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'アドバイス', '조언, 충고', '영어 advice. 「조언·충고」', '명사', 1475, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '先生のアドバイスを聞く。', '선생님의 조언을 듣는다.', 1),
+    (w, '友達にアドバイスを求める。', '친구에게 충고를 구한다.', 2);
+
+  -- 1476. シンプルだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'シンプルだ', '심플하다, 단순하다', '영어 simple+だ. 「단순·간결한」', 'な형용사', 1476, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'シンプルなデザイン。', '심플한 디자인.', 1),
+    (w, '考え方がシンプルだ。', '사고방식이 단순하다.', 2);
+
+  -- 1477. ヒント
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'ヒント', '힌트, 실마리', '영어 hint. 「단서·힌트」', '명사', 1477, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '答えのヒントをもらう。', '답의 힌트를 받는다.', 1),
+    (w, 'ヒントを見つけた。', '힌트를 찾았다.', 2);
+
+  -- 1478. プライド
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, NULL, 'プライド', '프라이드, 자존심', '영어 pride. 「자긍심·자존심」', '명사', 1478, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'プライドが高い。', '자존심이 강하다.', 1),
+    (w, '仕事にプライドを持つ。', '일에 자긍심을 갖는다.', 2);
+
+end $$;
+
+-- ============================================================
+-- N1 유의어 페어 누락 단어 Chunk 2 (50개, order 1479~1528)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+  w   uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 1479. 一人一人に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '一人一人に', 'ひとりひとりに', '한 사람 한 사람에게', '一人(한 사람)+一人(한 사람)+に. 「개개인 모두에게」', '부사', 1479, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '一人一人に手紙を書く。', '한 사람 한 사람에게 편지를 쓴다.', 1),
+    (w, '一人一人に声をかけた。', '한 사람 한 사람에게 말을 걸었다.', 2);
+
+  -- 1480. 一度に大勢来る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '一度に大勢来る', 'いちどにおおぜいくる', '한꺼번에 많이 몰려들다', '一度+に+大勢(많은 인원)+来る. 동시 다수 방문', '동사', 1480, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '客が一度に大勢来た。', '손님이 한꺼번에 많이 왔다.', 1),
+    (w, 'バスから一度に大勢来る。', '버스에서 한꺼번에 많이 내려온다.', 2);
+
+  -- 1481. 上品な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '上品な', 'じょうひんな', '고상한, 품위 있는', '上(상)+品(품)+な. 「격이 높은」', 'な형용사', 1481, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '上品な言葉遣い。', '품위 있는 말씨.', 1),
+    (w, '上品な雰囲気の店。', '고상한 분위기의 가게.', 2);
+
+  -- 1482. 不安なところ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '不安なところ', 'ふあんなところ', '불안한 점, 걱정되는 부분', '不安+な+ところ. 「불안한 부분」', '명사', 1482, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '計画に不安なところがある。', '계획에 불안한 점이 있다.', 1),
+    (w, '不安なところを質問した。', '불안한 부분을 질문했다.', 2);
+
+  -- 1483. 不注意な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '不注意な', 'ふちゅういな', '부주의한', '不(아닐 부)+注意(주의)+な. 「주의가 부족한」', 'な형용사', 1483, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '不注意なミス。', '부주의한 실수.', 1),
+    (w, '不注意な運転は危険だ。', '부주의한 운전은 위험하다.', 2);
+
+  -- 1484. 中止する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '中止する', 'ちゅうしする', '중지하다', '中(가운데 중)+止(그칠 지)+する. 「중간에 그치다」', '동사', 1484, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '雨で試合を中止する。', '비로 시합을 중지한다.', 1),
+    (w, '計画を中止する。', '계획을 중지한다.', 2);
+
+  -- 1485. 事前に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '事前に', 'じぜんに', '사전에, 미리', '事(일 사)+前(앞 전)+に. 「일이 일어나기 전에」', '부사', 1485, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '事前に連絡してください。', '사전에 연락해 주세요.', 1),
+    (w, '事前に準備を整える。', '미리 준비를 갖춘다.', 2);
+
+  -- 1486. 人込み
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '人込み', 'ひとごみ', '혼잡, 북새통', '人(사람)+込(섞을 입)+み. 「사람으로 붐비는 곳」', '명사', 1486, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '人込みを避ける。', '사람 많은 곳을 피한다.', 1),
+    (w, '駅は人込みだった。', '역은 북새통이었다.', 2);
+
+  -- 1487. 今までになく新しい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '今までになく新しい', 'いままでになくあたらしい', '지금까지 없이 새로운', '今+まで+に+なく+新(새 신)しい. 「전례 없이 새롭다」', 'い형용사', 1487, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '今までになく新しい試みだ。', '지금까지 없이 새로운 시도다.', 1),
+    (w, '今までになく新しい技術。', '지금까지 없이 새로운 기술.', 2);
+
+  -- 1488. 仕組み
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '仕組み', 'しくみ', '구조, 짜임새', '仕(섬길 사)+組(짤 조)+み. 「짜여진 구조」', '명사', 1488, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '機械の仕組み。', '기계의 구조.', 1),
+    (w, '社会の仕組みを学ぶ。', '사회의 짜임새를 배운다.', 2);
+
+  -- 1489. 他と比べて特によい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '他と比べて特によい', 'ほかとくらべてとくによい', '다른 것과 비교하여 특히 좋다', '他(다른)+と+比べる+て+特+に+よい. 비교 우위', 'い형용사', 1489, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'このワインは他と比べて特によい。', '이 와인은 다른 것과 비교해 특히 좋다.', 1),
+    (w, '彼の作品は他と比べて特によい。', '그의 작품은 다른 것보다 특히 좋다.', 2);
+
+  -- 1490. 以前から
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '以前から', 'いぜんから', '이전부터', '以前(이전)+から. 「예전부터」', '부사', 1490, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '以前から知っていた。', '이전부터 알고 있었다.', 1),
+    (w, '以前から興味があった。', '예전부터 흥미가 있었다.', 2);
+
+  -- 1491. 何とか
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '何とか', 'なんとか', '그럭저럭, 어떻게든', '何(어찌 하)+とか. 「어떻게든 해결」', '부사', 1491, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何とか間に合った。', '그럭저럭 시간에 맞췄다.', 1),
+    (w, '何とかしてみる。', '어떻게든 해 보겠다.', 2);
+
+  -- 1492. 何度も
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '何度も', 'なんども', '몇 번이고, 여러 번', '何(어찌 하)+度(번 도)+も. 「반복적으로」', '부사', 1492, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '何度も読み返す。', '몇 번이고 다시 읽는다.', 1),
+    (w, '何度も電話した。', '여러 번 전화했다.', 2);
+
+  -- 1493. 余裕
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '余裕', 'よゆう', '여유', '余(남을 여)+裕(넉넉할 유). 「남는 여백·여유」', '명사', 1493, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '時間に余裕がある。', '시간에 여유가 있다.', 1),
+    (w, '心の余裕を持つ。', '마음의 여유를 갖는다.', 2);
+
+  -- 1494. 便利で役に立つ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '便利で役に立つ', 'べんりでやくにたつ', '편리해서 쓸모가 있다', '便利+で+役(역할)+に+立(설 립)つ. 「유용함」', '동사', 1494, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, 'この道具は便利で役に立つ。', '이 도구는 편리해서 쓸모 있다.', 1),
+    (w, '小さくて便利で役に立つ。', '작고 편리해서 쓸모 있다.', 2);
+
+  -- 1495. 出馬する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '出馬する', 'しゅつばする', '출마하다', '出(날 출)+馬(말 마)+する. 「말을 타고 나가다」→ 선거에 입후보', '동사', 1495, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '市長選に出馬する。', '시장 선거에 출마한다.', 1),
+    (w, '次の選挙に出馬する予定だ。', '다음 선거에 출마할 예정이다.', 2);
+
+  -- 1496. 分担
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '分担', 'ぶんたん', '분담', '分(나눌 분)+担(멜 담). 「나누어 짊어짐」', '명사', 1496, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '仕事の分担を決める。', '일의 분담을 정한다.', 1),
+    (w, '家事の分担をする。', '집안일을 분담한다.', 2);
+
+  -- 1497. 分担する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '分担する', 'ぶんたんする', '분담하다', '分担+する. 「나누어 맡다」', '동사', 1497, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '責任を分担する。', '책임을 분담한다.', 1),
+    (w, '費用を分担する。', '비용을 분담한다.', 2);
+
+  -- 1498. 刺激を受ける
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '刺激を受ける', 'しげきをうける', '자극을 받다', '刺(찌를 자)+激(격할 격)+を+受ける. 「외부 자극으로 영향받음」', '동사', 1498, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼の作品に刺激を受けた。', '그의 작품에 자극을 받았다.', 1),
+    (w, '新しい体験に刺激を受ける。', '새 경험에 자극을 받는다.', 2);
+
+  -- 1499. 勘違いする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '勘違いする', 'かんちがいする', '착각하다, 잘못 알다', '勘(헤아릴 감)+違(어긋날 위)い+する. 「잘못 판단하다」', '동사', 1499, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '日付を勘違いした。', '날짜를 착각했다.', 1),
+    (w, '人を勘違いしてしまった。', '사람을 잘못 알아봤다.', 2);
+
+  -- 1500. 危険
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '危険', 'きけん', '위험', '危(위태할 위)+険(험할 험). 「위태롭고 험함」', '명사', 1500, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '危険を知らせる。', '위험을 알린다.', 1),
+    (w, '危険な場所には行かない。', '위험한 곳에는 가지 않는다.', 2);
+
+  -- 1501. 取り消す
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '取り消す', 'とりけす', '취소하다', '取(취할 취)+消(꺼질 소)す. 「취하여 없애다」', '동사', 1501, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '予約を取り消す。', '예약을 취소한다.', 1),
+    (w, '発言を取り消す。', '발언을 취소한다.', 2);
+
+  -- 1502. 口数が少ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '口数が少ない', 'くちかずがすくない', '말수가 적다', '口(입)+数(수)+が+少ない. 「말 횟수가 적음」', 'い형용사', 1502, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は口数が少ない。', '그는 말수가 적다.', 1),
+    (w, '口数が少ないが優しい。', '말수는 적지만 다정하다.', 2);
+
+  -- 1503. 問い合わせる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '問い合わせる', 'といあわせる', '문의하다, 조회하다', '問(물을 문)い+合わせる. 「물어보고 맞춰 확인하다」', '동사', 1503, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '会社に問い合わせる。', '회사에 문의한다.', 1),
+    (w, '在庫を問い合わせる。', '재고를 조회한다.', 2);
+
+  -- 1504. 困る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '困る', 'こまる', '곤란하다, 난처하다', '困(곤할 곤)る. 「대처가 어려움」', '동사', 1504, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '答えに困る。', '대답하기 곤란하다.', 1),
+    (w, '雨で困った。', '비 때문에 난처했다.', 2);
+
+  -- 1505. 基準
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '基準', 'きじゅん', '기준', '基(터 기)+準(준할 준). 「판단의 토대」', '명사', 1505, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '評価の基準を決める。', '평가 기준을 정한다.', 1),
+    (w, '基準を満たす。', '기준을 충족한다.', 2);
+
+  -- 1506. 場所
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '場所', 'ばしょ', '장소', '場(마당 장)+所(곳 소). 「특정 위치」', '명사', 1506, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '集合場所を決める。', '집합 장소를 정한다.', 1),
+    (w, '静かな場所で勉強する。', '조용한 장소에서 공부한다.', 2);
+
+  -- 1507. 大げさ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '大げさ', 'おおげさ', '과장, 호들갑', '大(클 대)+げさ(접미사). 「실제보다 부풀림」', 'な형용사', 1507, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '話が大げさだ。', '이야기가 과장되었다.', 1),
+    (w, '大げさに驚く。', '호들갑스럽게 놀란다.', 2);
+
+  -- 1508. 大して(～ない)
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '大して(～ない)', 'たいして', '그다지, 별로(~않다)', '大(클 대)+して. 부정 호응. 「그다지 ~안」', '부사', 1508, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '大して難しくない。', '그다지 어렵지 않다.', 1),
+    (w, '大して気にしない。', '별로 신경 쓰지 않는다.', 2);
+
+  -- 1509. 大体
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '大体', 'だいたい', '대체로, 대강', '大(클 대)+体(몸 체). 「큰 줄기·전체적으로」', '부사', 1509, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '大体わかった。', '대체로 알았다.', 1),
+    (w, '大体の見当をつける。', '대강의 짐작을 한다.', 2);
+
+  -- 1510. 大体同じだ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '大体同じだ', 'だいたいおなじだ', '대체로 같다', '大体+同(같을 동)じ+だ. 「거의 비슷함」', 'な형용사', 1510, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '二つは大体同じだ。', '두 개는 대체로 같다.', 1),
+    (w, '実力は大体同じだ。', '실력은 대체로 같다.', 2);
+
+  -- 1511. 大幅に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '大幅に', 'おおはばに', '대폭적으로, 크게', '大幅(큰 폭)+に. 「범위가 크게」', '부사', 1511, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '価格が大幅に下がる。', '가격이 대폭 내려간다.', 1),
+    (w, '大幅に変更する。', '대폭 변경한다.', 2);
+
+  -- 1512. 失敗する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '失敗する', 'しっぱいする', '실패하다, 실수하다', '失(잃을 실)+敗(패할 패)+する. 「뜻을 이루지 못하다」', '동사', 1512, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '計画が失敗する。', '계획이 실패한다.', 1),
+    (w, '何度も失敗した。', '몇 번이고 실패했다.', 2);
+
+  -- 1513. 完了する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '完了する', 'かんりょうする', '완료하다', '完(완전할 완)+了(마칠 료)+する. 「완전히 마치다」', '동사', 1513, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '工事を完了する。', '공사를 완료한다.', 1),
+    (w, '手続きが完了した。', '수속이 완료되었다.', 2);
+
+  -- 1514. 完成する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '完成する', 'かんせいする', '완성되다, 완성하다', '完+成(이룰 성)+する. 「온전히 이루다」', '동사', 1514, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '作品が完成する。', '작품이 완성된다.', 1),
+    (w, '建物が完成した。', '건물이 완성되었다.', 2);
+
+  -- 1515. 対比
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '対比', 'たいひ', '대비', '対(대할 대)+比(견줄 비). 「맞대어 비교함」', '명사', 1515, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '色の対比が美しい。', '색의 대비가 아름답다.', 1),
+    (w, '新旧の対比。', '신구의 대비.', 2);
+
+  -- 1516. 専門家
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '専門家', 'せんもんか', '전문가', '専(오로지 전)+門(문 문)+家(전문가 가). 「특정 분야 전문가」', '명사', 1516, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '医療の専門家。', '의료 전문가.', 1),
+    (w, '専門家に相談する。', '전문가에게 상담한다.', 2);
+
+  -- 1517. 小さな
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '小さな', 'ちいさな', '작은, 사소한', '小(작을 소)さ+な. 「작은」 연체수식', '연체·수식어', 1517, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '小さな家。', '작은 집.', 1),
+    (w, '小さな問題だ。', '사소한 문제다.', 2);
+
+  -- 1518. 小さな声で言う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '小さな声で言う', 'ちいさなこえでいう', '작은 소리로 말하다', '小さな+声+で+言う. 「낮은 음성으로」', '동사', 1518, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '秘密を小さな声で言う。', '비밀을 작은 소리로 말한다.', 1),
+    (w, '小さな声で言って聞き取れない。', '작은 소리로 말해서 들리지 않는다.', 2);
+
+  -- 1519. 小型の
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '小型の', 'こがたの', '소형의', '小+型(거푸집 형)+の. 「작은 형태의」', '연체·수식어', 1519, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '小型のカメラ。', '소형 카메라.', 1),
+    (w, '小型の車を運転する。', '소형 차를 운전한다.', 2);
+
+  -- 1520. 少ない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '少ない', 'すくない', '적다, 드물다', '少(적을 소)ない. 「양이 적음」', 'い형용사', 1520, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '人が少ない。', '사람이 적다.', 1),
+    (w, 'お金が少ない。', '돈이 적다.', 2);
+
+  -- 1521. 差がない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '差がない', 'さがない', '차이가 없다', '差(차이)+が+ない. 「격차가 없음」', 'い형용사', 1521, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '実力に差がない。', '실력에 차이가 없다.', 1),
+    (w, '値段に大差がない。', '가격에 큰 차이가 없다.', 2);
+
+  -- 1522. 平凡だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '平凡だ', 'へいぼんだ', '평범하다', '平(평평할 평)+凡(무릇 범)+だ. 「특별하지 않음」', 'な형용사', 1522, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '平凡な人生だ。', '평범한 인생이다.', 1),
+    (w, '彼は平凡だが誠実だ。', '그는 평범하지만 성실하다.', 2);
+
+  -- 1523. 平凡な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '平凡な', 'へいぼんな', '평범한', '平凡+な. 「특별하지 않은」', 'な형용사', 1523, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '平凡な毎日。', '평범한 매일.', 1),
+    (w, '平凡な見た目。', '평범한 외모.', 2);
+
+  -- 1524. 心配
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '心配', 'しんぱい', '걱정, 근심', '心(마음 심)+配(나눌 배). 「마음을 쓰다」', '명사', 1524, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '健康が心配だ。', '건강이 걱정이다.', 1),
+    (w, '心配をかけて申し訳ない。', '걱정 끼쳐 죄송합니다.', 2);
+
+  -- 1525. 心配する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '心配する', 'しんぱいする', '걱정하다', '心配+する. 「마음을 쓰며 걱정함」', '동사', 1525, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '将来を心配する。', '장래를 걱정한다.', 1),
+    (w, '親が子を心配する。', '부모가 자식을 걱정한다.', 2);
+
+  -- 1526. 必死に頑張る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '必死に頑張る', 'ひっしにがんばる', '필사적으로 분발하다', '必死(필사)+に+頑張(굳셀 완)る. 「죽기 살기로 노력하다」', '동사', 1526, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '試験のために必死に頑張る。', '시험을 위해 필사적으로 분발한다.', 1),
+    (w, '夢に向かって必死に頑張った。', '꿈을 향해 필사적으로 분발했다.', 2);
+
+  -- 1527. 怒ったような顔をする
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '怒ったような顔をする', 'おこったようなかおをする', '화가 난 듯한 얼굴을 하다', '怒(노할 노)る+た+ような+顔+を+する. 표정 표현', '동사', 1527, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '彼は怒ったような顔をして黙っていた。', '그는 화난 듯한 얼굴로 잠자코 있었다.', 1),
+    (w, '理由もなく怒ったような顔をする。', '이유 없이 화난 듯한 얼굴을 한다.', 2);
+
+  -- 1528. 怖がる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '怖がる', 'こわがる', '무서워하다', '怖(두려울 포)い+がる. 「두려움을 보이다」', '동사', 1528, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '犬を怖がる。', '개를 무서워한다.', 1),
+    (w, '暗闇を怖がる子供。', '어둠을 무서워하는 아이.', 2);
+
+end $$;
+
+-- ============================================================
+-- N1 유의어 페어 누락 단어 Chunk 3 (55개, order 1529~1583)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+  w   uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- 1529. 思いがけない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '思いがけない', 'おもいがけない', '뜻밖이다, 예상 밖이다', '思い+掛(걸 괘)け+ない. 「예상도 못한」', 'い형용사', 1529, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '思いがけない出来事。', '뜻밖의 일.', 1),
+    (w, '思いがけない再会。', '예상 밖의 재회.', 2);
+
+  -- 1530. 思い返す
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '思い返す', 'おもいかえす', '돌이켜 생각하다, 회상하다', '思い+返(돌이킬 반)す. 「생각을 되돌리다」', '동사', 1530, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '昔のことを思い返す。', '옛일을 돌이켜 생각한다.', 1),
+    (w, '思い返してみると、間違っていた。', '돌이켜 보면 잘못되었다.', 2);
+
+  -- 1531. 急がせる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '急がせる', 'いそがせる', '서두르게 하다, 재촉하다', '急(급할 급)ぐ의 사역형. 「급히 행하게 하다」', '동사', 1531, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '結論を急がせる。', '결론을 재촉한다.', 1),
+    (w, '出発を急がせた。', '출발을 서두르게 했다.', 2);
+
+  -- 1532. 怪しい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '怪しい', 'あやしい', '수상하다, 의심스럽다', '怪(괴이할 괴)しい. 「이상하고 의심스러움」', 'い형용사', 1532, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '怪しい人を見かけた。', '수상한 사람을 봤다.', 1),
+    (w, '彼の話は怪しい。', '그의 이야기는 의심스럽다.', 2);
+
+  -- 1533. 悪く言われる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '悪く言われる', 'わるくいわれる', '나쁜 말을 듣다, 험담을 듣다', '悪く+言う의 수동. 「부정적으로 평가받다」', '동사', 1533, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '陰で悪く言われる。', '뒤에서 험담을 듣는다.', 1),
+    (w, '彼が悪く言われるのは心外だ。', '그가 험담받는 것은 의외다.', 2);
+
+  -- 1534. 想像
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '想像', 'そうぞう', '상상', '想(생각 상)+像(모양 상). 「머릿속에 그림」', '명사', 1534, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '想像を超える。', '상상을 초월한다.', 1),
+    (w, '想像力豊かな子。', '상상력 풍부한 아이.', 2);
+
+  -- 1535. 意外につまらない
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '意外につまらない', 'いがいにつまらない', '의외로 시시하다', '意外+に+つまらない. 「예상 외로 재미없음」', 'い형용사', 1535, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '評判の映画が意外につまらない。', '평이 좋은 영화가 의외로 시시하다.', 1),
+    (w, 'パーティーは意外につまらなかった。', '파티는 의외로 시시했다.', 2);
+
+  -- 1536. 意欲
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '意欲', 'いよく', '의욕', '意(뜻 의)+欲(욕심 욕). 「하고자 하는 의지」', '명사', 1536, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '仕事への意欲が高い。', '일에 대한 의욕이 높다.', 1),
+    (w, '学ぶ意欲を失う。', '배우려는 의욕을 잃는다.', 2);
+
+  -- 1537. 愚痴を言う
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '愚痴を言う', 'ぐちをいう', '불평하다, 푸념하다', '愚(어리석을 우)+痴(어리석을 치)+を+言う. 「푸념을 늘어놓다」', '동사', 1537, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '仕事の愚痴を言う。', '일에 대한 푸념을 한다.', 1),
+    (w, 'いつも愚痴を言ってばかりだ。', '늘 푸념만 한다.', 2);
+
+  -- 1538. 慌てる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '慌てる', 'あわてる', '당황하다, 허둥지둥하다', '慌(어리둥절할 황)てる. 「마음이 다급해짐」', '동사', 1538, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '時間に遅れて慌てる。', '시간에 늦어 당황한다.', 1),
+    (w, '慌てて家を出た。', '허둥지둥 집을 나왔다.', 2);
+
+  -- 1539. 慣れる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '慣れる', 'なれる', '익숙해지다', '慣(익숙할 관)れる. 「반복으로 친숙해짐」', '동사', 1539, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '仕事に慣れる。', '일에 익숙해진다.', 1),
+    (w, '生活に慣れてきた。', '생활에 익숙해졌다.', 2);
+
+  -- 1540. 手分け
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '手分け', 'てわけ', '분담, 나눔', '手(손)+分(나눌 분)け. 「손을 나누어 일함」', '명사', 1540, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手分けして探す。', '분담해서 찾는다.', 1),
+    (w, '仕事の手分けを決める。', '일의 분담을 정한다.', 2);
+
+  -- 1541. 批判
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '批判', 'ひはん', '비판', '批(비평할 비)+判(판단할 판). 「판단해 비평함」', '명사', 1541, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '批判を浴びる。', '비판을 받는다.', 1),
+    (w, '彼は批判に強い。', '그는 비판에 강하다.', 2);
+
+  -- 1542. 撤回する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '撤回する', 'てっかいする', '철회하다', '撤(거둘 철)+回(돌 회)+する. 「(말·결정을) 거두어 들임」', '동사', 1542, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '発言を撤回する。', '발언을 철회한다.', 1),
+    (w, '決定を撤回した。', '결정을 철회했다.', 2);
+
+  -- 1543. 支援
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '支援', 'しえん', '지원', '支(가지 지)+援(도울 원). 「뒤에서 도와줌」', '명사', 1543, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '経済的な支援。', '경제적 지원.', 1),
+    (w, '友人の支援を受ける。', '친구의 지원을 받는다.', 2);
+
+  -- 1544. 方法
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '方法', 'ほうほう', '방법', '方(모 방)+法(법 법). 「일을 하는 방식」', '명사', 1544, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '解決の方法を考える。', '해결 방법을 생각한다.', 1),
+    (w, '別の方法を試す。', '다른 방법을 시도한다.', 2);
+
+  -- 1545. 早く正確に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '早く正確に', 'はやくせいかくに', '빠르고 정확하게', '早く+正確+に. 「신속·정밀하게」', '부사', 1545, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '早く正確に作業する。', '빠르고 정확하게 작업한다.', 1),
+    (w, '早く正確に処理してください。', '빠르고 정확하게 처리해 주세요.', 2);
+
+  -- 1546. 明白に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '明白に', 'めいはくに', '명백하게', '明(밝을 명)+白(흰 백)+に. 「분명하고 환하게」', '부사', 1546, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '明白に間違っている。', '명백히 잘못되었다.', 1),
+    (w, '事実が明白に示された。', '사실이 명백하게 드러났다.', 2);
+
+  -- 1547. 曇っていて暗い
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '曇っていて暗い', 'くもっていてくらい', '흐리고 어둡다', '曇(흐릴 담)る+て+暗(어두울 암)い. 「잿빛으로 어두움」', 'い형용사', 1547, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '空が曇っていて暗い。', '하늘이 흐리고 어둡다.', 1),
+    (w, '曇っていて暗い朝だ。', '흐리고 어두운 아침이다.', 2);
+
+  -- 1548. 検討
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '検討', 'けんとう', '검토', '検(검사할 검)+討(칠 토). 「세밀히 살펴봄」', '명사', 1548, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '計画を検討する。', '계획을 검토한다.', 1),
+    (w, '前向きに検討する。', '긍정적으로 검토한다.', 2);
+
+  -- 1549. 気掛かり
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '気掛かり', 'きがかり', '걱정, 근심', '気(기운 기)+掛(걸 괘)+かり. 「마음에 걸리는 일」', '명사', 1549, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '子供のことが気掛かりだ。', '아이의 일이 걱정된다.', 1),
+    (w, '気掛かりがあって眠れない。', '근심이 있어서 잠들지 못한다.', 2);
+
+  -- 1550. 混乱する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '混乱する', 'こんらんする', '혼란스럽다', '混(섞일 혼)+乱(어지러울 란)+する. 「뒤섞여 어지러움」', '동사', 1550, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '頭が混乱する。', '머리가 혼란스럽다.', 1),
+    (w, '会場が混乱した。', '회장이 혼란스러웠다.', 2);
+
+  -- 1551. 漠然としている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '漠然としている', 'ばくぜんとしている', '막연하다', '漠(아득할 막)+然+と+している. 「뚜렷하지 않은 상태」', '동사', 1551, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '将来の夢が漠然としている。', '장래의 꿈이 막연하다.', 1),
+    (w, '計画は漠然としている。', '계획은 막연하다.', 2);
+
+  -- 1552. 無邪気な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '無邪気な', 'むじゃきな', '천진난만한, 악의 없는', '無(없을 무)+邪気(악의)+な. 「악한 마음이 없는」', 'な형용사', 1552, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '無邪気な笑顔。', '천진난만한 미소.', 1),
+    (w, '子供は無邪気だ。', '아이는 악의가 없다.', 2);
+
+  -- 1553. 熱心に取り組む
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '熱心に取り組む', 'ねっしんにとりくむ', '열심히 몰두하다', '熱心+に+取り組(짤 조)む. 「열정적으로 매달리다」', '동사', 1553, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '研究に熱心に取り組む。', '연구에 열심히 몰두한다.', 1),
+    (w, '問題に熱心に取り組んだ。', '문제에 열심히 매달렸다.', 2);
+
+  -- 1554. 率直に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '率直に', 'そっちょくに', '솔직하게', '率(거느릴 솔)+直(곧을 직)+に. 「있는 그대로」', '부사', 1554, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '率直に意見を述べる。', '솔직하게 의견을 말한다.', 1),
+    (w, '率直に謝った。', '솔직하게 사과했다.', 2);
+
+  -- 1555. 珍しい
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '珍しい', 'めずらしい', '드물다, 흔히 없다', '珍(보배 진)しい. 「귀하고 드문」', 'い형용사', 1555, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '珍しい花が咲いた。', '진귀한 꽃이 피었다.', 1),
+    (w, '珍しいお客様だ。', '드문 손님이다.', 2);
+
+  -- 1556. 用意する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '用意する', 'よういする', '준비하다', '用(쓸 용)+意(뜻 의)+する. 「쓸 것을 미리 준비」', '동사', 1556, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '夕食を用意する。', '저녁 식사를 준비한다.', 1),
+    (w, '会議の資料を用意する。', '회의 자료를 준비한다.', 2);
+
+  -- 1557. 疲れる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '疲れる', 'つかれる', '피곤하다, 지치다', '疲(피곤할 피)れる. 「힘이 다하다」', '동사', 1557, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '仕事で疲れる。', '일로 피곤하다.', 1),
+    (w, '今日はとても疲れた。', '오늘은 매우 지쳤다.', 2);
+
+  -- 1558. 皮肉
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '皮肉', 'ひにく', '비꼼, 빈정거림', '皮(가죽 피)+肉(고기 육). 「겉만 닿고 본질을 찌름」→ 비꼼', '명사', 1558, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '皮肉を言う。', '비꼬는 말을 한다.', 1),
+    (w, '皮肉な結果。', '아이러니한 결과.', 2);
+
+  -- 1559. 相手
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '相手', 'あいて', '상대', '相(서로 상)+手(손 수). 「마주하는 사람」', '명사', 1559, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '話す相手がいない。', '말할 상대가 없다.', 1),
+    (w, '試合の相手が決まった。', '시합 상대가 정해졌다.', 2);
+
+  -- 1560. 短い
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '短い', 'みじかい', '짧다', '短(짧을 단)い. 「길지 않은」', 'い형용사', 1560, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '短い時間。', '짧은 시간.', 1),
+    (w, '髪を短くする。', '머리를 짧게 한다.', 2);
+
+  -- 1561. 突然
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '突然', 'とつぜん', '돌연, 갑자기', '突(부딪칠 돌)+然. 「예고 없이」', '부사', 1561, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '突然雨が降ってきた。', '갑자기 비가 내렸다.', 1),
+    (w, '突然の訪問。', '돌연한 방문.', 2);
+
+  -- 1562. 競争する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '競争する', 'きょうそうする', '경쟁하다', '競(다툴 경)+争(다툴 쟁)+する. 「겨루다」', '동사', 1562, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '互いに競争する。', '서로 경쟁한다.', 1),
+    (w, '企業が競争する市場。', '기업이 경쟁하는 시장.', 2);
+
+  -- 1563. 細かく丁寧に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '細かく丁寧に', 'こまかくていねいに', '섬세하고 정성껏', '細(가늘 세)かく+丁寧(정녕)+に. 「세밀하고 공손하게」', '부사', 1563, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '細かく丁寧に説明する。', '섬세하고 정성껏 설명한다.', 1),
+    (w, '細かく丁寧に作業する。', '꼼꼼하게 작업한다.', 2);
+
+  -- 1564. 肝心な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '肝心な', 'かんじんな', '가장 중요한', '肝(간 간)+心(마음 심)+な. 「간과 심장처럼 핵심적인」', 'な형용사', 1564, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '肝心なところを見落とす。', '가장 중요한 부분을 놓친다.', 1),
+    (w, '肝心な質問をする。', '핵심적인 질문을 한다.', 2);
+
+  -- 1565. 自然に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '自然に', 'しぜんに', '자연히, 저절로', '自(스스로 자)+然+に. 「있는 그대로」', '부사', 1565, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '自然に笑顔になる。', '자연히 미소가 나온다.', 1),
+    (w, '時間が経てば自然に治る。', '시간이 지나면 저절로 낫는다.', 2);
+
+  -- 1566. 自由な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '自由な', 'じゆうな', '자유로운', '自由+な. 「구속이 없는」', 'な형용사', 1566, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '自由な発想。', '자유로운 발상.', 1),
+    (w, '自由な時間を楽しむ。', '자유로운 시간을 즐긴다.', 2);
+
+  -- 1567. 薄く切る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '薄く切る', 'うすくきる', '얇게 자르다', '薄(엷을 박)く+切る. 「두께를 얇게 분리」', '동사', 1567, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '肉を薄く切る。', '고기를 얇게 자른다.', 1),
+    (w, 'パンを薄く切ってください。', '빵을 얇게 잘라 주세요.', 2);
+
+  -- 1568. 言い訳する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '言い訳する', 'いいわけする', '변명하다', '言い+訳(가릴 역)+する. 「변명을 늘어놓다」', '동사', 1568, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '失敗を言い訳する。', '실패를 변명한다.', 1),
+    (w, '言い訳ばかりするな。', '변명만 하지 마.', 2);
+
+  -- 1569. 計画する
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '計画する', 'けいかくする', '계획하다', '計(셀 계)+画(그을 획)+する. 「미리 짜다」', '동사', 1569, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '旅行を計画する。', '여행을 계획한다.', 1),
+    (w, '将来を計画する。', '장래를 계획한다.', 2);
+
+  -- 1570. 詳しく丁寧に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '詳しく丁寧に', 'くわしくていねいに', '자세하고 꼼꼼하게', '詳(자세할 상)しく+丁寧+に. 「상세하고 공손히」', '부사', 1570, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '詳しく丁寧に教えてくれた。', '자세하고 꼼꼼하게 가르쳐 주었다.', 1),
+    (w, '詳しく丁寧に説明する。', '상세하고 정중하게 설명한다.', 2);
+
+  -- 1571. 詳細に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '詳細に', 'しょうさいに', '상세하게', '詳細(상세)+に. 「자세히 빠짐없이」', '부사', 1571, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '詳細に報告する。', '상세하게 보고한다.', 1),
+    (w, '詳細に調査した。', '상세하게 조사했다.', 2);
+
+  -- 1572. 諦める
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '諦める', 'あきらめる', '포기하다, 단념하다', '諦(살필 체)める. 「결의를 접다」', '동사', 1572, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '夢を諦める。', '꿈을 포기한다.', 1),
+    (w, '諦めないで頑張ろう。', '포기하지 말고 노력하자.', 2);
+
+  -- 1573. 謝る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '謝る', 'あやまる', '사과하다', '謝(사례할 사)る. 「잘못을 인정해 빌다」', '동사', 1573, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '心から謝る。', '진심으로 사과한다.', 1),
+    (w, '友達に謝った。', '친구에게 사과했다.', 2);
+
+  -- 1574. 返事をしぶっている
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '返事をしぶっている', 'へんじをしぶっている', '대답을 꺼리다, 주저하다', '返事+を+渋(껄끄러울 삽)る+ている. 「답을 망설임」', '동사', 1574, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '結婚の話に返事をしぶっている。', '결혼 이야기에 대답을 꺼리고 있다.', 1),
+    (w, '転職の打診に返事をしぶっている。', '이직 제안에 대답을 주저하고 있다.', 2);
+
+  -- 1575. 遅くなる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '遅くなる', 'おそくなる', '늦어지다', '遅(늦을 지)く+なる. 「시간이 늦은 상태가 됨」', '동사', 1575, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '到着が遅くなる。', '도착이 늦어진다.', 1),
+    (w, '帰りが遅くなった。', '귀가가 늦어졌다.', 2);
+
+  -- 1576. 選挙に出る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '選挙に出る', 'せんきょにでる', '선거에 나가다, 출마하다', '選挙+に+出る. 「선거 후보로 등장」', '동사', 1576, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '市議会選挙に出る。', '시의회 선거에 나간다.', 1),
+    (w, '彼は選挙に出ることを決めた。', '그는 선거에 출마하기로 결정했다.', 2);
+
+  -- 1577. 重要な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '重要な', 'じゅうような', '중요한', '重(무거울 중)+要(중요할 요)+な. 「비중이 큰」', 'な형용사', 1577, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '重要な会議。', '중요한 회의.', 1),
+    (w, '重要な情報を得る。', '중요한 정보를 얻는다.', 2);
+
+  -- 1578. 非常に
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '非常に', 'ひじょうに', '매우, 몹시', '非(아닐 비)+常(항상 상)+に. 「평소와 다르게」→ 매우', '부사', 1578, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '非常に重要だ。', '매우 중요하다.', 1),
+    (w, '非常に喜ぶ。', '몹시 기뻐한다.', 2);
+
+  -- 1579. 非常に素晴らしいとほめる
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '非常に素晴らしいとほめる', 'ひじょうにすばらしいとほめる', '매우 훌륭하다고 칭찬하다', '非常+に+素晴らしい+と+褒める. 강한 칭찬', '동사', 1579, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '作品を非常に素晴らしいとほめる。', '작품을 매우 훌륭하다고 칭찬한다.', 1),
+    (w, '先生が彼を非常に素晴らしいとほめた。', '선생님이 그를 매우 훌륭하다고 칭찬했다.', 2);
+
+  -- 1580. 面倒だ
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '面倒だ', 'めんどうだ', '귀찮다, 성가시다', '面(낯 면)+倒(넘어질 도)+だ. 「체면이 무너질 정도로 번거로움」', 'な형용사', 1580, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '手続きが面倒だ。', '수속이 귀찮다.', 1),
+    (w, '面倒な仕事だ。', '성가신 일이다.', 2);
+
+  -- 1581. 面倒な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '面倒な', 'めんどうな', '귀찮은, 성가신', '面倒+な. 연체수식형', 'な형용사', 1581, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '面倒な手続き。', '귀찮은 절차.', 1),
+    (w, '面倒な相手。', '성가신 상대.', 2);
+
+  -- 1582. 順調に進む
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '順調に進む', 'じゅんちょうにすすむ', '순조롭게 진행되다', '順(순할 순)調+に+進む. 「막힘없이 나아감」', '동사', 1582, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '工事が順調に進む。', '공사가 순조롭게 진행된다.', 1),
+    (w, '計画が順調に進んでいる。', '계획이 순조롭게 진행되고 있다.', 2);
+
+  -- 1583. 頑固な
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
+    (d_n1, '頑固な', 'がんこな', '완고한, 고집스러운', '頑(완고할 완)+固(굳을 고)+な. 「쉽게 굽히지 않는」', 'な형용사', 1583, array['synonym_pair']::text[]) returning id into w;
+  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
+    (w, '頑固な性格。', '완고한 성격.', 1),
+    (w, '頑固な汚れが落ちない。', '잘 안 빠지는 얼룩.', 2);
+
+end $$;
+
+-- ============================================================
+-- N1 유의어 word_relations 양방향 등록
+-- 어휘 154쌍 (PDF p.14~23 유의어 박스) + 문법 6쌍 (PDF p.40·47·48·50·51 ＝ 표시)
+-- ============================================================
+do $$
+declare
+  d_n1 uuid;
+  w1 uuid; w2 uuid;
+begin
+  select id into d_n1 from public.decks where jlpt_level='N1' and is_official limit 1;
+
+  -- ==== 어휘 유의어 페어 (PDF 박스) ====
+  -- 1. いやみ ⇔ 皮肉
+  select id into w1 from public.words where deck_id=d_n1 and (headword='いやみ' or reading='いやみ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='皮肉' or reading='皮肉') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'いやみ(불쾌한 언행)≒皮肉(비꼼, 빈정거림)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '皮肉(비꼼, 빈정거림)≒いやみ(불쾌한 언행)', 1) on conflict do nothing;
+  end if;
+  -- 2. どんよりした天気だ ⇔ 曇っていて暗い
+  select id into w1 from public.words where deck_id=d_n1 and (headword='どんよりした天気だ' or reading='どんよりした天気だ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='曇っていて暗い' or reading='曇っていて暗い') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'どんよりした天気だ(우중충한 날씨다)≒曇っていて暗い(흐리고 어둡다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '曇っていて暗い(흐리고 어둡다)≒どんよりした天気だ(우중충한 날씨다)', 1) on conflict do nothing;
+  end if;
+  -- 3. 丹念に ⇔ じっくりと
+  select id into w1 from public.words where deck_id=d_n1 and (headword='丹念に' or reading='丹念に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='じっくりと' or reading='じっくりと') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '丹念に(정성껏, 꼼꼼하게)≒じっくりと(정성껏, 곰곰이)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'じっくりと(정성껏, 곰곰이)≒丹念に(정성껏, 꼼꼼하게)', 1) on conflict do nothing;
+  end if;
+  -- 4. あっけない ⇔ 意外につまらない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='あっけない' or reading='あっけない') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='意外につまらない' or reading='意外につまらない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'あっけない(어이없다)≒意外につまらない(의외로 시시하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '意外につまらない(의외로 시시하다)≒あっけない(어이없다)', 1) on conflict do nothing;
+  end if;
+  -- 5. ありきたりの ⇔ 平凡な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ありきたりの' or reading='ありきたりの') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='平凡な' or reading='平凡な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ありきたりの(흔한)≒平凡な(평범한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '平凡な(평범한)≒ありきたりの(흔한)', 1) on conflict do nothing;
+  end if;
+  -- 6. なじむ ⇔ 慣れる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='なじむ' or reading='なじむ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='慣れる' or reading='慣れる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'なじむ(친숙해지다, 정들다)≒慣れる(익숙해지다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '慣れる(익숙해지다)≒なじむ(친숙해지다, 정들다)', 1) on conflict do nothing;
+  end if;
+  -- 7. はかどる ⇔ 順調に進む
+  select id into w1 from public.words where deck_id=d_n1 and (headword='はかどる' or reading='はかどる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='順調に進む' or reading='順調に進む') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'はかどる(진척되다)≒順調に進む(순조롭게 진행되다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '順調に進む(순조롭게 진행되다)≒はかどる(진척되다)', 1) on conflict do nothing;
+  end if;
+  -- 8. まばらだ ⇔ 少ない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='まばらだ' or reading='まばらだ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='少ない' or reading='少ない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'まばらだ(드문드문 있다, 듬성듬성하다)≒少ない(적다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '少ない(적다)≒まばらだ(드문드문 있다, 듬성듬성하다)', 1) on conflict do nothing;
+  end if;
+  -- 9. やむをえず ⇔ しかたなく
+  select id into w1 from public.words where deck_id=d_n1 and (headword='やむをえず' or reading='やむをえず') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='しかたなく' or reading='しかたなく') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'やむをえず(어쩔 수 없이)≒しかたなく(어쩔 수 없이)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'しかたなく(어쩔 수 없이)≒やむをえず(어쩔 수 없이)', 1) on conflict do nothing;
+  end if;
+  -- 10. わずらわしい ⇔ 面倒だ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='わずらわしい' or reading='わずらわしい') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='面倒だ' or reading='面倒だ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'わずらわしい(성가시다, 번거롭다)≒面倒だ(귀찮다, 성가시다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '面倒だ(귀찮다, 성가시다)≒わずらわしい(성가시다, 번거롭다)', 1) on conflict do nothing;
+  end if;
+  -- 11. コントラスト ⇔ 対比
+  select id into w1 from public.words where deck_id=d_n1 and (headword='コントラスト' or reading='コントラスト') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='対比' or reading='対比') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'コントラスト(콘트라스트, 대조, 대비)≒対比(대비)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '対比(대비)≒コントラスト(콘트라스트, 대조, 대비)', 1) on conflict do nothing;
+  end if;
+  -- 12. シビアな ⇔ 厳しい
+  select id into w1 from public.words where deck_id=d_n1 and (headword='シビアな' or reading='シビアな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='厳しい' or reading='厳しい') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'シビアな(엄격한, 어려운)≒厳しい(엄격하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '厳しい(엄격하다)≒シビアな(엄격한, 어려운)', 1) on conflict do nothing;
+  end if;
+  -- 13. ルーズな ⇔ だらしない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ルーズな' or reading='ルーズな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='だらしない' or reading='だらしない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ルーズな(느슨한, 단정치 못한)≒だらしない(단정하지 못한, 절도가 없는)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'だらしない(단정하지 못한, 절도가 없는)≒ルーズな(느슨한, 단정치 못한)', 1) on conflict do nothing;
+  end if;
+  -- 14. 張り合う ⇔ 競争する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='張り合う' or reading='張り合う') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='競争する' or reading='競争する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '張り合う(겨루다, 경쟁하다)≒競争する(경쟁하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '競争する(경쟁하다)≒張り合う(겨루다, 경쟁하다)', 1) on conflict do nothing;
+  end if;
+  -- 15. 朗報 ⇔ うれしい知らせ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='朗報' or reading='朗報') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='うれしい知らせ' or reading='うれしい知らせ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '朗報(낭보, 희소식)≒うれしい知らせ(기쁜 소식)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'うれしい知らせ(기쁜 소식)≒朗報(낭보, 희소식)', 1) on conflict do nothing;
+  end if;
+  -- 16. 極力 ⇔ できる限り
+  select id into w1 from public.words where deck_id=d_n1 and (headword='極力' or reading='極力') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='できる限り' or reading='できる限り') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '極力(극력, 힘껏)≒できる限り(가능한 한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'できる限り(가능한 한)≒極力(극력, 힘껏)', 1) on conflict do nothing;
+  end if;
+  -- 17. 画期的な ⇔ 今までになく新しい
+  select id into w1 from public.words where deck_id=d_n1 and (headword='画期的な' or reading='画期的な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='今までになく新しい' or reading='今までになく新しい') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '画期的な(획기적인)≒今までになく新しい(지금까지 없이 새로운)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '今までになく新しい(지금까지 없이 새로운)≒画期的な(획기적인)', 1) on conflict do nothing;
+  end if;
+  -- 18. 見合わせる ⇔ 中止する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='見合わせる' or reading='見合わせる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='中止する' or reading='中止する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '見合わせる(보류하다)≒中止する(중지하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '中止する(중지하다)≒見合わせる(보류하다)', 1) on conflict do nothing;
+  end if;
+  -- 19. 重宝する ⇔ 便利で役に立つ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='重宝する' or reading='重宝する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='便利で役に立つ' or reading='便利で役に立つ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '重宝する(애용하다)≒便利で役に立つ(편리해서 쓸모가 있다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '便利で役に立つ(편리해서 쓸모가 있다)≒重宝する(애용하다)', 1) on conflict do nothing;
+  end if;
+  -- 20. あらかじめ ⇔ 事前に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='あらかじめ' or reading='あらかじめ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='事前に' or reading='事前に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'あらかじめ(미리)≒事前に(사전에)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '事前に(사전에)≒あらかじめ(미리)', 1) on conflict do nothing;
+  end if;
+  -- 21. おっくうだ ⇔ 面倒だ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='おっくうだ' or reading='おっくうだ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='面倒だ' or reading='面倒だ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'おっくうだ(귀찮다)≒面倒だ(귀찮다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '面倒だ(귀찮다)≒おっくうだ(귀찮다)', 1) on conflict do nothing;
+  end if;
+  -- 22. おのずと ⇔ 自然に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='おのずと' or reading='おのずと') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='自然に' or reading='自然に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'おのずと(저절로, 자연히)≒自然に(자연히)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '自然に(자연히)≒おのずと(저절로, 자연히)', 1) on conflict do nothing;
+  end if;
+  -- 23. けなされる ⇔ 悪く言われる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='けなされる' or reading='けなされる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='悪く言われる' or reading='悪く言われる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'けなされる(비난을 받다)≒悪く言われる(나쁜 말을 듣다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '悪く言われる(나쁜 말을 듣다)≒けなされる(비난을 받다)', 1) on conflict do nothing;
+  end if;
+  -- 24. しきりに ⇔ 何度も
+  select id into w1 from public.words where deck_id=d_n1 and (headword='しきりに' or reading='しきりに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='何度も' or reading='何度も') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'しきりに(자꾸, 연달아)≒何度も(몇 번이고)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '何度も(몇 번이고)≒しきりに(자꾸, 연달아)', 1) on conflict do nothing;
+  end if;
+  -- 25. すがすがしい ⇔ さわやかだ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='すがすがしい' or reading='すがすがしい') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='さわやかだ' or reading='さわやかだ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'すがすがしい(상쾌하다, 시원하다)≒さわやかだ(상쾌하다, 산뜻하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'さわやかだ(상쾌하다, 산뜻하다)≒すがすがしい(상쾌하다, 시원하다)', 1) on conflict do nothing;
+  end if;
+  -- 26. にわかには ⇔ すぐには
+  select id into w1 from public.words where deck_id=d_n1 and (headword='にわかには' or reading='にわかには') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='すぐには' or reading='すぐには') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'にわかには(갑자기는)≒すぐには(바로는, 당장에는)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'すぐには(바로는, 당장에는)≒にわかには(갑자기는)', 1) on conflict do nothing;
+  end if;
+  -- 27. もくろむ ⇔ 計画する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='もくろむ' or reading='もくろむ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='計画する' or reading='計画する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'もくろむ(계획하다, 꾀하다)≒計画する(계획하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '計画する(계획하다)≒もくろむ(계획하다, 꾀하다)', 1) on conflict do nothing;
+  end if;
+  -- 28. スケール ⇔ 規模
+  select id into w1 from public.words where deck_id=d_n1 and (headword='スケール' or reading='スケール') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='規模' or reading='規模') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'スケール(스케일)≒規模(규모)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '規模(규모)≒スケール(스케일)', 1) on conflict do nothing;
+  end if;
+  -- 29. 先方 ⇔ 相手
+  select id into w1 from public.words where deck_id=d_n1 and (headword='先方' or reading='先方') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='相手' or reading='相手') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '先方(상대)≒相手(상대)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '相手(상대)≒先方(상대)', 1) on conflict do nothing;
+  end if;
+  -- 30. 密かに ⇔ こっそり
+  select id into w1 from public.words where deck_id=d_n1 and (headword='密かに' or reading='密かに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='こっそり' or reading='こっそり') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '密かに(은밀하게)≒こっそり(살짝, 몰래)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'こっそり(살짝, 몰래)≒密かに(은밀하게)', 1) on conflict do nothing;
+  end if;
+  -- 31. 当面 ⇔ しばらく
+  select id into w1 from public.words where deck_id=d_n1 and (headword='当面' or reading='当面') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='しばらく' or reading='しばらく') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '当面(당면, 당분간)≒しばらく(잠시)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'しばらく(잠시)≒当面(당면, 당분간)', 1) on conflict do nothing;
+  end if;
+  -- 32. 手がかり ⇔ ヒント
+  select id into w1 from public.words where deck_id=d_n1 and (headword='手がかり' or reading='手がかり') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='ヒント' or reading='ヒント') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '手がかり(단서, 실마리)≒ヒント(힌트)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'ヒント(힌트)≒手がかり(단서, 실마리)', 1) on conflict do nothing;
+  end if;
+  -- 33. 断念する ⇔ 諦める
+  select id into w1 from public.words where deck_id=d_n1 and (headword='断念する' or reading='断念する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='諦める' or reading='諦める') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '断念する(단념하다)≒諦める(포기하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '諦める(포기하다)≒断念する(단념하다)', 1) on conflict do nothing;
+  end if;
+  -- 34. 歴然としている ⇔ はっきりしている
+  select id into w1 from public.words where deck_id=d_n1 and (headword='歴然としている' or reading='歴然としている') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='はっきりしている' or reading='はっきりしている') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '歴然としている(역연하다, 또렷하다)≒はっきりしている(분명하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'はっきりしている(분명하다)≒歴然としている(역연하다, 또렷하다)', 1) on conflict do nothing;
+  end if;
+  -- 35. 簡素だ ⇔ シンプルだ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='簡素だ' or reading='簡素だ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='シンプルだ' or reading='シンプルだ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '簡素だ(간소하다)≒シンプルだ(심플하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'シンプルだ(심플하다)≒簡素だ(간소하다)', 1) on conflict do nothing;
+  end if;
+  -- 36. 落胆する ⇔ がっかりする
+  select id into w1 from public.words where deck_id=d_n1 and (headword='落胆する' or reading='落胆する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='がっかりする' or reading='がっかりする') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '落胆する(낙담하다)≒がっかりする(낙담하다, 실망하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'がっかりする(낙담하다, 실망하다)≒落胆する(낙담하다)', 1) on conflict do nothing;
+  end if;
+  -- 37. 裏づけ ⇔ 証拠
+  select id into w1 from public.words where deck_id=d_n1 and (headword='裏づけ' or reading='裏づけ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='証拠' or reading='証拠') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '裏づけ(뒷받침, 증거)≒証拠(증거)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '証拠(증거)≒裏づけ(뒷받침, 증거)', 1) on conflict do nothing;
+  end if;
+  -- 38. 触発される ⇔ 刺激を受ける
+  select id into w1 from public.words where deck_id=d_n1 and (headword='触発される' or reading='触発される') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='刺激を受ける' or reading='刺激を受ける') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '触発される(촉발되다)≒刺激を受ける(자극을 받다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '刺激を受ける(자극을 받다)≒触発される(촉발되다)', 1) on conflict do nothing;
+  end if;
+  -- 39. いたって ⇔ 非常に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='いたって' or reading='いたって') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='非常に' or reading='非常に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'いたって(지극히)≒非常に(매우, 몹시)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '非常に(매우, 몹시)≒いたって(지극히)', 1) on conflict do nothing;
+  end if;
+  -- 40. おおむね ⇔ 大体
+  select id into w1 from public.words where deck_id=d_n1 and (headword='おおむね' or reading='おおむね') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='大体' or reading='大体') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'おおむね(대체로, 대강)≒大体(대체로)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '大体(대체로)≒おおむね(대체로, 대강)', 1) on conflict do nothing;
+  end if;
+  -- 41. お手上げだ ⇔ どうしようもない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='お手上げだ' or reading='お手上げだ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='どうしようもない' or reading='どうしようもない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'お手上げだ(두 손 들었다, 속수무책이다)≒どうしようもない(어쩔 방법이 없다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'どうしようもない(어쩔 방법이 없다)≒お手上げだ(두 손 들었다, 속수무책이다)', 1) on conflict do nothing;
+  end if;
+  -- 42. ことごとく ⇔ すべて
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ことごとく' or reading='ことごとく') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='すべて' or reading='すべて') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ことごとく(전부)≒すべて(전부)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'すべて(전부)≒ことごとく(전부)', 1) on conflict do nothing;
+  end if;
+  -- 43. すべ ⇔ 方法
+  select id into w1 from public.words where deck_id=d_n1 and (headword='すべ' or reading='すべ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='方法' or reading='方法') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'すべ(방법)≒方法(방법)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '方法(방법)≒すべ(방법)', 1) on conflict do nothing;
+  end if;
+  -- 44. せかす ⇔ 急がせる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='せかす' or reading='せかす') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='急がせる' or reading='急がせる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'せかす(재촉하다)≒急がせる(서두르게 하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '急がせる(서두르게 하다)≒せかす(재촉하다)', 1) on conflict do nothing;
+  end if;
+  -- 45. バックアップ ⇔ 支援
+  select id into w1 from public.words where deck_id=d_n1 and (headword='バックアップ' or reading='バックアップ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='支援' or reading='支援') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'バックアップ(백업, 지원)≒支援(지원)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '支援(지원)≒バックアップ(백업, 지원)', 1) on conflict do nothing;
+  end if;
+  -- 46. メカニズム ⇔ 仕組み
+  select id into w1 from public.words where deck_id=d_n1 and (headword='メカニズム' or reading='メカニズム') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='仕組み' or reading='仕組み') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'メカニズム(메커니즘)≒仕組み(구조)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '仕組み(구조)≒メカニズム(메커니즘)', 1) on conflict do nothing;
+  end if;
+  -- 47. 仰天する ⇔ とても驚く
+  select id into w1 from public.words where deck_id=d_n1 and (headword='仰天する' or reading='仰天する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='とても驚く' or reading='とても驚く') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '仰天する(경악하다, 몹시 놀라다)≒とても驚く(매우 놀라다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'とても驚く(매우 놀라다)≒仰天する(경악하다, 몹시 놀라다)', 1) on conflict do nothing;
+  end if;
+  -- 48. 回想する ⇔ 思い返す
+  select id into w1 from public.words where deck_id=d_n1 and (headword='回想する' or reading='回想する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='思い返す' or reading='思い返す') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '回想する(회상하다)≒思い返す(돌아보다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '思い返す(돌아보다)≒回想する(회상하다)', 1) on conflict do nothing;
+  end if;
+  -- 49. 従来の ⇔ これまでの
+  select id into w1 from public.words where deck_id=d_n1 and (headword='従来の' or reading='従来の') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='これまでの' or reading='これまでの') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '従来の(종래의)≒これまでの(지금까지의)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'これまでの(지금까지의)≒従来の(종래의)', 1) on conflict do nothing;
+  end if;
+  -- 50. 打ち込む ⇔ 熱心に取り組む
+  select id into w1 from public.words where deck_id=d_n1 and (headword='打ち込む' or reading='打ち込む') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='熱心に取り組む' or reading='熱心に取り組む') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '打ち込む(몰입하다, 몰두하다)≒熱心に取り組む(열심히 몰두하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '熱心に取り組む(열심히 몰두하다)≒打ち込む(몰입하다, 몰두하다)', 1) on conflict do nothing;
+  end if;
+  -- 51. 抜群だ ⇔ 他と比べて特によい
+  select id into w1 from public.words where deck_id=d_n1 and (headword='抜群だ' or reading='抜群だ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='他と比べて特によい' or reading='他と比べて特によい') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '抜群だ(발군이다, 뛰어나다)≒他と比べて特によい(다른 것과 비교하여 특히 좋다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '他と比べて特によい(다른 것과 비교하여 특히 좋다)≒抜群だ(발군이다, 뛰어나다)', 1) on conflict do nothing;
+  end if;
+  -- 52. 格段に ⇔ 大幅に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='格段に' or reading='格段に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='大幅に' or reading='大幅に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '格段に(현격하게)≒大幅に(대폭적으로)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '大幅に(대폭적으로)≒格段に(현격하게)', 1) on conflict do nothing;
+  end if;
+  -- 53. 案の定 ⇔ やはり
+  select id into w1 from public.words where deck_id=d_n1 and (headword='案の定' or reading='案の定') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='やはり' or reading='やはり') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '案の定(역시, 예상대로)≒やはり(역시)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'やはり(역시)≒案の定(역시, 예상대로)', 1) on conflict do nothing;
+  end if;
+  -- 54. 気掛かり ⇔ 心配
+  select id into w1 from public.words where deck_id=d_n1 and (headword='気掛かり' or reading='気掛かり') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='心配' or reading='心配') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '気掛かり(걱정, 근심)≒心配(걱정, 근심)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '心配(걱정, 근심)≒気掛かり(걱정, 근심)', 1) on conflict do nothing;
+  end if;
+  -- 55. 雑踏 ⇔ 人込み
+  select id into w1 from public.words where deck_id=d_n1 and (headword='雑踏' or reading='雑踏') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='人込み' or reading='人込み') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '雑踏(혼잡)≒人込み(혼잡, 북새통)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '人込み(혼잡, 북새통)≒雑踏(혼잡)', 1) on conflict do nothing;
+  end if;
+  -- 56. ありふれる ⇔ 平凡だ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ありふれる' or reading='ありふれる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='平凡だ' or reading='平凡だ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ありふれる(흔하다)≒平凡だ(평범하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '平凡だ(평범하다)≒ありふれる(흔하다)', 1) on conflict do nothing;
+  end if;
+  -- 57. うろたえる ⇔ 慌てる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='うろたえる' or reading='うろたえる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='慌てる' or reading='慌てる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'うろたえる(허둥거리다, 당황하다)≒慌てる(당황하다, 허둥지둥하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '慌てる(당황하다, 허둥지둥하다)≒うろたえる(허둥거리다, 당황하다)', 1) on conflict do nothing;
+  end if;
+  -- 58. クレーム ⇔ 苦情
+  select id into w1 from public.words where deck_id=d_n1 and (headword='クレーム' or reading='クレーム') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='苦情' or reading='苦情') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'クレーム(클레임)≒苦情(클레임, 불만)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '苦情(클레임, 불만)≒クレーム(클레임)', 1) on conflict do nothing;
+  end if;
+  -- 59. ストレートに ⇔ 率直に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ストレートに' or reading='ストレートに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='率直に' or reading='率直に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ストレートに(직설적으로)≒率直に(솔직하게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '率直に(솔직하게)≒ストレートに(직설적으로)', 1) on conflict do nothing;
+  end if;
+  -- 60. 不意に ⇔ 突然
+  select id into w1 from public.words where deck_id=d_n1 and (headword='不意に' or reading='不意に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='突然' or reading='突然') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '不意に(갑자기)≒突然(돌연)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '突然(돌연)≒不意に(갑자기)', 1) on conflict do nothing;
+  end if;
+  -- 61. 不用意な ⇔ 不注意な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='不用意な' or reading='不用意な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='不注意な' or reading='不注意な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '不用意な(부주의한)≒不注意な(부주의한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '不注意な(부주의한)≒不用意な(부주의한)', 1) on conflict do nothing;
+  end if;
+  -- 62. 互角だ ⇔ 大体同じだ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='互角だ' or reading='互角だ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='大体同じだ' or reading='大体同じだ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '互角だ(호각이다, 백중세다)≒大体同じだ(대체로 같다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '大体同じだ(대체로 같다)≒互角だ(호각이다, 백중세다)', 1) on conflict do nothing;
+  end if;
+  -- 63. 仕上がる ⇔ 完成する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='仕上がる' or reading='仕上がる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='完成する' or reading='完成する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '仕上がる(마무리되다, 완성되다)≒完成する(완성되다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '完成する(완성되다)≒仕上がる(마무리되다, 완성되다)', 1) on conflict do nothing;
+  end if;
+  -- 64. 助言 ⇔ アドバイス
+  select id into w1 from public.words where deck_id=d_n1 and (headword='助言' or reading='助言') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='アドバイス' or reading='アドバイス') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '助言(조언)≒アドバイス(조언, 충고)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'アドバイス(조언, 충고)≒助言(조언)', 1) on conflict do nothing;
+  end if;
+  -- 65. 厄介な ⇔ 面倒な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='厄介な' or reading='厄介な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='面倒な' or reading='面倒な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '厄介な(귀찮은)≒面倒な(귀찮은)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '面倒な(귀찮은)≒厄介な(귀찮은)', 1) on conflict do nothing;
+  end if;
+  -- 66. 安堵する ⇔ ほっとする
+  select id into w1 from public.words where deck_id=d_n1 and (headword='安堵する' or reading='安堵する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='ほっとする' or reading='ほっとする') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '安堵する(안도하다)≒ほっとする(안심하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'ほっとする(안심하다)≒安堵する(안도하다)', 1) on conflict do nothing;
+  end if;
+  -- 67. 弁解する ⇔ 言い訳する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='弁解する' or reading='弁解する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='言い訳する' or reading='言い訳する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '弁解する(변명하다)≒言い訳する(변명하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '言い訳する(변명하다)≒弁解する(변명하다)', 1) on conflict do nothing;
+  end if;
+  -- 68. 意気込み ⇔ 意欲
+  select id into w1 from public.words where deck_id=d_n1 and (headword='意気込み' or reading='意気込み') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='意欲' or reading='意欲') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '意気込み(열의, 패기)≒意欲(의욕)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '意欲(의욕)≒意気込み(열의, 패기)', 1) on conflict do nothing;
+  end if;
+  -- 69. 手分けする ⇔ 分担する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='手分けする' or reading='手分けする') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='分担する' or reading='分担する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '手分けする(분담하다)≒分担する(분담하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '分担する(분담하다)≒手分けする(분담하다)', 1) on conflict do nothing;
+  end if;
+  -- 70. 殺到する ⇔ 一度に大勢来る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='殺到する' or reading='殺到する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='一度に大勢来る' or reading='一度に大勢来る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '殺到する(쇄도하다)≒一度に大勢来る(한꺼번에 많이 몰려들다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '一度に大勢来る(한꺼번에 많이 몰려들다)≒殺到する(쇄도하다)', 1) on conflict do nothing;
+  end if;
+  -- 71. 無償 ⇔ ただ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='無償' or reading='無償') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='ただ' or reading='ただ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '無償(무상)≒ただ(공짜, 무료)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'ただ(공짜, 무료)≒無償(무상)', 1) on conflict do nothing;
+  end if;
+  -- 72. 糸口 ⇔ ヒント
+  select id into w1 from public.words where deck_id=d_n1 and (headword='糸口' or reading='糸口') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='ヒント' or reading='ヒント') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '糸口(실마리)≒ヒント(힌트)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'ヒント(힌트)≒糸口(실마리)', 1) on conflict do nothing;
+  end if;
+  -- 73. 誇張 ⇔ 大げさ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='誇張' or reading='誇張') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='大げさ' or reading='大げさ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '誇張(과장(사실보다 크게 부풀림))≒大げさ(과장, 호들갑)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '大げさ(과장, 호들갑)≒誇張(과장(사실보다 크게 부풀림))', 1) on conflict do nothing;
+  end if;
+  -- 74. 錯覚する ⇔ 勘違いする
+  select id into w1 from public.words where deck_id=d_n1 and (headword='錯覚する' or reading='錯覚する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='勘違いする' or reading='勘違いする') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '錯覚する(착각하다)≒勘違いする(착각하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '勘違いする(착각하다)≒錯覚する(착각하다)', 1) on conflict do nothing;
+  end if;
+  -- 75. うすうす ⇔ なんとなく
+  select id into w1 from public.words where deck_id=d_n1 and (headword='うすうす' or reading='うすうす') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='なんとなく' or reading='なんとなく') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'うすうす(희미하게, 어렴풋이)≒なんとなく(왠지 모르게, 어쩐지)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'なんとなく(왠지 모르게, 어쩐지)≒うすうす(희미하게, 어렴풋이)', 1) on conflict do nothing;
+  end if;
+  -- 76. おびえる ⇔ 怖がる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='おびえる' or reading='おびえる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='怖がる' or reading='怖がる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'おびえる(겁을 내다)≒怖がる(무서워하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '怖がる(무서워하다)≒おびえる(겁을 내다)', 1) on conflict do nothing;
+  end if;
+  -- 77. かねがね ⇔ 以前から
+  select id into w1 from public.words where deck_id=d_n1 and (headword='かねがね' or reading='かねがね') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='以前から' or reading='以前から') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'かねがね(전부터)≒以前から(이전부터)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '以前から(이전부터)≒かねがね(전부터)', 1) on conflict do nothing;
+  end if;
+  -- 78. かろうじて ⇔ 何とか
+  select id into w1 from public.words where deck_id=d_n1 and (headword='かろうじて' or reading='かろうじて') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='何とか' or reading='何とか') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'かろうじて(겨우, 간신히)≒何とか(그럭저럭)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '何とか(그럭저럭)≒かろうじて(겨우, 간신히)', 1) on conflict do nothing;
+  end if;
+  -- 79. ささいな ⇔ 小さな
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ささいな' or reading='ささいな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='小さな' or reading='小さな') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ささいな(사소한)≒小さな(작은)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '小さな(작은)≒ささいな(사소한)', 1) on conflict do nothing;
+  end if;
+  -- 80. むっとする ⇔ 怒ったような顔をする
+  select id into w1 from public.words where deck_id=d_n1 and (headword='むっとする' or reading='むっとする') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='怒ったような顔をする' or reading='怒ったような顔をする') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'むっとする(부루퉁해지다)≒怒ったような顔をする(화가 난 듯한 얼굴을 하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '怒ったような顔をする(화가 난 듯한 얼굴을 하다)≒むっとする(부루퉁해지다)', 1) on conflict do nothing;
+  end if;
+  -- 81. ゆとり ⇔ 余裕
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ゆとり' or reading='ゆとり') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='余裕' or reading='余裕') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ゆとり(여유)≒余裕(여유)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '余裕(여유)≒ゆとり(여유)', 1) on conflict do nothing;
+  end if;
+  -- 82. わずらわしい ⇔ 面倒な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='わずらわしい' or reading='わずらわしい') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='面倒な' or reading='面倒な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'わずらわしい(번거로운)≒面倒な(귀찮은)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '面倒な(귀찮은)≒わずらわしい(번거로운)', 1) on conflict do nothing;
+  end if;
+  -- 83. 入念に ⇔ 細かく丁寧に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='入念に' or reading='入念に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='細かく丁寧に' or reading='細かく丁寧に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '入念に(꼼꼼하게, 정성들여)≒細かく丁寧に(섬세하고 정성껏)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '細かく丁寧に(섬세하고 정성껏)≒入念に(꼼꼼하게, 정성들여)', 1) on conflict do nothing;
+  end if;
+  -- 84. 戸惑う ⇔ 困る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='戸惑う' or reading='戸惑う') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='困る' or reading='困る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '戸惑う(어리둥절해하다, 당황하다)≒困る(곤란하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '困る(곤란하다)≒戸惑う(어리둥절해하다, 당황하다)', 1) on conflict do nothing;
+  end if;
+  -- 85. 抱負 ⇔ 決意
+  select id into w1 from public.words where deck_id=d_n1 and (headword='抱負' or reading='抱負') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='決意' or reading='決意') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '抱負(포부)≒決意(결의)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '決意(결의)≒抱負(포부)', 1) on conflict do nothing;
+  end if;
+  -- 86. 故意に ⇔ わざと
+  select id into w1 from public.words where deck_id=d_n1 and (headword='故意に' or reading='故意に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='わざと' or reading='わざと') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '故意に(고의로)≒わざと(일부러)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'わざと(일부러)≒故意に(고의로)', 1) on conflict do nothing;
+  end if;
+  -- 87. 照会する ⇔ 問い合わせる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='照会する' or reading='照会する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='問い合わせる' or reading='問い合わせる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '照会する(조회하다)≒問い合わせる(문의하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '問い合わせる(문의하다)≒照会する(조회하다)', 1) on conflict do nothing;
+  end if;
+  -- 88. 端的に ⇔ 明白に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='端的に' or reading='端的に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='明白に' or reading='明白に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '端的に(단적으로)≒明白に(명백하게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '明白に(명백하게)≒端的に(단적으로)', 1) on conflict do nothing;
+  end if;
+  -- 89. 粘り強く ⇔ あきらめずに
+  select id into w1 from public.words where deck_id=d_n1 and (headword='粘り強く' or reading='粘り強く') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='あきらめずに' or reading='あきらめずに') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '粘り強く(끈기 있게)≒あきらめずに(포기하지 않고)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'あきらめずに(포기하지 않고)≒粘り強く(끈기 있게)', 1) on conflict do nothing;
+  end if;
+  -- 90. 自尊心 ⇔ プライド
+  select id into w1 from public.words where deck_id=d_n1 and (headword='自尊心' or reading='自尊心') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='プライド' or reading='プライド') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '自尊心(자존심)≒プライド(프라이드)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'プライド(프라이드)≒自尊心(자존심)', 1) on conflict do nothing;
+  end if;
+  -- 91. 詫びる ⇔ 謝る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='詫びる' or reading='詫びる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='謝る' or reading='謝る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '詫びる(사과하다)≒謝る(사과하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '謝る(사과하다)≒詫びる(사과하다)', 1) on conflict do nothing;
+  end if;
+  -- 92. 難点 ⇔ 不安なところ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='難点' or reading='難点') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='不安なところ' or reading='不安なところ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '難点(난점)≒不安なところ(불안한 점)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '不安なところ(불안한 점)≒難点(난점)', 1) on conflict do nothing;
+  end if;
+  -- 93. ありありと ⇔ はっきり
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ありありと' or reading='ありありと') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='はっきり' or reading='はっきり') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ありありと(똑똑히, 뚜렷이)≒はっきり(확실히, 분명히)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'はっきり(확실히, 분명히)≒ありありと(똑똑히, 뚜렷이)', 1) on conflict do nothing;
+  end if;
+  -- 94. かたくなな ⇔ 頑固な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='かたくなな' or reading='かたくなな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='頑固な' or reading='頑固な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'かたくなな(고집이 센)≒頑固な(완고한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '頑固な(완고한)≒かたくなな(고집이 센)', 1) on conflict do nothing;
+  end if;
+  -- 95. しくじる ⇔ 失敗する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='しくじる' or reading='しくじる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='失敗する' or reading='失敗する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'しくじる(실수하다, 실패하다)≒失敗する(실패하다, 실수하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '失敗する(실패하다, 실수하다)≒しくじる(실수하다, 실패하다)', 1) on conflict do nothing;
+  end if;
+  -- 96. すみやかに ⇔ できるだけ早く
+  select id into w1 from public.words where deck_id=d_n1 and (headword='すみやかに' or reading='すみやかに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='できるだけ早く' or reading='できるだけ早く') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'すみやかに(신속히)≒できるだけ早く(가능한 한 빨리)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'できるだけ早く(가능한 한 빨리)≒すみやかに(신속히)', 1) on conflict do nothing;
+  end if;
+  -- 97. つかの間の ⇔ 短い
+  select id into w1 from public.words where deck_id=d_n1 and (headword='つかの間の' or reading='つかの間の') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='短い' or reading='短い') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'つかの間の(짧은, 잠깐 동안의)≒短い(짧은)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '短い(짧은)≒つかの間の(짧은, 잠깐 동안의)', 1) on conflict do nothing;
+  end if;
+  -- 98. めいめいに ⇔ 一人一人に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='めいめいに' or reading='めいめいに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='一人一人に' or reading='一人一人に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'めいめいに(각각에게, 각자에게)≒一人一人に(한 사람 한 사람에게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '一人一人に(한 사람 한 사람에게)≒めいめいに(각각에게, 각자에게)', 1) on conflict do nothing;
+  end if;
+  -- 99. エレガントな ⇔ 上品な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='エレガントな' or reading='エレガントな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='上品な' or reading='上品な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'エレガントな(우아한, 고상한)≒上品な(고상한, 품위 있는)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '上品な(고상한, 품위 있는)≒エレガントな(우아한, 고상한)', 1) on conflict do nothing;
+  end if;
+  -- 100. コンパクトな ⇔ 小型の
+  select id into w1 from public.words where deck_id=d_n1 and (headword='コンパクトな' or reading='コンパクトな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='小型の' or reading='小型の') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'コンパクトな(콤팩트한)≒小型の(소형인)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '小型の(소형인)≒コンパクトな(콤팩트한)', 1) on conflict do nothing;
+  end if;
+  -- 101. スライスする ⇔ 薄く切る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='スライスする' or reading='スライスする') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='薄く切る' or reading='薄く切る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'スライスする(얇게 썰다)≒薄く切る(얇게 자르다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '薄く切る(얇게 자르다)≒スライスする(얇게 썰다)', 1) on conflict do nothing;
+  end if;
+  -- 102. 克明に ⇔ 詳しく丁寧に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='克明に' or reading='克明に') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='詳しく丁寧に' or reading='詳しく丁寧に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '克明に(극명하게, 정확하고 자세하게)≒詳しく丁寧に(자세하고 꼼꼼하게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '詳しく丁寧に(자세하고 꼼꼼하게)≒克明に(극명하게, 정확하고 자세하게)', 1) on conflict do nothing;
+  end if;
+  -- 103. 妨害する ⇔ じゃまする
+  select id into w1 from public.words where deck_id=d_n1 and (headword='妨害する' or reading='妨害する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='じゃまする' or reading='じゃまする') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '妨害する(방해하다)≒じゃまする(방해하다, 훼방 놓다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'じゃまする(방해하다, 훼방 놓다)≒妨害する(방해하다)', 1) on conflict do nothing;
+  end if;
+  -- 104. 張り合う ⇔ 競い合う
+  select id into w1 from public.words where deck_id=d_n1 and (headword='張り合う' or reading='張り合う') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='競い合う' or reading='競い合う') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '張り合う(경쟁하다)≒競い合う(경합하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '競い合う(경합하다)≒張り合う(경쟁하다)', 1) on conflict do nothing;
+  end if;
+  -- 105. 手立て ⇔ 方法
+  select id into w1 from public.words where deck_id=d_n1 and (headword='手立て' or reading='手立て') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='方法' or reading='方法') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '手立て(방법, 수단)≒方法(방법)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '方法(방법)≒手立て(방법, 수단)', 1) on conflict do nothing;
+  end if;
+  -- 106. 撤回する ⇔ 取り消す
+  select id into w1 from public.words where deck_id=d_n1 and (headword='撤回する' or reading='撤回する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='取り消す' or reading='取り消す') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '撤回する(철회하다)≒取り消す(취소하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '取り消す(취소하다)≒撤回する(철회하다)', 1) on conflict do nothing;
+  end if;
+  -- 107. 極力 ⇔ できるだけ
+  select id into w1 from public.words where deck_id=d_n1 and (headword='極力' or reading='極力') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='できるだけ' or reading='できるだけ') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '極力(될 수 있는 한)≒できるだけ(가능한 한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'できるだけ(가능한 한)≒極力(될 수 있는 한)', 1) on conflict do nothing;
+  end if;
+  -- 108. 漠然としている ⇔ ぼんやりしている
+  select id into w1 from public.words where deck_id=d_n1 and (headword='漠然としている' or reading='漠然としている') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='ぼんやりしている' or reading='ぼんやりしている') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '漠然としている(막연하다)≒ぼんやりしている(분명하지 않다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'ぼんやりしている(분명하지 않다)≒漠然としている(막연하다)', 1) on conflict do nothing;
+  end if;
+  -- 109. 若干 ⇔ わずかに
+  select id into w1 from public.words where deck_id=d_n1 and (headword='若干' or reading='若干') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='わずかに' or reading='わずかに') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '若干(약간)≒わずかに(아주 조금)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'わずかに(아주 조금)≒若干(약간)', 1) on conflict do nothing;
+  end if;
+  -- 110. 返事をしぶっている ⇔ なかなか返事をしようとしない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='返事をしぶっている' or reading='返事をしぶっている') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='なかなか返事をしようとしない' or reading='なかなか返事をしようとしない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '返事をしぶっている(대답하기를 꺼리다, 주저하다)≒なかなか返事をしようとしない(좀처럼 대답하려고 하지 않다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'なかなか返事をしようとしない(좀처럼 대답하려고 하지 않다)≒返事をしぶっている(대답하기를 꺼리다, 주저하다)', 1) on conflict do nothing;
+  end if;
+  -- 111. つぶさに ⇔ 詳細に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='つぶさに' or reading='つぶさに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='詳細に' or reading='詳細に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'つぶさに(자세하게, 빠짐없이)≒詳細に(상세하게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '詳細に(상세하게)≒つぶさに(자세하게, 빠짐없이)', 1) on conflict do nothing;
+  end if;
+  -- 112. つぶやく ⇔ 小さな声で言う
+  select id into w1 from public.words where deck_id=d_n1 and (headword='つぶやく' or reading='つぶやく') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='小さな声で言う' or reading='小さな声で言う') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'つぶやく(중얼거리다)≒小さな声で言う(작은 소리로 말하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '小さな声で言う(작은 소리로 말하다)≒つぶやく(중얼거리다)', 1) on conflict do nothing;
+  end if;
+  -- 113. ばてる ⇔ 疲れる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ばてる' or reading='ばてる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='疲れる' or reading='疲れる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ばてる(지치다, 녹초가 되다)≒疲れる(피곤하다, 지치다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '疲れる(피곤하다, 지치다)≒ばてる(지치다, 녹초가 되다)', 1) on conflict do nothing;
+  end if;
+  -- 114. ぼやく ⇔ 愚痴を言う
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ぼやく' or reading='ぼやく') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='愚痴を言う' or reading='愚痴を言う') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ぼやく(투덜대다)≒愚痴を言う(불평하다, 푸념하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '愚痴を言う(불평하다, 푸념하다)≒ぼやく(투덜대다)', 1) on conflict do nothing;
+  end if;
+  -- 115. まっとうする ⇔ 完了する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='まっとうする' or reading='まっとうする') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='完了する' or reading='完了する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'まっとうする(다하다, 완수하다)≒完了する(완료하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '完了する(완료하다)≒まっとうする(다하다, 완수하다)', 1) on conflict do nothing;
+  end if;
+  -- 116. エキスパート ⇔ 専門家
+  select id into w1 from public.words where deck_id=d_n1 and (headword='エキスパート' or reading='エキスパート') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='専門家' or reading='専門家') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'エキスパート(전문가)≒専門家(전문가)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '専門家(전문가)≒エキスパート(전문가)', 1) on conflict do nothing;
+  end if;
+  -- 117. 不審な ⇔ 怪しい
+  select id into w1 from public.words where deck_id=d_n1 and (headword='不審な' or reading='不審な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='怪しい' or reading='怪しい') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '不審な(수상한, 의심스러운, 미심쩍은)≒怪しい(수상한, 의심스러운)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '怪しい(수상한, 의심스러운)≒不審な(수상한, 의심스러운, 미심쩍은)', 1) on conflict do nothing;
+  end if;
+  -- 118. 凝視する ⇔ じっと見る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='凝視する' or reading='凝視する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='じっと見る' or reading='じっと見る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '凝視する(응시하다)≒じっと見る(가만히 보다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'じっと見る(가만히 보다)≒凝視する(응시하다)', 1) on conflict do nothing;
+  end if;
+  -- 119. 吟味 ⇔ 検討
+  select id into w1 from public.words where deck_id=d_n1 and (headword='吟味' or reading='吟味') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='検討' or reading='検討') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '吟味(음미, 자세히 조사함)≒検討(검토)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '検討(검토)≒吟味(음미, 자세히 조사함)', 1) on conflict do nothing;
+  end if;
+  -- 120. 寡黙な ⇔ 口数が少ない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='寡黙な' or reading='寡黙な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='口数が少ない' or reading='口数が少ない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '寡黙な(과묵한)≒口数が少ない(말수가 적은)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '口数が少ない(말수가 적은)≒寡黙な(과묵한)', 1) on conflict do nothing;
+  end if;
+  -- 121. 打ち込む ⇔ 熱中する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='打ち込む' or reading='打ち込む') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='熱中する' or reading='熱中する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '打ち込む(열중하다, 박아넣다)≒熱中する(열중하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '熱中する(열중하다)≒打ち込む(열중하다, 박아넣다)', 1) on conflict do nothing;
+  end if;
+  -- 122. 架空 ⇔ 想像
+  select id into w1 from public.words where deck_id=d_n1 and (headword='架空' or reading='架空') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='想像' or reading='想像') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '架空(가공)≒想像(상상)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '想像(상상)≒架空(가공)', 1) on conflict do nothing;
+  end if;
+  -- 123. 異例の ⇔ 珍しい
+  select id into w1 from public.words where deck_id=d_n1 and (headword='異例の' or reading='異例の') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='珍しい' or reading='珍しい') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '異例の(이례인)≒珍しい(드문, 흔히 없는)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '珍しい(드문, 흔히 없는)≒異例の(이례인)', 1) on conflict do nothing;
+  end if;
+  -- 124. 脈絡 ⇔ つながり
+  select id into w1 from public.words where deck_id=d_n1 and (headword='脈絡' or reading='脈絡') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='つながり' or reading='つながり') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '脈絡(맥락, 연관, 관련)≒つながり(연계, 관계, 연결)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'つながり(연계, 관계, 연결)≒脈絡(맥락, 연관, 관련)', 1) on conflict do nothing;
+  end if;
+  -- 125. いくつか ⇔ 若干
+  select id into w1 from public.words where deck_id=d_n1 and (headword='いくつか' or reading='いくつか') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='若干' or reading='若干') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'いくつか(몇 개쯤, 조금)≒若干(약간)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '若干(약간)≒いくつか(몇 개쯤, 조금)', 1) on conflict do nothing;
+  end if;
+  -- 126. うやむやに ⇔ あいまいに
+  select id into w1 from public.words where deck_id=d_n1 and (headword='うやむやに' or reading='うやむやに') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='あいまいに' or reading='あいまいに') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'うやむやに(흐지부지하게, 애매하게)≒あいまいに(애매하게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'あいまいに(애매하게)≒うやむやに(흐지부지하게, 애매하게)', 1) on conflict do nothing;
+  end if;
+  -- 127. くつろぐ ⇔ ゆっくりする
+  select id into w1 from public.words where deck_id=d_n1 and (headword='くつろぐ' or reading='くつろぐ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='ゆっくりする' or reading='ゆっくりする') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'くつろぐ(느긋이, 편하게 쉬다)≒ゆっくりする(편하게 쉬다, 느긋이 시간을 보내다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'ゆっくりする(편하게 쉬다, 느긋이 시간을 보내다)≒くつろぐ(느긋이, 편하게 쉬다)', 1) on conflict do nothing;
+  end if;
+  -- 128. ずれ込む ⇔ 遅くなる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ずれ込む' or reading='ずれ込む') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='遅くなる' or reading='遅くなる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ずれ込む(늦춰지다, 미루어지다)≒遅くなる(늦어지다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '遅くなる(늦어지다)≒ずれ込む(늦춰지다, 미루어지다)', 1) on conflict do nothing;
+  end if;
+  -- 129. てきぱきと ⇔ 早く正確に
+  select id into w1 from public.words where deck_id=d_n1 and (headword='てきぱきと' or reading='てきぱきと') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='早く正確に' or reading='早く正確に') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'てきぱきと(일을 솜씨 좋게 처리하는 모습, 척척)≒早く正確に(빠르고 정확하게)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '早く正確に(빠르고 정확하게)≒てきぱきと(일을 솜씨 좋게 처리하는 모습, 척척)', 1) on conflict do nothing;
+  end if;
+  -- 130. ろくに(～ない) ⇔ 大して(～ない)
+  select id into w1 from public.words where deck_id=d_n1 and (headword='ろくに(～ない)' or reading='ろくに(～ない)') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='大して(～ない)' or reading='大して(～ない)') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'ろくに(～ない)(제대로, 변변히(~않다))≒大して(～ない)(그다지, 별로(~않다))', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '大して(～ない)(그다지, 별로(~않다))≒ろくに(～ない)(제대로, 변변히(~않다))', 1) on conflict do nothing;
+  end if;
+  -- 131. リスク ⇔ 危険
+  select id into w1 from public.words where deck_id=d_n1 and (headword='リスク' or reading='リスク') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='危険' or reading='危険') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'リスク(리스크, 위험)≒危険(위험)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '危険(위험)≒リスク(리스크, 위험)', 1) on conflict do nothing;
+  end if;
+  -- 132. 出馬する ⇔ 選挙に出る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='出馬する' or reading='出馬する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='選挙に出る' or reading='選挙に出る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '出馬する(출마하다)≒選挙に出る(선거에 나가다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '選挙に出る(선거에 나가다)≒出馬する(출마하다)', 1) on conflict do nothing;
+  end if;
+  -- 133. 寄与 ⇔ 貢献
+  select id into w1 from public.words where deck_id=d_n1 and (headword='寄与' or reading='寄与') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='貢献' or reading='貢献') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '寄与(기여)≒貢献(공헌)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '貢献(공헌)≒寄与(기여)', 1) on conflict do nothing;
+  end if;
+  -- 134. 手分け ⇔ 分担
+  select id into w1 from public.words where deck_id=d_n1 and (headword='手分け' or reading='手分け') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='分担' or reading='分担') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '手分け(분담, 나눔)≒分担(분담)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '分担(분담)≒手分け(분담, 나눔)', 1) on conflict do nothing;
+  end if;
+  -- 135. 気ままな ⇔ 自由な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='気ままな' or reading='気ままな') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='自由な' or reading='自由な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '気ままな(제 마음대로인)≒自由な(자유로운)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '自由な(자유로운)≒気ままな(제 마음대로인)', 1) on conflict do nothing;
+  end if;
+  -- 136. 紛糾する ⇔ 混乱する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='紛糾する' or reading='紛糾する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='混乱する' or reading='混乱する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '紛糾する(분규하다, 분규를 겪다)≒混乱する(혼란스럽다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '混乱する(혼란스럽다)≒紛糾する(분규하다, 분규를 겪다)', 1) on conflict do nothing;
+  end if;
+  -- 137. 絶賛する ⇔ 非常に素晴らしいとほめる
+  select id into w1 from public.words where deck_id=d_n1 and (headword='絶賛する' or reading='絶賛する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='非常に素晴らしいとほめる' or reading='非常に素晴らしいとほめる') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '絶賛する(절찬하다, 극구 칭찬하다)≒非常に素晴らしいとほめる(매우 훌륭하다고 칭찬하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '非常に素晴らしいとほめる(매우 훌륭하다고 칭찬하다)≒絶賛する(절찬하다, 극구 칭찬하다)', 1) on conflict do nothing;
+  end if;
+  -- 138. 閉口する ⇔ 困る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='閉口する' or reading='閉口する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='困る' or reading='困る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '閉口する(난처하다, 기막히다)≒困る(곤란하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '困る(곤란하다)≒閉口する(난처하다, 기막히다)', 1) on conflict do nothing;
+  end if;
+  -- 139. あどけない ⇔ 無邪気な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='あどけない' or reading='あどけない') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='無邪気な' or reading='無邪気な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'あどけない(천진난만하다)≒無邪気な(천진난만한, 악의 없는)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '無邪気な(천진난만한, 악의 없는)≒あどけない(천진난만하다)', 1) on conflict do nothing;
+  end if;
+  -- 140. はかどる ⇔ 順調に進む
+  select id into w1 from public.words where deck_id=d_n1 and (headword='はかどる' or reading='はかどる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='順調に進む' or reading='順調に進む') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'はかどる(일이 잘 되고 있다, 진척되다)≒順調に進む(순조롭게 진행되다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '順調に進む(순조롭게 진행되다)≒はかどる(일이 잘 되고 있다, 진척되다)', 1) on conflict do nothing;
+  end if;
+  -- 141. やつれる ⇔ やせ衰える
+  select id into w1 from public.words where deck_id=d_n1 and (headword='やつれる' or reading='やつれる') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='やせ衰える' or reading='やせ衰える') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'やつれる(여위다, 수척해지다)≒やせ衰える(야위어 쇠약해지다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'やせ衰える(야위어 쇠약해지다)≒やつれる(여위다, 수척해지다)', 1) on conflict do nothing;
+  end if;
+  -- 142. わずらわしい ⇔ 面倒な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='わずらわしい' or reading='わずらわしい') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='面倒な' or reading='面倒な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'わずらわしい(귀찮다, 성가시다, 번거롭다)≒面倒な(귀찮은, 성가신)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '面倒な(귀찮은, 성가신)≒わずらわしい(귀찮다, 성가시다, 번거롭다)', 1) on conflict do nothing;
+  end if;
+  -- 143. スポット ⇔ 場所
+  select id into w1 from public.words where deck_id=d_n1 and (headword='スポット' or reading='スポット') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='場所' or reading='場所') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'スポット(스폿, 장소)≒場所(장소)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '場所(장소)≒スポット(스폿, 장소)', 1) on conflict do nothing;
+  end if;
+  -- 144. 不慮の ⇔ 思いがけない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='不慮の' or reading='不慮の') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='思いがけない' or reading='思いがけない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '不慮の(뜻밖의, 예상 밖의, 불의의)≒思いがけない(뜻밖이다, 생각지 못하다, 예상 밖이다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '思いがけない(뜻밖이다, 생각지 못하다, 예상 밖이다)≒不慮の(뜻밖의, 예상 밖의, 불의의)', 1) on conflict do nothing;
+  end if;
+  -- 145. 奮闘する ⇔ 必死に頑張る
+  select id into w1 from public.words where deck_id=d_n1 and (headword='奮闘する' or reading='奮闘する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='必死に頑張る' or reading='必死に頑張る') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '奮闘する(분투하다)≒必死に頑張る(필사적으로 분발하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '必死に頑張る(필사적으로 분발하다)≒奮闘する(분투하다)', 1) on conflict do nothing;
+  end if;
+  -- 146. 尺度 ⇔ 基準
+  select id into w1 from public.words where deck_id=d_n1 and (headword='尺度' or reading='尺度') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='基準' or reading='基準') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '尺度(척도, 기준)≒基準(기준)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '基準(기준)≒尺度(척도, 기준)', 1) on conflict do nothing;
+  end if;
+  -- 147. 懸念する ⇔ 心配する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='懸念する' or reading='懸念する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='心配する' or reading='心配する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '懸念する(걱정하다, 우려하다)≒心配する(걱정하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '心配する(걱정하다)≒懸念する(걱정하다, 우려하다)', 1) on conflict do nothing;
+  end if;
+  -- 148. 拮抗する ⇔ 差がない
+  select id into w1 from public.words where deck_id=d_n1 and (headword='拮抗する' or reading='拮抗する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='差がない' or reading='差がない') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '拮抗する(팽팽하다, 우열을 가릴 수 없다)≒差がない(차이가 없다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '差がない(차이가 없다)≒拮抗する(팽팽하다, 우열을 가릴 수 없다)', 1) on conflict do nothing;
+  end if;
+  -- 149. 根こそぎ ⇔ すべて
+  select id into w1 from public.words where deck_id=d_n1 and (headword='根こそぎ' or reading='根こそぎ') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='すべて' or reading='すべて') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '根こそぎ(전부, 모조리, 몽땅)≒すべて(모두)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'すべて(모두)≒根こそぎ(전부, 모조리, 몽땅)', 1) on conflict do nothing;
+  end if;
+  -- 150. 没頭する ⇔ 熱中する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='没頭する' or reading='没頭する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='熱中する' or reading='熱中する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '没頭する(몰두하다)≒熱中する(열중하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '熱中する(열중하다)≒没頭する(몰두하다)', 1) on conflict do nothing;
+  end if;
+  -- 151. 温和な ⇔ おだやかな
+  select id into w1 from public.words where deck_id=d_n1 and (headword='温和な' or reading='温和な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='おだやかな' or reading='おだやかな') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '温和な(온화한)≒おだやかな(온화한, 평온한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'おだやかな(온화한, 평온한)≒温和な(온화한)', 1) on conflict do nothing;
+  end if;
+  -- 152. 肝心な ⇔ 重要な
+  select id into w1 from public.words where deck_id=d_n1 and (headword='肝心な' or reading='肝心な') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='重要な' or reading='重要な') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '肝心な(가장 중요한)≒重要な(중요한)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '重要な(중요한)≒肝心な(가장 중요한)', 1) on conflict do nothing;
+  end if;
+  -- 153. 調達する ⇔ 用意する
+  select id into w1 from public.words where deck_id=d_n1 and (headword='調達する' or reading='調達する') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='用意する' or reading='用意する') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '調達する(조달하다)≒用意する(준비하다)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '用意する(준비하다)≒調達する(조달하다)', 1) on conflict do nothing;
+  end if;
+  -- 154. 風当たり ⇔ 批判
+  select id into w1 from public.words where deck_id=d_n1 and (headword='風当たり' or reading='風当たり') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='批判' or reading='批判') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '風当たり(비난)≒批判(비판)', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '批判(비판)≒風当たり(비난)', 1) on conflict do nothing;
+  end if;
+
+  -- ==== 문법 ＝ 페어 ====
+  -- G1. ～んなら ⇔ ～のなら
+  select id into w1 from public.words where deck_id=d_n1 and (headword='～んなら' or reading='～んなら') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='～のなら' or reading='～のなら') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '～んなら(＝のなら) 격식체 가정 단축', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '～んなら(＝のなら) 격식체 가정 단축', 1) on conflict do nothing;
+  end if;
+  -- G2. ～って ⇔ ～という
+  select id into w1 from public.words where deck_id=d_n1 and (headword='～って' or reading='～って') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='～という' or reading='～という') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '～って(＝という) 회화체 인용 단축', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '～って(＝という) 회화체 인용 단축', 1) on conflict do nothing;
+  end if;
+  -- G3. ～と ⇔ ～でも
+  select id into w1 from public.words where deck_id=d_n1 and (headword='～と' or reading='～と') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='～でも' or reading='～でも') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '～と(＝でも) 양보 가정 단축', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '～と(＝でも) 양보 가정 단축', 1) on conflict do nothing;
+  end if;
+  -- G4. ～には ⇔ ～にとっては
+  select id into w1 from public.words where deck_id=d_n1 and (headword='～には' or reading='～には') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='～にとっては' or reading='～にとっては') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '～には(＝にとっては) 대상 한정 단축', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '～には(＝にとっては) 대상 한정 단축', 1) on conflict do nothing;
+  end if;
+  -- G5. ～との ⇔ ～という
+  select id into w1 from public.words where deck_id=d_n1 and (headword='～との' or reading='～との') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='～という' or reading='～という') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', '～との(＝という) 인용 격식체 단축', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', '～との(＝という) 인용 격식체 단축', 1) on conflict do nothing;
+  end if;
+  -- G6. どうだって ⇔ どうでも
+  select id into w1 from public.words where deck_id=d_n1 and (headword='どうだって' or reading='どうだって') limit 1;
+  select id into w2 from public.words where deck_id=d_n1 and (headword='どうでも' or reading='どうでも') limit 1;
+  if w1 is not null and w2 is not null and w1 <> w2 then
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w1, w2, 'synonym', 'どうだって(＝どうでも) 회화체 단축', 1) on conflict do nothing;
+    insert into public.word_relations (word_id, related_word_id, relation_type, explanation, order_index) values
+      (w2, w1, 'synonym', 'どうだって(＝どうでも) 회화체 단축', 1) on conflict do nothing;
+  end if;
 end $$;
