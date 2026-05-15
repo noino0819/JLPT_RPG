@@ -1282,11 +1282,11 @@ begin
     (w, '逸材を適した社員を採用した。', '뛰어난 사원을 채용했다.', 2);
 
   -- 181. 会心
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '会心', 'かいしん', '회심, 만족스러운 결과', '会(모일 회): 이쟈을 차고 린곳에 모임 → 함께
-心(마음 심): 심장 모양 → 마음·뜻', '명사', 181, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '会心', 'かいしん', '회심, 만족스러운 결과', '会(모일 회): 사람들이 한곳에 모이는 모양
+心(마음 심): 심장 모양 → 마음·뜻 → 마음에 꼭 맞음', '명사', 181, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '会心の作品が仏さをようやく完成した。', '만족스러운 작품이 드디어 완성되었다.', 1),
-    (w, '会心の笑みを浮かべた。', '회심의 미소를 뗠올렸다.', 2);
+    (w, '会心の作品をようやく完成した。', '만족스러운 작품을 드디어 완성했다.', 1),
+    (w, '会心の笑みを浮かべた。', '회심의 미소를 띠었다.', 2);
 
   -- 182. 実情
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '実情', 'じつじょう', '실정, 실제 사정', '実(열매 실): 宀(집) + 貨(꾰을 관) → 집에 재물이 실제로 있음
@@ -2355,10 +2355,11 @@ begin
     (w, 'つくづく誓んだ。', '절실히 느꼈다.', 2);
 
   -- 344. 解れる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '解れる', 'ほぐれる', '풌리다, 괴어 느곳해지다', '解(풀 해)', '동사', 344, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '解れる', 'ほぐれる', '풀리다, 누그러지다', '解(풀 해): 角(뿔)+刀(칼)+牛(소) → 뿔과 살을 분리하여 풀어냄
+자동사형 れる이 붙어 ''풀어지다''', '동사', 344, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '緊張が解れる。', '긴장이 풌린다.', 1),
-    (w, '骪のこりが解れた。', '어깨 결림이 풌렸다.', 2);
+    (w, '緊張が解れる。', '긴장이 풀린다.', 1),
+    (w, '肩のこりが解れた。', '어깨 결림이 풀렸다.', 2);
 
   -- 345. 根底
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '根底', 'こんてい', '근저', '根(뿌리 근): 木+嵮 → 나무의 뿌리
@@ -2613,8 +2614,8 @@ begin
     (w, 'しきりに評価されている。', '자꾸 평가받고 있다.', 2);
 
   -- 384. 触発される
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '触発される', 'しょくはつされる', '촉발되다', '触(늿을 촉): 角+蜀 → 뿔으로 차·돫
-発(펼 발)', '동사', 384, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '触発される', 'しょくはつされる', '촉발되다, 자극받다', '触(닿을 촉): 角(뿔)+蜀 → 뿔이 닿아 부딪침
+発(필 발): 활을 쏘아 보냄 → 어떤 자극으로 마음·행동이 일어남', '동사', 384, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '他の作品に触発された。', '다른 작품에 자극받았다.', 1),
     (w, 'その話に触発されて始めた。', '그 이야기에 자극을 받아 시작했다.', 2);
@@ -2996,11 +2997,11 @@ begin
     (w, 'むっとした表情を見せた。', '화난 표정을 지었다.', 2);
 
   -- 443. 決意
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '決意', 'けつい', '결의', '決(결정 결): 氵+夬
-意(뜻 의)', '명사', 443, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '決意', 'けつい', '결의', '決(결정할 결): 氵(물)+夬 → 물을 갈라 정함
+意(뜻 의): 音(소리)+心 → 마음의 소리·생각', '명사', 443, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '固い決意を誘めた。', '굳은 결의를 입어주어너.', 1),
-    (w, '決意を社社した。', '결의를 풌회했다.', 2);
+    (w, '固い決意を固めた。', '굳은 결의를 다졌다.', 1),
+    (w, '決意を撤回した。', '결의를 철회했다.', 2);
 
   -- 444. ゆとり
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, NULL, 'ゆとり', '여유, 여유로움', NULL, '명사', 444, array[]::text[]) returning id into w;
@@ -3530,10 +3531,10 @@ begin
     (w, '不服そうな顔だ。', '불만스러운 얼굴이다.', 2);
 
   -- 525. ほどける
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, NULL, 'ほどける', '풌리다', NULL, '동사', 525, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, NULL, 'ほどける', '풀리다, 풀어지다', NULL, '동사', 525, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '靴のひもがほどけた。', '신발끈이 풀렸다.', 1),
-    (w, 'パッケージがほどけた。', '포장이 풌렸다.', 2);
+    (w, 'パッケージがほどけた。', '포장이 풀렸다.', 2);
 
   -- 526. 見失う
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '見失う', 'みうしなう', '놓치다, 시야에서 놓치다', '見(볼 견)
@@ -3596,11 +3597,11 @@ begin
     (w, '豊作の見込みだ。', '풍작의 전망이다.', 2);
 
   -- 535. 無造作に
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '無造作に', 'むぞうさに', '무조건 하게, 대수롭게', '無: 없음
-造作: 조작', '부사', 535, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '無造作に', 'むぞうさに', '아무렇게나, 거리낌 없이', '無(없을 무): 없음
+造作(조작): 일부러 손을 댐 → 손대지 않은 듯 자연스럽게/거리낌 없이', '부사', 535, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '無造作に骪を結ぶ。', '대수롭게 머리를 묶는다.', 1),
-    (w, '無造作に並べた。', '대수롭게 늘어놓았다.', 2);
+    (w, '無造作に髪を結ぶ。', '아무렇게나 머리를 묶는다.', 1),
+    (w, '無造作に並べた。', '아무렇게나 늘어놓았다.', 2);
 
   -- 536. 免除
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '免除', 'めんじょ', '면제', '免(면할 면)
@@ -3792,11 +3793,11 @@ begin
     (w, '重大な意味を帯びる。', '중대한 의미를 띄다.', 2);
 
   -- 564. 思い詰める
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '思い詰める', 'おもいつめる', '생각에 골뚤하다', '思(생각 사)
-詰(막을 휗)', '동사', 564, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '思い詰める', 'おもいつめる', '깊이 생각하다, 골똘히 빠지다', '思(생각 사): 마음으로 떠올림
+詰(막힐 힐): 안에 막혀 응어리짐 → 생각이 한곳에 막혀 깊이 빠짐', '동사', 564, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ひとりで思い詰めた。', '혼자서 생각에 골두했다.', 1),
-    (w, '思い詰めて限界に達した。', '생각에 잔넘어 한계에 달했다.', 2);
+    (w, 'ひとりで思い詰めた。', '혼자서 깊이 생각에 잠겼다.', 1),
+    (w, '思い詰めて限界に達した。', '골똘히 빠져 한계에 달했다.', 2);
 
   -- 565. 軌道
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '軌道', 'きどう', '굤도', '軌(바퀴자국 굤)
@@ -3960,10 +3961,11 @@ begin
     (w, '緊密な連携が必要だ。', '긴밀한 협력이 필요하다.', 2);
 
   -- 589. 遂げる
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '遂げる', 'とげる', '이루다, 이결°〉', '遂(드디어 수)', '동사', 589, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '遂げる', 'とげる', '이루다, 끝내 달성하다', '遂(드디어 수): 辶(가다)+㒸 → 끝까지 가서 이루어냄
+타동사로 ''결국 해내다''의 의미', '동사', 589, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '目的を遂げた。', '목적을 이뤄냈다.', 1),
-    (w, '骨骪の達成を遂げる。', '큰 성과를 이루어낸다.', 2);
+    (w, '目的を遂げた。', '목적을 이루었다.', 1),
+    (w, '長年の夢を遂げる。', '오랜 꿈을 이루어 낸다.', 2);
 
   -- 590. 巧みだ
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '巧みだ', 'たくみだ', '능숙하다', '巧(재주 교)', 'な형용사', 590, array[]::text[]) returning id into w;
@@ -4179,11 +4181,11 @@ begin
     (w, '本場の職人が作る。', '원조의 장인이 만든다.', 2);
 
   -- 622. 結末
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '結末', 'けつまつ', '결말', '結(맺을 결)
-末(끝 말)', '명사', 622, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '結末', 'けつまつ', '결말', '結(맺을 결): 糸+吉 → 실을 매듭지음
+末(끝 말): 나무 끝에 가로획을 그어 끝을 가리킴', '명사', 622, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '事件の結末を見守る。', '사건의 결말을 지켜본다.', 1),
-    (w, '骨骪とした結末だ。', '자초지종한 결말이다.', 2);
+    (w, '意外な結末だった。', '뜻밖의 결말이었다.', 2);
 
   -- 623. そそる
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, NULL, 'そそる', '식욕·흥미를 돋구다', NULL, '동사', 623, array[]::text[]) returning id into w;
@@ -4585,11 +4587,12 @@ begin
     (w, 'スケジュールを組む。', '스케줄을 짜다.', 1),
     (w, 'スケジュールが詰まっている。', '스케줄이 빽빽하다.', 2);
 
-  -- 683. 勣る
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '勣る', 'まさる', '뛰어나다, 끭주다', '勣(넓은 우)', '동사', 683, array[]::text[]) returning id into w;
+  -- 683. 勝る
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '勝る', 'まさる', '뛰어나다, 능가하다', '勝(이길 승): 朕(나)+力(힘) → 힘으로 이김
+자동사로 비교 대상보다 더 우수함', '동사', 683, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '品質にて勣るものはない。', '품질에 있어 버금가는 것이 없다.', 1),
-    (w, '他の起業に勣る。', '다른 기업에 뚤지 않는다.', 2);
+    (w, '品質では他社に勝るものはない。', '품질에 있어 타사보다 뛰어난 것이 없다.', 1),
+    (w, '他の企業に勝る。', '다른 기업보다 뛰어나다.', 2);
 
   -- 684. 幼い
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '幼い', 'おさない', '어리다, 유치하다', '幼(어릴 유)', 'い형용사', 684, array[]::text[]) returning id into w;
@@ -4732,8 +4735,8 @@ begin
     (w, '体験談を語る。', '체험담을 말한다.', 2);
 
   -- 705. 公表
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '公表', 'こうひょう', '공표', '公(공평할 공)
-表(갉 표)', '명사', 705, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '公表', 'こうひょう', '공표', '公(공평할 공): 八(가르다)+厶(사사로움) → 사사로움을 가른 공정함
+表(겉 표): 衣(옷)+毛 → 겉으로 드러냄', '명사', 705, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '結果が公表された。', '결과가 공표되었다.', 1),
     (w, '今朝公表された。', '오늘 아침 공표되었다.', 2);
@@ -4846,8 +4849,8 @@ begin
     (w, '吃般にしろよ。', '적당히 해라.', 2);
 
   -- 722. 表現
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '表現', 'ひょうげん', '표현', '表(갉 표)
-現(나타날 현)', '명사', 722, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '表現', 'ひょうげん', '표현', '表(겉 표): 衣(옷)+毛 → 겉으로 드러냄
+現(나타날 현): 玉(구슬)+見 → 보이게 함', '명사', 722, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '感情を表現する。', '감정을 표현한다.', 1),
     (w, '言語表現が豊かだ。', '언어 표현이 풍부하다.', 2);
@@ -4900,8 +4903,8 @@ begin
     (w, '昨日のことを思い出した。', '어제 일을 떠올렸다.', 2);
 
   -- 730. 表面
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '表面', 'ひょうめん', '표면', '表(갉 표)
-面(냭 면)', '명사', 730, array[]::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '表面', 'ひょうめん', '표면', '表(겉 표): 衣(옷)+毛 → 겉으로 드러냄
+面(낯 면): 머리 모양 안에 눈(目)을 강조 → 얼굴/표면', '명사', 730, array[]::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '表面をコートする。', '표면을 코팅한다.', 1),
     (w, '表面上は平静だ。', '표면상으로는 평온하다.', 2);
@@ -5423,10 +5426,10 @@ begin
     (w, '苦手意識を克服する。', '아김 의식을 극복한다.', 2);
 
   -- 813. 披露する
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '披露する', 'ひろうする', '피로하다, 공개하다', '披(머리권펼 피): 돌릴이며 그읽
-露(이슬 로): 숨기지 않고 드러냄', '동사', 813, array['pdf_extracted']::text[]) returning id into w;
+  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '披露する', 'ひろうする', '피로하다, 공개하다', '披(헤칠 피): 扌(손)+皮 → 손으로 헤쳐 펼침
+露(이슬 로): 雨+路 → 길에 비처럼 드러남 → 드러내 보임', '동사', 813, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '手才を披露した。', '소쟈을 공개했다.', 1),
+    (w, '腕前を披露した。', '솜씨를 공개했다.', 1),
     (w, '新作を披露する。', '신작을 공개한다.', 2);
 
   -- 814. 貢献する
