@@ -2842,13 +2842,6 @@ begin
     (w, '両チームの実力は互角だ。', '두 팀의 실력은 호각이다.', 1),
     (w, '互角の勝負を繰り広げた。', '호각의 승부를 벌였다.', 2);
 
-  -- 419. 誇張
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '誇張', 'こちょう', '과장', '誇(자랑할 과): 言+夺
-張(베풀 장)', '명사', 419, array[]::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '誇張して話す。', '과장해서 말한다.', 1),
-    (w, '誇張表現を領ける。', '과장 표현을 피한다.', 2);
-
   -- 420. 錯覚する
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '錯覚する', 'さっかくする', '착각하다', '錯(섮일 착): 金+昔
 覚(깨달을 각)', '동사', 420, array[]::text[]) returning id into w;
@@ -3227,13 +3220,6 @@ begin
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'ろくに休めない。', '제대로 쉬지 못한다.', 1),
     (w, 'ろくに読まずに提出した。', '제대로 읽지도 않고 제출했다.', 2);
-
-  -- 478. 貢献
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '貢献', 'こうけん', '공헌', '貢(바칠 공): 工+貝 → 재물을 바침
-献(드릴 헌)', '명사', 478, array[]::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '社会に貢献した。', '사회에 공헌했다.', 1),
-    (w, '学問に貢献する研究だ。', '학문에 공헌하는 연구다.', 2);
 
   -- 479. 絶賛する
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '絶賛する', 'ぜっさんする', '극찬하다', '絶(끊을 절)
@@ -5030,13 +5016,6 @@ begin
     (w, 'ケーキを焼いた。', '케이크를 굽었다.', 1),
     (w, 'バースデーケーキを買う。', '생일 케이크를 산다.', 2);
 
-  -- 747. 記録
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '記録', 'きろく', '기록·자료', '記(기록할 기)
-録(기록할 록)', '명사', 747, array[]::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '生活の記録を付ける。', '생활 기록을 쓴다.', 1),
-    (w, '会議の記録を取る。', '회의 기록을 쓴다.', 2);
-
   -- 748. 身体
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '身体', 'しんたい', '신체', '身(모 신)
 体(모 체)', '명사', 748, array[]::text[]) returning id into w;
@@ -5408,20 +5387,6 @@ begin
     (w, 'その規模さの中にいる。', '그 떠들석 속에 있다.', 1),
     (w, '規模さを起こした。', '떠들석을 만들었다.', 2);
 
-  -- 806. 締める
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '締める', 'しめる', '매다, 조이다', '締(묶을 체): 糸(실)+井(우물) → 실을 단단히 묶음
-紐(끈·끜)を締める 형태로 자주 쓰임', '동사', 806, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '紐をしっかり締める。', '끌을 단단히 매다.', 1),
-    (w, 'ネクタイを締めた。', '넷타이를 매었다.', 2);
-
-  -- 807. 心地よい
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '心地よい', 'ここちよい', '기분 좋다, 상쫔하다', '心(마음 심)
-地(땅 지): 마음의 자리 → 심정·기분을 나타냄', 'い형용사', 807, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '春の風が心地よい。', '봄바람이 상쫔하다.', 1),
-    (w, '心地よい音楽が流れる。', '기분 좋은 음악이 흐른다.', 2);
-
   -- 808. 踏襲する
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '踏襲する', 'とうしゅうする', '답습하다', '踏(밟을 답): 이전 자꿨를 이어받음
 襲(엄습할 습): 그대로 계승함을 의미', '동사', 808, array['pdf_extracted']::text[]) returning id into w;
@@ -5540,13 +5505,6 @@ begin
     (w, 'めきめき上達している。', '눈에 띄게 실력이 늘고 있다.', 1),
     (w, '成績がめきめき伸びた。', '성적이 보는 대로 올랐다.', 2);
 
-  -- 825. 目先
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '目先', 'めさき', '눈앞, 당장', '目(눈 목): 시아 범위
-先(먼저 선): 더 앞·먼저 → 눈바로 앞', '명사', 825, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '目先の利益にとらわれるな。', '눈앞의 이익에 잡히지 마라.', 1),
-    (w, '目先の問題を解決する。', '당장의 문제를 해결한다.', 2);
-
   -- 826. かなう
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, 'かなう', 'かなう', '이루어지다 (꿈이)', '叶う: 마음에 드는 대로 되다
 〔·望·꿈이 이루어진다〕는 뜯으로 관용적으로 쓰임', '동사', 826, array['pdf_extracted']::text[]) returning id into w;
@@ -5561,68 +5519,12 @@ begin
     (w, '仕事のブランクが長い。', '일의 공백기간이 길다.', 1),
     (w, 'ブランクを埋める。', '공백을 메운다.', 2);
 
-  -- 828. 優位
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '優位', 'ゆうい', '우위, 좀 더 뛰어난 위치', '優(넘친 우): 다른 것보다 뛰어남
-位(자리 위): 위치·등급', '명사', 828, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '交渉で優位に立つ。', '협상에서 우위에 서다.', 1),
-    (w, '優位を保つ。', '우위를 유지한다.', 2);
-
-  -- 829. 抱え込む
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '抱え込む', 'かかえこむ', '끌어안다, 떠맡다', '抱える(안다) + 込む(안으로 넓다)
-결합동사, 혼자서 지나치게 안아들임을 의미', '동사', 829, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '仕事を一人で抱え込む。', '일을 혼자 떠맡는다.', 1),
-    (w, '悩みを抱え込まないで。', '고민을 혼자 끌어안지 마.', 2);
-
   -- 830. 工面
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '工面', 'くめん', '자금 마련', '工(장인 공): 손으로 일을 함
 面(낮 면): 만난 상황 → 애써 구말하고 장소함', '명사', 830, array['pdf_extracted']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '学費を工面する。', '학비를 마련한다.', 1),
     (w, 'やっと資金の工面がついた。', '결국 자금 마련이 되었다.', 2);
-
-  -- 831. 思い詰める
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '思い詰める', 'おもいつめる', '골롱히 생각하다, 고민하다', '思う(생각하다) + 詰める(채우다)
-골다고 골다고 생각해서 마음을 꿉 채운다', '동사', 831, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'そんなに思い詰めないで。', '그렇게 골롱히 생각하지 마.', 1),
-    (w, '思い詰めた表情をしている。', '고민에 차 있는 표정이다.', 2);
-
-  -- 832. 食い違う
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '食い違う', 'くいちがう', '엇갈리다, 일치하지 않다', '食う(따도 못하고 헛갈리다) + 違う(다르다)
-맞물림이 엄 게 돌아 서로 어금나가는 상태', '동사', 832, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '意見が食い違う。', '의견이 엇갈린다.', 1),
-    (w, '証言が食い違っている。', '증언이 서로 엇갈리고 있다.', 2);
-
-  -- 833. 発足
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '発足', 'ほっそく', '발족', '発(피렴 발): 일을 시작함
-足(발 족): 걸음·출발 → 조직·활동이 시작됨', '명사', 833, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '新チームが発足した。', '새 팀이 발족했다.', 1),
-    (w, '委員会の発足式が行われた。', '위원회 발족식이 열렸다.', 2);
-
-  -- 834. 見落とす
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '見落とす', 'みおとす', '간과하다, 못 보고 넘기다', '見る(보다) + 落とす(떨어뜨리다)
-보는 중에 떨굼 떨괓 둔 안 채 지나칩', '동사', 834, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ミスを見落とした。', '실수를 간과했다.', 1),
-    (w, '重要な黒点を見落とさない。', '중요한 항목을 놓치지 않는다.', 2);
-
-  -- 835. 乗り出す
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '乗り出す', 'のりだす', '적극적으로 나서다, 착수하다', '乗る(타다) + 出す(내보내다)
-부극·수레　등에 올라타 행동을 개시함', '동사', 835, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '新事業に乗り出す。', '신사업에 착수한다.', 1),
-    (w, '会社を挑めるため誤を招いた。調査に乗り出した。', '조사에 나섬다.', 2);
-
-  -- 836. 備え付ける
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '備え付ける', 'そなえつける', '설치하다, 구비해 두다', '備える(구비하다) + 付ける(붙이다)
-구비해서 제자리에 단단히 붙임', '동사', 836, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, 'ホテルに金庫が備え付けてある。', '호텔에 금고가 설치되어 있다.', 1),
-    (w, '防犯カメラを備え付ける。', '방범 카메라를 설치한다.', 2);
 
   -- 837. 互角
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '互角', 'ごかく', '호각, 비등함', '互(서로 호): 서로 어그다·교환
@@ -5650,13 +5552,6 @@ begin
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '絶大な人気を誇る。', '절대적인 인기를 끜다.', 1),
     (w, '絶大の信頼を得る。', '절대적 신뢰를 얻는다.', 2);
-
-  -- 841. 問い詰める
-  insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, '問い詰める', 'といつめる', '캠묻다, 추궁하다', '問う(묻다) + 詰める(채우다)
-한계까지 집요하게 물어 상대를 몰아붙임', '동사', 841, array['pdf_extracted']::text[]) returning id into w;
-  insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
-    (w, '邸を問い詰める。', '조어를 캠묻는다.', 1),
-    (w, '記者に問い詰められた。', '기자에게 추궁당했다.', 2);
 
   -- 842. デマ
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values (d_n1, NULL, 'デマ', '헛소문, 유언비어, 가짜 뉴스', '독일어 Demagogie·영어 demagogue에서 온 외래어
