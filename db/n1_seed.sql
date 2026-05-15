@@ -6496,7 +6496,7 @@ begin
 
   -- 975. つもり (회상)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, 'つもり (회상·기분)', '생각, 작정', '積(쌓을 적)もり. 「~한 셈치다·기분」', '문법-형식판단', 975, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, 'つもり', '생각, 작정 <회상·기분>', '積(쌓을 적)もり. 「~한 셈치다·기분」', '문법-형식판단', 975, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '休んだつもりで体を動かす。', '쉬는 셈치고 몸을 움직인다.', 1),
     (w, 'やったつもりだった。', '한 줄 알았다.', 2);
@@ -6594,7 +6594,7 @@ begin
 
   -- 989. ～べく (목적)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, '～べく (목적)', '~하기 위해', '可(옳을 가)き의 부사형. 「~할 목적으로」 격식체', '문법-형식판단', 989, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, '～べく', '~하기 위해 <목적>', '可(옳을 가)き의 부사형. 「~할 목적으로」 격식체', '문법-형식판단', 989, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '改善すべく取り組む。', '개선하기 위해 노력한다.', 1),
     (w, '解決すべく努力する。', '해결하기 위해 노력한다.', 2);
@@ -6657,7 +6657,7 @@ begin
 
   -- 998. ～に (추가)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, '～に (추가)', '~에 <추가>', '조사 に. 「~에 더해」 추가·병렬', '문법-형식판단', 998, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, '～に', '~에 <추가>', '조사 に. 「~에 더해」 추가·병렬', '문법-형식판단', 998, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, 'コーヒーにケーキを頼む。', '커피에 케이크를 주문한다.', 1),
     (w, '雨に風が加わる。', '비에 바람이 더해진다.', 2);
@@ -6910,7 +6910,7 @@ begin
 
   -- 1034. ～ている (경험)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, '～ている (경험)', '~한 적이 있다', 'て+いる. 경험 의미. 「과거에 ~한 적이 있는 상태」', '문법-형식판단', 1034, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, '～ている', '~한 적이 있다 <경험>', 'て+いる. 경험 의미. 「과거에 ~한 적이 있는 상태」', '문법-형식판단', 1034, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '一度行っている。', '한 번 가 본 적이 있다.', 1),
     (w, 'その本は読んでいる。', '그 책은 읽은 적이 있다.', 2);
@@ -9219,7 +9219,7 @@ begin
 
   -- 1362. ～も (역접)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, '～も (역접·놀람)', '~도', '계조사 も. 「~조차·~도」 강조 망라', '문법-문맥이해', 1362, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, '～も', '~도 <역접·놀람>', '계조사 も. 「~조차·~도」 강조 망라', '문법-문맥이해', 1362, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '一週間も雨が続く。', '일주일이나 비가 계속된다.', 1),
     (w, '彼は子供の名前も忘れた。', '그는 아이 이름조차 잊었다.', 2);
@@ -9380,7 +9380,7 @@ begin
 
   -- 1385. が (역접)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, 'が (역접)', '그러나', '접속조사 が. 「그러나·하지만」 역접', '문법-문맥이해', 1385, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, 'が', '그러나 <역접 접속>', '접속조사 が. 「그러나·하지만」 역접', '문법-문맥이해', 1385, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '行きたいが、時間がない。', '가고 싶지만 시간이 없다.', 1),
     (w, '簡単そうだが、難しい。', '쉬워 보이지만 어렵다.', 2);
@@ -9597,7 +9597,7 @@ begin
 
   -- 1416. ただ (다만)
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, 'ただ (다만)', '다만', '副詞·접속사 ただ. 강조 반복형', '문법-문맥이해', 1416, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, 'ただ', '다만 <보충 접속>', '副詞·접속사 ただ. 강조 반복형', '문법-문맥이해', 1416, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '行く。ただ、条件がある。', '간다. 다만 조건이 있다.', 1),
     (w, 'できる。ただ時間がかかる。', '할 수 있다. 다만 시간이 걸린다.', 2);
@@ -9667,7 +9667,7 @@ begin
 
   -- 1426. ～とは
   insert into public.words (deck_id, headword, reading, meaning, etymology, part_of_speech, order_index, tags) values
-    (d_n1, NULL, '～とは (정의)', '~란', 'と+は. 「~이라는 것은」 정의·놀람', '문법-문맥이해', 1426, array['grammar']::text[]) returning id into w;
+    (d_n1, NULL, '～とは', '~란 <정의>', 'と+は. 「~이라는 것은」 정의·놀람', '문법-문맥이해', 1426, array['grammar']::text[]) returning id into w;
   insert into public.examples (word_id, jp_sentence, kr_translation, order_index) values
     (w, '友情とは支え合うことだ。', '우정이란 서로 의지하는 것이다.', 1),
     (w, '彼が裏切るとは思わなかった。', '그가 배신할 줄은 몰랐다.', 2);
